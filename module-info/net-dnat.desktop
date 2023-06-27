@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/firewall.directory
+Terminal=false
+Icon=net-iptables
+X-Alterator-URI=/net-dnat
+X-Alterator-Weight=20
+X-Alterator-Help=net-dnat
+Name=Port forwarding
+Name[ru]=Перенаправление портов
+Name[pt_BR]=Redirecionamento de porta
+Name[es]=Adelantar porta
+Name[uk]=Переспрямовування портів

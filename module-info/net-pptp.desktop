@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/network.directory
+Icon=net-pptp
+Terminal=false
+Name=PPTP connections
+X-Alterator-URI=/net-pptp
+X-Alterator-Help=net-pptp
+Name[ru]=PPTP-соединения
+Name[uk]=PPTP-з'єднання
+Name[pt_BR]=PPTP conexões
+Name[es]=PPTP conecciones

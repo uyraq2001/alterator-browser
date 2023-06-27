@@ -1,0 +1,19 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/system.directory
+Exec=alterator-standalone services
+Icon=services
+Terminal=false
+Name=System services
+X-Alterator-URI=/services
+X-Alterator-Help=services
+Name[ru]=Системные службы
+Name[pt_BR]=Serviço do Sistema
+Name[es]=Servicio el Sistema
+Name[uk]=Системні служби
+dbusServiceName=ru.basealt.alterator
+dbusPath=/ru/basealt/alterator/services
+dbusInteface=ru.basealt.alterator.diag_interface
+dbusMethod=run
+args=ls /dev -la

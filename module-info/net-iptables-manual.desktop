@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/firewall.directory
+Terminal=false
+Name=Firewall - manual mode
+Icon=net-iptables-manual
+X-Alterator-URI=/net-iptables-manual
+X-Alterator-Weight=20
+X-Alterator-Help=net-iptables-manual
+X-Alterator-UI=html
+Name[ru]=Ручной режим управления
+Name[uk]=Ручний режим управління
+dbusServiceName=ru.basealt.alterator
+dbusPath=/ru/basealt/alterator/diag_node
+dbusInteface=ru.basealt.alterator.diag_interface
+dbusMethod=run
+args=ls /dev -la

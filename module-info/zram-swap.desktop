@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/system.directory
+Terminal=false
+Name=zram-swap settings
+Name[ru]=Настройка zram-swap
+Icon=zram-swap
+X-Alterator-URI=/zram-swap
+X-Alterator-Weight=20
+X-Alterator-Help=zram-swap
+X-Alterator-UI=qt

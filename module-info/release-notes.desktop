@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/system.directory
+Icon=notes
+Terminal=false
+Name=Release Notes
+X-Alterator-URI=/notes/release-notes
+X-Alterator-Weight=20
+X-Alterator-UI=qt
+X-Alterator-Help=notes-release-notes
+Name[ru]=Информация о дистрибутиве
+Name[uk]=Інформація щодо дистрибутиву
+Name[pt_BR]=Notas

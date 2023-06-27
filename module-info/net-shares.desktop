@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/system.directory
+Icon=net-shares
+Terminal=false
+Name=Network shares
+Name[ru_RU]=Сетевые каталоги
+X-Alterator-URI=/net-shares
+X-Alterator-Weight=20
+X-Alterator-Help=net-shares
+X-Alterator-UI=qt

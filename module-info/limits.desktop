@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/system.directory
+Terminal=false
+Name=limit settings
+Name[ru]=Настройка ограничений
+Icon=zram-swap
+X-Alterator-URI=/limits
+X-Alterator-Weight=20
+X-Alterator-Help=limits
+X-Alterator-UI=qt

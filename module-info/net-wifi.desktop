@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Categories=/usr/share/alterator/desktop-directories/network.directory
+Icon=net-wifi
+Terminal=false
+Name=Wifi interfaces
+X-Alterator-URI=/net-wifi
+X-Alterator-Weight=30
+X-Alterator-Help=net-wifi
+Name[ru]=Wifi интерфейсы
+Name[uk]=Wifi інтерфейси
