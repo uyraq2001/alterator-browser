@@ -22,19 +22,19 @@ MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
       model(m)
 {
     ui->setupUi(this);
+
     QVBoxLayout *categoryLayout = new QVBoxLayout();
+    QWidget *scrollWidget = new QWidget();
+    ui->scrollArea->setWidget(scrollWidget);
+    ui->scrollArea->widget()->setLayout(categoryLayout);
+    ui->scrollArea->setWidgetResizable(true);
+    scrollWidget->setMinimumWidth(ui->scrollArea->width());
+
     for (int i = 0; i < m->rowCount(); ++i){
         QString text = m->index(i, 0).data(Qt::DisplayRole).toString();
-        categoryLayout->addWidget(new CategoryWidget(m, i));
+        CategoryWidget *catWidget = new CategoryWidget(m, i);
+        categoryLayout->addWidget(catWidget);
     }
-
-    ui->centralwidget->setLayout(categoryLayout);
-    categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    ui->centralwidget->setMinimumSize(ui->centralwidget->sizeHint());
-    setMinimumSize(sizeHint());
-
-
-//    categoryLayout->addWidget(new CategoryWidget(model, -1));
 }
 
 MainWindow::~MainWindow()

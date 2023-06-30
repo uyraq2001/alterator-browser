@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 #include <QWidget>
+#include <QDebug>
 
 #include "flowlayout.h"
 //! [1]
@@ -138,6 +139,8 @@ void FlowLayout::setGeometry(const QRect &rect)
     QLayout::setGeometry(rect);
     int h = doLayout(rect, false);
     parentWidget()->setMinimumHeight(h);
+    QWidget *categoryWid = parentWidget()->parentWidget();
+//    categoryWid->setMinimumSize(categoryWid->sizeHint());
 }
 
 QSize FlowLayout::sizeHint() const

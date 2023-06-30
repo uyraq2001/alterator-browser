@@ -5,30 +5,10 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set (HEADERS
-#    adtexecutable.h
-
-#    adtjsonconverter.h
-#    alteratorexecutordbusinterface.h
-
-#    treemodelbuilderinterface.h
-#    treemodel.h
-#    treeitem.h
-#    treemodelbulderfromexecutable.h
-
     adtdesktopfileparser.h
-
 )
 
 set (SOURCES
-#    adtexecutable.cpp
-
-#    adtjsonconverter.cpp
-
-#    treemodelbuilderinterface.cpp
-#    treemodel.cpp
-#    treeitem.cpp
-#    treemodelbulderfromexecutable.cpp
-
     adtdesktopfileparser.cpp
 )
 

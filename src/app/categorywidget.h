@@ -18,6 +18,8 @@ public:
     explicit CategoryWidget(QStandardItemModel *m, int row, QWidget *parent = nullptr);
     ~CategoryWidget();
 
+    void setGeometry(const QRect &rect);
+
 private:
     Ui::CategoryWidget *ui;
 
