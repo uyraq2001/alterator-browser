@@ -26,32 +26,26 @@ set(CMAKE_AUTORCC ON)
 
 set(HEADERS
     mainwindow.h
-#    moduleswidget.h
+    modelbuilder.h
+    categorywidget.h
+    flowlayout.h
 )
 
 set(SOURCES
     main.cpp
     mainwindow.cpp
-#    moduleswidget.cpp
+    modelbuilder.cpp
+    categorywidget.cpp
+    flowlayout.cpp
 )
 
 set(UI_FORMS
     mainwindow.ui
+    categorywidget.ui
 )
 set(RESOURCES
     resources.qrc
 )
-set(TS_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/app_ru.ts
-    ${CMAKE_CURRENT_SOURCE_DIR}/app_en.ts
-)
-
-add_custom_target(app_ts
-    DEPENDS ${TS_FILES}
-    COMMAND ${Qt5_LUPDATE_EXECUTABLE} -recursive ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES} -noobsolete
-)
-
-qt5_add_translation(QM_FILES ${TS_FILES})
 
 qt5_wrap_ui(UI_SOURCES ${UI_FORMS})
 

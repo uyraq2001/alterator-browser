@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "modelbuilder.h"
+#include "browserdelegate.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -14,32 +16,25 @@
 #include <QDomText>
 #include <QStandardItem>
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      model(new QStandardItemModel(this))//,
-//      modulesView(new QTreeView(this))
+      model(m)
 {
     ui->setupUi(this);
-    QDBusInterface *introspect = new QDBusInterface("ru.basealt.alterator",
-                                                  "/ru/basealt/alterator",
-                                                  "org.freedesktop.DBus.Introspectable",
-                                                  QDBusConnection::systemBus());
-    QString introspection = introspect->call("Introspect").arguments()[0].toStringList()[0];
-    QDomDocument xml;
-    xml.setContent(introspection);
-    QList<QString> nodenames;
-    QDomNodeList nodes = xml.elementsByTagName("node");
-    for(int i = 0; i < nodes.length(); i++){
-        QDomElement e = nodes.item(i).toElement(); // try to convert the node to an element.
-        if(!e.isNull()) {
-            nodenames.append(e.attribute("name"));
-        }
+    QVBoxLayout *categoryLayout = new QVBoxLayout();
+    for (int i = 0; i < m->rowCount(); ++i){
+        QString text = m->index(i, 0).data(Qt::DisplayRole).toString();
+        categoryLayout->addWidget(new CategoryWidget(m, i));
     }
-    for(QString i : nodenames){
-        model->appendRow(new QStandardItem(i));
-    }
-    ui->modulesView->setModel(model);
+
+    ui->centralwidget->setLayout(categoryLayout);
+    categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    ui->centralwidget->setMinimumSize(ui->centralwidget->sizeHint());
+    setMinimumSize(sizeHint());
+
+
+//    categoryLayout->addWidget(new CategoryWidget(model, -1));
 }
 
 MainWindow::~MainWindow()

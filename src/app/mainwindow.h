@@ -1,9 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "categorywidget.h"
+
 #include <QMainWindow>
 #include <QStandardItemModel>
-#include <QTreeView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,7 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QStandardItemModel *m, QWidget *parent = nullptr);
     ~MainWindow();
     MainWindow(const MainWindow &) = delete;
     MainWindow(MainWindow &&)      = delete;
@@ -23,7 +24,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
     QStandardItemModel *model;
-//    QTreeView *modulesView;
 };
 #endif // MAINWINDOW_H
