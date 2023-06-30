@@ -17,12 +17,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QStandardItemModel *m, QWidget *parent = nullptr);
     ~MainWindow();
+
+private:
+
     MainWindow(const MainWindow &) = delete;
     MainWindow(MainWindow &&)      = delete;
     MainWindow &operator=(const MainWindow &) = delete;
     MainWindow &operator=(MainWindow &&) = delete;
 
-private:
     Ui::MainWindow *ui;
 
     QStandardItemModel *model;

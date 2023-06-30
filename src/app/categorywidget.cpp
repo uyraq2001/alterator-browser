@@ -28,6 +28,7 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
     ui->descriptionLabel->setMinimumSize(ui->headerLabel->sizeHint());
 
     FlowLayout *modulesLayout = new FlowLayout(10, 10, 10);
+//    QGridLayout* modulesLayout = new QGridLayout();
     ui->modulesWidget->setLayout(modulesLayout);
     for (int i = 0; i < m->rowCount(m->index(row, 0)); ++i){
         QString text = m->index(i, 0, m->index(row, 0)).data(Qt::DisplayRole).toString();
