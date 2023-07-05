@@ -6,6 +6,7 @@ set(CMAKE_AUTORCC ON)
 
 set (HEADERS
     adtdesktopfileparser.h
+    enums.h
 )
 
 set (SOURCES

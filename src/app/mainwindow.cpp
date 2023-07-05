@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QDomText>
 #include <QStandardItem>
+#include <QLayout>
 
 MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
     : QMainWindow(parent),
@@ -24,11 +25,12 @@ MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
     ui->setupUi(this);
 
     QVBoxLayout *categoryLayout = new QVBoxLayout();
+    categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     QWidget *scrollWidget = new QWidget();
     ui->scrollArea->setWidget(scrollWidget);
     ui->scrollArea->widget()->setLayout(categoryLayout);
     ui->scrollArea->setWidgetResizable(true);
-    scrollWidget->setMinimumWidth(ui->scrollArea->width());
+//    scrollWidget->setMinimumWidth(ui->scrollArea->width());
 
     for (int i = 0; i < m->rowCount(); ++i){
         QString text = m->index(i, 0).data(Qt::DisplayRole).toString();

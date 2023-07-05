@@ -5,63 +5,43 @@
 #include <QStandardItemModel>
 #include <QPushButton>
 #include <QDebug>
+#include <QSpacerItem>
+
+#include "../core/enums.h"
 
 CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
     : QWidget{parent},
       ui(new Ui::CategoryWidget)
 {
     ui->setupUi(this);
-    QVBoxLayout *hdLayout = new QVBoxLayout();
-    QHBoxLayout *ihdLayout = new QHBoxLayout();
+    QLayout *ihdLayout = ui->headerWidget->layout();
     QLayout *ihdmLayout = this->layout();
-    hdLayout->addWidget(ui->headerLabel);
-    hdLayout->addWidget(ui->descriptionLabel);
-    hdLayout->setAlignment(Qt::AlignTop);
-    ihdLayout->addWidget(ui->iconLabel);
-    ihdLayout->addLayout(hdLayout);
-    ihdLayout->setAlignment(Qt::AlignLeft);
-    ihdmLayout->setAlignment(Qt::AlignTop);
-//    ihdmLayout->setSizeConstraint(QLayout::SetFixedSize);
+    FlowLayout *modulesLayout = new FlowLayout(10, 10, 10);
 
-//    ui->headerLabel->setText("krb svdkjvwrgnwrmjbnergr,j,bmejbhrs bgmesjdgierwfbveibvi4enfej,snvwenfv m,fdv m,oino");
+    ihdmLayout->addWidget(ui->headerWidget);
+    ihdmLayout->addWidget(ui->modulesWidget);
+//    ihdmLayout->addWidget(ui->bottomLine);
+    modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
     ui->headerLabel->setText(m->index(row, 0).data(Qt::DisplayRole).toString());
-    QPixmap iconMap = QPixmap("/usr/share/app-info/icons/altlinux/64x64/adanaxisgpl.png");
+    ui->descriptionLabel->setText(m->index(row, 0).data(UserRoles::DescriptionRole).toString());
+//    ui->descriptionLabel->setText("m->index(ro  w, 0).data(UserRoles ::DescriptionRol e).toStrin g()rxtcyv uhbjnklm ;,'.sedfg hjklertfyg uhijkrtf yghjk");
+    QPixmap iconMap = m->index(row, 0).data(Qt::DecorationRole).value<QPixmap>();
     ui->iconLabel->setPixmap(iconMap);
     ui->headerLabel->setMinimumSize(ui->headerLabel->sizeHint());
     ui->iconLabel->setMinimumSize(iconMap.size());
-//    ui->iconLabel->setMinimumSize(QSize(0, 0));
     ui->descriptionLabel->setMinimumSize(ui->headerLabel->sizeHint());
-    ui->headerWidget->setMinimumSize(ui->headerWidget->sizeHint());
     ui->headerWidget->setLayout(ihdLayout);
-    ihdmLayout->addWidget(ui->headerWidget);
-
-    FlowLayout *modulesLayout = new FlowLayout(10, 10, 10);
-    modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
     ui->modulesWidget->setLayout(modulesLayout);
 
-    ihdmLayout->addWidget(ui->modulesWidget);
     for (int i = 0; i < m->rowCount(m->index(row, 0)); ++i){
         QString text = m->index(i, 0, m->index(row, 0)).data(Qt::DisplayRole).toString();
         QPushButton *moduleButton = new QPushButton(text, ui->modulesWidget);
         moduleButton->setMinimumWidth(moduleButton->sizeHint().width());
         modulesLayout->addWidget(moduleButton);
     }
-    modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-
-//    QPalette pal = QPalette();
-
-//    // set black background
-//    // Qt::black / "#000000" / "black"
-//    pal.setColor(QPalette::Window, Qt::red);
-
-//    ui->headerWidget->setAutoFillBackground(true);
-//    ui->headerWidget->setPalette(pal);
-//    ui->headerWidget->show();
-//    pal.setColor(QPalette::Window, Qt::green);
-
-//    ui->headerLabel->setAutoFillBackground(true);
-//    ui->headerLabel->setPalette(pal);
-//    ui->headerLabel->show();
 }
 
 CategoryWidget::~CategoryWidget()

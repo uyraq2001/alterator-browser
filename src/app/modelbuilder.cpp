@@ -8,18 +8,18 @@
 #include <QDebug>
 #include <QDBusReply>
 
+#include "../core/enums.h"
+
 const QString ALTERATOR_SERVICE = "ru.basealt.alterator";
 const QString ROOT_OBJECT = "/ru/basealt/alterator";
 const QString INTROSPECTABLE_INTERFACE = "org.freedesktop.DBus.Introspectable";
 const QString APPLICATION_INTERFACE = "ru.basealt.alterator.application";
 
-ModelBuilder::ModelBuilder(
-        QStandardItemModel *m, QObject *parent)
+ModelBuilder::ModelBuilder(QObject *parent)
     : QObject{parent}
-    , model(m)
 {}
 
-bool ModelBuilder::build(){
+bool ModelBuilder::build(QStandardItemModel *model){
     QDBusInterface introspect(ALTERATOR_SERVICE,
                               ROOT_OBJECT,
                               INTROSPECTABLE_INTERFACE,
@@ -32,11 +32,8 @@ bool ModelBuilder::build(){
     QString introspection = introspect.call("Introspect").arguments()[0].toStringList()[0];
 
     QDomDocument xml;
-
     xml.setContent(introspection);
-
     QStringList nodenames;
-
     QDomNodeList nodes = xml.elementsByTagName("node");
     for(int i = 0; i < nodes.length(); i++){
         QDomElement e = nodes.item(i).toElement();
@@ -44,10 +41,9 @@ bool ModelBuilder::build(){
             nodenames.append(e.attribute("name"));
         }
     }
+
     QMap<QString, QStandardItem *> modules;
-
     QMap<QString, QStandardItem *> categories;
-
     for(QString i : nodenames){
         QDBusInterface iface(ALTERATOR_SERVICE,
                              ROOT_OBJECT + (i.isEmpty() ? "" : "/") + i,
@@ -103,8 +99,9 @@ bool ModelBuilder::build(){
 
             QStandardItem *categoryItem = new QStandardItem();
             categoryItem->setData(category.value("Name"), Qt::DisplayRole);
+            categoryItem->setData(category.value("Comment"), UserRoles::DescriptionRole);
             QPixmap icon = QPixmap(
-                        "/usr/share/aterator/desin/images"
+                        "/usr/share/alterator/design/images/"
                         + category.value("Icon")+ ".png");
             categoryItem->setData(icon, Qt::DecorationRole);
             categories.insert(categoryPath, categoryItem);

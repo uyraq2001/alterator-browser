@@ -8,13 +8,11 @@ class ModelBuilder : public QObject
 {
     Q_OBJECT
 public:
-    ModelBuilder(QStandardItemModel *m, QObject *parent = nullptr);
+    ModelBuilder(QObject *parent = nullptr);
 
-    bool build();
+    bool build(QStandardItemModel *model);
 
 private:
-    QStandardItemModel *model;
-
     ModelBuilder(const ModelBuilder &) = delete;
     ModelBuilder(ModelBuilder &&)      = delete;
     ModelBuilder &operator=(const ModelBuilder &) = delete;
