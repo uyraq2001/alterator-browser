@@ -29,6 +29,7 @@ set(HEADERS
     modelbuilder.h
     categorywidget.h
     flowlayout.h
+    modulepushbutton.h
 )
 
 set(SOURCES
@@ -37,6 +38,7 @@ set(SOURCES
     modelbuilder.cpp
     categorywidget.cpp
     flowlayout.cpp
+    modulepushbutton.cpp
 )
 
 set(UI_FORMS

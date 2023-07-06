@@ -1,6 +1,7 @@
 #include "categorywidget.h"
 #include "ui_categorywidget.h"
 #include "flowlayout.h"
+#include "modulepushbutton.h"
 
 #include <QStandardItemModel>
 #include <QPushButton>
@@ -20,13 +21,12 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
 
     ihdmLayout->addWidget(ui->headerWidget);
     ihdmLayout->addWidget(ui->modulesWidget);
-//    ihdmLayout->addWidget(ui->bottomLine);
+    ihdmLayout->addWidget(ui->bottomLine);
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     ui->headerLabel->setText(m->index(row, 0).data(Qt::DisplayRole).toString());
     ui->descriptionLabel->setText(m->index(row, 0).data(UserRoles::DescriptionRole).toString());
-//    ui->descriptionLabel->setText("m->index(ro  w, 0).data(UserRoles ::DescriptionRol e).toStrin g()rxtcyv uhbjnklm ;,'.sedfg hjklertfyg uhijkrtf yghjk");
     QPixmap iconMap = m->index(row, 0).data(Qt::DecorationRole).value<QPixmap>();
     ui->iconLabel->setPixmap(iconMap);
     ui->headerLabel->setMinimumSize(ui->headerLabel->sizeHint());
@@ -38,7 +38,16 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
 
     for (int i = 0; i < m->rowCount(m->index(row, 0)); ++i){
         QString text = m->index(i, 0, m->index(row, 0)).data(Qt::DisplayRole).toString();
-        QPushButton *moduleButton = new QPushButton(text, ui->modulesWidget);
+        QMap<QString, QVariant> ifaceData = m->index(i, 0, m->index(row, 0)).data(UserRoles::ActionRole).toMap();
+        ModulePushButton *moduleButton = new ModulePushButton();
+        moduleButton->setText(text);
+        moduleButton->setDBusInterface(ifaceData.value("service").toString(),
+                                       ifaceData.value("path").toString(),
+                                       ifaceData.value("interface").toString(),
+                                       ifaceData.value("bus").toString() == "sessionBus"?
+                                           QDBusConnection::sessionBus():
+                                           QDBusConnection::systemBus());
+        moduleButton->setMode(AlteratorModes::StandardMode);
         moduleButton->setMinimumWidth(moduleButton->sizeHint().width());
         modulesLayout->addWidget(moduleButton);
     }

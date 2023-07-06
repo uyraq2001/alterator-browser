@@ -74,6 +74,12 @@ bool ModelBuilder::build(QStandardItemModel *model){
         }
         QStandardItem *moduleItem = new QStandardItem();
         moduleItem->setData(info.value("Name"), Qt::DisplayRole);
+        QMap<QString, QVariant> actionIfaceData = QMap<QString, QVariant>();
+        actionIfaceData.insert("service", iface.service());
+        actionIfaceData.insert("path", iface.path());
+        actionIfaceData.insert("interface", iface.interface());
+        actionIfaceData.insert("bus", "sessionBus");
+        moduleItem->setData(actionIfaceData, UserRoles::ActionRole);
         modules.insert(i, moduleItem);
 
         QString categoryPath = info.value("Categories");

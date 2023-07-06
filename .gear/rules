@@ -1,2 +1,2 @@
 tar: .
-spec: .gear/alt-diagnostic-tool.spec
+spec: .gear/altcenter.spec
