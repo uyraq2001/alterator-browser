@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.0)
 
-project("Alterator Module Browser")
+project("altcenter")
 
 execute_process(
     COMMAND
-    bash -c "grep 'Version:' .gear/alt-diagnostic-tool.spec | awk -F ':' '{ print $2 }' | tr -d [:space:]"
-    OUTPUT_VARIABLE ADT_GEAR_VERSION
+    bash -c "grep 'Version:' .gear/altcenter.spec | awk -F ':' '{ print $2 }' | tr -d [:space:]"
+    OUTPUT_VARIABLE ALTCENTER_GEAR_VERSION
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-message (${ADT_GEAR_VERSION})
+message (${ALTCENTER_GEAR_VERSION})
 
-string(REPLACE "." ";" ADT_VERSION_LIST ${ADT_GEAR_VERSION})
-list(GET ADT_VERSION_LIST 0 GPUI_VERSION_MAJOR)
-list(GET ADT_VERSION_LIST 1 GPUI_VERSION_MINOR)
-list(GET ADT_VERSION_LIST 2 GPUI_VERSION_PATCH)
+string(REPLACE "." ";" ADT_VERSION_LIST ${ALTCENTER_GEAR_VERSION})
+list(GET ALTCENTER_VERSION_LIST 0 ALTCENTER_VERSION_MAJOR)
+list(GET ALTCENTER_VERSION_LIST 1 ALTCENTER_VERSION_MINOR)
+list(GET ALTCENTER_VERSION_LIST 2 ALTCENTER_VERSION_PATCH)
 
 if(UNIX)
   include(GNUInstallDirs)
@@ -27,6 +27,13 @@ else()
     message(FATAL_ERROR "System not UNIX nor WIN32 - not implemented yet")
   endif()
 endif()
+
+install(DIRECTORY /usr/share/alterator/backends
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
+install(DIRECTORY /usr/share/alterator/module-info
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
+install(DIRECTORY /usr/share/alterator/desktop-directories
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
 
 add_subdirectory(src)
 

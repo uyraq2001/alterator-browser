@@ -25,6 +25,7 @@ public:
     void setMode(AlteratorModes m);
     AlteratorModes getMode();
 
+    void setText(const QString &text);
 private:
     ModulePushButton(const ModulePushButton &) = delete;
     ModulePushButton(ModulePushButton &&)      = delete;

@@ -18,6 +18,8 @@ public:
     MainWindow(QStandardItemModel *m, QWidget *parent = nullptr);
     ~MainWindow();
 
+    void paintEvent(QPaintEvent *event);
+
 private:
 
     MainWindow(const MainWindow &) = delete;

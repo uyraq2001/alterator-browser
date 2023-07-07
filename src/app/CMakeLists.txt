@@ -1,4 +1,4 @@
-macro(add_amb_executable name)
+macro(add_altcenter_executable name)
   # add executable
   add_executable(${name} ${ARGN})
 
@@ -14,7 +14,7 @@ macro(add_amb_executable name)
         ${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:${name}>
       COMMENT "Copy ${name} to ${CMAKE_BINARY_DIR}/bin")
 
-endmacro(add_amb_executable)
+endmacro(add_altcenter_executable)
 
 find_package(Qt5 COMPONENTS Widgets Core Gui DBus Xml LinguistTools REQUIRED)
 
@@ -53,6 +53,6 @@ qt5_wrap_ui(UI_SOURCES ${UI_FORMS})
 
 qt5_add_resources(RCC_SOURCES ${RESOURCES})
 
-add_amb_executable(alt-diagnostic-tool ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES} ${QM_FILES})
+add_altcenter_executable(altcenter ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES} ${QM_FILES})
 
-target_link_libraries(alt-diagnostic-tool Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui ambcore)
+target_link_libraries(altcenter Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui altcentercore)

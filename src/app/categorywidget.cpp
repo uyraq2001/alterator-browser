@@ -31,7 +31,7 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
     ui->iconLabel->setPixmap(iconMap);
     ui->headerLabel->setMinimumSize(ui->headerLabel->sizeHint());
     ui->iconLabel->setMinimumSize(iconMap.size());
-    ui->descriptionLabel->setMinimumSize(ui->headerLabel->sizeHint());
+    ui->descriptionLabel->setMinimumSize(ui->descriptionLabel->sizeHint());
     ui->headerWidget->setLayout(ihdLayout);
     ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
     ui->modulesWidget->setLayout(modulesLayout);
@@ -51,6 +51,11 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
         moduleButton->setMinimumWidth(moduleButton->sizeHint().width());
         modulesLayout->addWidget(moduleButton);
     }
+}
+
+void CategoryWidget::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
 }
 
 CategoryWidget::~CategoryWidget()

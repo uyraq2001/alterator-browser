@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>200</height>
+    <width>513</width>
+    <height>259</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -85,25 +85,6 @@ QLabel#descriptionLabel{
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="headerLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>16</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>HEADER</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0" colspan="2">
        <widget class="QLabel" name="descriptionLabel">
         <property name="sizePolicy">
@@ -126,13 +107,32 @@ QLabel#descriptionLabel{
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="headerLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>HEADER</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QWidget" name="modulesWidget" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -146,14 +146,15 @@ QLabel#descriptionLabel{
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	color: blue;
-}</string>
+}
+</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QFrame" name="bottomLine">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>

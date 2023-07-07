@@ -29,11 +29,13 @@ MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
     QWidget *scrollWidget = new QWidget();
     ui->scrollArea->setWidget(scrollWidget);
     ui->scrollArea->widget()->setLayout(categoryLayout);
-    ui->scrollArea->setWidgetResizable(true);
-//    scrollWidget->setMinimumWidth(ui->scrollArea->width());
+//    ui->scrollArea->setWidgetResizable(true);
+    ui->scrollArea->setMinimumWidth(scrollWidget->minimumSize().width());
+    centralWidget()->setMinimumWidth(scrollWidget->sizeHint().width());
 
     for (int i = 0; i < m->rowCount(); ++i){
         QString text = m->index(i, 0).data(Qt::DisplayRole).toString();
+//        if (text == "Users" || text == "System"|| text == "Network"|| text == "Firewall") continue;
         CategoryWidget *catWidget = new CategoryWidget(m, i);
         categoryLayout->addWidget(catWidget);
     }
@@ -42,4 +44,9 @@ MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    QMainWindow::paintEvent(event);
 }

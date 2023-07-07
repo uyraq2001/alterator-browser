@@ -19,11 +19,11 @@ public:
     ~CategoryWidget();
 
     void setGeometry(const QRect &rect);
+    void paintEvent(QPaintEvent *event);
 
 private:
     Ui::CategoryWidget *ui;
 
-private:
     CategoryWidget(const CategoryWidget &) = delete;
     CategoryWidget(CategoryWidget &&)      = delete;
     CategoryWidget &operator=(const CategoryWidget &) = delete;

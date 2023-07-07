@@ -23,6 +23,8 @@ void ModulePushButton::setDBusInterface(const QString &service,
     delete iface;
 
     iface = new QDBusInterface(service, path, interface, connection);
+
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
 
 QDBusInterface* ModulePushButton::getDBusInterface(){return iface;}
@@ -45,4 +47,10 @@ void ModulePushButton::onClicked()
     }else if(mode == AlteratorModes::DevMode){
         iface->call("RunDev");
     }
+}
+
+void ModulePushButton::setText(const QString &text)
+{
+    QPushButton::setText(text);
+    setMinimumSize(sizeHint());
 }
