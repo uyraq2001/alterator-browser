@@ -25,7 +25,7 @@ private:
     Ui::CategoryWidget *ui;
 
     CategoryWidget(const CategoryWidget &) = delete;
-    CategoryWidget(CategoryWidget &&)      = delete;
+    CategoryWidget(CategoryWidget &&) = delete;
     CategoryWidget &operator=(const CategoryWidget &) = delete;
     CategoryWidget &operator=(CategoryWidget &&) = delete;
 };

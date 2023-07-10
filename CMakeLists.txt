@@ -28,12 +28,12 @@ else()
   endif()
 endif()
 
-install(DIRECTORY /usr/share/alterator/backends
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
-install(DIRECTORY /usr/share/alterator/module-info
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
-install(DIRECTORY /usr/share/alterator/desktop-directories
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
+#install(DIRECTORY /usr/share/alterator/backends
+#        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
+#install(DIRECTORY /usr/share/alterator/module-info
+#        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
+#install(DIRECTORY /usr/share/alterator/desktop-directories
+#        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
 
 add_subdirectory(src)
 
