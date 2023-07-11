@@ -17,6 +17,8 @@ private:
     ModelBuilder(ModelBuilder &&)      = delete;
     ModelBuilder &operator=(const ModelBuilder &) = delete;
     ModelBuilder &operator=(ModelBuilder &&) = delete;
+
+    QVariantMap findTraslations(QString field, QMap<QString, QString> dump);
 };
 
 #endif // MODELBUILDER_H

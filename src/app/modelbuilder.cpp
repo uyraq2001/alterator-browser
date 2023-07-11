@@ -75,7 +75,7 @@ bool ModelBuilder::build(QStandardItemModel *model){
             info.insert(splited[0], splited[1]);
         }
         QStandardItem *moduleItem = new QStandardItem();
-        moduleItem->setData(info.value("Name"), Qt::DisplayRole);
+        moduleItem->setData(findTraslations("Name", info), Qt::DisplayRole);
         QMap<QString, QVariant> actionIfaceData = QMap<QString, QVariant>();
         actionIfaceData.insert("service", iface.service());
         actionIfaceData.insert("path", iface.path());
@@ -107,8 +107,8 @@ bool ModelBuilder::build(QStandardItemModel *model){
             }
 
             QStandardItem *categoryItem = new QStandardItem();
-            categoryItem->setData(category.value("Name"), Qt::DisplayRole);
-            categoryItem->setData(category.value("Comment"), UserRoles::DescriptionRole);
+            categoryItem->setData(findTraslations("Name", category), Qt::DisplayRole);
+            categoryItem->setData(findTraslations("Comment", category), UserRoles::DescriptionRole);
             QPixmap icon = QPixmap(
                         "/usr/share/alterator/design/images/"
                         + category.value("Icon")+ ".png");
@@ -121,4 +121,27 @@ bool ModelBuilder::build(QStandardItemModel *model){
         }
     }
     return true;
+}
+
+QVariantMap ModelBuilder::findTraslations(QString field, QMap<QString, QString> dump)
+{
+    QVariantMap res;
+
+    if(!dump.contains(field)){
+        qWarning() << "ERROR: '" + field + "' doesn't name a field!";
+        return res;
+    }else{
+        res.insert("Default", dump.value(field));
+    }
+
+    QRegularExpression rx("^" + field + "\\[(.*)\\]$");
+
+    for (auto i = dump.cbegin(); i != dump.cend(); ++i){
+        QRegularExpressionMatch match = rx.match(i.key());
+        if (match.hasMatch()) {
+            QString locale = match.captured(1);
+            res.insert(locale, i.value());
+        }
+    }
+    return res;
 }

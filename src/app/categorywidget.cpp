@@ -14,6 +14,9 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
     : QWidget{parent},
       ui(new Ui::CategoryWidget)
 {
+    QLocale locale;
+    QString language = locale.system().name().split("_").at(0);
+
     ui->setupUi(this);
     QLayout *ihdLayout = ui->headerWidget->layout();
     QLayout *ihdmLayout = this->layout();
@@ -25,8 +28,10 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    ui->headerLabel->setText(m->index(row, 0).data(Qt::DisplayRole).toString());
-    ui->descriptionLabel->setText(m->index(row, 0).data(UserRoles::DescriptionRole).toString());
+    QVariantMap catDisplay = m->index(row, 0).data(Qt::DisplayRole).toMap();
+    QVariantMap catDescription = m->index(row, 0).data(UserRoles::DescriptionRole).toMap();
+    ui->headerLabel->setText(catDisplay.contains(language) ? catDisplay[language].toString() : catDisplay["Default"].toString());
+    ui->descriptionLabel->setText(catDescription.contains(language) ? catDescription[language].toString() : catDescription["Default"].toString());
     QPixmap iconMap = m->index(row, 0).data(Qt::DecorationRole).value<QPixmap>();
     ui->iconLabel->setPixmap(iconMap);
     ui->headerLabel->setMinimumSize(ui->headerLabel->sizeHint());
@@ -37,7 +42,8 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
     ui->modulesWidget->setLayout(modulesLayout);
 
     for (int i = 0; i < m->rowCount(m->index(row, 0)); ++i){
-        QString text = m->index(i, 0, m->index(row, 0)).data(Qt::DisplayRole).toString();
+        QVariantMap moduleDisplay = m->index(i, 0, m->index(row, 0)).data(Qt::DisplayRole).toMap();
+        QString text = moduleDisplay.contains(language) ? moduleDisplay[language].toString() : moduleDisplay["Default"].toString();
         QMap<QString, QVariant> ifaceData = m->index(i, 0, m->index(row, 0)).data(UserRoles::ActionRole).toMap();
         ModulePushButton *moduleButton = new ModulePushButton();
         moduleButton->setText(text);
