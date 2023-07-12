@@ -31,8 +31,6 @@ MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
     QWidget *scrollWidget = new QWidget();
     ui->scrollArea->setWidget(scrollWidget);
     ui->scrollArea->widget()->setLayout(categoryLayout);
-    ui->scrollArea->setMinimumWidth(scrollWidget->minimumSize().width());
-    centralWidget()->setMinimumWidth(scrollWidget->sizeHint().width());
 
     for (int i = 0; i < m->rowCount(); ++i){
         QString text = m->index(i, 0).data(Qt::DisplayRole).toString();
@@ -50,4 +48,8 @@ MainWindow::~MainWindow()
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     QMainWindow::paintEvent(event);
+    QWidget *scrollWidget = ui->scrollArea->widget();
+    scrollWidget->setMinimumWidth(scrollWidget->layout()->minimumSize().width());
+    ui->scrollArea->setMinimumWidth(scrollWidget->minimumWidth());
+    this->setMinimumWidth(ui->scrollArea->minimumWidth());
 }
