@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QDBusInterface>
+#include <QStandardItemModel>
 
 #include "../core/enums.h"
 
@@ -12,7 +13,9 @@ class ModulePushButton : public QPushButton
     Q_OBJECT
 
 public:
-    explicit ModulePushButton(QWidget *parent = nullptr);
+    explicit ModulePushButton(QStandardItemModel *m,
+                              QStandardItem *item,
+                              QWidget *parent = nullptr);
     ~ModulePushButton();
 
     void setDBusInterface(const QString &service,

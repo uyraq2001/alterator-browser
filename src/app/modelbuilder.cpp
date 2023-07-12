@@ -51,61 +51,21 @@ bool ModelBuilder::build(QStandardItemModel *model){
                              APPLICATION_INTERFACE,
                              QDBusConnection::systemBus());
         if (!iface.isValid()){
-            qWarning() << "Warning: object " + objectPath + " doesn't provide interface " + APPLICATION_INTERFACE;
+            qWarning() << "Warning: object " +
+                          objectPath +
+                          " doesn't provide interface " +
+                          APPLICATION_INTERFACE;
             continue;
         }
 
-        QDBusMessage infoMess = iface.call("info");
-        if (infoMess.type() == QDBusMessage::ErrorMessage){
-            qWarning() << infoMess.errorMessage();
-            continue;
-        }
-        QMap<QString, QString> info;
-        QList<QString> infoList = infoMess.arguments()[0].toStringList();
-        for(QString j: infoList){
-            QStringList splited = j.split('=');
-            if (splited.size() != 2){
-                if (j != "[Desktop Entry]\n")
-                    qWarning() << "Warning: are you sure that '" + j + "' is  a valid .desktop entry?";
-                continue;
-            }
-            if (splited[1].contains("\n")){
-                splited[1] = splited[1].left(splited[1].size() - 1);
-            }
-            info.insert(splited[0], splited[1]);
-        }
+        QMap<QString, QString> info = readIniFromDBus(iface.call("info"));
         QStandardItem *moduleItem = new QStandardItem();
         moduleItem->setData(findTraslations("Name", info), Qt::DisplayRole);
-        QMap<QString, QVariant> actionIfaceData = QMap<QString, QVariant>();
-        actionIfaceData.insert("service", iface.service());
-        actionIfaceData.insert("path", iface.path());
-        actionIfaceData.insert("interface", iface.interface());
-        actionIfaceData.insert("bus", "sessionBus");
-        moduleItem->setData(actionIfaceData, UserRoles::ActionRole);
         modules.insert(objectPath, moduleItem);
 
         QString categoryPath = info.value("Categories");
         if (!categories.contains(categoryPath)){
-            QDBusMessage categoryMess = iface.call("category");
-            if (categoryMess.type() == QDBusMessage::ErrorMessage){
-                qWarning() << categoryMess.errorMessage();
-                continue;
-            }
-            QMap<QString, QString> category;
-            QList<QString> categoryList = categoryMess.arguments()[0].toStringList();
-            for(QString j: categoryList){
-                QStringList splited = j.split('=');
-                if (splited.size() != 2){
-                    if (j != "[Desktop Entry]\n")
-                        qWarning() << "Warning: are you sure that '" + j + "' is  a valid .directory entry?";
-                    continue;
-                }
-                if (splited[1].contains("\n")){
-                    splited[1] = splited[1].left(splited[1].size() - 1);
-                }
-                category.insert(splited[0], splited[1]);
-            }
-
+            QMap<QString, QString> category = readIniFromDBus(iface.call("category"));
             QStandardItem *categoryItem = new QStandardItem();
             categoryItem->setData(findTraslations("Name", category), Qt::DisplayRole);
             categoryItem->setData(findTraslations("Comment", category), UserRoles::DescriptionRole);
@@ -118,6 +78,16 @@ bool ModelBuilder::build(QStandardItemModel *model){
             categoryItem->appendRow(moduleItem);
         }else{
             categories.value(categoryPath)->appendRow(moduleItem);
+        }
+
+        QStringList interfacesFromFakeBus;
+        interfacesFromFakeBus.append("Interface_1");
+        interfacesFromFakeBus.append("Interface_2");
+        interfacesFromFakeBus.append("Interface_3");
+        for (QString j: interfacesFromFakeBus){
+            QStandardItem *ifaceItem = new QStandardItem();
+            ifaceItem->setData(j, Qt::DisplayRole);
+            moduleItem->appendRow(ifaceItem);
         }
     }
     return true;
@@ -142,6 +112,28 @@ QVariantMap ModelBuilder::findTraslations(QString field, QMap<QString, QString> 
             QString locale = match.captured(1);
             res.insert(locale, i.value());
         }
+    }
+    return res;
+}
+
+QMap<QString, QString> ModelBuilder::readIniFromDBus(QDBusMessage mess){
+    QMap<QString, QString> res;
+    if (mess.type() == QDBusMessage::ErrorMessage){
+        qWarning() << mess.errorMessage();
+        return res;
+    }
+    QList<QString> resList = mess.arguments()[0].toStringList();
+    for(QString j: resList){
+        QStringList splited = j.split('=');
+        if (splited.size() != 2){
+            if (j != "[Desktop Entry]\n")
+                qWarning() << "Warning: are you sure that '" + j + "' is  a valid .ini entry?";
+            continue;
+        }
+        if (splited[1].contains("\n")){
+            splited[1] = splited[1].left(splited[1].size() - 1);
+        }
+        res.insert(splited[0], splited[1]);
     }
     return res;
 }

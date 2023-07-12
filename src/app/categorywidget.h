@@ -4,8 +4,6 @@
 #include <QStandardItemModel>
 #include <QWidget>
 
-
-
 namespace Ui {
     class CategoryWidget;
 }
@@ -15,7 +13,8 @@ class CategoryWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CategoryWidget(QStandardItemModel *m, int row, QWidget *parent = nullptr);
+    explicit CategoryWidget(QStandardItem *item,
+                            QWidget *parent = nullptr);
     ~CategoryWidget();
 
     void setGeometry(const QRect &rect);

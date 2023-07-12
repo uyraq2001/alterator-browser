@@ -7,13 +7,16 @@
 #include <QPushButton>
 #include <QDebug>
 #include <QSpacerItem>
+#include <QAction>
+#include <QMenu>
 
 #include "../core/enums.h"
 
-CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
+CategoryWidget::CategoryWidget(QStandardItem *item, QWidget *parent)
     : QWidget{parent},
       ui(new Ui::CategoryWidget)
 {
+    QStandardItemModel *m = item->model();
     QLocale locale;
     QString language = locale.system().name().split("_").at(0);
 
@@ -28,11 +31,17 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    QVariantMap catDisplay = m->index(row, 0).data(Qt::DisplayRole).toMap();
-    QVariantMap catDescription = m->index(row, 0).data(UserRoles::DescriptionRole).toMap();
-    ui->headerLabel->setText(catDisplay.contains(language) ? catDisplay[language].toString() : catDisplay["Default"].toString());
-    ui->descriptionLabel->setText(catDescription.contains(language) ? catDescription[language].toString() : catDescription["Default"].toString());
-    QPixmap iconMap = m->index(row, 0).data(Qt::DecorationRole).value<QPixmap>();
+    QVariantMap catDisplay = item->data(Qt::DisplayRole).toMap();
+    QVariantMap catDescription = item->data(UserRoles::DescriptionRole).toMap();
+    ui->headerLabel->setText(
+                catDisplay.contains(language) ?
+                    catDisplay[language].toString() :
+                    catDisplay["Default"].toString());
+    ui->descriptionLabel->setText(
+                catDescription.contains(language) ?
+                    catDescription[language].toString() :
+                    catDescription["Default"].toString());
+    QPixmap iconMap = item->data(Qt::DecorationRole).value<QPixmap>();
     ui->iconLabel->setPixmap(iconMap);
     ui->headerLabel->setMinimumSize(ui->headerLabel->sizeHint());
     ui->iconLabel->setMinimumSize(iconMap.size());
@@ -41,20 +50,27 @@ CategoryWidget::CategoryWidget(QStandardItemModel *m, int row, QWidget *parent)
     ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
     ui->modulesWidget->setLayout(modulesLayout);
 
-    for (int i = 0; i < m->rowCount(m->index(row, 0)); ++i){
-        QVariantMap moduleDisplay = m->index(i, 0, m->index(row, 0)).data(Qt::DisplayRole).toMap();
-        QString text = moduleDisplay.contains(language) ? moduleDisplay[language].toString() : moduleDisplay["Default"].toString();
-        QMap<QString, QVariant> ifaceData = m->index(i, 0, m->index(row, 0)).data(UserRoles::ActionRole).toMap();
-        ModulePushButton *moduleButton = new ModulePushButton();
+    for (int i = 0; i < m->rowCount(item->index()); ++i){
+        QStandardItem *moduleItem = item->child(i);
+        QVariantMap moduleDisplay = moduleItem->data(Qt::DisplayRole).toMap();
+        QString text =
+                moduleDisplay.contains(language) ?
+                    moduleDisplay[language].toString() :
+                    moduleDisplay["Default"].toString();
+        QPushButton *moduleButton = new QPushButton();
         moduleButton->setText(text);
-        moduleButton->setDBusInterface(ifaceData.value("service").toString(),
-                                       ifaceData.value("path").toString(),
-                                       ifaceData.value("interface").toString(),
-                                       ifaceData.value("bus").toString() == "sessionBus"?
-                                           QDBusConnection::sessionBus():
-                                           QDBusConnection::systemBus());
-        moduleButton->setMode(AlteratorModes::StandardMode);
         moduleButton->setMinimumWidth(moduleButton->sizeHint().width());
+
+        QMenu *moduleMenu = new QMenu();
+        for (int j = 0; j < m->rowCount(moduleItem->index()); ++j){
+            QStandardItem *ifaceItem = moduleItem->child(j);
+            QAction *ifaceAction = new QAction(
+                        "&" + ifaceItem->data(Qt::DisplayRole).toString());
+
+            moduleMenu->addAction(ifaceAction);
+        }
+        moduleButton->setMenu(moduleMenu);
+
         modulesLayout->addWidget(moduleButton);
     }
 }

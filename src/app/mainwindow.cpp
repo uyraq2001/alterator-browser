@@ -36,7 +36,8 @@ MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
 
     for (int i = 0; i < m->rowCount(); ++i){
         QString text = m->index(i, 0).data(Qt::DisplayRole).toString();
-        CategoryWidget *catWidget = new CategoryWidget(m, i);
+        CategoryWidget *catWidget = new CategoryWidget
+                (m->itemFromIndex(m->index(i, 0)));
         categoryLayout->addWidget(catWidget);
     }
 }

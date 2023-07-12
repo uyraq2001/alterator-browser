@@ -2,12 +2,15 @@
 
 #include "modulepushbutton.h"
 
-ModulePushButton::ModulePushButton(QWidget *parent) :
+ModulePushButton::ModulePushButton(QStandardItemModel *m,
+                                   QStandardItem *item,
+                                   QWidget *parent):
     QPushButton(parent),
     iface(new QDBusInterface("", "")),
     mode(AlteratorModes::StandardMode)
 {
-    connect(this, &ModulePushButton::clicked, this, &ModulePushButton::onClicked);
+    connect(this, &ModulePushButton::clicked,
+            this, &ModulePushButton::onClicked);
 }
 
 ModulePushButton::~ModulePushButton()

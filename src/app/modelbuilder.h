@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QStandardItemModel>
+#include <QDBusMessage>
 
 class ModelBuilder : public QObject
 {
@@ -19,6 +20,7 @@ private:
     ModelBuilder &operator=(ModelBuilder &&) = delete;
 
     QVariantMap findTraslations(QString field, QMap<QString, QString> dump);
+    QMap<QString, QString> readIniFromDBus(QDBusMessage mess);
 };
 
 #endif // MODELBUILDER_H
