@@ -25,9 +25,6 @@ CategoryWidget::CategoryWidget(QStandardItem *item, QWidget *parent)
     QLayout *ihdmLayout = this->layout();
     FlowLayout *modulesLayout = new FlowLayout(10, 10, 10);
 
-    ihdmLayout->addWidget(ui->headerWidget);
-    ihdmLayout->addWidget(ui->modulesWidget);
-    ihdmLayout->addWidget(ui->bottomLine);
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
@@ -61,11 +58,12 @@ CategoryWidget::CategoryWidget(QStandardItem *item, QWidget *parent)
         moduleButton->setText(text);
         moduleButton->setMinimumWidth(moduleButton->sizeHint().width());
 
-        QMenu *moduleMenu = new QMenu();
+        QMenu *moduleMenu = new QMenu(moduleButton);
         for (int j = 0; j < m->rowCount(moduleItem->index()); ++j){
             QStandardItem *ifaceItem = moduleItem->child(j);
             QAction *ifaceAction = new QAction(
-                        "&" + ifaceItem->data(Qt::DisplayRole).toString());
+                        "&" + ifaceItem->data(Qt::DisplayRole).toString(),
+                        moduleMenu);
 
             moduleMenu->addAction(ifaceAction);
         }

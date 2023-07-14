@@ -60,15 +60,15 @@ bool ModelBuilder::build(QStandardItemModel *model){
 
         QMap<QString, QString> info = readIniFromDBus(iface.call("info"));
         QStandardItem *moduleItem = new QStandardItem();
-        moduleItem->setData(findTraslations("Name", info), Qt::DisplayRole);
+        moduleItem->setData(findTranslations("Name", info), Qt::DisplayRole);
         modules.insert(objectPath, moduleItem);
 
         QString categoryPath = info.value("Categories");
         if (!categories.contains(categoryPath)){
             QMap<QString, QString> category = readIniFromDBus(iface.call("category"));
             QStandardItem *categoryItem = new QStandardItem();
-            categoryItem->setData(findTraslations("Name", category), Qt::DisplayRole);
-            categoryItem->setData(findTraslations("Comment", category), UserRoles::DescriptionRole);
+            categoryItem->setData(findTranslations("Name", category), Qt::DisplayRole);
+            categoryItem->setData(findTranslations("Comment", category), UserRoles::DescriptionRole);
             QPixmap icon = QPixmap(
                         "/usr/share/alterator/design/images/"
                         + category.value("Icon")+ ".png");
@@ -93,7 +93,7 @@ bool ModelBuilder::build(QStandardItemModel *model){
     return true;
 }
 
-QVariantMap ModelBuilder::findTraslations(QString field, QMap<QString, QString> dump)
+QVariantMap ModelBuilder::findTranslations(QString field, QMap<QString, QString> dump)
 {
     QVariantMap res;
 

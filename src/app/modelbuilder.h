@@ -19,7 +19,7 @@ private:
     ModelBuilder &operator=(const ModelBuilder &) = delete;
     ModelBuilder &operator=(ModelBuilder &&) = delete;
 
-    QVariantMap findTraslations(QString field, QMap<QString, QString> dump);
+    QVariantMap findTranslations(QString field, QMap<QString, QString> dump);
     QMap<QString, QString> readIniFromDBus(QDBusMessage mess);
 };
 

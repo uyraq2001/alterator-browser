@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
     translator.load(language, ".");
     a.installTranslator(&translator);
 
-    QStandardItemModel *model = new QStandardItemModel();
-    ModelBuilder *builder = new ModelBuilder();
-    builder->build(model);
+    QStandardItemModel *model = new QStandardItemModel(&a);
+    ModelBuilder builder;
+    builder.build(model);
     MainWindow w(model);
     w.show();
     return a.exec();

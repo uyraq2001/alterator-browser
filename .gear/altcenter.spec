@@ -1,5 +1,5 @@
 Name: altcenter
-Version: 1.0
+Version: 0.0.1
 Release: alt1
 
 Summary: Revised alterator
@@ -35,5 +35,5 @@ Alterator operating via D-Bus.
 %doc README.md INSTALL.md
 
 %changelog
-* Wed Jul 5 2023 Kozyrev Yuri <kozyrevid@altlinux.org> 1.0-alt1
+* Wed Jul 5 2023 Kozyrev Yuri <kozyrevid@altlinux.org> 0.0.1-alt1
 - initial build
