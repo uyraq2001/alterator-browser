@@ -29,6 +29,9 @@ set(HEADERS
     modelbuilder.h
     categorywidget.h
     flowlayout.h
+    abstractlocalinterfacemanager.h
+    modulefinderinterfacemanager.h
+    alteratorparser.h
 )
 
 set(SOURCES
@@ -37,6 +40,9 @@ set(SOURCES
     modelbuilder.cpp
     categorywidget.cpp
     flowlayout.cpp
+    abstractlocalinterfacemanager.cpp
+    modulefinderinterfacemanager.cpp
+    alteratorparser.cpp
 )
 
 set(UI_FORMS

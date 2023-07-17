@@ -21,6 +21,7 @@ private:
 
     QVariantMap findTranslations(QString field, QMap<QString, QString> dump);
     QMap<QString, QString> readIniFromDBus(QDBusMessage mess);
+
 };
 
 #endif // MODELBUILDER_H

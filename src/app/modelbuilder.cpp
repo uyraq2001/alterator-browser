@@ -10,6 +10,7 @@
 #include <QDBusArgument>
 
 #include "../core/enums.h"
+#include "modulefinderinterfacemanager.h"
 
 const QString ALTERATOR_SERVICE = "ru.basealt.alterator";
 const QString ROOT_OBJECT = "/ru/basealt/alterator";
@@ -80,14 +81,14 @@ bool ModelBuilder::build(QStandardItemModel *model){
             categories.value(categoryPath)->appendRow(moduleItem);
         }
 
-        QStringList interfacesFromFakeBus;
-        interfacesFromFakeBus.append("Interface_1");
-        interfacesFromFakeBus.append("Interface_2");
-        interfacesFromFakeBus.append("Interface_3");
-        for (QString j: interfacesFromFakeBus){
-            QStandardItem *ifaceItem = new QStandardItem();
-            ifaceItem->setData(j, Qt::DisplayRole);
-            moduleItem->appendRow(ifaceItem);
+        ModuleFinderInterfaceManager *ifaceManager = new ModuleFinderInterfaceManager(this);
+        QStringList appsDBus = ifaceManager->getApplications();
+        for (QString j: appsDBus){
+            for (QString k: ifaceManager->getAppInterfaces(j)){
+                QStandardItem *ifaceItem = new QStandardItem();
+                ifaceItem->setData(j, Qt::DisplayRole);
+                moduleItem->appendRow(ifaceItem);
+            }
         }
     }
     return true;
