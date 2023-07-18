@@ -86,7 +86,7 @@ bool ModelBuilder::build(QStandardItemModel *model){
         for (QString j: appsDBus){
             for (QString k: ifaceManager->getAppInterfaces(j)){
                 QStandardItem *ifaceItem = new QStandardItem();
-                ifaceItem->setData(j, Qt::DisplayRole);
+                ifaceItem->setData(k, Qt::DisplayRole);
                 moduleItem->appendRow(ifaceItem);
             }
         }

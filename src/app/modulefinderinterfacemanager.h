@@ -14,10 +14,10 @@ public:
     QStringList getAppInterfaces(QString app) override;
 
 private:
-    QMultiMap<QString, QString> parseDesktopFile(QStringList &data);
+    QMap<QString, QVariant> parseDesktopFile(QStringList &data);
+    QMap<QString, QVariant> getNextLevelOfPtree(boost::property_tree::ptree pt);
 
-private:
-    QMultiMap<QString, QString> m_appInterfaces;
+    QMap<QString, QMap<QString, QVariant>> applications;
 };
 
 #endif // MODULEFINDERINTERFACEMANAGER_H

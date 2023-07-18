@@ -12,7 +12,7 @@ const QString LISTMETHOD = "list";
 const QString RETRIEVEALMETHOD = "file";
 
 ModuleFinderInterfaceManager::ModuleFinderInterfaceManager(QObject *parent)
-    : m_appInterfaces()
+    : applications()
 {
     setParent(parent);
     QDBusInterface *iface = new QDBusInterface(ALTERATORSERVICE,
@@ -22,8 +22,8 @@ ModuleFinderInterfaceManager::ModuleFinderInterfaceManager(QObject *parent)
     for (QString i: iface->call(LISTMETHOD).arguments()[0].toStringList()){
         i = i.left(i.size() - 1);
         QStringList reply = iface->call(RETRIEVEALMETHOD, i).arguments()[0].toStringList();
-        QMultiMap<QString, QString> parsed = parseDesktopFile(reply);
-        m_appInterfaces = m_appInterfaces.unite(parsed);
+        QMap<QString, QVariant> parsed = parseDesktopFile(reply);
+        applications.insert(i, parsed);
     }
 }
 
@@ -31,71 +31,47 @@ ModuleFinderInterfaceManager::~ModuleFinderInterfaceManager(){}
 
 QStringList ModuleFinderInterfaceManager::getApplications()
 {
-    return m_appInterfaces.keys();
+    return applications.keys();
 }
 
 QStringList ModuleFinderInterfaceManager::getAppInterfaces(QString app)
 {
-    return m_appInterfaces.values(app);
+    QStringList res;
+    QString iface = applications.value(app).value("Altcenter").toMap().value("interface").toString();
+    res << iface;
+    return res;
 }
 
-QMultiMap<QString, QString> ModuleFinderInterfaceManager::parseDesktopFile(QStringList &data)
+QMap<QString, QVariant> ModuleFinderInterfaceManager::parseDesktopFile(QStringList &data)
 {
-    QMultiMap<QString, QString> res;
+    QMap<QString, QVariant> res;
     QString concat;
     for (QString i: data){concat += i;}
+    boost::property_tree::ptree pt;
 
-    QString exec;
-    QString iface;
-
-    try
-    {
+    try{
         std::istringstream iStream(concat.toStdString());
-        boost::property_tree::ptree pt;
         boost::property_tree::ini_parser::read_ini(iStream, pt);
-
-        for (auto &section : pt)
-        {
-            QString kcurrentSections = section.first.c_str();
-
-            if(kcurrentSections == "Desktop Entry") {
-                for (auto &key : section.second)
-                {
-                    QString keyName          = QString(key.first.c_str());
-                    QString keyValue         = key.second.get_value("").c_str();
-                    if(keyName == "Exec") {
-                        exec = keyValue;
-                    }
-                    else {
-                        continue;
-                    }
-                }
-            } else if (kcurrentSections == "Altcenter") {
-                for (auto &key : section.second)
-                {
-                    QString keyName          = QString(key.first.c_str());
-                    QString keyValue         = key.second.get_value("").c_str();
-                    if(keyName == "interface") {
-                        iface = keyValue;
-                    }
-                    else {
-                        continue;
-                    }
-                }
-
-            } else {
-                continue;
-            }
-        }
-
-        if(!exec.isEmpty() && !iface.isEmpty()) {
-            res.insert(iface, exec);
-        }
     }
     catch (std::exception &e)
     {
         qWarning() << "ERROR: can't parse desktop file: " << data << "\n";
     }
+
+    res = getNextLevelOfPtree(pt);
+
     return res;
 }
 
+QMap<QString, QVariant> ModuleFinderInterfaceManager::getNextLevelOfPtree(boost::property_tree::ptree pt)
+{
+    QMap<QString, QVariant> res;
+
+    for (auto i: pt){
+        res.insert(QString(i.first.c_str()), (i.second.empty() ?
+                                                  QVariant(QString(i.second.get_value("").c_str())) :
+                                                  QVariant(getNextLevelOfPtree(i.second))));
+    }
+
+    return res;
+}
