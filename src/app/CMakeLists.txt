@@ -31,7 +31,13 @@ set(HEADERS
     flowlayout.h
 
     model/acobject.h
+    model/acobjectcategory.h
+    model/acobjectcategorybuilder.h
     model/aclocalapplication.h
+    model/acobjectitem.h
+    model/acobjectsmodelbuilder.h
+    model/desktopfileparser.h
+    model/acobjectbuilder.h
 )
 
 set(SOURCES
@@ -42,7 +48,13 @@ set(SOURCES
     flowlayout.cpp
 
     model/acobject.cpp
+    model/acobjectcategory.cpp
+    model/acobjectcategorybuilder.cpp
     model/aclocalapplication.cpp
+    model/acobjectitem.cpp
+    model/acobjectsmodelbuilder.cpp
+    model/desktopfileparser.cpp
+    model/acobjectbuilder.cpp
 )
 
 set(UI_FORMS
