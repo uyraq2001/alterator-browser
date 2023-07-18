@@ -17,6 +17,7 @@ public:
     QString m_id;
     QString m_name;
     QString m_category;
+    std::vector<QString> m_interfaces;
 
     QMap<QString, QString> m_nameLocaleStorage;
     QMap<QString, QString> m_categoryLocaleStorage;

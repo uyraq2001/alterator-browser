@@ -4,6 +4,7 @@ ACObject::ACObject()
     : m_id()
     , m_name()
     , m_category()
+    , m_interfaces()
     , m_nameLocaleStorage()
     , m_categoryLocaleStorage()
 {}
