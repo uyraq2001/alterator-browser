@@ -29,6 +29,9 @@ set(HEADERS
     modelbuilder.h
     categorywidget.h
     flowlayout.h
+
+    model/acobject.h
+    model/aclocalapplication.h
 )
 
 set(SOURCES
@@ -37,6 +40,9 @@ set(SOURCES
     modelbuilder.cpp
     categorywidget.cpp
     flowlayout.cpp
+
+    model/acobject.cpp
+    model/aclocalapplication.cpp
 )
 
 set(UI_FORMS
