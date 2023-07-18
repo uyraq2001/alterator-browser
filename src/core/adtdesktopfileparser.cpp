@@ -5,12 +5,12 @@
 
 #include <QDebug>
 
-const QString ADTDesktopFileParser::NAME_SECTION_NAME        = "name";
-const QString ADTDesktopFileParser::ICON_SECTION_NAME        = "icon";
-const QString ADTDesktopFileParser::DESCRIPTION_SECTION_NAME = "description";
-const QString ADTDesktopFileParser::ARGS_SECTION_NAME        = "args";
+const QString DesktopFileParser::NAME_SECTION_NAME        = "name";
+const QString DesktopFileParser::ICON_SECTION_NAME        = "icon";
+const QString DesktopFileParser::DESCRIPTION_SECTION_NAME = "description";
+const QString DesktopFileParser::ARGS_SECTION_NAME        = "args";
 
-ADTDesktopFileParser::ADTDesktopFileParser(QString data)
+DesktopFileParser::DesktopFileParser(QString data)
     : m_sections()
     , m_testLists()
     , m_dbusServiceName()
@@ -48,13 +48,13 @@ ADTDesktopFileParser::ADTDesktopFileParser(QString data)
     }
 }
 
-ADTDesktopFileParser::ADTDesktopFileParser(QString data,
+DesktopFileParser::DesktopFileParser(QString data,
                                            QStringList testLists,
                                            QString dbusServiceName,
                                            QString dbusPath,
                                            QString dbusInterfaceName,
                                            QString dbusMethodName)
-    : ADTDesktopFileParser{data}
+    : DesktopFileParser{data}
 {
     m_testLists         = testLists;
     m_dbusServiceName   = dbusServiceName;
@@ -63,7 +63,7 @@ ADTDesktopFileParser::ADTDesktopFileParser(QString data,
     m_dbusMethodName    = dbusMethodName;
 }
 
-std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
+std::unique_ptr<ADTExecutable> DesktopFileParser::buildCategoryExecutable()
 {
     std::unique_ptr<ADTExecutable> newADTExecutable = std::make_unique<ADTExecutable>();
 
@@ -100,7 +100,7 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
     return newADTExecutable;
 }
 
-std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString test, ADTExecutable *categoryExecutable)
+std::unique_ptr<ADTExecutable> DesktopFileParser::buildTestExecutable(QString test, ADTExecutable *categoryExecutable)
 {
     std::unique_ptr<ADTExecutable> result = std::make_unique<ADTExecutable>();
 
@@ -149,7 +149,7 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
     return result;
 }
 
-std::vector<std::unique_ptr<ADTExecutable>> ADTDesktopFileParser::buildExecutables()
+std::vector<std::unique_ptr<ADTExecutable>> DesktopFileParser::buildExecutables()
 {
     std::vector<std::unique_ptr<ADTExecutable>> results;
 
@@ -177,17 +177,17 @@ std::vector<std::unique_ptr<ADTExecutable>> ADTDesktopFileParser::buildExecutabl
     return results;
 }
 
-QList<QString> ADTDesktopFileParser::getGroupsList() const
+QList<QString> DesktopFileParser::getGroupsList() const
 {
     return m_sections.keys();
 }
 
-QList<QString> ADTDesktopFileParser::getKeysListOfGroup(QString group)
+QList<QString> DesktopFileParser::getKeysListOfGroup(QString group)
 {
     return m_sections[group].keys();
 }
 
-QString ADTDesktopFileParser::getKeyLocale(QString keyName)
+QString DesktopFileParser::getKeyLocale(QString keyName)
 {
     auto indexOfOpeningBracket = keyName.lastIndexOf("[");
     auto indexOfClosingBracket = keyName.lastIndexOf("]");
@@ -200,7 +200,7 @@ QString ADTDesktopFileParser::getKeyLocale(QString keyName)
     return keyName.mid(indexOfOpeningBracket + 1, indexOfClosingBracket - indexOfOpeningBracket - 1);
 }
 
-QString ADTDesktopFileParser::getKeyNameWithoutLocale(QString keyName)
+QString DesktopFileParser::getKeyNameWithoutLocale(QString keyName)
 {
     auto indexOfOpeningBracket = keyName.lastIndexOf("[");
     auto indexOfClosingBracket = keyName.lastIndexOf("]");
@@ -213,10 +213,10 @@ QString ADTDesktopFileParser::getKeyNameWithoutLocale(QString keyName)
     return keyName.mid(0, indexOfOpeningBracket);
 }
 
-bool ADTDesktopFileParser::setIcon(QString &test, ADTExecutable *object)
+bool DesktopFileParser::setIcon(QString &test, ADTExecutable *object)
 {
     Section section = m_sections[test];
-    auto iconIt     = section.find(ADTDesktopFileParser::ICON_SECTION_NAME);
+    auto iconIt     = section.find(DesktopFileParser::ICON_SECTION_NAME);
 
     if (iconIt == section.end())
     {
@@ -230,10 +230,10 @@ bool ADTDesktopFileParser::setIcon(QString &test, ADTExecutable *object)
     return true;
 }
 
-bool ADTDesktopFileParser::setNames(QString &test, ADTExecutable *object)
+bool DesktopFileParser::setNames(QString &test, ADTExecutable *object)
 {
     Section section = m_sections[test];
-    auto nameIt     = section.find(ADTDesktopFileParser::NAME_SECTION_NAME);
+    auto nameIt     = section.find(DesktopFileParser::NAME_SECTION_NAME);
 
     if (nameIt == section.end())
     {
@@ -241,7 +241,7 @@ bool ADTDesktopFileParser::setNames(QString &test, ADTExecutable *object)
         return false;
     }
 
-    QList<IniFileKey> listOfKeys = section.values(ADTDesktopFileParser::NAME_SECTION_NAME);
+    QList<IniFileKey> listOfKeys = section.values(DesktopFileParser::NAME_SECTION_NAME);
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
     {
@@ -255,10 +255,10 @@ bool ADTDesktopFileParser::setNames(QString &test, ADTExecutable *object)
     return true;
 }
 
-bool ADTDesktopFileParser::setDescriptions(QString &test, ADTExecutable *object)
+bool DesktopFileParser::setDescriptions(QString &test, ADTExecutable *object)
 {
     Section section = m_sections[test];
-    auto nameIt     = section.find(ADTDesktopFileParser::DESCRIPTION_SECTION_NAME);
+    auto nameIt     = section.find(DesktopFileParser::DESCRIPTION_SECTION_NAME);
 
     if (nameIt == section.end())
     {
@@ -266,7 +266,7 @@ bool ADTDesktopFileParser::setDescriptions(QString &test, ADTExecutable *object)
         return false;
     }
 
-    QList<IniFileKey> listOfKeys = section.values(ADTDesktopFileParser::DESCRIPTION_SECTION_NAME);
+    QList<IniFileKey> listOfKeys = section.values(DesktopFileParser::DESCRIPTION_SECTION_NAME);
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
     {
@@ -280,10 +280,10 @@ bool ADTDesktopFileParser::setDescriptions(QString &test, ADTExecutable *object)
     return true;
 }
 
-bool ADTDesktopFileParser::setArgs(QString &test, ADTExecutable *object)
+bool DesktopFileParser::setArgs(QString &test, ADTExecutable *object)
 {
     Section section = m_sections[test];
-    auto nameIt     = section.find(ADTDesktopFileParser::ARGS_SECTION_NAME);
+    auto nameIt     = section.find(DesktopFileParser::ARGS_SECTION_NAME);
 
     if (nameIt == section.end())
     {
@@ -291,7 +291,7 @@ bool ADTDesktopFileParser::setArgs(QString &test, ADTExecutable *object)
         return false;
     }
 
-    QList<IniFileKey> listOfKeys = section.values(ADTDesktopFileParser::ARGS_SECTION_NAME);
+    QList<IniFileKey> listOfKeys = section.values(DesktopFileParser::ARGS_SECTION_NAME);
 
     if (!listOfKeys.empty())
     {
@@ -301,7 +301,7 @@ bool ADTDesktopFileParser::setArgs(QString &test, ADTExecutable *object)
     return true;
 }
 
-QString ADTDesktopFileParser::getToolName()
+QString DesktopFileParser::getToolName()
 {
     for (QString currentSection : m_sections.keys())
     {

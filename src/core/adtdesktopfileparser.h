@@ -14,7 +14,7 @@ struct IniFileKey
     QVariant value{};
 };
 
-class ADTDesktopFileParser
+class DesktopFileParser
 {
 public:
     using Section  = QMultiMap<QString, IniFileKey>;
@@ -28,7 +28,7 @@ public:
     static const QString ARGS_SECTION_NAME;
 
 public:
-    ADTDesktopFileParser(QString data,
+    DesktopFileParser(QString data,
                          QStringList testLists,
                          QString dbusServiceName,
                          QString dbusPath,
@@ -45,7 +45,7 @@ public:
     QString getKeyLocale(QString keyName);
 
 private:
-    ADTDesktopFileParser(QString data);
+    DesktopFileParser(QString data);
 
     QString getKeyNameWithoutLocale(QString keyName);
     bool setIcon(QString &test, ADTExecutable *object);
