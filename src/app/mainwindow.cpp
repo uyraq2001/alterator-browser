@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "modelbuilder.h"
-#include "browserdelegate.h"
+#include "model/acobjectitem.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -33,9 +33,10 @@ MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
     ui->scrollArea->widget()->setLayout(categoryLayout);
 
     for (int i = 0; i < m->rowCount(); ++i){
-        QString text = m->index(i, 0).data(Qt::DisplayRole).toString();
+//        QString text = m->index(i, 0).data(Qt::DisplayRole).toString();
+//        QString text = dynamic_cast<ACObjectItem *>(m->itemFromIndex(m->index(i, 0)))->m_acObject.get()->m_displayCategory;
         CategoryWidget *catWidget = new CategoryWidget
-                (m->itemFromIndex(m->index(i, 0)));
+                (dynamic_cast<ACObjectItem *>(m->itemFromIndex(m->index(i, 0))));
         categoryLayout->addWidget(catWidget);
     }
 }

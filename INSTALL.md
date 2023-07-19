@@ -17,3 +17,11 @@ cmake -B build .
 cd build && make -j `nproc`
 ```
 
+# Installation of backend files
+
+```
+# mkdir -p /usr/share/alterator/backends
+# cp backends/* /usr/share/alterator/backends
+```
+
+

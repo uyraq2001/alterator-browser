@@ -5,6 +5,9 @@
 #include <QStandardItemModel>
 #include <QDBusMessage>
 
+#include <boost/property_tree/ini_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
+
 class ModelBuilder : public QObject
 {
     Q_OBJECT
@@ -20,6 +23,8 @@ private:
     ModelBuilder &operator=(ModelBuilder &&) = delete;
 
     QVariantMap findTranslations(QString field, QMap<QString, QString> dump);
+    QMap<QString, QVariant> parseDesktopFile(QStringList data);
+    QMap<QString, QVariant> getNextLevelOfPtree(boost::property_tree::ptree pt);
     QMap<QString, QString> readIniFromDBus(QDBusMessage mess);
 };
 

@@ -4,6 +4,8 @@
 #include <QStandardItemModel>
 #include <QWidget>
 
+#include "model/acobjectitem.h"
+
 namespace Ui {
     class CategoryWidget;
 }
@@ -13,7 +15,7 @@ class CategoryWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CategoryWidget(QStandardItem *item,
+    explicit CategoryWidget(ACObjectItem *item,
                             QWidget *parent = nullptr);
     ~CategoryWidget();
 
