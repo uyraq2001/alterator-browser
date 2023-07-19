@@ -38,6 +38,7 @@ set(HEADERS
     model/acobjectsmodelbuilder.h
     model/desktopfileparser.h
     model/acobjectbuilder.h
+    model/acmodel.h
 )
 
 set(SOURCES
@@ -55,6 +56,7 @@ set(SOURCES
     model/acobjectsmodelbuilder.cpp
     model/desktopfileparser.cpp
     model/acobjectbuilder.cpp
+    model/acmodel.cpp
 )
 
 set(UI_FORMS
