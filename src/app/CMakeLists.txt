@@ -63,7 +63,6 @@ set(SOURCES
     model/acobjectsmodelbuilder.cpp
     model/desktopfileparser.cpp
     model/acobjectbuilder.cpp
-    model/aclocalapplication.cpp
 
     model/aclocalapplication.cpp
     model/aclocalapplicationbuilder.cpp
