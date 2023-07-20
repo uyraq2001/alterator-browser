@@ -6,6 +6,10 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 
+#include "accontroller.h"
+
+class ACController;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,6 +24,10 @@ public:
 
     void paintEvent(QPaintEvent *event);
 
+    void setController(ACController *c);
+
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
 
     MainWindow(const MainWindow &) = delete;
@@ -30,5 +38,7 @@ private:
     Ui::MainWindow *ui;
 
     QStandardItemModel *model;
+
+    ACController *controller;
 };
 #endif // MAINWINDOW_H

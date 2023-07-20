@@ -9,12 +9,14 @@
 #include <QSpacerItem>
 #include <QAction>
 #include <QMenu>
+#include <QMouseEvent>
 
 #include "../core/enums.h"
 
 CategoryWidget::CategoryWidget(ACObjectItem *item, QWidget *parent)
     : QWidget{parent},
-      ui(new Ui::CategoryWidget)
+      ui(new Ui::CategoryWidget),
+      controller(nullptr)
 {
     QStandardItemModel *m = item->model();
     QLocale locale;
@@ -47,6 +49,7 @@ CategoryWidget::CategoryWidget(ACObjectItem *item, QWidget *parent)
         QPushButton *moduleButton = new QPushButton();
         moduleButton->setText(moduleItem->m_acObject.get()->m_displayName);
         moduleButton->setMinimumWidth(moduleButton->sizeHint().width());
+        connect(moduleButton, &QPushButton::clicked, this, &CategoryWidget::onClicked);
 
         QMenu *moduleMenu = new QMenu(moduleButton);
         for (int j = 0; j < m->rowCount(moduleItem->index()); ++j){
@@ -57,7 +60,8 @@ CategoryWidget::CategoryWidget(ACObjectItem *item, QWidget *parent)
 
             moduleMenu->addAction(ifaceAction);
         }
-        moduleButton->setMenu(moduleMenu);
+//        moduleButton->setMenu(moduleMenu);
+//        moduleMenu->installEventFilter(this);
 
         modulesLayout->addWidget(moduleButton);
     }
@@ -71,4 +75,23 @@ void CategoryWidget::paintEvent(QPaintEvent *event)
 CategoryWidget::~CategoryWidget()
 {
     delete ui;
+}
+
+//bool CategoryWidget::eventFilter(QObject *watched, QEvent *event)
+//{
+//    if (event->type() == QEvent::MouseButtonRelease){
+//        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+//        QWidget *clickedWidget = this->childAt(mouseEvent->pos());
+//        controller->moduleClicked(qobject_cast<QPushButton *>(clickedWidget));
+//    }
+//    return QWidget::eventFilter(watched, event);
+//}
+
+void CategoryWidget::setController(ACController *c)
+{
+    controller = c;
+}
+
+void CategoryWidget::onClicked(bool){
+    controller->moduleClicked(qobject_cast<QPushButton*>(sender()));
 }
