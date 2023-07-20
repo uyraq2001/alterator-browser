@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "modelbuilder.h"
 
 #include <QApplication>
 #include <QStandardItemModel>
@@ -7,6 +6,8 @@
 
 #include <model/acmodel.h>
 #include <model/acobjectsmodelbuilder.h>
+#include "modelbuilder.h"
+#include "accontroller.h"
 
 const QString DBUS_SERVICE_NAME                 = "ru.basealt.alterator";
 const QString DBUS_PATH                         = "/ru/basealt/alterator";
@@ -44,8 +45,10 @@ int main(int argc, char *argv[])
 
     model->translateModel(QString("ru"));
     ACModel *m2 = model.get();
-
     MainWindow w(model.get());
+    ACController controller(&w, model.get());
+    w.setController(&controller);
+
     w.show();
     return a.exec();
 }

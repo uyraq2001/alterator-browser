@@ -1,6 +1,6 @@
-## ADT
+## AltCenter
 
-ALT Linux diagnostic tool utility helps user to check system state.
+AltCenter is a graphical user interface that for system configuration using DBus.
 
 ## Installation and Usage
 

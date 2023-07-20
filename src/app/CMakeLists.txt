@@ -29,6 +29,7 @@ set(HEADERS
     modelbuilder.h
     categorywidget.h
     flowlayout.h
+    accontroller.h
 
     model/acobject.h
     model/acobjectcategory.h
@@ -47,6 +48,7 @@ set(SOURCES
     modelbuilder.cpp
     categorywidget.cpp
     flowlayout.cpp
+    accontroller.cpp
 
     model/acobject.cpp
     model/acobjectcategory.cpp
