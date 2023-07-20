@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "modelbuilder.h"
 
 #include <QApplication>
 #include <QStandardItemModel>
@@ -7,6 +6,10 @@
 
 #include "model/aclocalapllicationmodelbuilder.h"
 #include "model/acobjectsmodelbuilder.h"
+#include <model/acobjectsmodelbuilder.h>
+#include "modelbuilder.h"
+#include "accontroller.h"
+
 
 const QString DBUS_SERVICE_NAME                 = "ru.basealt.alterator";
 const QString DBUS_PATH                         = "/ru/basealt/alterator";
@@ -48,8 +51,10 @@ int main(int argc, char *argv[])
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
     std::unique_ptr<QStandardItemModel> model = objectModelBuilder.buildModel();
-
     MainWindow w(model.get());
+    ACController controller(&w, model.get());
+    w.setController(&controller);
+
     w.show();
     return a.exec();
 }

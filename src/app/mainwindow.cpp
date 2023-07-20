@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "modelbuilder.h"
-#include "browserdelegate.h"
+#include "model/acobjectitem.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -16,11 +16,13 @@
 #include <QDomText>
 #include <QStandardItem>
 #include <QLayout>
+#include <QMouseEvent>
 
 MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      model(m)
+      model(m),
+      controller(nullptr)
 {
     ui->setupUi(this);
 
@@ -33,11 +35,11 @@ MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
     ui->scrollArea->widget()->setLayout(categoryLayout);
 
     for (int i = 0; i < m->rowCount(); ++i){
-        QString text = m->index(i, 0).data(Qt::DisplayRole).toString();
         CategoryWidget *catWidget = new CategoryWidget
-                (m->itemFromIndex(m->index(i, 0)));
+                (dynamic_cast<ACObjectItem *>(m->itemFromIndex(m->index(i, 0))));
         categoryLayout->addWidget(catWidget);
     }
+    centralWidget()->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -52,4 +54,16 @@ void MainWindow::paintEvent(QPaintEvent *event)
     scrollWidget->setMinimumWidth(scrollWidget->layout()->minimumSize().width());
     ui->scrollArea->setMinimumWidth(scrollWidget->minimumWidth());
     this->setMinimumWidth(ui->scrollArea->minimumWidth());
+}
+
+void MainWindow::setController(ACController *c){
+    controller = c;
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->scrollArea->viewport() && event->type() == QEvent::MouseButtonDblClick){
+
+    }
+    return QWidget::eventFilter(watched, event);
 }
