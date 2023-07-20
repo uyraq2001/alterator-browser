@@ -4,6 +4,7 @@
 #include <QStandardItemModel>
 #include <QTranslator>
 
+#include <model/acmodel.h>
 #include <model/acobjectsmodelbuilder.h>
 #include "modelbuilder.h"
 #include "accontroller.h"
@@ -38,7 +39,12 @@ int main(int argc, char *argv[])
                                              INFO_METHOD_NAME_FOR_ACOBJECT,
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
-    std::unique_ptr<QStandardItemModel> model = objectModelBuilder.buildModel();
+    std::unique_ptr<ACModel> model = objectModelBuilder.buildModel();
+
+    ACModel *m1 = model.get();
+
+    model->translateModel(QString("ru"));
+    ACModel *m2 = model.get();
     MainWindow w(model.get());
     ACController controller(&w, model.get());
     w.setController(&controller);

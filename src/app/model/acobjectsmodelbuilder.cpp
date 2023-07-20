@@ -25,13 +25,13 @@ ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
     , m_categoryMethonName(categoryMethodName)
 {}
 
-std::unique_ptr<QStandardItemModel> ACObjectsModelBuilder::buildModel()
+std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel()
 {
     QStringList pathsOfACObjects = getListOfACObjects();
 
     if (pathsOfACObjects.isEmpty())
     {
-        return std::unique_ptr<QStandardItemModel>(nullptr);
+        return std::unique_ptr<ACModel>(nullptr);
     }
 
     std::vector<std::unique_ptr<ACObject>> acObjects = parseACObjects(pathsOfACObjects);
@@ -40,7 +40,7 @@ std::unique_ptr<QStandardItemModel> ACObjectsModelBuilder::buildModel()
     {
         qWarning() << "ERROR! Can't access alterator manager interface!";
 
-        return std::unique_ptr<QStandardItemModel>(nullptr);
+        return std::unique_ptr<ACModel>(nullptr);
     }
 
     return buildModelFromACObjects(std::move(acObjects));
@@ -168,10 +168,9 @@ QString ACObjectsModelBuilder::getObjectCategory(QDBusInterface &iface)
     return result;
 }
 
-std::unique_ptr<QStandardItemModel> ACObjectsModelBuilder::buildModelFromACObjects(
-    std::vector<std::unique_ptr<ACObject>> objects)
+std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModelFromACObjects(std::vector<std::unique_ptr<ACObject>> objects)
 {
-    std::unique_ptr<QStandardItemModel> model(new QStandardItemModel());
+    std::unique_ptr<ACModel> model(new ACModel());
 
     QMap<QString, ACObjectItem *> categories;
 

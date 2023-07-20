@@ -1,6 +1,7 @@
 #ifndef ACOBJECTSMODELBUILDER_H
 #define ACOBJECTSMODELBUILDER_H
 
+#include "acmodel.h"
 #include "acobject.h"
 #include "acobjectitem.h"
 
@@ -18,7 +19,7 @@ public:
                           QString infoMethodName,
                           QString categoryMethodName);
 
-    std::unique_ptr<QStandardItemModel> buildModel();
+    std::unique_ptr<ACModel> buildModel();
 
 private:
     QStringList getListOfACObjects();
@@ -28,7 +29,7 @@ private:
     QString getObjectInfo(QDBusInterface &iface);
     QString getObjectCategory(QDBusInterface &iface);
 
-    std::unique_ptr<QStandardItemModel> buildModelFromACObjects(std::vector<std::unique_ptr<ACObject>> objects);
+    std::unique_ptr<ACModel> buildModelFromACObjects(std::vector<std::unique_ptr<ACObject>> objects);
 
     ACObjectItem *createCategoryItem(QString name, ACObjectCategory *nameTranslations);
 
