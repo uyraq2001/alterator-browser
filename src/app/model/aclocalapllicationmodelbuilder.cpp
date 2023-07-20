@@ -1,0 +1,136 @@
+#include "aclocalapllicationmodelbuilder.h"
+#include "aclocalapplicationbuilder.h"
+#include "aclocalapplicationitem.h"
+#include "desktopfileparser.h"
+
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDebug>
+
+ACLocalApllicationModelBuilder::ACLocalApllicationModelBuilder(QString serviceName,
+                                                               QString dbusPath,
+                                                               QString interfaceName,
+                                                               QString getListOfFilesMethod,
+                                                               QString getDesktopFileMethod)
+    : m_dbusConnection(QDBusConnection::systemBus())
+    , m_dbusServiceName(serviceName)
+    , m_dbusPath(dbusPath)
+    , m_interface(interfaceName)
+    , m_getFilesMethodName(getListOfFilesMethod)
+    , m_getDesktopFileMethodName(getDesktopFileMethod)
+{}
+
+std::unique_ptr<ACLocalApplicationModel> ACLocalApllicationModelBuilder::buildModel()
+{
+    QStringList listOfDesktopFiles = getListOfDesktopFiles();
+
+    if (listOfDesktopFiles.isEmpty())
+    {
+        qWarning() << "ERROR! Can't get list of local applications!";
+
+        return std::unique_ptr<ACLocalApplicationModel>(nullptr);
+    }
+
+    std::vector<std::unique_ptr<ACLocalApplication>> listOfApps = parseDesktopFiles(listOfDesktopFiles);
+
+    if (listOfApps.empty())
+    {
+        qWarning() << "ERROR! Can't create ACLocalApplications objects!";
+
+        return std::unique_ptr<ACLocalApplicationModel>(nullptr);
+    }
+
+    std::unique_ptr<ACLocalApplicationModel> model(new ACLocalApplicationModel);
+
+    auto rootItem = model.get()->invisibleRootItem();
+
+    for (size_t i = 0; i < listOfApps.size(); ++i)
+    {
+        ACLocalApplicationItem *newItem = new ACLocalApplicationItem();
+        newItem->m_acLocalApplication   = std::move(listOfApps.at(i));
+
+        rootItem->appendRow(newItem);
+    }
+
+    return model;
+}
+
+QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
+{
+    QDBusInterface iface(m_dbusServiceName, m_dbusPath, m_interface, m_dbusConnection);
+
+    if (!iface.isValid())
+    {
+        qWarning() << "ERROR! Can't access alterator manager interface to build local applications model!";
+
+        return QStringList();
+    }
+
+    QDBusReply<QStringList> reply = iface.call(m_getFilesMethodName);
+
+    if (!reply.isValid())
+    {
+        qWarning() << "ERROR! Can't get reply from alterator manager interface to build local applications model!";
+
+        return QStringList();
+    }
+
+    return reply.value();
+}
+
+std::vector<std::unique_ptr<ACLocalApplication>> ACLocalApllicationModelBuilder::parseDesktopFiles(QStringList files)
+{
+    std::vector<std::unique_ptr<ACLocalApplication>> result;
+
+    for (QString currentFile : files)
+    {
+        QString currentFileData = getDesktopFile(currentFile);
+
+        if (currentFile.isEmpty())
+        {
+            continue;
+        }
+
+        DesktopFileParser parser(currentFileData);
+
+        ACLocalApplicationBuilder builder;
+
+        std::unique_ptr<ACLocalApplication> newACLocalApp = builder.buildACLocalApplicationObject(parser);
+
+        if (newACLocalApp)
+        {
+            result.push_back(std::move(newACLocalApp));
+        }
+    }
+
+    return result;
+}
+
+QString ACLocalApllicationModelBuilder::getDesktopFile(QString file)
+{
+    QString result;
+
+    QDBusInterface iface(m_dbusServiceName, m_dbusPath, m_interface, m_dbusConnection);
+
+    if (!iface.isValid())
+    {
+        qWarning() << "ERROR! Can't access alterator manager interface to get desktop file: " << file;
+
+        return result;
+    }
+
+    QDBusReply<QStringList> reply = iface.call(m_getDesktopFileMethodName, file);
+
+    if (!reply.isValid())
+    {
+        qWarning() << "ERROR! Can't get reply from alterator manager interface to to get desktop file: " << file;
+
+        return result;
+    }
+
+    for (QString currentLine : reply.value())
+    {
+        result.append(currentLine);
+    }
+    return result;
+}
