@@ -9,7 +9,7 @@ public:
     ACLocalApplicationModel();
     ~ACLocalApplicationModel();
 
-    void setLocale();
+    void setLocale(QString locale);
 };
 
 #endif // ACLOCALAPPLICATIONMODEL_H

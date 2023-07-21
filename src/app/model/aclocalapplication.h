@@ -13,7 +13,7 @@ public:
     ACLocalApplication();
     ~ACLocalApplication();
 
-    void setLocale();
+    void setLocale(QString locale);
 
 public:
     QString m_id;
