@@ -4,11 +4,12 @@
 #include <QStandardItemModel>
 #include <QTranslator>
 
+#include "accontroller.h"
 #include "model/aclocalapllicationmodelbuilder.h"
 #include "model/acobjectsmodelbuilder.h"
 #include "modelbuilder.h"
-#include "accontroller.h"
 
+#include <model/acmodel.h>
 
 const QString DBUS_SERVICE_NAME                 = "ru.basealt.alterator";
 const QString DBUS_PATH                         = "/ru/basealt/alterator";
