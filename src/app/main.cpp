@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
                                              INFO_METHOD_NAME_FOR_ACOBJECT,
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
-    std::unique_ptr<ACModel> model = objectModelBuilder.buildModel();
+    std::unique_ptr<ACModel> model = objectModelBuilder.buildModel(appModel.get());
     model->translateModel(QString("ru"));
     MainWindow w;
     ACController controller(&w, model.get());

@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setWindowTitle(tr("altcenter"));
 
-    centralWidget()->installEventFilter(this);
+//    centralWidget()->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
