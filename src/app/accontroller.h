@@ -8,22 +8,29 @@
 
 #include "mainwindow.h"
 
+#include "acpushbutton.h"
+#include "categorywidget.h"
+#include "model/acmodel.h"
+
+class CategoryWidget;
 class MainWindow;
 
 class ACController : public QObject
 {
     Q_OBJECT
 public:
-    explicit ACController(MainWindow *w, QStandardItemModel *m, QObject *parent = nullptr);
+    explicit ACController(MainWindow *w, ACModel *m, QObject *parent = nullptr);
     ~ACController();
 
-    void moduleClicked(QPushButton *module);
+    void moduleClicked(ACPushButton *module);
 
 private:
 
     MainWindow *window;
     QStandardItemModel *model;
-    QMap<QWidget *, ACObjectItem *> dataItems;
+    QMap<CategoryWidget *, ACObjectItem *> categoryDataItems;
+    QMap<ACPushButton *, ACObjectItem *> moduleDataItems;
+//    QMap<CategoryWidget *, ACObjectItem *> interfaceDataItems;
 
     ACController(const ACController &) = delete;
     ACController(ACController &&)      = delete;

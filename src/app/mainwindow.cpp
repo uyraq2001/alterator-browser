@@ -18,27 +18,20 @@
 #include <QLayout>
 #include <QMouseEvent>
 
-MainWindow::MainWindow(QStandardItemModel *m, QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      model(m),
+      model(nullptr),
       controller(nullptr)
 {
     ui->setupUi(this);
 
-    setWindowTitle(tr("altcenter"));
-
     QVBoxLayout *categoryLayout = new QVBoxLayout();
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    QWidget *scrollWidget = new QWidget();
-    ui->scrollArea->setWidget(scrollWidget);
     ui->scrollArea->widget()->setLayout(categoryLayout);
 
-    for (int i = 0; i < m->rowCount(); ++i){
-        CategoryWidget *catWidget = new CategoryWidget
-                (dynamic_cast<ACObjectItem *>(m->itemFromIndex(m->index(i, 0))));
-        categoryLayout->addWidget(catWidget);
-    }
+    setWindowTitle(tr("altcenter"));
+
     centralWidget()->installEventFilter(this);
 }
 
@@ -66,4 +59,25 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
     }
     return QWidget::eventFilter(watched, event);
+}
+
+void MainWindow::setModel(ACModel *m)
+{
+    model = m;
+    QLayout *categoryLayout = ui->scrollArea->widget()->layout();
+    for (int i = 0; i < model->rowCount(); ++i){
+        CategoryWidget *catWidget = new CategoryWidget();
+        categoryLayout->addWidget(catWidget);
+        catWidget->setItem(dynamic_cast<ACObjectItem *>(model->item(i)));
+    }
+}
+
+void MainWindow::clearUi()
+{
+    QLayout *categoryLayout = ui->scrollArea->widget()->layout();
+    while (categoryLayout->itemAt(0) != nullptr){
+        QWidget *categoryWidget = categoryLayout->itemAt(0)->widget();
+        categoryLayout->removeWidget(categoryWidget);
+        delete categoryWidget;
+    }
 }

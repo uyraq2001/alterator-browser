@@ -8,6 +8,7 @@
 #include "model/acobjectsmodelbuilder.h"
 #include "modelbuilder.h"
 #include "accontroller.h"
+#include "model/acmodel.h"
 
 
 const QString DBUS_SERVICE_NAME                 = "ru.basealt.alterator";
@@ -50,12 +51,8 @@ int main(int argc, char *argv[])
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
     std::unique_ptr<ACModel> model = objectModelBuilder.buildModel();
-
-    ACModel *m1 = model.get();
-
     model->translateModel(QString("ru"));
-    ACModel *m2 = model.get();
-    MainWindow w(model.get());
+    MainWindow w;
     ACController controller(&w, model.get());
     w.setController(&controller);
 

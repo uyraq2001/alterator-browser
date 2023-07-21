@@ -1,13 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "categorywidget.h"
-
 #include <QMainWindow>
 #include <QStandardItemModel>
 
 #include "accontroller.h"
+#include "categorywidget.h"
+#include "model/acmodel.h"
 
+class CategoryWidget;
 class ACController;
 
 QT_BEGIN_NAMESPACE
@@ -19,7 +20,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QStandardItemModel *m, QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     void paintEvent(QPaintEvent *event);
@@ -27,6 +28,9 @@ public:
     void setController(ACController *c);
 
     bool eventFilter(QObject *watched, QEvent *event);
+
+    void setModel(ACModel *m);
+    void clearUi();
 
 private:
 

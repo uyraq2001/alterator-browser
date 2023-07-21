@@ -30,6 +30,7 @@ set(HEADERS
     categorywidget.h
     flowlayout.h
     accontroller.h
+    acpushbutton.h
 
     model/acobject.h
     model/acobjectcategory.h
@@ -45,6 +46,7 @@ set(HEADERS
     model/aclocalapllicationmodelbuilder.h
     model/aclocalapplicationmodel.h
     model/aclocalapplicationitem.h
+    model/acmodel.h
 )
 
 set(SOURCES
@@ -54,6 +56,7 @@ set(SOURCES
     categorywidget.cpp
     flowlayout.cpp
     accontroller.cpp
+    acpushbutton.cpp
 
     model/acobject.cpp
     model/acobjectcategory.cpp
@@ -69,6 +72,7 @@ set(SOURCES
     model/aclocalapllicationmodelbuilder.cpp
     model/aclocalapplicationmodel.cpp
     model/aclocalapplicationitem.cpp
+    model/acmodel.cpp
 )
 
 set(UI_FORMS

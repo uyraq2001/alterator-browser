@@ -7,6 +7,7 @@
 #include <QDBusReply>
 #include <QDebug>
 #include <qdbusreply.h>
+#include "model/acmodel.h"
 
 ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
                                              QString dbusPath,

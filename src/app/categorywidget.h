@@ -6,6 +6,7 @@
 
 #include "model/acobjectitem.h"
 #include "accontroller.h"
+#include "acpushbutton.h"
 
 class ACController;
 
@@ -17,22 +18,20 @@ class CategoryWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CategoryWidget(ACObjectItem *item,
-                            QWidget *parent = nullptr);
+    explicit CategoryWidget(QWidget *parent = nullptr);
     ~CategoryWidget();
 
     void setGeometry(const QRect &rect);
     void paintEvent(QPaintEvent *event);
-//    bool eventFilter(QObject *watched, QEvent *event);
-
-    void setController(ACController *c);
 
     void onClicked(bool);
+
+    void setItem(ACObjectItem *item);
 
 private:
     Ui::CategoryWidget *ui;
 
-    ACController *controller;
+    ACObjectItem *data;
 
     CategoryWidget(const CategoryWidget &) = delete;
     CategoryWidget(CategoryWidget &&) = delete;

@@ -7,38 +7,22 @@
 #include <QAction>
 #include <QMenu>
 
-ACController::ACController(MainWindow *w, QStandardItemModel *m, QObject *parent)
+ACController::ACController(MainWindow *w, ACModel *m, QObject *parent)
     : QObject{parent},
       window(w),
       model(m),
-      dataItems(QMap<QWidget *, ACObjectItem *>())
+      categoryDataItems(QMap<CategoryWidget *, ACObjectItem *>()),
+      moduleDataItems(QMap<ACPushButton *, ACObjectItem *>())
 {
-    QLayout *categoryLayout = qobject_cast<QScrollArea *>(w->centralWidget()->layout()->itemAt(0)->layout()->itemAt(0)->widget())->widget()->layout();
-    for (int i = 0; categoryLayout->itemAt(i) != nullptr; ++i){
-        QWidget *categoryWidget = categoryLayout->itemAt(i)->widget();
-        ACObjectItem *categoryItem = dynamic_cast<ACObjectItem *>(
-                    model->itemFromIndex(model->index(i, 0)));
-        dynamic_cast<CategoryWidget *>(categoryWidget)->setController(this);
-        dataItems.insert(categoryWidget, categoryItem);
-
-        auto t = categoryWidget->layout()->itemAt(1)->widget();
-        QLayout *modulesLayout = categoryWidget->layout()->itemAt(1)->widget()->layout();
-        for (int j = 0; modulesLayout->itemAt(j) != nullptr; ++j){
-            QWidget *moduleWidget = modulesLayout->itemAt(j)->widget();
-            ACObjectItem *moduleItem = dynamic_cast<ACObjectItem *>(
-                        model->itemFromIndex(
-                            model->index(i, 0, categoryItem->index())));
-            dataItems.insert(moduleWidget, moduleItem);
-        }
-    }
+    w->setModel(m);
 }
 
 ACController::~ACController(){}
 
-void ACController::moduleClicked(QPushButton *module)
+void ACController::moduleClicked(ACPushButton *module)
 {
     if (module == nullptr){return;}
-    ACObjectItem *item = dataItems.value(module);
+    ACObjectItem *item = moduleDataItems.value(module);
     QMenu *menu = new QMenu(module);
     module->setMenu(menu);
     for (auto i: item->m_acObject.get()->m_interfaces){
