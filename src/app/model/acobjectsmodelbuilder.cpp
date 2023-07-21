@@ -29,6 +29,13 @@ ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
 
 std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationModel *appModel)
 {
+    if (!appModel)
+    {
+        qWarning() << "ERROR! Local applications model is empty!!";
+
+        return std::unique_ptr<ACModel>(nullptr);
+    }
+
     QStringList pathsOfACObjects = getListOfACObjects();
 
     if (pathsOfACObjects.isEmpty())
