@@ -33,6 +33,7 @@ set(HEADERS
     acpushbutton.h
 
     model/acobject.h
+    model/acmodel.h
     model/acobjectcategory.h
     model/acobjectcategorybuilder.h
     model/aclocalapplication.h
@@ -59,6 +60,7 @@ set(SOURCES
     acpushbutton.cpp
 
     model/acobject.cpp
+    model/acmodel.cpp
     model/acobjectcategory.cpp
     model/acobjectcategorybuilder.cpp
     model/aclocalapplication.cpp
