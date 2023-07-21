@@ -14,10 +14,15 @@ public:
     ~ACPushButton();
 
     void setItem(ACObjectItem *item);
+    ACObjectItem *getItem();
+
+    void showMenu(ACObjectItem *item);
 
 private:
 
     ACObjectItem *data;
+
+    void onClicked(bool b);
 
     ACPushButton(const ACPushButton &) = delete;
     ACPushButton(ACPushButton &&)      = delete;
@@ -26,6 +31,7 @@ private:
 
 signals:
 
+    void moduleClicked(ACPushButton *button);
 };
 
 #endif // ACPUSHBUTTON_H

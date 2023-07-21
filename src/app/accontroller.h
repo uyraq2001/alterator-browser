@@ -22,15 +22,12 @@ public:
     explicit ACController(MainWindow *w, ACModel *m, QObject *parent = nullptr);
     ~ACController();
 
-    void moduleClicked(ACPushButton *module);
+    void moduleClicked(ACObjectItem *moduleItem);
 
 private:
 
     MainWindow *window;
     QStandardItemModel *model;
-    QMap<CategoryWidget *, ACObjectItem *> categoryDataItems;
-    QMap<ACPushButton *, ACObjectItem *> moduleDataItems;
-//    QMap<CategoryWidget *, ACObjectItem *> interfaceDataItems;
 
     ACController(const ACController &) = delete;
     ACController(ACController &&)      = delete;

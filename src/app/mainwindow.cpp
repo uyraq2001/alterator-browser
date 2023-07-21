@@ -69,6 +69,8 @@ void MainWindow::setModel(ACModel *m)
         CategoryWidget *catWidget = new CategoryWidget();
         categoryLayout->addWidget(catWidget);
         catWidget->setItem(dynamic_cast<ACObjectItem *>(model->item(i)));
+        connect(catWidget, &CategoryWidget::moduleClicked, this, &MainWindow::onModuleClicked);
+        connect(this, &MainWindow::showMenu, catWidget, &CategoryWidget::showModuleMenu);
     }
 }
 
@@ -80,4 +82,14 @@ void MainWindow::clearUi()
         categoryLayout->removeWidget(categoryWidget);
         delete categoryWidget;
     }
+}
+
+void MainWindow::onModuleClicked(ACPushButton *button)
+{
+    controller->moduleClicked(button->getItem());
+}
+
+void MainWindow::showModuleMenu(ACObjectItem *item)
+{
+    emit showMenu(item);
 }
