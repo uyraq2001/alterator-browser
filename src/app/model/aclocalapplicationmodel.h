@@ -1,6 +1,8 @@
 #ifndef ACLOCALAPPLICATIONMODEL_H
 #define ACLOCALAPPLICATIONMODEL_H
 
+#include "aclocalapplication.h"
+
 #include <QStandardItemModel>
 
 class ACLocalApplicationModel : public QStandardItemModel
@@ -9,7 +11,9 @@ public:
     ACLocalApplicationModel();
     ~ACLocalApplicationModel();
 
-    void setLocale(QString locale);
+    std::vector<ACLocalApplication *> getAppsByInterface(QString interface);
+
+    void setLocale();
 };
 
 #endif // ACLOCALAPPLICATIONMODEL_H

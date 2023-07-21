@@ -1,6 +1,7 @@
 #ifndef ACOBJECTSMODELBUILDER_H
 #define ACOBJECTSMODELBUILDER_H
 
+#include "aclocalapplicationmodel.h"
 #include "acmodel.h"
 #include "acobject.h"
 #include "acobjectitem.h"
@@ -19,9 +20,13 @@ public:
                           QString infoMethodName,
                           QString categoryMethodName);
 
-    std::unique_ptr<ACModel> buildModel();
+    std::unique_ptr<ACModel> buildModel(ACLocalApplicationModel *appModel);
 
 private:
+    void mergeApplicationModel(ACModel *objectModel, ACLocalApplicationModel *appModel);
+
+    void mergeObjectWithApp(ACObjectItem *item, ACLocalApplicationModel *appModel);
+
     QStringList getListOfACObjects();
 
     std::vector<std::unique_ptr<ACObject>> parseACObjects(QStringList &pathsList);

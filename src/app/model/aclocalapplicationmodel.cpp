@@ -9,21 +9,27 @@ ACLocalApplicationModel::ACLocalApplicationModel()
 
 ACLocalApplicationModel::~ACLocalApplicationModel() {}
 
-void ACLocalApplicationModel::setLocale(QString locale)
+std::vector<ACLocalApplication *> ACLocalApplicationModel::getAppsByInterface(QString interface)
 {
-    QStandardItem *rootStandardItem = invisibleRootItem();
+    std::vector<ACLocalApplication *> result;
 
-    for (int i = 0; i < rootStandardItem->rowCount(); ++i)
+    QStandardItem *rootItem = invisibleRootItem();
+    for (int i = 0; i < rootItem->rowCount(); ++i)
     {
-        ACLocalApplicationItem *currentItem = dynamic_cast<ACLocalApplicationItem *>(rootStandardItem->child(i));
-
-        if (!currentItem)
+        ACLocalApplicationItem *currentApp = dynamic_cast<ACLocalApplicationItem *>(rootItem->child(i));
+        if (!currentApp)
         {
-            qWarning() << "WARNING! Can't cast standard item to ACLocalApplicationItem to translate!";
-
+            qWarning() << "WARNING! Can't cast to ACLocalApplicationItem when try to find apps by interface!";
             continue;
         }
 
-        currentItem->setLocale(locale);
+        if (interface == currentApp->getACLocalApplicationObject()->m_implementedInterface)
+        {
+            result.push_back(currentApp->getACLocalApplicationObject());
+        }
     }
+
+    return result;
 }
+
+void ACLocalApplicationModel::setLocale() {}

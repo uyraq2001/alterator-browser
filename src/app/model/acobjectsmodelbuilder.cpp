@@ -1,13 +1,14 @@
 #include "acobjectsmodelbuilder.h"
+#include "aclocalapplicationmodel.h"
 #include "acobjectbuilder.h"
 #include "acobjectitem.h"
 #include "desktopfileparser.h"
 
+#include "model/acmodel.h"
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
 #include <qdbusreply.h>
-#include "model/acmodel.h"
 
 ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
                                              QString dbusPath,
@@ -26,7 +27,7 @@ ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
     , m_categoryMethonName(categoryMethodName)
 {}
 
-std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel()
+std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationModel *appModel)
 {
     QStringList pathsOfACObjects = getListOfACObjects();
 
@@ -44,7 +45,64 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel()
         return std::unique_ptr<ACModel>(nullptr);
     }
 
-    return buildModelFromACObjects(std::move(acObjects));
+    std::unique_ptr<ACModel> model = buildModelFromACObjects(std::move(acObjects));
+
+    mergeApplicationModel(model.get(), appModel);
+
+    return model;
+}
+
+void ACObjectsModelBuilder::mergeApplicationModel(ACModel *objectModel, ACLocalApplicationModel *appModel)
+{
+    QStandardItem *rootItem = objectModel->invisibleRootItem();
+
+    int g = rootItem->rowCount();
+
+    for (int i = 0; i < rootItem->rowCount(); ++i)
+    {
+        QStandardItem *currentStandardItem = rootItem->child(i);
+        ACObjectItem *currentItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        if (!currentItem)
+        {
+            qWarning() << "WARNING! Can't cast category item to ACObjectItem to merge models!";
+
+            continue;
+        }
+
+        mergeObjectWithApp(currentItem, appModel);
+    }
+}
+
+void ACObjectsModelBuilder::mergeObjectWithApp(ACObjectItem *item, ACLocalApplicationModel *appModel)
+{
+    for (int i = 0; i < item->rowCount(); ++i)
+    {
+        QStandardItem *currentStandardItem = item->child(i);
+        ACObjectItem *currentItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        if (!currentItem)
+        {
+            qWarning() << "WARNING! Can't cast item to ACObjectItem to merge application object!";
+
+            continue;
+        }
+
+        if (currentItem->rowCount() > 0)
+        {
+            mergeObjectWithApp(currentItem, appModel);
+        }
+
+        if (!currentItem->getACObject()->m_interfaces.empty())
+        {
+            for (QString &currentIface : currentItem->getACObject()->m_interfaces)
+            {
+                std::vector<ACLocalApplication *> apps = appModel->getAppsByInterface(currentIface);
+
+                std::for_each(apps.begin(), apps.end(), [item](ACLocalApplication *app) {
+                    item->getACObject()->m_applications.push_back(app);
+                });
+            }
+        }
+    }
 }
 
 QStringList ACObjectsModelBuilder::getListOfACObjects()
@@ -208,6 +266,7 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModelFromACObjects(std::vec
         }
     }
 
+    auto modelptr = model.get();
     return model;
 }
 
