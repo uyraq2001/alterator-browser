@@ -1,6 +1,7 @@
 #ifndef ACOBJECT_H
 #define ACOBJECT_H
 
+#include "aclocalapplication.h"
 #include "acobjectcategory.h"
 
 #include <memory>
@@ -29,6 +30,7 @@ public:
     QString m_x_Alterator_UI;
 
     std::vector<QString> m_interfaces;
+    std::vector<ACLocalApplication *> m_applications;
 
     QMap<QString, QString> m_nameLocaleStorage;
 

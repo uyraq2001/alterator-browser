@@ -12,6 +12,7 @@ ACObject::ACObject()
     , m_x_Alterator_Help()
     , m_x_Alterator_UI()
     , m_interfaces()
+    , m_applications()
     , m_nameLocaleStorage()
     , m_categoryObject(new ACObjectCategory())
 {}

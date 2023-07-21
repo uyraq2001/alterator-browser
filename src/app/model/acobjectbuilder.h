@@ -20,6 +20,8 @@ private:
 
     QString getValue(DesktopFileParser::Section &section, QString key);
 
+    std::vector<QString> parseValuesFromKey(DesktopFileParser::Section &section, QString key, QString delimiter);
+
 private:
     DesktopFileParser *m_infoParser;
     DesktopFileParser *m_categoryParser;
