@@ -13,7 +13,18 @@ void ACModel::translateModel(QString locale)
 
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
+        QStandardItem *currentStandardItem = rootItem->child(i);
+        ACObjectItem *currentItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        if (!currentItem)
+        {
+            qWarning() << "WARNING! Can't cast category item to ACObjectItem to translate!";
+
+            continue;
+        }
+
         translateItem(this->item(i), locale);
+
+        currentItem->getACObject()->setLocale(locale);
     }
 }
 
