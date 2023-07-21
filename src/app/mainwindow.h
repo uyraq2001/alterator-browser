@@ -7,6 +7,7 @@
 #include "accontroller.h"
 #include "categorywidget.h"
 #include "model/acmodel.h"
+#include "acpushbutton.h"
 
 class CategoryWidget;
 class ACController;
@@ -32,7 +33,11 @@ public:
     void setModel(ACModel *m);
     void clearUi();
 
+    void showModuleMenu(ACObjectItem *item);
+
 private:
+
+    void onModuleClicked(ACPushButton *button);
 
     MainWindow(const MainWindow &) = delete;
     MainWindow(MainWindow &&)      = delete;
@@ -44,5 +49,9 @@ private:
     QStandardItemModel *model;
 
     ACController *controller;
+
+signals:
+
+    void showMenu(ACObjectItem *item);
 };
 #endif // MAINWINDOW_H

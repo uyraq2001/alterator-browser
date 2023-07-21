@@ -12,6 +12,8 @@ public:
 
     ACLocalApplication *getACLocalApplicationObject();
 
+    void setLocale(QString locale);
+
 public:
     std::unique_ptr<ACLocalApplication> m_acLocalApplication;
 };

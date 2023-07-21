@@ -1,7 +1,5 @@
 #include "categorywidget.h"
 #include "ui_categorywidget.h"
-#include "flowlayout.h"
-#include "modulepushbutton.h"
 
 #include <QStandardItemModel>
 #include <QPushButton>
@@ -12,6 +10,8 @@
 #include <QMouseEvent>
 
 #include "../core/enums.h"
+#include "flowlayout.h"
+#include "modulepushbutton.h"
 
 CategoryWidget::CategoryWidget(QWidget *parent)
     : QWidget{parent},
@@ -62,5 +62,17 @@ void CategoryWidget::setItem(ACObjectItem *item)
         ACPushButton *moduleButton = new ACPushButton();
         modulesLayout->addWidget(moduleButton);
         moduleButton->setItem(dynamic_cast<ACObjectItem *>(item->child(i)));
+        connect(moduleButton, &ACPushButton::moduleClicked, this, &CategoryWidget::onModuleClicked);
+        connect(this, &CategoryWidget::showMenu, moduleButton, &ACPushButton::showMenu);
     }
+}
+
+void CategoryWidget::onModuleClicked(ACPushButton *button)
+{
+    emit moduleClicked(button);
+}
+
+void CategoryWidget::showModuleMenu(ACObjectItem *item)
+{
+    emit showMenu(item);
 }

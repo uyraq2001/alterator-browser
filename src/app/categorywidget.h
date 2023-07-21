@@ -26,6 +26,8 @@ public:
 
     void onClicked(bool);
 
+    void showModuleMenu(ACObjectItem *item);
+
     void setItem(ACObjectItem *item);
 
 private:
@@ -33,10 +35,17 @@ private:
 
     ACObjectItem *data;
 
+    void onModuleClicked(ACPushButton *button);
+
     CategoryWidget(const CategoryWidget &) = delete;
     CategoryWidget(CategoryWidget &&) = delete;
     CategoryWidget &operator=(const CategoryWidget &) = delete;
     CategoryWidget &operator=(CategoryWidget &&) = delete;
+
+signals:
+
+    void moduleClicked(ACPushButton *button);
+    void showMenu(ACObjectItem *item);
 };
 
 #endif // CATEGORYWIDGET_H
