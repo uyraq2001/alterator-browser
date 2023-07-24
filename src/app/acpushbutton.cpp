@@ -25,7 +25,6 @@ void ACPushButton::setItem(ACObjectItem *item)
     this->setMinimumWidth(this->sizeHint().width());
     if (item->getACObject()->m_interfaces.empty()){
         setEnabled(false);
-        setStyleSheet("QPushButton{color: gray;}");
     }
 }
 
@@ -42,15 +41,21 @@ void ACPushButton::onClicked(bool c)
 void ACPushButton::showMenu(ACObjectItem *item)
 {
     if (item == this->data){
-        QMenu *menu = new QMenu(this);
-        for (auto i: item->m_acObject.get()->m_applications){
-            QAction *interfaceAction = new QAction("&" + i->m_exec, menu);
-            connect(interfaceAction, &QAction::triggered,
-                    this, [i, this]()
-            {this->interfaceClicked(i);});
-            menu->addAction(interfaceAction);
+        if (item->m_acObject.get()->m_applications.size() > 1){
+            QMenu *menu = new QMenu(this);
+            for (auto i: item->m_acObject.get()->m_applications){
+                QAction *interfaceAction = new QAction("&" + i->m_implementedInterface, menu);
+                menu->addAction(interfaceAction);
+                connect(interfaceAction, &QAction::triggered,
+                        this, [i, this]()
+                {this->interfaceClicked(i);});
+            }
+            this->setMenu(menu);
+            QPushButton::showMenu();
+        }else if (item->m_acObject.get()->m_applications.size() == 1){
+            auto app = item->m_acObject.get()->m_applications[0];
+            this->interfaceClicked(app);
         }
-        this->setMenu(menu);
     }
 }
 
