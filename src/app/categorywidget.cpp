@@ -53,7 +53,7 @@ void CategoryWidget::setItem(ACObjectItem *item)
     ui->iconLabel->setPixmap(iconMap);
     ui->headerLabel->setMinimumSize(ui->headerLabel->sizeHint());
     ui->iconLabel->setMinimumSize(iconMap.size());
-    ui->descriptionLabel->setMinimumSize(ui->descriptionLabel->sizeHint());
+//    ui->descriptionLabel->setMinimumSize(ui->descriptionLabel->sizeHint());
     ui->headerWidget->setLayout(ihdLayout);
     ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
     ui->modulesWidget->setLayout(modulesLayout);
