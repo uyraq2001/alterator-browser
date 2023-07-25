@@ -3,14 +3,17 @@
 
 #include <QMainWindow>
 #include <QStandardItemModel>
+#include <utility>
 
 #include "accontroller.h"
 #include "categorywidget.h"
 #include "model/acmodel.h"
 #include "acpushbutton.h"
+#include "mainwindowsettings.h"
 
 class CategoryWidget;
 class ACController;
+class MainWindowSettings;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -45,10 +48,9 @@ private:
     MainWindow &operator=(MainWindow &&) = delete;
 
     Ui::MainWindow *ui;
-
     QStandardItemModel *model;
-
     ACController *controller;
+    std::unique_ptr<MainWindowSettings> settings;
 
 signals:
 

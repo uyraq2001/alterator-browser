@@ -22,17 +22,17 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
       model(nullptr),
-      controller(nullptr)
+      controller(nullptr),
+      settings(new MainWindowSettings(this, ui))
 {
     ui->setupUi(this);
+    settings.get()->restoreSettings();
 
     QVBoxLayout *categoryLayout = new QVBoxLayout();
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->scrollArea->widget()->setLayout(categoryLayout);
 
     setWindowTitle(tr("altcenter"));
-
-//    centralWidget()->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -47,6 +47,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     scrollWidget->setMinimumWidth(scrollWidget->layout()->minimumSize().width());
     ui->scrollArea->setMinimumWidth(scrollWidget->minimumWidth());
     this->setMinimumWidth(ui->scrollArea->minimumWidth());
+    settings.get()->saveSettings();
 }
 
 void MainWindow::setController(ACController *c){

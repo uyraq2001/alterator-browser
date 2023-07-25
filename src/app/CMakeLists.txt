@@ -31,6 +31,7 @@ set(HEADERS
     flowlayout.h
     accontroller.h
     acpushbutton.h
+    mainwindowsettings.h
 
     model/acobject.h
     model/acmodel.h
@@ -58,6 +59,7 @@ set(SOURCES
     flowlayout.cpp
     accontroller.cpp
     acpushbutton.cpp
+    mainwindowsettings.cpp
 
     model/acobject.cpp
     model/acmodel.cpp
