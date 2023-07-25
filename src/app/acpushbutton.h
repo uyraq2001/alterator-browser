@@ -5,12 +5,15 @@
 #include <QPushButton>
 
 #include "model/acobjectitem.h"
+#include "mainwindow.h"
+
+class MainWindow;
 
 class ACPushButton : public QPushButton
 {
     Q_OBJECT
 public:
-    explicit ACPushButton(QWidget *parent = nullptr);
+    explicit ACPushButton(MainWindow *w, QWidget *parent = nullptr);
     ~ACPushButton();
 
     void setItem(ACObjectItem *item);
@@ -21,10 +24,9 @@ public:
 private:
 
     ACObjectItem *data;
+    MainWindow *window;
 
     void onClicked(bool b);
-
-    void interfaceClicked(ACLocalApplication *app);
 
     ACPushButton(const ACPushButton &) = delete;
     ACPushButton(ACPushButton &&)      = delete;

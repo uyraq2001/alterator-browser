@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QLayout>
 #include <QMenu>
+#include <QProcess>
 #include <QPushButton>
 #include <QScrollArea>
 
@@ -23,4 +24,10 @@ ACController::~ACController() {}
 void ACController::moduleClicked(ACObjectItem *moduleItem)
 {
     window->showModuleMenu(moduleItem);
+}
+
+void ACController::onInterfaceClicked(ACLocalApplication *app)
+{
+    QProcess *proc = new QProcess(this);
+    proc->start(app->m_exec, QStringList());
 }
