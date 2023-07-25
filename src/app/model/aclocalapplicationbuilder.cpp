@@ -14,7 +14,7 @@ const QString LOCAL_APP_KEYWORDS_KEY_NAME          = "keywords";
 const QString LOCAL_APP_INTERFACE_KEY_NAME         = "interface";
 const QString LOCAL_APP_EXEC_KEY_NAME              = "exec";
 const QString LOCAL_APP_MIMETYPE_KEY_NAME          = "mimetype";
-const QString LOCAL_APP_ALTCENTER_SECTION_NAME     = "X-AltCenter";
+const QString LOCAL_APP_ALTCENTER_SECTION_NAME     = "X-Alterator";
 
 std::unique_ptr<ACLocalApplication> ACLocalApplicationBuilder::buildACLocalApplicationObject(DesktopFileParser &parser)
 {

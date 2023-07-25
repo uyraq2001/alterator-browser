@@ -2,6 +2,11 @@
 
 #include <QMenu>
 #include <QAction>
+#include <QProcess>
+#include <QDebug>
+
+#include <model/acobject.h>
+#include <model/aclocalapplication.h>
 
 ACPushButton::ACPushButton(QWidget *parent)
     : data(nullptr)
@@ -18,20 +23,9 @@ void ACPushButton::setItem(ACObjectItem *item)
 
     this->setText(item->getACObject()->m_displayName);
     this->setMinimumWidth(this->sizeHint().width());
-//    connect(moduleButton, &QPushButton::clicked, this, &CategoryWidget::onClicked);
-
-    QMenu *moduleMenu = new QMenu(this);
-    for (int j = 0; j < item->model()->rowCount(item->index()); ++j){
-        QStandardItem *ifaceItem = item->child(j);
-        QAction *ifaceAction = new QAction(
-                    "&" + ifaceItem->data(Qt::DisplayRole).toString(),
-                    moduleMenu);
-
-        moduleMenu->addAction(ifaceAction);
+    if (item->getACObject()->m_interfaces.empty()){
+        setEnabled(false);
     }
-//        moduleButton->setMenu(moduleMenu);
-//        moduleMenu->installEventFilter(this);
-
 }
 
 ACObjectItem *ACPushButton::getItem()
@@ -47,11 +41,27 @@ void ACPushButton::onClicked(bool c)
 void ACPushButton::showMenu(ACObjectItem *item)
 {
     if (item == this->data){
-        QMenu *menu = new QMenu(this);
-        for (auto i: item->m_acObject.get()->m_interfaces){
-            QAction *interfaceAction = new QAction("&" + i, menu);
-            menu->addAction(interfaceAction);
+        if (item->m_acObject.get()->m_applications.size() > 1){
+            QMenu *menu = new QMenu(this);
+            for (auto i: item->m_acObject.get()->m_applications){
+                QAction *interfaceAction = new QAction("&" + i->m_implementedInterface, menu);
+                menu->addAction(interfaceAction);
+                connect(interfaceAction, &QAction::triggered,
+                        this, [i, this]()
+                {this->interfaceClicked(i);});
+            }
+            this->setMenu(menu);
+            QPushButton::showMenu();
+        }else if (item->m_acObject.get()->m_applications.size() == 1){
+            auto app = item->m_acObject.get()->m_applications[0];
+            this->interfaceClicked(app);
         }
-        this->setMenu(menu);
     }
+}
+
+void ACPushButton::interfaceClicked(ACLocalApplication *app)
+{
+    qWarning() << "interface clicked";
+    QProcess *proc = new QProcess(this);
+    proc->start(app->m_exec, QStringList());
 }

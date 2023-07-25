@@ -4,7 +4,7 @@
 #include <QDebug>
 
 const QString DESKTOP_ENTRY_SECTION_NAME     = "Desktop Entry";
-const QString ALT_CENTER_SECTION_NAME        = "X-AltCenter";
+const QString ALT_CENTER_SECTION_NAME        = "X-Alterator";
 const QString NAME_KEY_NAME                  = "name";
 const QString TYPE_KEY_NAME                  = "type";
 const QString TERMINAL_KEY_NAME              = "terminal";

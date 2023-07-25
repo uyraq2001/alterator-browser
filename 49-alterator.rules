@@ -1,0 +1,12 @@
+polkit.addRule(function(action, subject) {
+    if (action.id == "ru.basealt.alterator.application" ) {
+        return polkit.Result.YES;
+    }
+	if (action.id == "ru.basealt.alterator.manager" ) {
+        return polkit.Result.YES;
+    }
+	if (action.id == "ru.basealt.alterator.finder") {
+        return polkit.Result.YES;
+    }
+});
+

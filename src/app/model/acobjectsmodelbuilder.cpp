@@ -68,15 +68,15 @@ void ACObjectsModelBuilder::mergeApplicationModel(ACModel *objectModel, ACLocalA
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = rootItem->child(i);
-        ACObjectItem *currentItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
-        if (!currentItem)
+        ACObjectItem *currentCategoryItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        if (!currentCategoryItem)
         {
             qWarning() << "WARNING! Can't cast category item to ACObjectItem to merge models!";
 
             continue;
         }
 
-        mergeObjectWithApp(currentItem, appModel);
+        mergeObjectWithApp(currentCategoryItem, appModel);
     }
 }
 
@@ -85,27 +85,27 @@ void ACObjectsModelBuilder::mergeObjectWithApp(ACObjectItem *item, ACLocalApplic
     for (int i = 0; i < item->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = item->child(i);
-        ACObjectItem *currentItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
-        if (!currentItem)
+        ACObjectItem *currentModuleItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        if (!currentModuleItem)
         {
             qWarning() << "WARNING! Can't cast item to ACObjectItem to merge application object!";
 
             continue;
         }
 
-        if (currentItem->rowCount() > 0)
+        if (currentModuleItem->rowCount() > 0)
         {
-            mergeObjectWithApp(currentItem, appModel);
+            mergeObjectWithApp(currentModuleItem, appModel);
         }
 
-        if (!currentItem->getACObject()->m_interfaces.empty())
+        if (!currentModuleItem->getACObject()->m_interfaces.empty())
         {
-            for (QString &currentIface : currentItem->getACObject()->m_interfaces)
+            for (QString &currentIface : currentModuleItem->getACObject()->m_interfaces)
             {
                 std::vector<ACLocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
-                std::for_each(apps.begin(), apps.end(), [item](ACLocalApplication *app) {
-                    item->getACObject()->m_applications.push_back(app);
+                std::for_each(apps.begin(), apps.end(), [currentModuleItem](ACLocalApplication *app) {
+                    currentModuleItem->getACObject()->m_applications.push_back(app);
                 });
             }
         }

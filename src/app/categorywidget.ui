@@ -147,7 +147,14 @@ QLabel#descriptionLabel{
       <string notr="true">QPushButton{
 	color: blue;
 }
-</string>
+
+QPushButton::disabled{
+	color: gray;
+}
+
+QMenu::item:selected {
+background: gray;
+}</string>
      </property>
     </widget>
    </item>

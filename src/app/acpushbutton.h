@@ -24,6 +24,8 @@ private:
 
     void onClicked(bool b);
 
+    void interfaceClicked(ACLocalApplication *app);
+
     ACPushButton(const ACPushButton &) = delete;
     ACPushButton(ACPushButton &&)      = delete;
     ACPushButton &operator=(const ACPushButton &) = delete;
