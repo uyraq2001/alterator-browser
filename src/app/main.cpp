@@ -6,10 +6,9 @@
 
 #include "accontroller.h"
 #include "model/aclocalapllicationmodelbuilder.h"
+#include "model/acmodel.h"
 #include "model/acobjectsmodelbuilder.h"
 #include "modelbuilder.h"
-#include "accontroller.h"
-#include "model/acmodel.h"
 
 const QString DBUS_SERVICE_NAME                 = "ru.basealt.alterator";
 const QString DBUS_PATH                         = "/ru/basealt/alterator";
@@ -51,9 +50,18 @@ int main(int argc, char *argv[])
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
     std::unique_ptr<ACModel> model = objectModelBuilder.buildModel(appModel.get());
+
+    if (!model)
+    {
+        exit(1);
+    }
+
     model->translateModel(QString("ru"));
+
     MainWindow w;
+
     ACController controller(&w, model.get());
+
     w.setController(&controller);
 
     w.show();

@@ -1,21 +1,24 @@
 #include "accontroller.h"
 
-#include <QPushButton>
-#include <QLayout>
-#include <QDebug>
-#include <QScrollArea>
 #include <QAction>
+#include <QDebug>
+#include <QLayout>
 #include <QMenu>
+#include <QPushButton>
+#include <QScrollArea>
 
 ACController::ACController(MainWindow *w, ACModel *m, QObject *parent)
-    : QObject{parent},
-      window(w),
-      model(m)
+    : QObject{parent}
+    , window(w)
+    , model(m)
 {
-    w->setModel(m);
+    if (model)
+    {
+        w->setModel(m);
+    }
 }
 
-ACController::~ACController(){}
+ACController::~ACController() {}
 
 void ACController::moduleClicked(ACObjectItem *moduleItem)
 {
