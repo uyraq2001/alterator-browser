@@ -6,6 +6,7 @@
 #include <QScrollArea>
 #include <QAction>
 #include <QMenu>
+#include <QProcess>
 
 ACController::ACController(MainWindow *w, ACModel *m, QObject *parent)
     : QObject{parent},
@@ -20,4 +21,10 @@ ACController::~ACController(){}
 void ACController::moduleClicked(ACObjectItem *moduleItem)
 {
     window->showModuleMenu(moduleItem);
+}
+
+void ACController::onInterfaceClicked(ACLocalApplication *app)
+{
+    QProcess *proc = new QProcess(this);
+    proc->start(app->m_exec, QStringList());
 }

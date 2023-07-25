@@ -67,11 +67,9 @@ void MainWindow::setModel(ACModel *m)
     model = m;
     QLayout *categoryLayout = ui->scrollArea->widget()->layout();
     for (int i = 0; i < model->rowCount(); ++i){
-        CategoryWidget *catWidget = new CategoryWidget();
+        CategoryWidget *catWidget = new CategoryWidget(this);
         categoryLayout->addWidget(catWidget);
         catWidget->setItem(dynamic_cast<ACObjectItem *>(model->item(i)));
-        connect(catWidget, &CategoryWidget::moduleClicked, this, &MainWindow::onModuleClicked);
-        connect(this, &MainWindow::showMenu, catWidget, &CategoryWidget::showModuleMenu);
     }
 }
 
@@ -93,4 +91,9 @@ void MainWindow::onModuleClicked(ACPushButton *button)
 void MainWindow::showModuleMenu(ACObjectItem *item)
 {
     emit showMenu(item);
+}
+
+void MainWindow::onInterfaceClicked(ACLocalApplication *app)
+{
+    controller->onInterfaceClicked(app);
 }

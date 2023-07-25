@@ -9,6 +9,8 @@
 #include "acpushbutton.h"
 
 class ACController;
+class MainWindow;
+class ACPushButton;
 
 namespace Ui {
     class CategoryWidget;
@@ -18,24 +20,18 @@ class CategoryWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CategoryWidget(QWidget *parent = nullptr);
+    explicit CategoryWidget(MainWindow *w, QWidget *parent = nullptr);
     ~CategoryWidget();
 
     void setGeometry(const QRect &rect);
     void paintEvent(QPaintEvent *event);
 
-    void onClicked(bool);
-
-    void showModuleMenu(ACObjectItem *item);
-
     void setItem(ACObjectItem *item);
 
 private:
     Ui::CategoryWidget *ui;
-
     ACObjectItem *data;
-
-    void onModuleClicked(ACPushButton *button);
+    MainWindow *window;
 
     CategoryWidget(const CategoryWidget &) = delete;
     CategoryWidget(CategoryWidget &&) = delete;
@@ -44,7 +40,6 @@ private:
 
 signals:
 
-    void moduleClicked(ACPushButton *button);
     void showMenu(ACObjectItem *item);
 };
 

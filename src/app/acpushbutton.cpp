@@ -8,11 +8,14 @@
 #include <model/acobject.h>
 #include <model/aclocalapplication.h>
 
-ACPushButton::ACPushButton(QWidget *parent)
-    : data(nullptr)
+ACPushButton::ACPushButton(MainWindow *w, QWidget *parent)
+    : data(nullptr),
+      window(w)
 {
     setParent(parent);
-    connect(this, &ACPushButton::clicked, this, &ACPushButton::onClicked);
+    connect(this, &ACPushButton::clicked, window, [this](){
+        window->onModuleClicked(this);});
+    connect(window, &MainWindow::showMenu, this, &ACPushButton::showMenu);
 }
 
 ACPushButton::~ACPushButton(){}
@@ -33,11 +36,6 @@ ACObjectItem *ACPushButton::getItem()
     return data;
 }
 
-void ACPushButton::onClicked(bool c)
-{
-    emit moduleClicked(this);
-}
-
 void ACPushButton::showMenu(ACObjectItem *item)
 {
     if (item == this->data){
@@ -47,21 +45,13 @@ void ACPushButton::showMenu(ACObjectItem *item)
                 QAction *interfaceAction = new QAction("&" + i->m_implementedInterface, menu);
                 menu->addAction(interfaceAction);
                 connect(interfaceAction, &QAction::triggered,
-                        this, [i, this]()
-                {this->interfaceClicked(i);});
+                        this, [i, this](){window->onInterfaceClicked(i);});
             }
             this->setMenu(menu);
             QPushButton::showMenu();
         }else if (item->m_acObject.get()->m_applications.size() == 1){
             auto app = item->m_acObject.get()->m_applications[0];
-            this->interfaceClicked(app);
+            window->onInterfaceClicked(app);
         }
     }
-}
-
-void ACPushButton::interfaceClicked(ACLocalApplication *app)
-{
-    qWarning() << "interface clicked";
-    QProcess *proc = new QProcess(this);
-    proc->start(app->m_exec, QStringList());
 }

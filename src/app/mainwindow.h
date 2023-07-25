@@ -14,6 +14,7 @@
 class CategoryWidget;
 class ACController;
 class MainWindowSettings;
+class ACPushButton;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -37,10 +38,10 @@ public:
     void clearUi();
 
     void showModuleMenu(ACObjectItem *item);
+    void onModuleClicked(ACPushButton *button);
+    void onInterfaceClicked(ACLocalApplication *app);
 
 private:
-
-    void onModuleClicked(ACPushButton *button);
 
     MainWindow(const MainWindow &) = delete;
     MainWindow(MainWindow &&)      = delete;
