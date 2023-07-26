@@ -5,8 +5,8 @@ interface_name = application
 
 [info]
 execute = cat /usr/share/alterator/module-info/services.desktop
-stdout_strings = enabled
+stdout_bytes = enabled
 
 [category]
 execute = bash /usr/share/alterator/backends/script.sh /usr/share/alterator/module-info/services.desktop
-stdout_strings = enabled
+stdout_bytes = enabled

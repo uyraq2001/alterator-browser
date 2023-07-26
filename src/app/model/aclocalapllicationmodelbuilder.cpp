@@ -119,7 +119,7 @@ QString ACLocalApllicationModelBuilder::getDesktopFile(QString file)
         return result;
     }
 
-    QDBusReply<QStringList> reply = iface.call(m_getDesktopFileMethodName, file);
+    QDBusReply<QByteArray> reply = iface.call(m_getDesktopFileMethodName, file);
 
     if (!reply.isValid())
     {
@@ -128,9 +128,7 @@ QString ACLocalApllicationModelBuilder::getDesktopFile(QString file)
         return result;
     }
 
-    for (QString currentLine : reply.value())
-    {
-        result.append(currentLine);
-    }
+    result = QString(reply.value());
+
     return result;
 }

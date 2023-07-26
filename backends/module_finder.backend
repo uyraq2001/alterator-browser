@@ -10,5 +10,5 @@ stdout_strings = enabled
 
 [file]
 execute = cat {file_name}
-stdout_strings = enabled
+stdout_bytes = enabled
 

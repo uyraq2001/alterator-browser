@@ -193,21 +193,14 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
 
 QString ACObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 {
-    QDBusReply<QStringList> reply = iface.call(m_infoMethodName);
+    QDBusReply<QByteArray> reply = iface.call(m_infoMethodName);
 
     if (!reply.isValid())
     {
         return QString();
     }
 
-    QStringList infoList = reply.value();
-
-    QString result;
-
-    for (QString &currentLine : infoList)
-    {
-        result = result.append(currentLine);
-    }
+    QString result = QString(reply.value());
 
     return result;
 }
@@ -215,21 +208,14 @@ QString ACObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 //TO DO refactor with getObjectInfo in one method!
 QString ACObjectsModelBuilder::getObjectCategory(QDBusInterface &iface)
 {
-    QDBusReply<QStringList> reply = iface.call(m_categoryMethonName);
+    QDBusReply<QByteArray> reply = iface.call(m_categoryMethonName);
 
     if (!reply.isValid())
     {
         return QString();
     }
 
-    QStringList infoList = reply.value();
-
-    QString result;
-
-    for (QString &currentLine : infoList)
-    {
-        result = result.append(currentLine);
-    }
+    QString result = QString(reply.value());
 
     return result;
 }
