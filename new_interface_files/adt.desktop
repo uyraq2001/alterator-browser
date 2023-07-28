@@ -1,0 +1,46 @@
+[Desktop Entry]
+Name=ADT
+Name[ar]=ADT
+Name[bg]=ADT
+Name[ca]=ADT
+Name[cs]=ADT
+Name[da]=ADT
+Name[de]=ADT
+Name[es]=ADT
+Name[fi]=ADT
+Name[fr]=ADT
+Name[fur]=ADT
+Name[he]=ADT
+Name[hu]=ADT
+Name[id]=ADT
+Name[it]=ADT
+Name[ko]=ADT
+Name[nl]=ADT
+Name[pl]=ADT
+Name[pt]=ADT
+Name[pt_BR]=ADT
+Name[ru]=ADT
+Name[sk]=ADT
+Name[sq]=ADT
+Name[sr]=ADT
+Name[sv]=ADT
+Name[tr]=ADT
+Name[uk]=ADT
+Name[zh_CN]=ADT
+Name[zh_TW]=ADT
+GenericName=ADT
+GenericName[ru]=Диагностический инструмент
+X-GNOME-FullName=ADT
+Comment=ALT Diagnostic Tool
+Comment[ru]=Диагностический инструмент
+Exec=/usr/bin/alt-diagnostic-tool
+Terminal=false
+Type=Application
+Categories=System;FileTools;
+X-Desktop-File-Install-Version=0.26
+
+[X-Alterator Entry]
+Interfaces=ru.basealt.alterator.diag1;
+
+[X-Alterator Interface ru.basealt.alterator.diag1]
+Exec=/usr/bin/alt-diagnostic-tool ?PARAM?

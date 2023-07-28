@@ -1,0 +1,13 @@
+[X-Alterator Entry]
+Object=domain_diag
+
+[X-Alterator Object domain_diag]
+Name=domain_diag
+Name[ru_RU]=диагностический тест1
+
+Categories=X-Alterator-System
+
+Comment=diag_1 description
+Comment[ru_RU]=описание диагностического теста1
+
+Icon=system-run

@@ -1,0 +1,15 @@
+[X-Alterator Entry]
+Categories=X-Alterator-System;
+
+[X-Alterator Category X-Alterator-System]
+Name=System
+Comment=Operating system information and setup
+Icon=groups/system
+Name[ru]=Система
+Name[uk]=Система
+Name[pt_BR]=Sistema
+Name[es]=Sistema
+Comment[ru]=Информация об установленной системе и её настройка
+Comment[uk]=Налаштування операційної системи та інформація щодо неї
+Comment[pt_BR]=Informações e Configurações do Sistema operacional
+Comment[es]=Información del sistema operativo y la configuración

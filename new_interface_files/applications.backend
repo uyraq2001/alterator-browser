@@ -1,0 +1,15 @@
+[Manager]
+module_name = executor
+node_name = categories
+
+interface_name = applications
+
+[info]
+execute = bash /usr/share/alterator/scripts/app_info.sh {file}
+stdout_bytes = enabled
+
+[list]
+execute = bash /usr/share/alterator/scripts/app_list.sh /usr/share/applications/
+stdout_bytes = enabled
+
+
