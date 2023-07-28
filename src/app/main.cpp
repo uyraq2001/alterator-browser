@@ -18,10 +18,10 @@ const QString GET_OBJECTS_METHOD_NAME           = "get_objects";
 const QString INFO_METHOD_NAME_FOR_ACOBJECT     = "info";
 const QString CATEGORY_METHOD_NAME_FOR_ACOBJECT = "category";
 
-const QString DBUS_LOCAL_APP_PATH              = "/ru/basealt/alterator/module_finder";
-const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.finder";
+const QString DBUS_LOCAL_APP_PATH              = "/ru/basealt/alterator/applications";
+const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.applications";
 const QString DBUS_LOCAL_APP_GET_LIST_OF_FILES = "list";
-const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "file";
+const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
 int main(int argc, char *argv[])
 {

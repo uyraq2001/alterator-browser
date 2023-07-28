@@ -66,7 +66,7 @@ QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
         return QStringList();
     }
 
-    QDBusReply<QStringList> reply = iface.call(m_getFilesMethodName);
+    QDBusReply<QByteArray> reply = iface.call(m_getFilesMethodName);
 
     if (!reply.isValid())
     {
@@ -75,7 +75,11 @@ QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
         return QStringList();
     }
 
-    return reply.value();
+    QString list(reply.value());
+
+    QStringList listOfDesktopFiles = list.split("\n", Qt::SkipEmptyParts);
+
+    return listOfDesktopFiles;
 }
 
 std::vector<std::unique_ptr<ACLocalApplication>> ACLocalApllicationModelBuilder::parseDesktopFiles(QStringList files)

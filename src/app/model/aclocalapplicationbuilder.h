@@ -14,6 +14,8 @@ public:
     std::unique_ptr<ACLocalApplication> buildACLocalApplicationObject(DesktopFileParser &parser);
 
 private:
+    bool parseXAlteratorEntrySection(DesktopFileParser &parser, ACLocalApplication *localApplication);
+
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
 
     bool buildNames(DesktopFileParser::Section &section, ACLocalApplication *localAppObject);
