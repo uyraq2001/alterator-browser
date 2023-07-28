@@ -1,12 +1,9 @@
 [Manager]
 module_name = executor
 node_name = limits
-interface_name = application
+
+interface_name = object
 
 [info]
 execute = cat /usr/share/alterator/module-info/limits.desktop
-stdout_bytes = enabled
-
-[category]
-execute = bash /usr/share/alterator/backends/script.sh /usr/share/alterator/module-info/limits.desktop
 stdout_bytes = enabled
