@@ -1,0 +1,9 @@
+[Manager]
+module_name = executor
+node_name = categories
+
+interface_name = categories
+
+[info]
+execute = bash /usr/share/alterator/scripts/categories_info.sh {dir} {name}
+stdout_bytes = enabled

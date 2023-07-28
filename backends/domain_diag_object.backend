@@ -1,0 +1,10 @@
+[Manager]
+module_name = executor
+node_name = domain_diag
+
+interface_name = object
+
+[info]
+execute = cat /usr/share/alterator/module-info/adt-app.desktop
+stdout_bytes = enabled
+
