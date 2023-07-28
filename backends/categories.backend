@@ -5,5 +5,5 @@ node_name = categories
 interface_name = categories
 
 [info]
-execute = bash /usr/share/alterator/scripts/categories_info.sh {dir} {name}
+execute = bash /usr/share/alterator/scripts/categories_info.sh /usr/share/alterator/categories/ /usr/share/alterator/desktop-directories/ {name}
 stdout_bytes = enabled

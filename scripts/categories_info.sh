@@ -1,34 +1,48 @@
 #!/bin/bash
 
-file_name="/usr/share/alterator/categories/Miscellaneous.directory"
+file_name="/usr/share/alterator/desktop-directories/miscellaneous.directory"
+is_legacy=true
 
 for dir in "${@:1:$#-1}"
 do
-        for file in $dir*.directory
-        do
-                if grep -q "\[X-Alterator Category ${@: -1}\]" $file
-                then
-                        file_name=$file
-                fi
-        done
+    for file in $dir*.directory
+    do
+        if grep -q "\[X-Alterator Category ${@: -1}\]" $file
+        then
+            file_name=$file
+            is_legacy=false
+        fi
+        if grep -q "X-Alterator-Category=${@: -1}" $file
+        then
+            file_name=$file
+        fi
+    done
 done
 
-IFS=$'\r\n'
-GLOBIGNORE='*'
-command eval 'lines=($(cat "$file_name"))'
+if [[ "$is_legacy" == true ]]
+then
+    cat "$file_name"
+else
 
-ans=()
-ok=false
+    IFS=$'\r\n'
+    GLOBIGNORE='*'
+    command eval 'lines=($(cat "$file_name"))'
 
-for (( i=0; i<${#lines[@]}; i++))
-do
-    if [[ ${lines[i]} =~ ^\[X-Alterator\ Category\ "${@: -1}"\]$ ]]; then
-        ok=true
-    else
-        [[ ${lines[i]} =~ ^\[.*\]$ ]] && ok=false
-    fi
-    if [ "$ok" == true ]
-    then
-        echo "${lines[i]}"
-    fi
-done
+    ans=()
+    ok=false
+
+    for (( i=0; i<${#lines[@]}; i++))
+    do
+        if [[ ${lines[i]} =~ ^\[X-Alterator\ Category\ "${@: -1}"\]$ ]]
+        then
+            ok=true
+        else
+            [[ ${lines[i]} =~ ^\[.*\]$ ]] && ok=false
+        fi
+        if [ "$ok" == true ]
+        then
+            echo "${lines[i]}"
+        fi
+    done
+
+fi
