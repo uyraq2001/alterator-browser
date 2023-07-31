@@ -152,6 +152,8 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
         }
     }
 
+    newObject->m_isLegacy = true;
+
     return newObject;
 }
 

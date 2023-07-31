@@ -36,6 +36,8 @@ public:
     QMap<QString, QString> m_nameLocaleStorage;
 
     std::unique_ptr<ACObjectCategory> m_categoryObject;
+
+    bool m_isLegacy;
 };
 
 #endif // ACOBJECT_H

@@ -16,6 +16,7 @@ ACObject::ACObject()
     , m_applications()
     , m_nameLocaleStorage()
     , m_categoryObject(new ACObjectCategory())
+    , m_isLegacy(false)
 {}
 
 ACObject::~ACObject() {}
