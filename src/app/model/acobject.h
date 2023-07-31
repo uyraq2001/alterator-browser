@@ -22,6 +22,7 @@ public:
     QString m_displayName;
     QString m_displayCategory;
     QString m_type;
+    QString m_categoryId;
     bool m_terminal;
     QString m_icon;
     QString m_x_Alterator_URI;

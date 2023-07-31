@@ -5,11 +5,12 @@
 #include "desktopfileparser.h"
 
 #include <memory>
+#include <QDBusInterface>
 
 class ACObjectBuilder
 {
 public:
-    ACObjectBuilder(DesktopFileParser *infoParser, DesktopFileParser *categoryParser);
+    ACObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName);
 
     std::unique_ptr<ACObject> buildACObject();
 
@@ -24,7 +25,8 @@ private:
 
 private:
     DesktopFileParser *m_infoParser;
-    DesktopFileParser *m_categoryParser;
+    QDBusInterface *m_dbusInterface;
+    QString m_dbusMethodName;
 
 private:
     ACObjectBuilder(const ACObjectBuilder &) = delete;

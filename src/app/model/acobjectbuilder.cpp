@@ -1,11 +1,13 @@
 #include "acobjectbuilder.h"
 #include "acobjectcategorybuilder.h"
 
+#include <QDBusReply>
 #include <QDebug>
 
 const QString DESKTOP_ENTRY_SECTION_NAME     = "Desktop Entry";
 const QString ALT_CENTER_SECTION_NAME        = "X-Alterator";
 const QString NAME_KEY_NAME                  = "name";
+const QString CATEGORY_KEY_NAME              = "categories";
 const QString TYPE_KEY_NAME                  = "type";
 const QString TERMINAL_KEY_NAME              = "terminal";
 const QString ICON_KEY_NAME                  = "icon";
@@ -15,27 +17,17 @@ const QString X_ALTERATOR_HELP_NAME          = "x-alterator-help";
 const QString X_ALTERATOR_UI_NAME            = "x-alterator-ui";
 const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
 
-ACObjectBuilder::ACObjectBuilder(DesktopFileParser *infoParser, DesktopFileParser *categoryParser)
+ACObjectBuilder::ACObjectBuilder(DesktopFileParser *infoParser,
+                                 QDBusInterface *categoryIface,
+                                 QString getCategoryMethodName)
     : m_infoParser(infoParser)
-    , m_categoryParser(categoryParser)
+    , m_dbusInterface(categoryIface)
+    , m_dbusMethodName(getCategoryMethodName)
 {}
 
 std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
 {
     std::unique_ptr<ACObject> newObject{new ACObject()};
-
-    ACObjectCategoryBuilder categoryBuilder(m_categoryParser);
-
-    std::unique_ptr<ACObjectCategory> category = categoryBuilder.buildACObjectCategory();
-
-    if (!category)
-    {
-        return std::unique_ptr<ACObject>(nullptr);
-    }
-
-    newObject->m_displayCategory = category->m_id;
-
-    newObject->m_categoryObject = std::move(category);
 
     auto sections = m_infoParser->getSections();
 
@@ -45,6 +37,43 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
     {
         qWarning() << "WARNING! Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
         return std::unique_ptr<ACObject>(nullptr);
+    }
+
+    QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
+
+    if (currentObjectCategoryName.isEmpty())
+    {
+        qWarning() << "WARNING! Can't find category name for the object: " << newObject->m_id;
+        return std::unique_ptr<ACObject>(nullptr);
+    }
+    else
+    {
+        QDBusReply<QByteArray> reply = m_dbusInterface->call(m_dbusMethodName, currentObjectCategoryName);
+
+        if (!reply.isValid())
+        {
+            qWarning() << "WARNING! Can't reply with category name for the object: " << newObject->m_id;
+            return std::unique_ptr<ACObject>(nullptr);
+        }
+
+        QString categoryData(reply.value());
+
+        DesktopFileParser categoryParser(categoryData);
+
+        ACObjectCategoryBuilder categoryBuilder(&categoryParser);
+
+        std::unique_ptr<ACObjectCategory> category = categoryBuilder.buildACObjectCategory();
+
+        if (!category)
+        {
+            return std::unique_ptr<ACObject>(nullptr);
+        }
+
+        newObject->m_categoryId = category->m_id;
+
+        newObject->m_displayCategory = category->m_id;
+
+        newObject->m_categoryObject = std::move(category);
     }
 
     if (!buildNames(*desktopSection, newObject.get()))
