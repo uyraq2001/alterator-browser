@@ -27,7 +27,7 @@ void ACPushButton::setItem(ACObjectItem *item)
     this->setText(item->getACObject()->m_displayName);
     this->setMinimumWidth(this->sizeHint().width());
     if (item->getACObject()->m_interfaces.empty()){
-        setEnabled(false);
+//        setEnabled(false);
     }
 }
 
@@ -55,3 +55,4 @@ void ACPushButton::showMenu(ACObjectItem *item)
         }
     }
 }
+

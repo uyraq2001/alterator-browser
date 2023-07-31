@@ -23,6 +23,12 @@ ACController::~ACController() {}
 
 void ACController::moduleClicked(ACObjectItem *moduleItem)
 {
+    QStringList params;
+    params << "-l" << moduleItem->m_acObject.get()->m_icon;
+    QProcess *proc = new QProcess(this);
+    proc->start("alterator-standalone", params);
+
+
     window->showModuleMenu(moduleItem);
 }
 

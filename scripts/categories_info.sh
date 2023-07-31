@@ -7,12 +7,12 @@ for dir in "${@:1:$#-1}"
 do
     for file in $dir*.directory
     do
-        if grep -q "\[X-Alterator Category ${@: -1}\]" $file
+        if grep -qs "\[X-Alterator Category ${@: -1}\]" $file
         then
             file_name=$file
             is_legacy=false
         fi
-        if grep -q "X-Alterator-Category=${@: -1}" $file
+        if grep -Eqs "\bX-Alterator-Category=${@: -1}\b" $file
         then
             file_name=$file
         fi
@@ -21,7 +21,7 @@ done
 
 if [[ "$is_legacy" == true ]]
 then
-    cat "$file_name"
+	cat "$file_name"
 else
 
     IFS=$'\r\n'
