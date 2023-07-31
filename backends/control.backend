@@ -5,5 +5,5 @@ node_name = control
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/control.desktop
+execute = cat /usr/share/alterator/applications/control.desktop
 stdout_bytes = enabled

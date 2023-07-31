@@ -5,5 +5,5 @@ node_name = net-bl
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/net-bl.desktop
+execute = cat /usr/share/alterator/applications/net-bl.desktop
 stdout_bytes = enabled

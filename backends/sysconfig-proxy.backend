@@ -5,5 +5,5 @@ node_name = sysconfig_proxy
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/sysconfig-proxy.desktop
+execute = cat /usr/share/alterator/applications/sysconfig-proxy.desktop
 stdout_bytes = enabled

@@ -5,5 +5,5 @@ node_name = net_eth
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/net-eth.desktop
+execute = cat /usr/share/alterator/applications/net-eth.desktop
 stdout_bytes = enabled

@@ -5,5 +5,5 @@ node_name = services
 interface_name = application
 
 [info]
-execute = cat /usr/share/alterator/module-info/services.desktop
+execute = cat /usr/share/alterator/applications/services.desktop
 stdout_bytes = enabled

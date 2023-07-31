@@ -5,5 +5,5 @@ node_name = gpupdate
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/gpupdate.desktop
+execute = cat /usr/share/alterator/applications/gpupdate.desktop
 stdout_bytes = enabled

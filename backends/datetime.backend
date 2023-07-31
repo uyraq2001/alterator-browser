@@ -5,5 +5,5 @@ node_name = datetime
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/datetime.desktop
+execute = cat /usr/share/alterator/applications/datetime.desktop
 stdout_bytes = enabled

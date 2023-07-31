@@ -5,5 +5,5 @@ node_name = multiseat
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/multiseat.desktop
+execute = cat /usr/share/alterator/applications/multiseat.desktop
 stdout_bytes = enabled

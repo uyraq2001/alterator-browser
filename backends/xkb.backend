@@ -5,5 +5,5 @@ node_name = xkb
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/xkb.desktop
+execute = cat /usr/share/alterator/applications/xkb.desktop
 stdout_bytes = enabled

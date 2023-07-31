@@ -5,5 +5,5 @@ node_name = license
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/license.desktop
+execute = cat /usr/share/alterator/applications/license.desktop
 stdout_bytes = enabled

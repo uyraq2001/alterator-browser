@@ -5,5 +5,5 @@ node_name = quota
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/quota.desktop
+execute = cat /usr/share/alterator/applications/quota.desktop
 stdout_bytes = enabled

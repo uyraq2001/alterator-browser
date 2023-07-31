@@ -5,5 +5,5 @@ node_name = net_shares
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/net-shares.desktop
+execute = cat /usr/share/alterator/applications/net-shares.desktop
 stdout_bytes = enabled

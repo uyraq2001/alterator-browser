@@ -5,5 +5,5 @@ node_name = users
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/users.desktop
+execute = cat /usr/share/alterator/applications/users.desktop
 stdout_bytes = enabled

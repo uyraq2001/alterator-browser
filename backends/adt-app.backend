@@ -5,6 +5,6 @@ node_name = adtapp
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/adt-app.desktop
+execute = cat /usr/share/alterator/applications/adt-app.desktop
 stdout_bytes = enabled
 

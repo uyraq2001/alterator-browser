@@ -5,5 +5,5 @@ node_name = net_iptables
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/net-iptables.desktop
+execute = cat /usr/share/alterator/applications/net-iptables.desktop
 stdout_bytes = enabled

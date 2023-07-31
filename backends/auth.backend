@@ -5,5 +5,5 @@ node_name = auth
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/auth.desktop
+execute = cat /usr/share/alterator/applications/auth.desktop
 stdout_bytes = enabled

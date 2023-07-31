@@ -5,5 +5,5 @@ node_name = logs
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/logs.desktop
+execute = cat /usr/share/alterator/applications/logs.desktop
 stdout_bytes = enabled

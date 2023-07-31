@@ -5,5 +5,5 @@ node_name = sslkey
 interface_name = object
 
 [info]
-execute = cat /usr/share/alterator/module-info/sslkey.desktop
+execute = cat /usr/share/alterator/applications/sslkey.desktop
 stdout_bytes = enabled
