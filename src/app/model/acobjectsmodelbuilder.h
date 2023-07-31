@@ -18,6 +18,7 @@ public:
                           QString findInterface,
                           QString getObjectMethodName,
                           QString infoMethodName,
+                          QString categoryInterfaceName,
                           QString categoryMethodName);
 
     std::unique_ptr<ACModel> buildModel(ACLocalApplicationModel *appModel);
@@ -32,7 +33,6 @@ private:
     std::vector<std::unique_ptr<ACObject>> parseACObjects(QStringList &pathsList);
 
     QString getObjectInfo(QDBusInterface &iface);
-    QString getObjectCategory(QDBusInterface &iface);
 
     std::unique_ptr<ACModel> buildModelFromACObjects(std::vector<std::unique_ptr<ACObject>> objects);
 
@@ -46,7 +46,8 @@ private:
     QString m_dbusFindInterface;
     QString m_getObjectMethodName;
     QString m_infoMethodName;
-    QString m_categoryMethonName;
+    QString m_categoryInterfaceName;
+    QString m_categoryMethodName;
 };
 
 #endif // ACOBJECTSMODELBUILDER_H

@@ -30,6 +30,7 @@ public:
 
     std::vector<QString> m_categories;
     std::vector<QString> m_mimeTypes;
+    QMultiMap<QString, QMap<QString, QString>> m_alteratorIterfaces; // section X-Alterator Entry<Interface,<key, value>>
 
     QMap<QString, QString> m_nameLocaleStorage;
     QMap<QString, QString> m_genericNameLocaleStorage;

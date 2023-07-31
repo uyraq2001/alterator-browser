@@ -16,6 +16,7 @@ ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
                                              QString findInterface,
                                              QString getObjectMethodName,
                                              QString infoMethodName,
+                                             QString categoryInterfaceName,
                                              QString categoryMethodName)
     : m_dbusConnection(QDBusConnection::systemBus())
     , m_dbusServiceName(serviceName)
@@ -24,7 +25,8 @@ ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
     , m_dbusFindInterface(findInterface)
     , m_getObjectMethodName(getObjectMethodName)
     , m_infoMethodName(infoMethodName)
-    , m_categoryMethonName(categoryMethodName)
+    , m_categoryInterfaceName(categoryInterfaceName)
+    , m_categoryMethodName(categoryMethodName)
 {}
 
 std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationModel *appModel)
@@ -68,7 +70,7 @@ void ACObjectsModelBuilder::mergeApplicationModel(ACModel *objectModel, ACLocalA
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = rootItem->child(i);
-        ACObjectItem *currentCategoryItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        ACObjectItem *currentCategoryItem  = dynamic_cast<ACObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
             qWarning() << "WARNING! Can't cast category item to ACObjectItem to merge models!";
@@ -85,7 +87,7 @@ void ACObjectsModelBuilder::mergeObjectWithApp(ACObjectItem *item, ACLocalApplic
     for (int i = 0; i < item->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = item->child(i);
-        ACObjectItem *currentModuleItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        ACObjectItem *currentModuleItem    = dynamic_cast<ACObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
             qWarning() << "WARNING! Can't cast item to ACObjectItem to merge application object!";
@@ -145,6 +147,36 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
 {
     std::vector<std::unique_ptr<ACObject>> acObjects;
 
+    QDBusInterface categoryIface(m_dbusServiceName, m_dbusPath, m_managerInterface, m_dbusConnection);
+
+    if (!categoryIface.isValid())
+    {
+        qWarning() << "ERROR: can't find interface to find object with categories interface";
+
+        return acObjects;
+    }
+
+    QDBusReply<QList<QDBusObjectPath>> reply = categoryIface.call(m_getObjectMethodName, m_categoryInterfaceName);
+
+    if (!reply.isValid())
+    {
+        qWarning() << "ERROR: Reply is invalid. Can't find find interface to find object with categories interface";
+
+        return acObjects;
+    }
+
+    //TO DO check for empty QList
+    QString categoryObjectPath = reply.value().at(0).path();
+
+    QDBusInterface categoryInfoIface(m_dbusServiceName, categoryObjectPath, m_categoryInterfaceName, m_dbusConnection);
+
+    if (!categoryIface.isValid())
+    {
+        qWarning() << "ERROR: can't connect to category object!";
+
+        return acObjects;
+    }
+
     for (QString &currentPath : pathsList)
     {
         QDBusInterface iface(m_dbusServiceName, currentPath, m_dbusFindInterface, m_dbusConnection);
@@ -165,20 +197,9 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
             continue;
         }
 
-        QString currentObjectCategory = getObjectCategory(iface);
-
-        if (currentObjectCategory.isEmpty())
-        {
-            qWarning() << "Warning: Can't get category of object: " + currentPath
-                              + " in interface: " + m_dbusFindInterface;
-
-            continue;
-        }
-
         DesktopFileParser infoParsingResult(currentObjectInfo);
-        DesktopFileParser categoryParsingResult(currentObjectCategory);
 
-        ACObjectBuilder objectBuilder(&infoParsingResult, &categoryParsingResult);
+        ACObjectBuilder objectBuilder(&infoParsingResult, &categoryInfoIface, m_categoryMethodName);
 
         std::unique_ptr<ACObject> newObject = objectBuilder.buildACObject();
 
@@ -194,21 +215,6 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
 QString ACObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 {
     QDBusReply<QByteArray> reply = iface.call(m_infoMethodName);
-
-    if (!reply.isValid())
-    {
-        return QString();
-    }
-
-    QString result = QString(reply.value());
-
-    return result;
-}
-
-//TO DO refactor with getObjectInfo in one method!
-QString ACObjectsModelBuilder::getObjectCategory(QDBusInterface &iface)
-{
-    QDBusReply<QByteArray> reply = iface.call(m_categoryMethonName);
 
     if (!reply.isValid())
     {
@@ -258,8 +264,6 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModelFromACObjects(std::vec
             categoryItem->appendRow(newModuleItem);
         }
     }
-
-    auto modelptr = model.get();
     return model;
 }
 
