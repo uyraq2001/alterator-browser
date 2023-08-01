@@ -1,5 +1,5 @@
 Name: altcenter
-Version: 0.0.1
+Version: 0.1.0
 Release: alt1
 
 Summary: Revised alterator
@@ -14,6 +14,9 @@ BuildRequires: qt5-base-devel
 BuildRequires: qt5-tools-devel
 BuildRequires: qt5-base-common
 BuildRequires: boost-devel-headers
+BuildRequires: alterator
+BuildRequires: alterator-manager
+BuildRequires: alterator-module-executor
 
 Source0: %name-%version.tar
 
@@ -35,5 +38,7 @@ Alterator operating via D-Bus.
 %doc README.md INSTALL.md
 
 %changelog
+* Wed Aug 1 2023 Kozyrev Yuri <kozyrevid@altlinux.org> 0.1.0-alt1
+- added support for acc files
 * Wed Jul 5 2023 Kozyrev Yuri <kozyrevid@altlinux.org> 0.0.1-alt1
 - initial build
