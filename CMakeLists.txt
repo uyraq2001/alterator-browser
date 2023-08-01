@@ -28,9 +28,12 @@ else()
   endif()
 endif()
 
-#install(DIRECTORY /usr/share/alterator/backends
-#        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
-#install(DIRECTORY /usr/share/alterator/module-info
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/backends
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
+install(FILES ${CMAKE_SOURCE_DIR}/49-alterator.rules
+        DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/polkit-1/rules.d/)
+message("!!!!!!!!!!!!!!!!!!!!!!!!!!${CMAKE_INSTALL_DATADIR}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+#install(DIRECTORY ${CMAKE_SOURCE_DIR}/module-info
 #        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
 #install(DIRECTORY /usr/share/alterator/desktop-directories
 #        DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
