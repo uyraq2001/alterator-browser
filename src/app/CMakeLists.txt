@@ -50,6 +50,11 @@ set(HEADERS
     model/aclocalapplicationitem.h
     model/acmodel.h
     model/abstractacentity.h
+    model/accategory.h
+    model/acinterface.h
+    model/acapplication.h
+
+    model/definiciones.h
 )
 
 set(SOURCES
@@ -79,6 +84,9 @@ set(SOURCES
     model/aclocalapplicationitem.cpp
     model/acmodel.cpp
     model/abstractacentity.cpp
+    model/accategory.cpp
+    model/acinterface.cpp
+    model/acapplication.cpp
 )
 
 set(UI_FORMS

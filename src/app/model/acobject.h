@@ -1,21 +1,26 @@
 #ifndef ACOBJECT_H
 #define ACOBJECT_H
 
-#include "aclocalapplication.h"
-#include "acobjectcategory.h"
+#include "abstractacentity.h"
+#include "definiciones.h"
 
 #include <memory>
 #include <QObject>
 #include <qmap.h>
 
-class ACObject : public QObject
+class ACObject : public AbstractACEntity
 {
     Q_OBJECT
 public:
     ACObject();
     ~ACObject();
 
-    void setLocale(QString locale);
+    void setLocale(QString locale) override;
+
+    ACObject *toObject() override;
+    ACCategory *toCategory() override;
+    ACInterface *toInterface() override;
+    ACApplication *toAplication() override;
 
 public:
     QString m_id;
@@ -30,14 +35,10 @@ public:
     QString m_x_Alterator_Help;
     QString m_x_Alterator_UI;
 
-    std::vector<QString> m_interfaces;
-    std::vector<ACLocalApplication *> m_applications;
-
     QMap<QString, QString> m_nameLocaleStorage;
 
-    std::unique_ptr<ACObjectCategory> m_categoryObject;
-
     bool m_isLegacy;
+
 };
 
 #endif // ACOBJECT_H

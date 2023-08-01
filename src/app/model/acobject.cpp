@@ -12,10 +12,7 @@ ACObject::ACObject()
     , m_x_Alterator_Weight()
     , m_x_Alterator_Help()
     , m_x_Alterator_UI()
-    , m_interfaces()
-    , m_applications()
     , m_nameLocaleStorage()
-    , m_categoryObject(new ACObjectCategory())
     , m_isLegacy(false)
 {}
 
@@ -28,10 +25,9 @@ void ACObject::setLocale(QString locale)
     {
         m_displayName = *nameIt;
     }
-
-    if (m_categoryObject)
-    {
-        m_categoryObject->setLocale(locale);
-        m_displayCategory = m_categoryObject->m_name;
-    }
 }
+
+ACObject *ACObject::toObject(){return this;}
+ACCategory *ACObject::toCategory(){return new ACCategory();}
+ACInterface *ACObject::toInterface(){return new ACInterface();}
+ACApplication *ACObject::toAplication(){return new ACApplication();}
