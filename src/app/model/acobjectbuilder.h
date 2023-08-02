@@ -17,6 +17,10 @@ public:
     bool buildNames(DesktopFileParser::Section &section, ACObject *object);
 
 private:
+    void setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, ACObject *acObject);
+
+    void setDefaultCategory(ACObject *object);
+
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
 
     QString getValue(DesktopFileParser::Section &section, QString key);
