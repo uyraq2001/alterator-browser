@@ -11,11 +11,11 @@ const QString LOCAL_APP_ICON_KEY_NAME                      = "icon";
 const QString LOCAL_APP_TYPE_KEY_NAME                      = "type";
 const QString LOCAL_APP_CATEGORIES_KEY_NAME                = "categories";
 const QString LOCAL_APP_KEYWORDS_KEY_NAME                  = "keywords";
-const QString LOCAL_APP_INTERFACE_KEY_NAME                 = "interfaces";
+const QString LOCAL_APP_INTERFACE_KEY_NAME                 = "implements";
 const QString LOCAL_APP_EXEC_KEY_NAME                      = "exec";
 const QString LOCAL_APP_MIMETYPE_KEY_NAME                  = "mimetype";
-const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME     = "X-Alterator Entry";
-const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_PREFIX   = "X-Alterator Interface ";
+const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME     = "Alterator Entry";
+const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_PREFIX   = "Alterator Interface";
 const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME = "exec";
 
 std::unique_ptr<ACLocalApplication> ACLocalApplicationBuilder::buildACLocalApplicationObject(DesktopFileParser &parser)
@@ -70,7 +70,7 @@ std::unique_ptr<ACLocalApplication> ACLocalApplicationBuilder::buildACLocalAppli
         qWarning() << "WARNING! Can't find key:" << LOCAL_APP_EXEC_KEY_NAME;
         return std::unique_ptr<ACLocalApplication>(nullptr);
     }
-    result->m_exec = exec;
+    result->m_desktopExec = exec;
 
     QString icon = getValue(desktopEntrySection, LOCAL_APP_ICON_KEY_NAME);
     if (icon.isEmpty())
@@ -95,12 +95,6 @@ std::unique_ptr<ACLocalApplication> ACLocalApplicationBuilder::buildACLocalAppli
     }
 
     bool xAlteratorEntrySectionParsingResult = parseXAlteratorEntrySection(parser, result.get());
-
-    //    QString interface = getValue(xAlteratorEntrySection, LOCAL_APP_INTERFACE_KEY_NAME);
-    //    if (interface.isEmpty())
-    //    {
-    //        qWarning() << "WARNING! Can't find key:" << LOCAL_APP_INTERFACE_KEY_NAME;
-    //    }
 
     result->m_categories = parseValuesFromKey(desktopEntrySection, LOCAL_APP_CATEGORIES_KEY_NAME, ";");
 
@@ -135,8 +129,6 @@ bool ACLocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &p
                    << " section to buils ACLocalApplicationObject! Skipping..";
         return false;
     }
-
-    //QStringList interfaceSectionsList;
 
     for (QString &currentInterface : interfacesList)
     {

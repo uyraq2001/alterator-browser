@@ -34,5 +34,5 @@ void ACController::moduleClicked(ACObjectItem *moduleItem)
 void ACController::onInterfaceClicked(ACLocalApplication *app)
 {
     QProcess *proc = new QProcess(this);
-    proc->start(app->m_exec, QStringList());
+    proc->start(app->m_desktopExec, QStringList());
 }
