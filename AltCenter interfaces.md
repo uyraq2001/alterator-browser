@@ -32,9 +32,6 @@ Name=Alt Diagnostic Tool
 Name[ru]=Инструмент диагностики
 
 Name[ru_RU]=adt-app.desktop
-
-[X-Alterator]
-Interface=ru.basealt.alterator.diag1;
 ```
 
 А метод `category` возвращает данные о категории к которой относится модуль в формате `X-Alterator Entry` или .directory-файла:
@@ -70,13 +67,13 @@ Implements=Somewhat
 Exec=Somehow
 
 [X-Alterator Entry]
-Interface=i1; i2; i3
+Implements=i1; i2; i3
 Category=c1; c2
 Object=o1; o2; o3; o4
 ...
 ```
 
-Каждый из перечисленных элементов должен быть описан, в этом же файле, в отдельной секции вида `[X-Alterator <Entity> <Entity_Name>]`, где <Entity> обозначает тип описываемой сущности, а <Entity_Name> - её имя, например:
+Каждый из перечисленных элементов должен быть описан, в этом же файле, в отдельной секции вида `[X-Alterator <Entity> <Entity_Name>]`, где &lt;Entity&gt; обозначает тип описываемой сущности, а &lt;Entity_Name&gt; - её имя, например:
 
 ```
 [X-Alterator Object o1]
@@ -86,7 +83,16 @@ Name[ru]=об1
 ```
 
 На данный момент поддерживаются следующие сущности:
-* To be continued...
+
+- Interface
+- To be continued...
+
+#### X-Alterator Interface
+
+Для перечисления D-Bus интерфейсов в `[X-Alterator Entry]` используется ключ `Implements`. Секция должна иметь название соответствующее шаблону: `[X-Alterator Interface <name>]`, где &lt;name&gt; обозначает полное имя интерфейса на D-Bus, например: `ru.basealt.alterator.diag1`. Секция интерфейса должна содержать следующие поля:
+
+- Exec - команда запускающая прииложение реализующее интерфейсом, вида: &lt;app&gt; &lt;params&gt; %&lt;code&gt;, где &lt;code&gt; - специальный код обозначающий возможность передачи дополнительного параметра, сущетвуют следующие коды:
+	- %o - указывает на возможность передачи в пути D-Bus объекта в качестве параметра
 
 ## Интерфейс добавления интерфейсов модулей
 
