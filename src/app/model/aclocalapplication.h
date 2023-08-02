@@ -22,7 +22,7 @@ public:
     QString m_displayName;
     QString m_displayComment;
     QString m_try_Exec;
-    QString m_exec;
+    QString m_desktopExec; //desktopExec
     QString m_icon;
     QString m_type;
     QString m_displayKeywords;
@@ -30,7 +30,7 @@ public:
 
     std::vector<QString> m_categories;
     std::vector<QString> m_mimeTypes;
-    QMultiMap<QString, QMap<QString, QString>> m_alteratorIterfaces; // section X-Alterator Entry<Interface,<key, value>>
+    QMap<QString, QMultiMap<QString, QString>> m_alteratorIterfaces; // section Alterator Entry<Interface,<key, value>>
 
     QMap<QString, QString> m_nameLocaleStorage;
     QMap<QString, QString> m_genericNameLocaleStorage;
