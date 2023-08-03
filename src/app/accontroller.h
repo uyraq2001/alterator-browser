@@ -23,7 +23,7 @@ public:
     ~ACController();
 
     void moduleClicked(ACObjectItem *moduleItem);
-    void onInterfaceClicked(ACLocalApplication *app);
+    void onInterfaceClicked(ACApplication *app);
 
 private:
 

@@ -12,6 +12,7 @@
 #include "../core/enums.h"
 #include "flowlayout.h"
 #include "modulepushbutton.h"
+#include "model/accategory.h"
 
 CategoryWidget::CategoryWidget(MainWindow *w, QWidget *parent)
     : QWidget{parent},
@@ -43,10 +44,10 @@ void CategoryWidget::setItem(ACObjectItem *item)
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    ui->headerLabel->setText(item->getACObject()->m_categoryObject->m_name);
-    ui->descriptionLabel->setText(item->getACObject()->m_categoryObject->m_comment);
+    ui->headerLabel->setText(item->getACEntity()->toCategory()->m_name);
+    ui->descriptionLabel->setText(item->getACEntity()->toCategory()->m_comment);
     QPixmap iconMap("/usr/share/alterator/design/images/" +
-                    item->getACObject()->m_categoryObject->m_icon +
+                    item->getACEntity()->toCategory()->m_icon +
                     ".png");
     ui->iconLabel->setPixmap(iconMap);
     ui->headerLabel->setMinimumSize(ui->headerLabel->sizeHint());

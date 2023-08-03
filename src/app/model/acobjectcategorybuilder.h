@@ -1,7 +1,7 @@
 #ifndef ACOBJECTCATEGORYBUILDER_H
 #define ACOBJECTCATEGORYBUILDER_H
 
-#include "acobjectcategory.h"
+#include "accategory.h"
 #include "desktopfileparser.h"
 
 #include <memory>
@@ -13,14 +13,14 @@ public:
     ACObjectCategoryBuilder(DesktopFileParser *categoryParser);
     ~ACObjectCategoryBuilder();
 
-    std::unique_ptr<ACObjectCategory> buildACObjectCategory();
+    std::unique_ptr<ACCategory> buildACObjectCategory();
 
 private:
     DesktopFileParser *m_categoryParser;
 
 private:
-    bool buildNames(DesktopFileParser::Section &section, ACObjectCategory *categoryObject);
-    bool buildComments(DesktopFileParser::Section &section, ACObjectCategory *categoryObject);
+    bool buildNames(DesktopFileParser::Section &section, ACCategory *categoryObject);
+    bool buildComments(DesktopFileParser::Section &section, ACCategory *categoryObject);
 
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
 

@@ -1,6 +1,8 @@
 #ifndef ACCATEGORY_H
 #define ACCATEGORY_H
 
+#include <QMap>
+
 #include "definiciones.h"
 #include "abstractacentity.h"
 

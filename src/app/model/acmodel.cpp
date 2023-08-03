@@ -24,7 +24,9 @@ void ACModel::translateModel(QString locale)
 
         translateItem(this->item(i), locale);
 
-        currentItem->getACObject()->setLocale(locale);
+        auto t = currentItem->getACEntity();
+        t->toCategory();
+        t->setLocale(locale);
     }
 }
 
@@ -46,6 +48,6 @@ void ACModel::translateItem(QStandardItem *item, QString locale)
             translateItem(currentItem, locale);
         }
 
-        currentItem->getACObject()->setLocale(locale);
+        currentItem->getACEntity()->setLocale(locale);
     }
 }

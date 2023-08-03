@@ -1,4 +1,4 @@
-#include "acapplication.h"
+#include "fulldefinitions.h"
 
 ACApplication::ACApplication()
     : m_id()
@@ -50,7 +50,7 @@ void ACApplication::setLocale(QString locale)
     }
 }
 
-ACObject *ACObject::toObject(){return new ACObject();}
-ACCategory *ACObject::toCategory(){return new ACCategory();}
-ACInterface *ACObject::toInterface(){return new ACInterface();}
-ACApplication *ACObject::toAplication(){return this;}
+ACObject *ACApplication::toObject(){return new ACObject();}
+ACCategory *ACApplication::toCategory(){return new ACCategory();}
+ACInterface *ACApplication::toInterface(){return new ACInterface();}
+ACApplication *ACApplication::toAplication(){return this;}

@@ -93,7 +93,7 @@ void MainWindow::showModuleMenu(ACObjectItem *item)
     emit showMenu(item);
 }
 
-void MainWindow::onInterfaceClicked(ACLocalApplication *app)
+void MainWindow::onInterfaceClicked(ACApplication *app)
 {
     controller->onInterfaceClicked(app);
 }

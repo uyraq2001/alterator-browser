@@ -17,9 +17,9 @@ ACObjectCategoryBuilder::ACObjectCategoryBuilder(DesktopFileParser *categoryPars
 
 ACObjectCategoryBuilder::~ACObjectCategoryBuilder() {}
 
-std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory()
+std::unique_ptr<ACCategory> ACObjectCategoryBuilder::buildACObjectCategory()
 {
-    std::unique_ptr<ACObjectCategory> result{new ACObjectCategory};
+    std::unique_ptr<ACCategory> result{new ACCategory};
 
     auto sections = m_categoryParser->getSections();
 
@@ -28,24 +28,24 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     if (desktopSection == sections.end())
     {
         qWarning() << "WARNING! Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section! Skipping..";
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ACCategory>();
     }
 
     if (!buildNames(*desktopSection, result.get()))
     {
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ACCategory>();
     }
 
     if (!buildComments(*desktopSection, result.get()))
     {
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ACCategory>();
     }
 
     QString icon = getValue(*desktopSection, CATEGORY_ICON_KEY_NAME);
     if (icon.isEmpty())
     {
         qWarning() << "WARNING! Can't find icon for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ACCategory>();
     }
     result->m_icon = icon;
 
@@ -53,7 +53,7 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     if (type.isEmpty())
     {
         qWarning() << "WARNING! Can't find type for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ACCategory>();
     }
     result->m_type = type;
 
@@ -61,14 +61,14 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     if (xAlteratorCategory.isEmpty())
     {
         qWarning() << "WARNING! Can't find X-Alterator-Category for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ACCategory>();
     }
     result->m_xAlteratorCategory = xAlteratorCategory;
 
     return result;
 }
 
-bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ACObjectCategory *categoryObject)
+bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ACCategory *categoryObject)
 {
     auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
 
@@ -100,7 +100,7 @@ bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, AC
     return true;
 }
 
-bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ACObjectCategory *categoryObject)
+bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ACCategory *categoryObject)
 {
     auto commentIt = section.find(CATEGORY_COMMENT_KEY_NAME);
 

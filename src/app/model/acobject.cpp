@@ -1,4 +1,4 @@
-#include "acobject.h"
+#include "fulldefinitions.h"
 
 ACObject::ACObject()
     : m_id()

@@ -1,7 +1,7 @@
 #ifndef ACOBJECTITEM_H
 #define ACOBJECTITEM_H
 
-#include "acobject.h"
+#include "abstractacentity.h"
 
 #include <QStandardItem>
 
@@ -21,12 +21,13 @@ public:
 
     int type() const override;
 
-    ACObject *getACObject();
+    AbstractACEntity *getACEntity();
+    void setEntity(std::unique_ptr<AbstractACEntity> entity);
 
 public:
     ITEM_TYPE m_itemType;
 
-    std::unique_ptr<ACObject> m_acObject;
+    std::unique_ptr<AbstractACEntity> m_acEntity;
 };
 
 #endif // ACOBJECTITEM_H

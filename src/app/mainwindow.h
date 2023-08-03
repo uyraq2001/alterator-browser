@@ -39,7 +39,7 @@ public:
 
     void showModuleMenu(ACObjectItem *item);
     void onModuleClicked(ACPushButton *button);
-    void onInterfaceClicked(ACLocalApplication *app);
+    void onInterfaceClicked(ACApplication *app);
 
 private:
 

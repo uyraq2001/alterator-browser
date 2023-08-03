@@ -1,10 +1,10 @@
 #include "abstractacentity.h"
-#include "model/acobject.h"
+#include "fulldefinitions.h"
 
 
 AbstractACEntity::~AbstractACEntity(){}
 
-static AbstractACEntity *AbstractACEntity::createObject(){return new ACObject();}
-static AbstractACEntity *AbstractACEntity::createCategory(){return new ACCategory();}
-static AbstractACEntity *AbstractACEntity::createInterface(){return new ACInterface();}
-static AbstractACEntity *AbstractACEntity::createApplication(){return new ACApplication();}
+AbstractACEntity *AbstractACEntity::createObject(){return new ACObject();}
+AbstractACEntity *AbstractACEntity::createCategory(){return new ACCategory();}
+AbstractACEntity *AbstractACEntity::createInterface(){return new ACInterface();}
+AbstractACEntity *AbstractACEntity::createApplication(){return new ACApplication();}

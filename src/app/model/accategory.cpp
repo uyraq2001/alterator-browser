@@ -1,6 +1,4 @@
-#include "accategory.h"
-
-#include "acobject.h"
+#include "fulldefinitions.h"
 
 ACCategory::ACCategory()
     : m_id()
@@ -18,7 +16,7 @@ ACCategory::~ACCategory() {}
 ACObject *ACCategory::toObject(){return new ACObject();}
 ACCategory *ACCategory::toCategory(){return this;}
 ACInterface *ACCategory::toInterface(){return new ACInterface();}
-ACApplication *ACCategory::toAplication(){return new ACAppication();}
+ACApplication *ACCategory::toAplication(){return new ACApplication();}
 
 void ACCategory::setLocale(QString locale)
 {

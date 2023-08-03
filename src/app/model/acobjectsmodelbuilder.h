@@ -36,7 +36,7 @@ private:
 
     std::unique_ptr<ACModel> buildModelFromACObjects(std::vector<std::unique_ptr<ACObject>> objects);
 
-    ACObjectItem *createCategoryItem(QString name, ACObjectCategory *nameTranslations);
+    ACObjectItem *createCategoryItem(QString name, std::unique_ptr<ACCategory> nameTranslations);
 
 private:
     QDBusConnection m_dbusConnection;

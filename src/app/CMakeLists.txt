@@ -55,6 +55,7 @@ set(HEADERS
     model/acapplication.h
 
     model/definiciones.h
+    model/fulldefinitions.h
 )
 
 set(SOURCES

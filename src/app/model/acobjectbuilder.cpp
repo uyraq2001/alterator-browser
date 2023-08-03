@@ -48,32 +48,32 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
     }
     else
     {
-        QDBusReply<QByteArray> reply = m_dbusInterface->call(m_dbusMethodName, currentObjectCategoryName);
+//        QDBusReply<QByteArray> reply = m_dbusInterface->call(m_dbusMethodName, currentObjectCategoryName);
 
-        if (!reply.isValid())
-        {
-            qWarning() << "WARNING! Can't reply with category name for the object: " << newObject->m_id;
-            return std::unique_ptr<ACObject>(nullptr);
-        }
+//        if (!reply.isValid())
+//        {
+//            qWarning() << "WARNING! Can't reply with category name for the object: " << newObject->m_id;
+//            return std::unique_ptr<ACObject>(nullptr);
+//        }
 
-        QString categoryData(reply.value());
+//        QString categoryData(reply.value());
 
-        DesktopFileParser categoryParser(categoryData);
+//        DesktopFileParser categoryParser(categoryData);
 
-        ACObjectCategoryBuilder categoryBuilder(&categoryParser);
+//        ACObjectCategoryBuilder categoryBuilder(&categoryParser);
 
-        std::unique_ptr<ACObjectCategory> category = categoryBuilder.buildACObjectCategory();
+//        std::unique_ptr<ACCategory> category = categoryBuilder.buildACObjectCategory();
 
-        if (!category)
-        {
-            return std::unique_ptr<ACObject>(nullptr);
-        }
+//        if (!category)
+//        {
+//            return std::unique_ptr<ACObject>(nullptr);
+//        }
 
-        newObject->m_categoryId = category->m_id;
+        newObject->m_categoryId = currentObjectCategoryName;
 
-        newObject->m_displayCategory = category->m_id;
+//        newObject->m_displayCategory = category->m_id;
 
-        newObject->m_categoryObject = std::move(category);
+//        newObject->m_categoryObject = std::move(category);
     }
 
     if (!buildNames(*desktopSection, newObject.get()))
@@ -133,24 +133,24 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
         newObject->m_terminal = true;
     }
 
-    auto altCenterSection = sections.find(ALT_CENTER_SECTION_NAME);
+//    auto altCenterSection = sections.find(ALT_CENTER_SECTION_NAME);
 
-    if (altCenterSection == sections.end())
-    {
-        qWarning() << "WARNING! Can't find " << ALT_CENTER_SECTION_NAME << " section for the object! Skipping..";
-    }
-    else
-    {
-        QString interfaces = getValue(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME);
-        if (interfaces.isEmpty())
-        {
-            qWarning() << "WARNING! Can't find interfaces for the object: " << newObject->m_id;
-        }
-        else
-        {
-            newObject->m_interfaces = parseValuesFromKey(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME, ";");
-        }
-    }
+//    if (altCenterSection == sections.end())
+//    {
+//        qWarning() << "WARNING! Can't find " << ALT_CENTER_SECTION_NAME << " section for the object! Skipping..";
+//    }
+//    else
+//    {
+//        QString interfaces = getValue(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME);
+//        if (interfaces.isEmpty())
+//        {
+//            qWarning() << "WARNING! Can't find interfaces for the object: " << newObject->m_id;
+//        }
+//        else
+//        {
+//            newObject->m_interfaces = parseValuesFromKey(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME, ";");
+//        }
+//    }
 
     newObject->m_isLegacy = true;
 

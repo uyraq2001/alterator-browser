@@ -23,6 +23,8 @@ public:
 
     virtual void setLocale(QString locale) = 0;
 
+    const int c = 123456789;
+
 signals:
 
 };
