@@ -14,9 +14,10 @@ BuildRequires: qt5-base-devel
 BuildRequires: qt5-tools-devel
 BuildRequires: qt5-base-common
 BuildRequires: boost-devel-headers
-BuildRequires: alterator
-BuildRequires: alterator-manager
-BuildRequires: alterator-module-executor
+
+Requires: alterator
+Requires: alterator-manager
+Requires: alterator-module-executor
 
 Source0: %name-%version.tar
 
