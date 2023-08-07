@@ -66,7 +66,7 @@ QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
         return QStringList();
     }
 
-    QDBusReply<QByteArray> reply = iface.call(m_getFilesMethodName);
+    QDBusReply<QStringList> reply = iface.call(m_getFilesMethodName);
 
     if (!reply.isValid())
     {
@@ -75,9 +75,7 @@ QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
         return QStringList();
     }
 
-    QString list(reply.value());
-
-    QStringList listOfDesktopFiles = list.split("\n", Qt::SkipEmptyParts);
+    QStringList listOfDesktopFiles = reply.value();
 
     return listOfDesktopFiles;
 }

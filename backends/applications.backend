@@ -10,6 +10,6 @@ stdout_bytes = enabled
 
 [list]
 execute = bash /usr/share/alterator/scripts/app_list.sh /usr/share/applications/
-stdout_bytes = enabled
+stdout_strings = enabled
 
 
