@@ -22,13 +22,16 @@ public:
     explicit ACController(MainWindow *w, ACModel *m, QObject *parent = nullptr);
     ~ACController();
 
+public slots:
+
     void moduleClicked(ACObjectItem *moduleItem);
     void onInterfaceClicked(ACLocalApplication *app);
+    void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:
 
     MainWindow *window;
-    QStandardItemModel *model;
+    std::unique_ptr<ACModel> model;
 
     ACController(const ACController &) = delete;
     ACController(ACController &&)      = delete;
