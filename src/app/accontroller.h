@@ -19,7 +19,7 @@ class ACController : public QObject
 {
     Q_OBJECT
 public:
-    explicit ACController(MainWindow *w, ACModel *m, QObject *parent = nullptr);
+    explicit ACController(MainWindow *w, std::unique_ptr<ACModel> m, QObject *parent = nullptr);
     ~ACController();
 
 public slots:

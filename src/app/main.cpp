@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 
     MainWindow w;
 
-    ACController controller(&w, model.get());
+    ACController controller(&w, std::move(model));
 
     w.setController(&controller);
 

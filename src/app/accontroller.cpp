@@ -28,34 +28,22 @@ const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.applicati
 const QString DBUS_LOCAL_APP_GET_LIST_OF_FILES = "list";
 const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
-ACController::ACController(MainWindow *w, ACModel *m, QObject *parent)
+ACController::ACController(MainWindow *w, std::unique_ptr<ACModel> m, QObject *parent)
     : QObject{parent}
     , window(w)
-    , model(m)
+    , model(std::move(m))
 {
-    if (m){
+    if (model.get()){
         w->setModel(model.get());
     }
 
-//    QDBusServiceWatcher alteratorWatcher("ru.basealt.alterator",
-//                                         QDBusConnection::systemBus(),
-//                                         QDBusServiceWatcher::WatchForOwnerChange);
-//    connect(&alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged,
-////            this, [](QString a, ){qWarning() << "dxfcgvhbjnkl;" << a;});
-//            this, &ACController::onDBusStructureUpdate);
-
-//    connect(QDBusConnection::sessionBus().interface(), &QDBusConnectionInterface::serviceRegistered, this, [=](QString a) {
-//                qDebug() <<"service R: " << a;
-//            });
-//    connect(&alteratorWatcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)),
-//            this, SLOT(onDBusStructureUpdate(QString,QString,QString)));
-
-    QDBusConnection::systemBus().connect("org.freedesktop.DBus",
-                                         "/org/freedesktop/DBus",
-                                         "org.freedesktop.DBus",
-                                         "NameOwnerChanged",
-                                         QStringList() << "ru.basealt.alterator", "sss",
-                                         this, SLOT(onDBusStructureUpdate(QString,QString,QString)));
+    QDBusServiceWatcher *alteratorWatcher =
+                new QDBusServiceWatcher(DBUS_SERVICE_NAME,
+                                        QDBusConnection::systemBus(),
+                                        QDBusServiceWatcher::WatchForOwnerChange,
+                                        this);
+    connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged,
+            this, &ACController::onDBusStructureUpdate);
 }
 
 
@@ -64,8 +52,8 @@ ACController::~ACController() {}
 void ACController::moduleClicked(ACObjectItem *moduleItem)
 {
     if (moduleItem->m_acObject->m_isLegacy){
-        QProcess *proc = new QProcess(this);
-        proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_acObject.get()->m_icon);
+        QProcess proc;
+        proc.start("alterator-standalone", QStringList() << "-l" << moduleItem->m_acObject.get()->m_icon);
     }else{
         window->showModuleMenu(moduleItem);
     }

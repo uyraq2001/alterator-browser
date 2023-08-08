@@ -17,6 +17,7 @@
 #include <QStandardItem>
 #include <QLayout>
 #include <QMouseEvent>
+#include <QShortcut>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -33,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->scrollArea->widget()->setLayout(categoryLayout);
 
     setWindowTitle(tr("altcenter"));
+
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this, SLOT(close()));
 }
 
 MainWindow::~MainWindow()
