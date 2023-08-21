@@ -28,7 +28,7 @@ std::unique_ptr<ACLocalApplicationModel> ACLocalApllicationModelBuilder::buildMo
     {
         qWarning() << "ERROR! Can't get list of local applications!";
 
-        return std::unique_ptr<ACLocalApplicationModel>(nullptr);
+        return std::unique_ptr<ACLocalApplicationModel>(new ACLocalApplicationModel());
     }
 
     std::vector<std::unique_ptr<ACLocalApplication>> listOfApps = parseDesktopFiles(listOfDesktopFiles);
@@ -37,7 +37,7 @@ std::unique_ptr<ACLocalApplicationModel> ACLocalApllicationModelBuilder::buildMo
     {
         qWarning() << "ERROR! Can't create ACLocalApplications objects!";
 
-        return std::unique_ptr<ACLocalApplicationModel>(nullptr);
+        return std::unique_ptr<ACLocalApplicationModel>(new ACLocalApplicationModel());
     }
 
     std::unique_ptr<ACLocalApplicationModel> model(new ACLocalApplicationModel);

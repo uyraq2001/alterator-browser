@@ -52,8 +52,8 @@ ACController::~ACController() {}
 void ACController::moduleClicked(ACObjectItem *moduleItem)
 {
     if (moduleItem->m_acObject->m_isLegacy){
-        QProcess proc;
-        proc.start("alterator-standalone", QStringList() << "-l" << moduleItem->m_acObject.get()->m_icon);
+        QProcess *proc = new QProcess(this);
+        proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_acObject.get()->m_icon);
     }else{
         window->showModuleMenu(moduleItem);
     }

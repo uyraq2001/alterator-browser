@@ -35,14 +35,14 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationMod
     {
         qWarning() << "ERROR! Local applications model is empty!!";
 
-        return std::unique_ptr<ACModel>(nullptr);
+        return std::unique_ptr<ACModel>(new ACModel());
     }
 
     QStringList pathsOfACObjects = getListOfACObjects();
 
     if (pathsOfACObjects.isEmpty())
     {
-        return std::unique_ptr<ACModel>(nullptr);
+        return std::unique_ptr<ACModel>(new ACModel());
     }
 
     std::vector<std::unique_ptr<ACObject>> acObjects = parseACObjects(pathsOfACObjects);
@@ -51,7 +51,7 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationMod
     {
         qWarning() << "ERROR! Can't access alterator manager interface!";
 
-        return std::unique_ptr<ACModel>(nullptr);
+        return std::unique_ptr<ACModel>(new ACModel());
     }
 
     std::unique_ptr<ACModel> model = buildModelFromACObjects(std::move(acObjects));
