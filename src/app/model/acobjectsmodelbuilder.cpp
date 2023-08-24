@@ -34,8 +34,6 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationMod
     if (!appModel)
     {
         qWarning() << "ERROR! Local applications model is empty!!";
-
-        return std::unique_ptr<ACModel>(new ACModel());
     }
 
     QStringList pathsOfACObjects = getListOfACObjects();

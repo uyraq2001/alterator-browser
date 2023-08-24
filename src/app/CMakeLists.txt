@@ -96,12 +96,16 @@ DEPENDS ${TS_FILES}
 COMMAND ${Qt5_LUPDATE_EXECUTABLE} -recursive ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES} -noobsolete
 )
 
-qt5_add_translation(QM_FILES ${TS_FILES})
+set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_translation(QM_FILES ${TS_FILES})
 
 qt5_wrap_ui(UI_SOURCES ${UI_FORMS})
 
-qt5_add_resources(RCC_SOURCES ${RESOURCES})
+add_translation_resource(RESOURCES_SRC "alterator-browser" ${QM_FILES})
 
-add_altcenter_executable(altcenter ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES} ${QM_FILES})
+qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
+
+add_altcenter_executable(altcenter ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
 
 target_link_libraries(altcenter Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui altcentercore)
