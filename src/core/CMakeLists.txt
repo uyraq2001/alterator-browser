@@ -13,5 +13,9 @@ set (SOURCES
     adtdesktopfileparser.cpp
 )
 
-ADD_LIBRARY(altcentercore STATIC ${SOURCES} ${HEADERS})
-target_link_libraries(altcentercore PRIVATE Qt5::Core Qt5::DBus Qt5::Widgets)
+add_library(altcenter-core ${SOURCES} ${HEADERS})
+
+add_subdirectory(logger)
+target_link_libraries(altcenter-core logger)
+
+target_link_libraries(altcenter-core Qt5::Core Qt5::DBus Qt5::Widgets)
