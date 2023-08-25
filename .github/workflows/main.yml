@@ -1,0 +1,39 @@
+name: altcenter-ci
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    types: [ opened, synchronize, ready_for_review ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  altcenter-build-container:
+    uses: ./.github/workflows/build-container.yml
+    secrets: inherit
+    strategy:
+      matrix:
+        os: [ { distr: "alt:sisyphus", artifact: "sisyphus" } ]
+        architecture: [ amd64, i386 ]
+    with:
+      distr: ${{ matrix.os.distr }}
+      architecture: ${{ matrix.architecture }}
+
+  altcenter-build:
+    uses: ./.github/workflows/build.yml
+    needs: [ altcenter-build-container ]
+    secrets: inherit
+    strategy:
+      matrix:
+        os: [ { distr: "alt:sisyphus", artifact: "sisyphus" } ]
+        architecture: [ amd64, i386 ]
+      fail-fast: false
+    with:
+      artifact: ${{ matrix.os.artifact }}
+      architecture: ${{ matrix.architecture }}
+
