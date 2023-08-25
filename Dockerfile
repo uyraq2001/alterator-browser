@@ -42,7 +42,11 @@ RUN apt-get update \
     xvfb-run \
     sudo \
     && export CURRENT_PWD=`pwd` \
-    && groupadd --gid $GROUP_ID builder2 \
+    && if [ $(getent group $GROUP_ID) ]; then \
+      echo "group $GROUP_ID exists."; \
+    else \
+      groupadd --gid $GROUP_ID builder2; \
+    fi \
     && useradd --uid $USER_ID --gid $GROUP_ID -ms /bin/bash builder2 \
     && groupadd sudo \
     && usermod -aG rpm builder2 \
@@ -50,9 +54,9 @@ RUN apt-get update \
     && usermod -aG sudo builder2 \
     && echo "root ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers \
     && echo "builder2 ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers \
-    && hasher-useradd builder2 \
+    && hasher-useradd builder2 || : \
     && mkdir /app \
-    && chown root:builder2 /app
+    && chown $USER_ID:$GROUP_ID /app
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY script/build.sh /build.sh
@@ -60,8 +64,7 @@ COPY script/build.sh /build.sh
 ARG ARCH
 
 RUN if [ "$ARCH" = "i386" ]; then \
-       sed -i 's/gear-hsh/i586 gear-hsh/g' /build.sh; \
-       sed -i 's/x86_64/i686/g' /build.sh; \
+        sed -i 's/gear-rpm -ba/gear-rpm -ba --target=i386/g' build.sh; \
     fi
 
 USER builder2
