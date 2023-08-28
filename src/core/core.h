@@ -18,15 +18,15 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_MODEL_H
-#define ALTCENTER_MODEL_H
+#ifndef AB_MODEL_H
+#define AB_MODEL_H
 
 #include "common.h"
 
-#ifdef ALTCENTER_CORE_LIBRARY
-#define ALTCENTER_CORE_EXPORT ALTCENTER_SYMBOL_EXPORT
+#ifdef AB_CORE_LIBRARY
+#define AB_CORE_EXPORT AB_SYMBOL_EXPORT
 #else
-#define ALTCENTER_CORE_EXPORT ALTCENTER_SYMBOL_IMPORT
+#define AB_CORE_EXPORT AB_SYMBOL_IMPORT
 #endif
 
-#endif // ALTCENTER_MODEL_H
+#endif // AB_MODEL_H

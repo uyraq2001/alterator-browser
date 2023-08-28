@@ -20,7 +20,7 @@ set(SOURCES
 )
 
 add_definitions(
-    -DALTCENTER_CORE_LIBRARY
+    -DAB_CORE_LIBRARY
 )
 
 add_library(logger STATIC ${SOURCES} ${HEADERS})

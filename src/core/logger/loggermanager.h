@@ -18,8 +18,8 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_LOGGER_MANAGER_H
-#define ALTCENTER_LOGGER_MANAGER_H
+#ifndef AB_LOGGER_MANAGER_H
+#define AB_LOGGER_MANAGER_H
 
 #include "../core.h"
 #include "logger.h"
@@ -36,7 +36,7 @@ namespace logger
 {
 class LoggerManagerPrivate;
 
-class ALTCENTER_CORE_EXPORT LoggerManager
+class AB_CORE_EXPORT LoggerManager
 {
 public:
     static LoggerManager *globalInstance();
@@ -79,4 +79,4 @@ private:
 } // namespace logger
 } // namespace ab
 
-#endif // ALTCENTER_LOGGER_MANAGER_H
+#endif // AB_LOGGER_MANAGER_H

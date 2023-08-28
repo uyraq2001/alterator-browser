@@ -18,8 +18,8 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_ABSTRACT_LOGGER_H
-#define ALTCENTER_ABSTRACT_LOGGER_H
+#ifndef AB_ABSTRACT_LOGGER_H
+#define AB_ABSTRACT_LOGGER_H
 
 #include "../core.h"
 #include "loggermessage.h"
@@ -34,7 +34,7 @@ namespace ab
 {
 namespace logger
 {
-class ALTCENTER_CORE_EXPORT Logger
+class AB_CORE_EXPORT Logger
 {
 public:
     Logger()          = default;
@@ -68,4 +68,4 @@ protected:
 } // namespace logger
 } // namespace ab
 
-#endif // ALTCENTER_ABSTRACT_LOGGER_H
+#endif // AB_ABSTRACT_LOGGER_H

@@ -18,8 +18,8 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_LOGGER_MESSAGE_H
-#define ALTCENTER_LOGGER_MESSAGE_H
+#ifndef AB_LOGGER_MESSAGE_H
+#define AB_LOGGER_MESSAGE_H
 
 #include <ctime>
 #include <string>
@@ -72,4 +72,4 @@ public:
 } // namespace logger
 } // namespace ab
 
-#endif // ALTCENTER_LOGGER_MESSAGE_H
+#endif // AB_LOGGER_MESSAGE_H

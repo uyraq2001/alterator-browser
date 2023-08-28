@@ -18,8 +18,8 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_SYSLOG_LOGGER_H
-#define ALTCENTER_SYSLOG_LOGGER_H
+#ifndef AB_SYSLOG_LOGGER_H
+#define AB_SYSLOG_LOGGER_H
 
 #include "../core.h"
 #include "logger.h"
@@ -31,7 +31,7 @@ namespace ab
 {
 namespace logger
 {
-class ALTCENTER_CORE_EXPORT SyslogLogger : public Logger
+class AB_CORE_EXPORT SyslogLogger : public Logger
 {
 public:
     SyslogLogger();
@@ -43,4 +43,4 @@ private:
 } // namespace logger
 } // namespace ab
 
-#endif // ALTCENTER_SYSLOG_LOGGER_H
+#endif // AB_SYSLOG_LOGGER_H

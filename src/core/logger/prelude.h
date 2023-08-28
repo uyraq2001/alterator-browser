@@ -18,8 +18,8 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_LOGGERS_H
-#define ALTCENTER_LOGGERS_H
+#ifndef AB_LOGGERS_H
+#define AB_LOGGERS_H
 
 #include "loggermanager.h"
 
@@ -27,4 +27,4 @@
 #include "filelogger.h"
 #include "sysloglogger.h"
 
-#endif // ALTCENTER_LOGGERS_H
+#endif // AB_LOGGERS_H

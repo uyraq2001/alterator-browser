@@ -18,22 +18,22 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_COMMON_H
-#define ALTCENTER_COMMON_H
+#ifndef AB_COMMON_H
+#define AB_COMMON_H
 
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__)
-#define ALTCENTER_SYMBOL_EXPORT __attribute__((__dllexport__))
-#define ALTCENTER_SYMBOL_IMPORT __attribute__((__dllimport__))
+#define AB_SYMBOL_EXPORT __attribute__((__dllexport__))
+#define AB_SYMBOL_IMPORT __attribute__((__dllimport__))
 #else
 
 #if defined (__LCC__)
-#define ALTCENTER_SYMBOL_EXPORT
+#define AB_SYMBOL_EXPORT
 #else
-#define ALTCENTER_SYMBOL_EXPORT __attribute__((__visibility__("default")))
+#define AB_SYMBOL_EXPORT __attribute__((__visibility__("default")))
 #endif
 
-#define ALTCENTER_SYMBOL_IMPORT
+#define AB_SYMBOL_IMPORT
 #endif
 
-#endif // ALTCENTER_COMMON_H
+#endif // AB_COMMON_H
 

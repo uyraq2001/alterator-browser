@@ -18,8 +18,8 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_FILE_LOGGER_H
-#define ALTCENTER_FILE_LOGGER_H
+#ifndef AB_FILE_LOGGER_H
+#define AB_FILE_LOGGER_H
 
 #include "../core.h"
 #include "logger.h"
@@ -31,7 +31,7 @@ namespace ab
 {
 namespace logger
 {
-class ALTCENTER_CORE_EXPORT FileLogger : public Logger
+class AB_CORE_EXPORT FileLogger : public Logger
 {
 public:
     explicit FileLogger(const char *filename = "gpui.log");
@@ -48,4 +48,4 @@ private:
 } // namespace logger
 } // namespace ab
 
-#endif // ALTCENTER_FILE_LOGGER_H
+#endif // AB_FILE_LOGGER_H

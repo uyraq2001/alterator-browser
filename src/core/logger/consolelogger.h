@@ -18,8 +18,8 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef ALTCENTER_CONSOLE_LOGGER_H
-#define ALTCENTER_CONSOLE_LOGGER_H
+#ifndef AB_CONSOLE_LOGGER_H
+#define AB_CONSOLE_LOGGER_H
 
 #include "../core.h"
 #include "logger.h"
@@ -29,7 +29,7 @@ namespace ab
 {
 namespace logger
 {
-class ALTCENTER_CORE_EXPORT ConsoleLogger : public Logger
+class AB_CORE_EXPORT ConsoleLogger : public Logger
 {
 public:
     ConsoleLogger();
@@ -42,4 +42,4 @@ private:
 } // namespace logger
 } // namespace ab
 
-#endif // ALTCENTER_CONSOLE_LOGGER_H
+#endif // AB_CONSOLE_LOGGER_H
