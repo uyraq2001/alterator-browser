@@ -1,14 +1,14 @@
-#include "mainwindow.h"
-
-#include <QApplication>
-#include <QStandardItemModel>
-#include <QTranslator>
-
 #include "accontroller.h"
+#include "mainwindow.h"
 #include "model/aclocalapllicationmodelbuilder.h"
 #include "model/acmodel.h"
 #include "model/acobjectsmodelbuilder.h"
 #include "modelbuilder.h"
+#include "../core/logger/prelude.h"
+
+#include <QApplication>
+#include <QStandardItemModel>
+#include <QTranslator>
 
 const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
 const QString DBUS_PATH                            = "/ru/basealt/alterator";
@@ -26,13 +26,19 @@ const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    auto loggerManager = ab::logger::LoggerManager::globalInstance();
+
+    loggerManager->addLogger<ab::logger::ConsoleLogger>(QtDebugMsg);
+    loggerManager->addLogger<ab::logger::FileLogger>(QtWarningMsg);
+    loggerManager->addLogger<ab::logger::SyslogLogger>(LOG_LEVEL_DISABLED);
+
+    QApplication app(argc, argv);
 
     QLocale locale;
     QTranslator translator;
     QString language = locale.system().name().split("_").at(0);
     translator.load(language, ".");
-    a.installTranslator(&translator);
+    app.installTranslator(&translator);
 
     ACLocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
                                                    DBUS_LOCAL_APP_PATH,
@@ -61,12 +67,12 @@ int main(int argc, char *argv[])
 
     model->translateModel(QString("ru"));
 
-    MainWindow w;
+    MainWindow mainWindow;
 
-    ACController controller(&w, std::move(model));
+    ACController controller(&mainWindow, std::move(model));
 
-    w.setController(&controller);
+    mainWindow.setController(&controller);
 
-    w.show();
-    return a.exec();
+    mainWindow.show();
+    return app.exec();
 }

@@ -108,4 +108,4 @@ qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 
 add_altcenter_executable(altcenter ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
 
-target_link_libraries(altcenter Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui altcentercore)
+target_link_libraries(altcenter altcenter-core Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)
