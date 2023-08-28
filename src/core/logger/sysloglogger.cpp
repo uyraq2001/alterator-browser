@@ -23,7 +23,7 @@
 #include <sstream>
 #include <syslog.h>
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -63,4 +63,4 @@ void SyslogLogger::log(const LoggerMessage &message)
     syslog(logFlag, "%s: %s (%s:%u)", prefix, message.message.c_str(), message.filePath.c_str(), message.line);
 }
 } // namespace logger
-} // namespace altcenter
+} // namespace ab

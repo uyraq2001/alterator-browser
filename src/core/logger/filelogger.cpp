@@ -26,7 +26,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -100,4 +100,4 @@ bool FileLogger::ensureDir(const char *path)
     return true;
 }
 } // namespace logger
-} // namespace altcenter
+} // namespace ab

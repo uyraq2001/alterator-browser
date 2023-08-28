@@ -32,7 +32,7 @@ static std::tm getCurrentTime()
     return *std::localtime(&time);
 }
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -119,4 +119,4 @@ LoggerManager *LoggerManager::globalInstance()
     return loggerInstance();
 }
 } // namespace logger
-} // namespace altcenter
+} // namespace ab

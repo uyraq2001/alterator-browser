@@ -30,7 +30,7 @@
 
 #include <QString>
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -77,6 +77,6 @@ private:
     LoggerManagerPrivate *d;
 };
 } // namespace logger
-} // namespace altcenter
+} // namespace ab
 
 #endif // ALTCENTER_LOGGER_MANAGER_H

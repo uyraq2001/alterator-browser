@@ -26,11 +26,11 @@ const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
 int main(int argc, char *argv[])
 {
-    auto loggerManager = altcenter::logger::LoggerManager::globalInstance();
+    auto loggerManager = ab::logger::LoggerManager::globalInstance();
 
-    loggerManager->addLogger<altcenter::logger::ConsoleLogger>(QtDebugMsg);
-    loggerManager->addLogger<altcenter::logger::FileLogger>(QtWarningMsg);
-    loggerManager->addLogger<altcenter::logger::SyslogLogger>(LOG_LEVEL_DISABLED);
+    loggerManager->addLogger<ab::logger::ConsoleLogger>(QtDebugMsg);
+    loggerManager->addLogger<ab::logger::FileLogger>(QtWarningMsg);
+    loggerManager->addLogger<ab::logger::SyslogLogger>(LOG_LEVEL_DISABLED);
 
     QApplication app(argc, argv);
 

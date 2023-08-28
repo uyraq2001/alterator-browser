@@ -27,7 +27,7 @@
 
 #include <QtMsgHandler>
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -70,6 +70,6 @@ public:
     const std::thread::id threadId;
 };
 } // namespace logger
-} // namespace altcenter
+} // namespace ab
 
 #endif // ALTCENTER_LOGGER_MESSAGE_H

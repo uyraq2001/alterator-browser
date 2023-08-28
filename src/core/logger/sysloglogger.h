@@ -27,7 +27,7 @@
 
 #include <fstream>
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -41,6 +41,6 @@ private:
     void log(const LoggerMessage &message) override;
 };
 } // namespace logger
-} // namespace altcenter
+} // namespace ab
 
 #endif // ALTCENTER_SYSLOG_LOGGER_H

@@ -40,7 +40,7 @@ static std::string colorize(const std::string &text, const char *params)
     return std::string("\033[") + params + "m" + text + "\033[0m";
 }
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -79,4 +79,4 @@ void ConsoleLogger::log(const LoggerMessage &message)
               << message.filePath << ":" << message.line << ")" << std::endl;
 }
 } // namespace logger
-} // namespace altcenter
+} // namespace ab

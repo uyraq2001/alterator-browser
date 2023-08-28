@@ -27,7 +27,7 @@
 
 #include <fstream>
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -46,6 +46,6 @@ private:
     std::fstream logFileStream = {};
 };
 } // namespace logger
-} // namespace altcenter
+} // namespace ab
 
 #endif // ALTCENTER_FILE_LOGGER_H

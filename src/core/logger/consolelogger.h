@@ -25,7 +25,7 @@
 #include "logger.h"
 #include "loggermessage.h"
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -40,6 +40,6 @@ private:
     bool hasColorSupport = false;
 };
 } // namespace logger
-} // namespace altcenter
+} // namespace ab
 
 #endif // ALTCENTER_CONSOLE_LOGGER_H

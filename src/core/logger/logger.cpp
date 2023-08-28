@@ -20,7 +20,7 @@
 
 #include "logger.h"
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -42,4 +42,4 @@ void Logger::logMessage(const LoggerMessage &message)
     }
 }
 } // namespace logger
-} // namespace altcenter
+} // namespace ab

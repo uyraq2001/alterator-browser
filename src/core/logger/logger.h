@@ -30,7 +30,7 @@
 
 #define LOG_LEVEL_DISABLED static_cast<QtMsgType>(-1)
 
-namespace altcenter
+namespace ab
 {
 namespace logger
 {
@@ -66,6 +66,6 @@ protected:
     };
 };
 } // namespace logger
-} // namespace altcenter
+} // namespace ab
 
 #endif // ALTCENTER_ABSTRACT_LOGGER_H
