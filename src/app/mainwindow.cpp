@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "modelbuilder.h"
 #include "model/acobjectitem.h"
 
 #include <QStandardItemModel>

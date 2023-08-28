@@ -1,17 +1,18 @@
 #ifndef ACPUSHBUTTON_H
 #define ACPUSHBUTTON_H
 
-#include <QWidget>
 #include <QPushButton>
+#include <QWidget>
 
-#include "model/acobjectitem.h"
 #include "mainwindow.h"
+#include "model/acobjectitem.h"
 
 class MainWindow;
 
 class ACPushButton : public QPushButton
 {
     Q_OBJECT
+
 public:
     explicit ACPushButton(MainWindow *w, QWidget *parent = nullptr);
     ~ACPushButton();
@@ -22,7 +23,6 @@ public:
     void showMenu(ACObjectItem *item);
 
 private:
-
     ACObjectItem *data;
     MainWindow *window;
 

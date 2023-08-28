@@ -1,18 +1,18 @@
 #include "accontroller.h"
 
 #include <QAction>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#include <QDBusServiceWatcher>
 #include <QDebug>
 #include <QLayout>
 #include <QMenu>
 #include <QProcess>
 #include <QPushButton>
 #include <QScrollArea>
-#include <QDBusServiceWatcher>
-#include <QDBusConnection>
-#include <QDBusConnectionInterface>
 
-#include "model/acobjectsmodelbuilder.h"
 #include "model/aclocalapllicationmodelbuilder.h"
+#include "model/acobjectsmodelbuilder.h"
 
 const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
 const QString DBUS_PATH                            = "/ru/basealt/alterator";
@@ -33,28 +33,29 @@ ACController::ACController(MainWindow *w, std::unique_ptr<ACModel> m, QObject *p
     , window(w)
     , model(std::move(m))
 {
-    if (model.get()){
+    if (model.get())
+    {
         w->setModel(model.get());
     }
 
-    QDBusServiceWatcher *alteratorWatcher =
-                new QDBusServiceWatcher(DBUS_SERVICE_NAME,
-                                        QDBusConnection::systemBus(),
-                                        QDBusServiceWatcher::WatchForOwnerChange,
-                                        this);
-    connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged,
-            this, &ACController::onDBusStructureUpdate);
+    QDBusServiceWatcher *alteratorWatcher = new QDBusServiceWatcher(DBUS_SERVICE_NAME,
+                                                                    QDBusConnection::systemBus(),
+                                                                    QDBusServiceWatcher::WatchForOwnerChange,
+                                                                    this);
+    connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &ACController::onDBusStructureUpdate);
 }
-
 
 ACController::~ACController() {}
 
 void ACController::moduleClicked(ACObjectItem *moduleItem)
 {
-    if (moduleItem->m_acObject->m_isLegacy){
+    if (moduleItem->m_acObject->m_isLegacy)
+    {
         QProcess *proc = new QProcess(this);
         proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_acObject.get()->m_icon);
-    }else{
+    }
+    else
+    {
         window->showModuleMenu(moduleItem);
     }
 }

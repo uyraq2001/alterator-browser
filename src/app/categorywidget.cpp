@@ -9,7 +9,6 @@
 #include <QMenu>
 #include <QMouseEvent>
 
-#include "../core/enums.h"
 #include "flowlayout.h"
 #include "modulepushbutton.h"
 

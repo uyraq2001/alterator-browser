@@ -26,7 +26,6 @@ set(CMAKE_AUTORCC ON)
 
 set(HEADERS
     mainwindow.h
-    modelbuilder.h
     categorywidget.h
     flowlayout.h
     accontroller.h
@@ -54,7 +53,6 @@ set(HEADERS
 set(SOURCES
     main.cpp
     mainwindow.cpp
-    modelbuilder.cpp
     categorywidget.cpp
     flowlayout.cpp
     accontroller.cpp

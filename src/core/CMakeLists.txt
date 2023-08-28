@@ -5,12 +5,9 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set (HEADERS
-    adtdesktopfileparser.h
-    enums.h
 )
 
 set (SOURCES
-    adtdesktopfileparser.cpp
 )
 
 add_library(altcenter-core ${SOURCES} ${HEADERS})

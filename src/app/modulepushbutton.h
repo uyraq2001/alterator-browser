@@ -6,8 +6,6 @@
 #include <QDBusInterface>
 #include <QStandardItemModel>
 
-#include "../core/enums.h"
-
 class ModulePushButton : public QPushButton
 {
     Q_OBJECT
@@ -25,9 +23,6 @@ public:
             QDBusConnection::sessionBus());
     QDBusInterface *getDBusInterface();
 
-    void setMode(AlteratorModes m);
-    AlteratorModes getMode();
-
     void setText(const QString &text);
 
 private:
@@ -37,7 +32,6 @@ private:
     ModulePushButton &operator=(ModulePushButton &&) = delete;
 
     QDBusInterface *iface;
-    AlteratorModes mode;
 
     void onClicked();
 };

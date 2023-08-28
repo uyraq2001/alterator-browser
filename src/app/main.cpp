@@ -3,7 +3,6 @@
 #include "model/aclocalapllicationmodelbuilder.h"
 #include "model/acmodel.h"
 #include "model/acobjectsmodelbuilder.h"
-#include "modelbuilder.h"
 #include "../core/logger/prelude.h"
 
 #include <QApplication>
