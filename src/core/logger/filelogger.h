@@ -34,7 +34,7 @@ namespace logger
 class AB_CORE_EXPORT FileLogger : public Logger
 {
 public:
-    explicit FileLogger(const char *filename = "gpui.log");
+    explicit FileLogger(const char *filename = "alterator-browser.log");
     ~FileLogger();
 
 private:

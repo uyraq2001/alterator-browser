@@ -29,7 +29,7 @@ namespace logger
 {
 SyslogLogger::SyslogLogger()
 {
-    openlog("gpui-main", (LOG_CONS | LOG_PERROR | LOG_PID), LOG_DAEMON);
+    openlog("alterator-browser", (LOG_CONS | LOG_PERROR | LOG_PID), LOG_DAEMON);
 }
 
 SyslogLogger::~SyslogLogger()

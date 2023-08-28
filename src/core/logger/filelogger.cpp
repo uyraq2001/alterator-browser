@@ -34,7 +34,7 @@ FileLogger::FileLogger(const char *filename)
 {
     // TODO(mchernigin): timestamp on creation/editing log file is UTC and not local timezone
     std::string homeDir = getHomeDir();
-    std::string logDir  = homeDir + "/.local/share/gpui/";
+    std::string logDir  = homeDir + "/.local/share/alterator-browser/";
     ensureDir(logDir.c_str());
 
     std::string logFile = logDir + filename;
