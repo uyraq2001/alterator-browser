@@ -18,6 +18,8 @@ list(GET ALTCENTER_VERSION_LIST 2 ALTCENTER_VERSION_PATCH)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(${CMAKE_MODULE_PATH}/TranslationUtils.cmake)
 
+include(CheckCXXCompilerFlag)
+
 if(UNIX)
   include(GNUInstallDirs)
 else()
