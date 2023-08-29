@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Print ref
+        run: echo ${{ github.ref }}
+    
       - name: Checkout
         if: github.ref == 'refs/heads/master'
         uses: actions/checkout@v3
