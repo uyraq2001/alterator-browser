@@ -8,6 +8,12 @@ if (CMAKE_COMPILER_IS_GNUCXX AND NOT WIN32)
         -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs -Wnoexcept -Wold-style-cast \
         -Woverloaded-virtual -Wredundant-decls -Wshadow -Wstrict-null-sentinel -Wundef \
         -Wno-unused -Wno-variadic-macros -Wno-parentheses -fdiagnostics-show-option")
+    if(CMAKE_SIZEOF_VOID_P LESS_EQUAL 4)
+      CHECK_CXX_COMPILER_FLAG("-march=i586" COMPILER_SUPPORTS_MARCH_I586)
+      if (${COMPILER_SUPPORTS_MARCH_I586})
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=i586")
+      endif()
+    endif()
   endif()
 endif()
 
