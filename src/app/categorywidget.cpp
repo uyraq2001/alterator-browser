@@ -10,7 +10,6 @@
 #include <QMouseEvent>
 
 #include "flowlayout.h"
-#include "modulepushbutton.h"
 
 CategoryWidget::CategoryWidget(MainWindow *w, QWidget *parent)
     : QWidget{parent},
