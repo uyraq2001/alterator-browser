@@ -39,7 +39,7 @@ AlteratorModes ModulePushButton::getMode(){return mode;}
 void ModulePushButton::onClicked()
 {
     if (!iface->isValid()){
-        qWarning() << "ERROR: Interface '" + iface->interface() +
+        qCritical().nospace() << "Interface '" + iface->interface() +
                       "' of object '" + iface->path() +
                       "' of service '" + iface->service()+
                       "' is invalid!";

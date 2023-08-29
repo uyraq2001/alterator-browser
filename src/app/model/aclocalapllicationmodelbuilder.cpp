@@ -26,7 +26,7 @@ std::unique_ptr<ACLocalApplicationModel> ACLocalApllicationModelBuilder::buildMo
 
     if (listOfDesktopFiles.isEmpty())
     {
-        qWarning() << "ERROR! Can't get list of local applications!";
+        qCritical() << "Can't get list of local applications!";
 
         return std::unique_ptr<ACLocalApplicationModel>(new ACLocalApplicationModel());
     }
@@ -35,7 +35,7 @@ std::unique_ptr<ACLocalApplicationModel> ACLocalApllicationModelBuilder::buildMo
 
     if (listOfApps.empty())
     {
-        qWarning() << "ERROR! Can't create ACLocalApplications objects!";
+        qCritical() << "Can't create ACLocalApplications objects!";
 
         return std::unique_ptr<ACLocalApplicationModel>(new ACLocalApplicationModel());
     }
@@ -61,7 +61,7 @@ QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
 
     if (!iface.isValid())
     {
-        qWarning() << "ERROR! Can't access alterator manager interface to build local applications model!";
+        qCritical() << "Can't access alterator manager interface to build local applications model!";
 
         return QStringList();
     }
@@ -70,7 +70,7 @@ QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
 
     if (!reply.isValid())
     {
-        qWarning() << "ERROR! Can't get reply from alterator manager interface to build local applications model!";
+        qCritical() << "Can't get reply from alterator manager interface to build local applications model!";
 
         return QStringList();
     }
@@ -116,7 +116,7 @@ QString ACLocalApllicationModelBuilder::getDesktopFile(QString file)
 
     if (!iface.isValid())
     {
-        qWarning() << "ERROR! Can't access alterator manager interface to get desktop file: " << file;
+        qCritical() << "Can't access alterator manager interface to get desktop file: " << file;
 
         return result;
     }
@@ -125,7 +125,7 @@ QString ACLocalApllicationModelBuilder::getDesktopFile(QString file)
 
     if (!reply.isValid())
     {
-        qWarning() << "ERROR! Can't get reply from alterator manager interface to to get desktop file: " << file;
+        qCritical() << "Can't get reply from alterator manager interface to to get desktop file: " << file;
 
         return result;
     }
