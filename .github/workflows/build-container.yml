@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Print ref
-        run: echo "${github.ref}"
+        run: echo "${{ github.ref }}"
     
       - name: Checkout
         if: github.ref == 'refs/heads/master'
