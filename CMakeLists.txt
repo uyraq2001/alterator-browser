@@ -26,9 +26,9 @@ else()
     message(FATAL_ERROR "System not Linux")
 endif()
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/backends
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/backends
         DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/scripts
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/scripts
         DESTINATION ${CMAKE_INSTALL_DATADIR}/alterator)
 
 add_subdirectory(src)
