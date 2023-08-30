@@ -4,16 +4,17 @@
 #include <QStandardItemModel>
 #include <QWidget>
 
-#include "model/acobjectitem.h"
 #include "accontroller.h"
 #include "acpushbutton.h"
+#include "model/acobjectitem.h"
 
 class ACController;
 class MainWindow;
 class ACPushButton;
 
-namespace Ui {
-    class CategoryWidget;
+namespace Ui
+{
+class CategoryWidget;
 }
 
 class CategoryWidget : public QWidget
@@ -34,7 +35,7 @@ private:
     MainWindow *window;
 
     CategoryWidget(const CategoryWidget &) = delete;
-    CategoryWidget(CategoryWidget &&) = delete;
+    CategoryWidget(CategoryWidget &&)      = delete;
     CategoryWidget &operator=(const CategoryWidget &) = delete;
     CategoryWidget &operator=(CategoryWidget &&) = delete;
 

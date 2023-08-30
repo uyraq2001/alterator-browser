@@ -1,10 +1,10 @@
 #ifndef ACCONTROLLER_H
 #define ACCONTROLLER_H
 
-#include <QObject>
-#include <QStandardItemModel>
 #include <utility>
+#include <QObject>
 #include <QPushButton>
+#include <QStandardItemModel>
 
 #include "mainwindow.h"
 
@@ -29,7 +29,6 @@ public slots:
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:
-
     MainWindow *window;
     std::unique_ptr<ACModel> model;
 

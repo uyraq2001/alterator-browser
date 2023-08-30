@@ -1,15 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <utility>
 #include <QMainWindow>
 #include <QStandardItemModel>
-#include <utility>
 
 #include "accontroller.h"
-#include "categorywidget.h"
-#include "model/acmodel.h"
 #include "acpushbutton.h"
+#include "categorywidget.h"
 #include "mainwindowsettings.h"
+#include "model/acmodel.h"
 
 class CategoryWidget;
 class ACController;
@@ -17,7 +17,10 @@ class MainWindowSettings;
 class ACPushButton;
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+class MainWindow;
+}
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -42,7 +45,6 @@ public:
     void onInterfaceClicked(ACLocalApplication *app);
 
 private:
-
     MainWindow(const MainWindow &) = delete;
     MainWindow(MainWindow &&)      = delete;
     MainWindow &operator=(const MainWindow &) = delete;
