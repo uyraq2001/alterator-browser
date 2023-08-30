@@ -27,7 +27,7 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
 
     if (desktopSection == sections.end())
     {
-        qWarning() << "WARNING! Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section! Skipping..";
+        qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section! Skipping..";
         return std::unique_ptr<ACObjectCategory>();
     }
 
@@ -44,7 +44,7 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     QString icon = getValue(*desktopSection, CATEGORY_ICON_KEY_NAME);
     if (icon.isEmpty())
     {
-        qWarning() << "WARNING! Can't find icon for the category: " << result->m_id;
+        qWarning() << "Can't find icon for the category: " << result->m_id;
         return std::unique_ptr<ACObjectCategory>();
     }
     result->m_icon = icon;
@@ -52,7 +52,7 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     QString type = getValue(*desktopSection, CATEGORY_TYPE_KEY_NAME);
     if (type.isEmpty())
     {
-        qWarning() << "WARNING! Can't find type for the category: " << result->m_id;
+        qWarning() << "Can't find type for the category: " << result->m_id;
         return std::unique_ptr<ACObjectCategory>();
     }
     result->m_type = type;
@@ -60,7 +60,7 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     QString xAlteratorCategory = getValue(*desktopSection, CATEGORY_X_ALTERATOR_CATEGORY_KEY_NAME);
     if (xAlteratorCategory.isEmpty())
     {
-        qWarning() << "WARNING! Can't find X-Alterator-Category for the category: " << result->m_id;
+        qWarning() << "Can't find X-Alterator-Category for the category: " << result->m_id;
         return std::unique_ptr<ACObjectCategory>();
     }
     result->m_xAlteratorCategory = xAlteratorCategory;
@@ -74,7 +74,7 @@ bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, AC
 
     if (nameIt == section.end())
     {
-        qWarning() << "WARNING! Can't find names for the category!";
+        qWarning() << "Can't find names for the category!";
         return false;
     }
 
@@ -84,7 +84,7 @@ bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, AC
 
     if (defaultName.isEmpty())
     {
-        qWarning() << "WARNING! Can't default name for the category!";
+        qWarning() << "Can't default name for the category!";
         return false;
     }
 
@@ -106,7 +106,7 @@ bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section,
 
     if (commentIt == section.end())
     {
-        qWarning() << "WARNING! Can't find comments for the category!";
+        qWarning() << "Can't find comments for the category!";
         return false;
     }
 
@@ -116,7 +116,7 @@ bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section,
 
     if (defaultComment.isEmpty())
     {
-        qWarning() << "WARNING! Can't default comment for the category!";
+        qWarning() << "Can't default comment for the category!";
         return false;
     }
 

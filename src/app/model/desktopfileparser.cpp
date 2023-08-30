@@ -29,7 +29,7 @@ DesktopFileParser::DesktopFileParser(QString data)
     }
     catch (std::exception &e)
     {
-        qWarning() << "ERROR: can't parse desktop file: " << data << e.what() << "\n";
+        qCritical() << "Can't parse desktop file: " << data << e.what() << "\n";
     }
 }
 

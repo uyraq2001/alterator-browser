@@ -19,7 +19,7 @@ std::vector<ACLocalApplication *> ACLocalApplicationModel::getAppsByInterface(QS
         ACLocalApplicationItem *currentApp = dynamic_cast<ACLocalApplicationItem *>(rootItem->child(i));
         if (!currentApp)
         {
-            qWarning() << "WARNING! Can't cast to ACLocalApplicationItem when try to find apps by interface!";
+            qWarning() << "Can't cast to ACLocalApplicationItem when try to find apps by interface!";
             continue;
         }
 

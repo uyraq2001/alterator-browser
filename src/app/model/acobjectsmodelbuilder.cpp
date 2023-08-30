@@ -33,7 +33,7 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationMod
 {
     if (!appModel)
     {
-        qWarning() << "ERROR! Local applications model is empty!!";
+        qCritical() << "Local applications model is empty!!";
     }
 
     QStringList pathsOfACObjects = getListOfACObjects();
@@ -47,7 +47,7 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationMod
 
     if (acObjects.empty())
     {
-        qWarning() << "ERROR! Can't access alterator manager interface!";
+        qCritical() << "Can't access alterator manager interface!";
 
         return std::unique_ptr<ACModel>(new ACModel());
     }
@@ -71,7 +71,7 @@ void ACObjectsModelBuilder::mergeApplicationModel(ACModel *objectModel, ACLocalA
         ACObjectItem *currentCategoryItem  = dynamic_cast<ACObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
-            qWarning() << "WARNING! Can't cast category item to ACObjectItem to merge models!";
+            qWarning() << "Can't cast category item to ACObjectItem to merge models!";
 
             continue;
         }
@@ -88,7 +88,7 @@ void ACObjectsModelBuilder::mergeObjectWithApp(ACObjectItem *item, ACLocalApplic
         ACObjectItem *currentModuleItem    = dynamic_cast<ACObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
-            qWarning() << "WARNING! Can't cast item to ACObjectItem to merge application object!";
+            qWarning() << "Can't cast item to ACObjectItem to merge application object!";
 
             continue;
         }
@@ -118,7 +118,7 @@ QStringList ACObjectsModelBuilder::getListOfACObjects()
 
     if (!managerIface.isValid())
     {
-        qWarning() << "ERROR! Can't access alterator manager interface!";
+        qCritical() << "Can't access alterator manager interface!";
 
         return QStringList();
     }
@@ -127,7 +127,7 @@ QStringList ACObjectsModelBuilder::getListOfACObjects()
 
     if (!reply.isValid())
     {
-        qWarning() << "ERROR! Can't get reply from alterator manager interface!";
+        qCritical() << "Can't get reply from alterator manager interface!";
 
         return QStringList();
     }
@@ -149,7 +149,7 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
 
     if (!categoryIface.isValid())
     {
-        qWarning() << "ERROR: can't find interface to find object with categories interface";
+        qCritical() << "can't find interface to find object with categories interface";
 
         return acObjects;
     }
@@ -158,7 +158,7 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
 
     if (!reply.isValid())
     {
-        qWarning() << "ERROR: Reply is invalid. Can't find find interface to find object with categories interface";
+        qCritical() << "Reply is invalid. Can't find find interface to find object with categories interface";
 
         return acObjects;
     }
@@ -170,7 +170,7 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
 
     if (!categoryIface.isValid())
     {
-        qWarning() << "ERROR: can't connect to category object!";
+        qCritical() << "can't connect to category object!";
 
         return acObjects;
     }

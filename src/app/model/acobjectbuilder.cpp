@@ -35,7 +35,7 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
 
     if (desktopSection == sections.end())
     {
-        qWarning() << "WARNING! Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
+        qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
         return std::unique_ptr<ACObject>(nullptr);
     }
 
@@ -51,49 +51,49 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
     QString type = getValue(*desktopSection, TYPE_KEY_NAME);
     if (type.isEmpty())
     {
-        qWarning() << "WARNING! Can't find type for the object: " << newObject->m_id;
+        qWarning() << "Can't find type for the object: " << newObject->m_id;
     }
     newObject->m_type = type;
 
     QString icon = getValue(*desktopSection, ICON_KEY_NAME);
     if (icon.isEmpty())
     {
-        qWarning() << "WARNING! Can't find icon for the object: " << newObject->m_id;
+        qWarning() << "Can't find icon for the object: " << newObject->m_id;
     }
     newObject->m_icon = icon;
 
     QString x_Alterator_URI = getValue(*desktopSection, X_ALTERATOR_URI_NAME);
     if (x_Alterator_URI.isEmpty())
     {
-        qWarning() << "WARNING! Can't find x_Alterator_URI for the object: " << newObject->m_id;
+        qWarning() << "Can't find x_Alterator_URI for the object: " << newObject->m_id;
     }
     newObject->m_x_Alterator_URI = x_Alterator_URI;
 
     QString x_Alterator_Weight = getValue(*desktopSection, X_ALTERATOR_WEIGHT_NAME);
     if (x_Alterator_Weight.isEmpty())
     {
-        qWarning() << "WARNING! Can't find x_Alterator_Weight for the object: " << newObject->m_id;
+        qWarning() << "Can't find x_Alterator_Weight for the object: " << newObject->m_id;
     }
     newObject->m_x_Alterator_Weight = x_Alterator_Weight;
 
     QString x_Alterator_Help = getValue(*desktopSection, X_ALTERATOR_HELP_NAME);
     if (x_Alterator_Help.isEmpty())
     {
-        qWarning() << "WARNING! Can't find x_Alterator_Help for the object: " << newObject->m_id;
+        qWarning() << "Can't find x_Alterator_Help for the object: " << newObject->m_id;
     }
     newObject->m_x_Alterator_Help = x_Alterator_Help;
 
     QString x_Alterator_UI = getValue(*desktopSection, X_ALTERATOR_UI_NAME);
     if (x_Alterator_UI.isEmpty())
     {
-        qWarning() << "WARNING! Can't find x_Alterator_UI for the object: " << newObject->m_id;
+        qWarning() << "Can't find x_Alterator_UI for the object: " << newObject->m_id;
     }
     newObject->m_x_Alterator_UI = x_Alterator_UI;
 
     QString terminal = getValue(*desktopSection, TERMINAL_KEY_NAME);
     if (terminal.isEmpty())
     {
-        qWarning() << "WARNING! Can't find terminal for the object: " << newObject->m_id;
+        qWarning() << "Can't find terminal for the object: " << newObject->m_id;
     }
     if (terminal.toLower() == QString("true"))
     {
@@ -104,14 +104,14 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
 
     if (altCenterSection == sections.end())
     {
-        qWarning() << "WARNING! Can't find " << ALT_CENTER_SECTION_NAME << " section for the object! Skipping..";
+        qWarning() << "Can't find " << ALT_CENTER_SECTION_NAME << " section for the object! Skipping..";
     }
     else
     {
         QString interfaces = getValue(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME);
         if (interfaces.isEmpty())
         {
-            qWarning() << "WARNING! Can't find interfaces for the object: " << newObject->m_id;
+            qWarning() << "Can't find interfaces for the object: " << newObject->m_id;
         }
         else
         {
@@ -130,7 +130,7 @@ bool ACObjectBuilder::buildNames(DesktopFileParser::Section &section, ACObject *
 
     if (nameIt == section.end())
     {
-        qWarning() << "WARNING! Can't find names for the ACObject!";
+        qWarning() << "Can't find names for the ACObject!";
         return false;
     }
 
@@ -140,7 +140,7 @@ bool ACObjectBuilder::buildNames(DesktopFileParser::Section &section, ACObject *
 
     if (defaultName.isEmpty())
     {
-        qWarning() << "WARNING! Can't default name for the object!";
+        qWarning() << "Can't default name for the object!";
         return false;
     }
 
@@ -160,14 +160,14 @@ void ACObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, Q
 {
     if (categoryName.isEmpty())
     {
-        qWarning() << "WARNING! Can't find category name for the object: " << acObject->m_id << " using misc";
+        qWarning() << "Can't find category name for the object: " << acObject->m_id << " using misc";
         categoryName = "Miscellaneous";
     }
     QDBusReply<QByteArray> reply = iface->call(dbusMethod, categoryName);
 
     if (!reply.isValid())
     {
-        qWarning() << "WARNING! Can't reply with category name for the object: " << acObject->m_id;
+        qWarning() << "Can't reply with category name for the object: " << acObject->m_id;
 
         setDefaultCategory(acObject);
 
@@ -254,7 +254,7 @@ std::vector<QString> ACObjectBuilder::parseValuesFromKey(DesktopFileParser::Sect
     QString values = getValue(section, key);
     if (values.isEmpty())
     {
-        qWarning() << "WARNING! Can't find key:" << key;
+        qWarning() << "Can't find key:" << key;
         return std::vector<QString>();
     }
 

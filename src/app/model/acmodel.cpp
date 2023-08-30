@@ -17,7 +17,7 @@ void ACModel::translateModel(QString locale)
         ACObjectItem *currentItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
         if (!currentItem)
         {
-            qWarning() << "WARNING! Can't cast category item to ACObjectItem to translate!";
+            qWarning() << "Can't cast category item to ACObjectItem to translate!";
 
             continue;
         }
@@ -36,7 +36,7 @@ void ACModel::translateItem(QStandardItem *item, QString locale)
         ACObjectItem *currentItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
         if (!currentItem)
         {
-            qWarning() << "WARNING! Can't cast item to ACObjectItem to translate!";
+            qWarning() << "Can't cast item to ACObjectItem to translate!";
 
             continue;
         }
