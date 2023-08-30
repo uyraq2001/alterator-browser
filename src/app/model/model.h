@@ -3,6 +3,10 @@
 
 #include <QStandardItemModel>
 
+namespace ab
+{
+namespace model
+{
 class Model : public QStandardItemModel
 {
 public:
@@ -20,5 +24,7 @@ private:
     Model &operator=(const Model &) = delete;
     Model &operator=(Model &&) = delete;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_MODEL_H

@@ -1,5 +1,9 @@
 #include "objectitem.h"
 
+namespace ab
+{
+namespace model
+{
 ObjectItem::ObjectItem()
     : QStandardItem()
     , m_itemType(ITEM_TYPE::category)
@@ -17,3 +21,5 @@ Object *ObjectItem::getACObject()
 {
     return m_acObject.get();
 }
+} // namespace model
+} // namespace ab

@@ -8,6 +8,8 @@
 #include <QMenu>
 #include <QProcess>
 
+namespace ab
+{
 PushButton::PushButton(MainWindow *w, QWidget *parent)
     : data(nullptr)
     , window(w)
@@ -19,7 +21,7 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
 
 PushButton::~PushButton() {}
 
-void PushButton::setItem(ObjectItem *item)
+void PushButton::setItem(model::ObjectItem *item)
 {
     data = item;
 
@@ -27,12 +29,12 @@ void PushButton::setItem(ObjectItem *item)
     this->setMinimumWidth(this->sizeHint().width());
 }
 
-ObjectItem *PushButton::getItem()
+model::ObjectItem *PushButton::getItem()
 {
     return data;
 }
 
-void PushButton::showMenu(ObjectItem *item)
+void PushButton::showMenu(model::ObjectItem *item)
 {
     if (item == this->data)
     {
@@ -55,3 +57,4 @@ void PushButton::showMenu(ObjectItem *item)
         }
     }
 }
+} // namespace ab

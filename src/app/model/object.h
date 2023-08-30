@@ -8,6 +8,10 @@
 #include <QObject>
 #include <qmap.h>
 
+namespace ab
+{
+namespace model
+{
 class Object : public QObject
 {
     Q_OBJECT
@@ -39,5 +43,7 @@ public:
 
     bool m_isLegacy;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_OBJECT_H

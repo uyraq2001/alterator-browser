@@ -1,5 +1,9 @@
 #include "localapplicationitem.h"
 
+namespace ab
+{
+namespace model
+{
 LocalApplicationItem::LocalApplicationItem()
     : m_acLocalApplication(nullptr)
 {}
@@ -16,3 +20,5 @@ void LocalApplicationItem::setLocale(QString locale)
         m_acLocalApplication->setLocale(locale);
     }
 }
+} // namespace model
+} // namespace ab

@@ -6,6 +6,8 @@
 
 #include <QObject>
 
+namespace ab
+{
 class MainWindow;
 class MainWindowSettingsPrivate;
 
@@ -30,5 +32,6 @@ private:
 private:
     MainWindowSettingsPrivate *d;
 };
+} // namespace ab
 
 #endif // AB_MAIN_WINDOW_SETTINGS_H

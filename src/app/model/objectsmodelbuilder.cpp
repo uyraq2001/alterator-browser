@@ -9,6 +9,10 @@
 #include <QDBusReply>
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
 ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
                                          QString dbusPath,
                                          QString managerIface,
@@ -301,3 +305,5 @@ ObjectItem *ObjectsModelBuilder::createCategoryItem(QString name, ObjectCategory
 
     return newCategoryItem;
 }
+} // namespace model
+} // namespace ab

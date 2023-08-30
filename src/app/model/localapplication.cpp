@@ -1,5 +1,9 @@
 #include "localapplication.h"
 
+namespace ab
+{
+namespace model
+{
 LocalApplication::LocalApplication()
     : m_id()
     , m_name()
@@ -50,3 +54,5 @@ void LocalApplication::setLocale(QString locale)
         m_displayComment = *commentsIt;
     }
 }
+} // namespace model
+} // namespace ab

@@ -6,6 +6,10 @@
 
 #include <memory>
 
+namespace ab
+{
+namespace model
+{
 class ObjectCategoryBuilder
 {
 public:
@@ -32,5 +36,7 @@ private:
     ObjectCategoryBuilder &operator=(const ObjectCategoryBuilder &) = delete;
     ObjectCategoryBuilder &operator=(ObjectCategoryBuilder &&) = delete;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_OBJECT_CATEGORY_BUILDER_H

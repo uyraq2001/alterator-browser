@@ -1,5 +1,9 @@
 #include "objectcategory.h"
 
+namespace ab
+{
+namespace model
+{
 ObjectCategory::ObjectCategory()
     : m_id()
     , m_name()
@@ -27,3 +31,5 @@ void ObjectCategory::setLocale(QString locale)
         m_comment = *commentIt;
     }
 }
+} // namespace model
+} // namespace ab

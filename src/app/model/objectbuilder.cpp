@@ -4,6 +4,10 @@
 #include <QDBusReply>
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
 const QString DESKTOP_ENTRY_SECTION_NAME     = "Desktop Entry";
 const QString ALT_CENTER_SECTION_NAME        = "X-Alterator";
 const QString NAME_KEY_NAME                  = "name";
@@ -275,3 +279,5 @@ std::vector<QString> ObjectBuilder::parseValuesFromKey(DesktopFileParser::Sectio
 
     return result;
 }
+} // namespace model
+} // namespace ab

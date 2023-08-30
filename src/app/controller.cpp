@@ -14,6 +14,8 @@
 #include <QPushButton>
 #include <QScrollArea>
 
+namespace ab
+{
 const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
 const QString DBUS_PATH                            = "/ru/basealt/alterator";
 const QString DBUS_FIND_INTERFACE_NAME             = "ru.basealt.alterator.object";
@@ -28,7 +30,7 @@ const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.applicati
 const QString DBUS_LOCAL_APP_GET_LIST_OF_FILES = "list";
 const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
-Controller::Controller(MainWindow *w, std::unique_ptr<Model> m, QObject *parent)
+Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent)
     : QObject{parent}
     , window(w)
     , model(std::move(m))
@@ -47,7 +49,7 @@ Controller::Controller(MainWindow *w, std::unique_ptr<Model> m, QObject *parent)
 
 Controller::~Controller() {}
 
-void Controller::moduleClicked(ObjectItem *moduleItem)
+void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
     if (moduleItem->m_acObject->m_isLegacy)
     {
@@ -60,7 +62,7 @@ void Controller::moduleClicked(ObjectItem *moduleItem)
     }
 }
 
-void Controller::onInterfaceClicked(LocalApplication *app)
+void Controller::onInterfaceClicked(model::LocalApplication *app)
 {
     QProcess *proc = new QProcess(this);
     proc->start(app->m_desktopExec, QStringList());
@@ -68,15 +70,15 @@ void Controller::onInterfaceClicked(LocalApplication *app)
 
 void Controller::onDBusStructureUpdate(QString service, QString prev, QString next)
 {
-    LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
+    model::LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
                                                  DBUS_LOCAL_APP_PATH,
                                                  DBUS_LOCAL_APP_INTERFACE_NAME,
                                                  DBUS_LOCAL_APP_GET_LIST_OF_FILES,
                                                  DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<LocalApplicationModel> appModel = appModelBuilder.buildModel();
+    std::unique_ptr<model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
-    ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
+    model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
                                            DBUS_PATH,
                                            DBUS_MANAGER_INTERFACE_NAME,
                                            DBUS_FIND_INTERFACE_NAME,
@@ -86,7 +88,7 @@ void Controller::onDBusStructureUpdate(QString service, QString prev, QString ne
 
                                            CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
-    std::unique_ptr<Model> objModel = objectModelBuilder.buildModel(appModel.get());
+    std::unique_ptr<model::Model> objModel = objectModelBuilder.buildModel(appModel.get());
 
     if (!objModel)
     {
@@ -98,3 +100,4 @@ void Controller::onDBusStructureUpdate(QString service, QString prev, QString ne
     window->clearUi();
     window->setModel(model.get());
 }
+} // namespace ab

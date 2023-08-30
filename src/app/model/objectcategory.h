@@ -4,6 +4,10 @@
 #include <QMap>
 #include <QObject>
 
+namespace ab
+{
+namespace model
+{
 class ObjectCategory
 {
 public:
@@ -22,5 +26,7 @@ public:
 
     void setLocale(QString locale);
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_OBJECT_CATEGORY_H

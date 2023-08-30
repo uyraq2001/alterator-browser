@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QWidget>
 
+namespace ab
+{
 class MainWindow;
 
 class PushButton : public QPushButton
@@ -16,13 +18,13 @@ public:
     explicit PushButton(MainWindow *w, QWidget *parent = nullptr);
     ~PushButton();
 
-    void setItem(ObjectItem *item);
-    ObjectItem *getItem();
+    void setItem(model::ObjectItem *item);
+    model::ObjectItem *getItem();
 
-    void showMenu(ObjectItem *item);
+    void showMenu(model::ObjectItem *item);
 
 private:
-    ObjectItem *data;
+    model::ObjectItem *data;
     MainWindow *window;
 
     void onClicked(bool b);
@@ -36,5 +38,6 @@ signals:
 
     void moduleClicked(PushButton *button);
 };
+} // namespace ab
 
 #endif // AB_PUSH_BUTTON_H

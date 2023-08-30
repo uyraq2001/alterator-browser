@@ -43,6 +43,8 @@
 #include <QDebug>
 #include <QWidget>
 
+namespace ab
+{
 FlowLayout::FlowLayout(QWidget *parent, int margin, int hSpacing, int vSpacing)
     : QLayout(parent)
     , itemList(QList<QLayoutItem *>())
@@ -223,3 +225,4 @@ int FlowLayout::smartSpacing(QStyle::PixelMetric pm) const
         return static_cast<QLayout *>(parent)->spacing();
     }
 }
+} // namespace ab

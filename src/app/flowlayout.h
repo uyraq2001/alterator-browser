@@ -46,6 +46,8 @@
 #include <QStyle>
 #include <QWidgetItem>
 
+namespace ab
+{
 class FlowLayout : public QLayout
 {
 public:
@@ -74,5 +76,6 @@ private:
     int m_hSpace;
     int m_vSpace;
 };
+} // namespace ab
 
 #endif // AB_FLOW_LAYOUT_H

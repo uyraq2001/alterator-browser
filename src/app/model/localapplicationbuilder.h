@@ -6,6 +6,10 @@
 
 #include <memory>
 
+namespace ab
+{
+namespace model
+{
 class LocalApplicationBuilder
 {
 public:
@@ -29,5 +33,7 @@ private:
 
     std::vector<QString> parseValuesFromKey(DesktopFileParser::Section &section, QString key, QString delimiter);
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_LOCAL_APPLICATION_BUILDER_H

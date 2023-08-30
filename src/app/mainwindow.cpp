@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "controller.h"
 #include "ui_mainwindow.h"
 #include "mainwindowsettings.h"
 #include "model/objectitem.h"
@@ -20,6 +21,8 @@
 #include <QString>
 #include <QTreeView>
 
+namespace ab
+{
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -67,7 +70,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
-void MainWindow::setModel(Model *m)
+void MainWindow::setModel(model::Model *m)
 {
     model                   = m;
     QLayout *categoryLayout = ui->scrollArea->widget()->layout();
@@ -75,7 +78,7 @@ void MainWindow::setModel(Model *m)
     {
         CategoryWidget *catWidget = new CategoryWidget(this);
         categoryLayout->addWidget(catWidget);
-        catWidget->setItem(dynamic_cast<ObjectItem *>(model->item(i)));
+        catWidget->setItem(dynamic_cast<model::ObjectItem *>(model->item(i)));
     }
 }
 
@@ -95,12 +98,13 @@ void MainWindow::onModuleClicked(PushButton *button)
     controller->moduleClicked(button->getItem());
 }
 
-void MainWindow::showModuleMenu(ObjectItem *item)
+void MainWindow::showModuleMenu(model::ObjectItem *item)
 {
     emit showMenu(item);
 }
 
-void MainWindow::onInterfaceClicked(LocalApplication *app)
+void MainWindow::onInterfaceClicked(model::LocalApplication *app)
 {
     controller->onInterfaceClicked(app);
 }
+} // namespace ab

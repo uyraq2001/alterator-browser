@@ -5,6 +5,10 @@
 
 #include <QStandardItem>
 
+namespace ab
+{
+namespace model
+{
 class ObjectItem : public QStandardItem
 {
 public:
@@ -28,5 +32,7 @@ public:
 
     std::unique_ptr<Object> m_acObject;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_OBJECT_ITEM_H

@@ -4,6 +4,10 @@
 #include <QList>
 #include <QMultiMap>
 
+namespace ab
+{
+namespace model
+{
 const QString DESKTOP_ENTRY_SECTION_NAME             = "Desktop Entry";
 const QString CATEGORY_NAME_KEY_NAME                 = "name";
 const QString CATEGORY_COMMENT_KEY_NAME              = "comment";
@@ -161,3 +165,5 @@ QString ObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, QSt
 
     return QString();
 }
+} // namespace model
+} // namespace ab

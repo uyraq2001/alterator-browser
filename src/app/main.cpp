@@ -39,27 +39,28 @@ int main(int argc, char *argv[])
     translator.load(language, ".");
     app.installTranslator(&translator);
 
-    LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
+    ab::model::LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
                                                  DBUS_LOCAL_APP_PATH,
                                                  DBUS_LOCAL_APP_INTERFACE_NAME,
                                                  DBUS_LOCAL_APP_GET_LIST_OF_FILES,
                                                  DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<LocalApplicationModel> appModel = appModelBuilder.buildModel();
+    std::unique_ptr<ab::model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
-    ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
-                                             DBUS_PATH,
-                                             DBUS_MANAGER_INTERFACE_NAME,
-                                             DBUS_FIND_INTERFACE_NAME,
-                                             GET_OBJECTS_METHOD_NAME,
-                                             INFO_METHOD_NAME_FOR_ACOBJECT,
-                                             CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+    ab::model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
+                                           DBUS_PATH,
+                                           DBUS_MANAGER_INTERFACE_NAME,
+                                           DBUS_FIND_INTERFACE_NAME,
+                                           GET_OBJECTS_METHOD_NAME,
+                                           INFO_METHOD_NAME_FOR_ACOBJECT,
+                                           CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+                                           CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
-                                             CATEGORY_METHOD_NAME_FOR_ACOBJECT);
-
-    std::unique_ptr<Model> model = objectModelBuilder.buildModel(appModel.get());
+    std::unique_ptr<ab::model::Model> model = objectModelBuilder.buildModel(appModel.get());
+    model->translateModel(QString("ru"));
 
     MainWindow mainWindow;
+==== BASE ====
 
     Controller controller(&mainWindow, std::move(model));
 

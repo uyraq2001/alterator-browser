@@ -3,6 +3,11 @@
 
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
+Model::Model()
     : QStandardItemModel()
 {}
 
@@ -20,6 +25,7 @@ void Model::translateItem(QStandardItem *item, QString locale)
         if (!currentItem)
         {
             qWarning() << "Can't cast item to ACObjectItem to translate!";
+
             continue;
         }
 
@@ -31,3 +37,5 @@ void Model::translateItem(QStandardItem *item, QString locale)
         currentItem->getACObject()->setLocale(locale);
     }
 }
+} // namespace model
+} // namespace ab

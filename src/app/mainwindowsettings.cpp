@@ -2,6 +2,8 @@
 
 #include <QSettings>
 
+namespace ab
+{
 const QString MAIN_WINDOW_GEOMETRY = "mainwindow/geometry";
 const QString MAIN_WINDOW_STATE    = "mainwindow/state";
 
@@ -52,3 +54,4 @@ void MainWindowSettings::saveSettings()
     const QByteArray state = d->m_mainWindow->saveState();
     d->m_settings.setValue(MAIN_WINDOW_STATE, state);
 }
+} // namespace ab

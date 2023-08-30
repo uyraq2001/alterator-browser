@@ -7,6 +7,10 @@
 #include <memory>
 #include <QDBusInterface>
 
+namespace ab
+{
+namespace model
+{
 class ObjectBuilder
 {
 public:
@@ -38,5 +42,7 @@ private:
     ObjectBuilder &operator=(const ObjectBuilder &) = delete;
     ObjectBuilder &operator=(ObjectBuilder &&) = delete;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_OBJECT_BUILDER_H

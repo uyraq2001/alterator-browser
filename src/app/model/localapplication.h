@@ -6,6 +6,10 @@
 #include <QObject>
 #include <QString>
 
+namespace ab
+{
+namespace model
+{
 class LocalApplication : public QObject
 {
     Q_OBJECT
@@ -37,5 +41,7 @@ public:
     QMap<QString, QString> m_keywordsLocaleStorage;
     QMap<QString, QString> m_commentLocaleStorage;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_LOCAL_APPLICATION_H

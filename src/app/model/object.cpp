@@ -1,5 +1,9 @@
 #include "object.h"
 
+namespace ab
+{
+namespace model
+{
 Object::Object()
     : m_id()
     , m_displayName()
@@ -35,3 +39,5 @@ void Object::setLocale(QString locale)
         m_displayCategory = m_categoryObject->m_name;
     }
 }
+} // namespace model
+} // namespace ab

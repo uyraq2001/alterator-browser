@@ -11,6 +11,8 @@
 #include <QSpacerItem>
 #include <QStandardItemModel>
 
+namespace ab
+{
 CategoryWidget::CategoryWidget(MainWindow *w, QWidget *parent)
     : QWidget{parent}
     , ui(new Ui::CategoryWidget)
@@ -30,7 +32,7 @@ CategoryWidget::~CategoryWidget()
     delete ui;
 }
 
-void CategoryWidget::setItem(ObjectItem *item)
+void CategoryWidget::setItem(model::ObjectItem *item)
 {
     data = item;
 
@@ -55,6 +57,7 @@ void CategoryWidget::setItem(ObjectItem *item)
     {
         PushButton *moduleButton = new PushButton(window);
         modulesLayout->addWidget(moduleButton);
-        moduleButton->setItem(dynamic_cast<ObjectItem *>(item->child(i)));
+        moduleButton->setItem(dynamic_cast<model::ObjectItem *>(item->child(i)));
     }
 }
+} // namespace ab

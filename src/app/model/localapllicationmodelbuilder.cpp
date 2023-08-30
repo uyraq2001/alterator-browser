@@ -7,6 +7,10 @@
 #include <QDBusReply>
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
 LocalApllicationModelBuilder::LocalApllicationModelBuilder(QString serviceName,
                                                            QString dbusPath,
                                                            QString interfaceName,
@@ -134,3 +138,5 @@ QString LocalApllicationModelBuilder::getDesktopFile(QString file)
 
     return result;
 }
+} // namespace model
+} // namespace ab

@@ -1,7 +1,6 @@
 #ifndef AB_MAIN_WINDOW_H
 #define AB_MAIN_WINDOW_H
 
-#include "controller.h"
 #include "model/model.h"
 #include "pushbutton.h"
 
@@ -10,17 +9,19 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 
-class CategoryWidget;
-class Controller;
-class MainWindowSettings;
-class PushButton;
-
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+namespace ab
+{
+class CategoryWidget;
+class Controller;
+class MainWindowSettings;
+class PushButton;
 
 class MainWindow : public QMainWindow
 {
@@ -36,12 +37,12 @@ public:
 
     bool eventFilter(QObject *watched, QEvent *event);
 
-    void setModel(Model *m);
+    void setModel(model::Model *m);
     void clearUi();
 
-    void showModuleMenu(ObjectItem *item);
+    void showModuleMenu(model::ObjectItem *item);
     void onModuleClicked(PushButton *button);
-    void onInterfaceClicked(LocalApplication *app);
+    void onInterfaceClicked(model::LocalApplication *app);
 
 private:
     MainWindow(const MainWindow &) = delete;
@@ -56,6 +57,8 @@ private:
 
 signals:
 
-    void showMenu(ObjectItem *item);
+    void showMenu(model::ObjectItem *item);
 };
+} // namespace ab
+
 #endif // AB_MAIN_WINDOW_H

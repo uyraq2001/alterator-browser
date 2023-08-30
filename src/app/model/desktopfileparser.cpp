@@ -5,6 +5,10 @@
 
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
 DesktopFileParser::DesktopFileParser(QString data)
     : m_sections()
 {
@@ -64,3 +68,5 @@ DesktopFileParser::Sections DesktopFileParser::getSections()
 {
     return m_sections;
 }
+} // namespace model
+} // namespace ab

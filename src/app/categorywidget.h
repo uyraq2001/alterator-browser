@@ -6,14 +6,16 @@
 #include <QStandardItemModel>
 #include <QWidget>
 
-class Controller;
-class MainWindow;
-class PushButton;
-
 namespace Ui
 {
 class CategoryWidget;
 }
+
+namespace ab
+{
+class Controller;
+class MainWindow;
+class PushButton;
 
 class CategoryWidget : public QWidget
 {
@@ -25,11 +27,11 @@ public:
     void setGeometry(const QRect &rect);
     void paintEvent(QPaintEvent *event);
 
-    void setItem(ObjectItem *item);
+    void setItem(model::ObjectItem *item);
 
 private:
     Ui::CategoryWidget *ui;
-    ObjectItem *data;
+    model::ObjectItem *data;
     MainWindow *window;
 
     CategoryWidget(const CategoryWidget &) = delete;
@@ -39,7 +41,8 @@ private:
 
 signals:
 
-    void showMenu(ObjectItem *item);
+    void showMenu(model::ObjectItem *item);
 };
+} // namespace ab
 
 #endif // AB_CATEGORY_WIDGET_H

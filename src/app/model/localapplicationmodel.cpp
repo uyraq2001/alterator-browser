@@ -3,6 +3,10 @@
 
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
 LocalApplicationModel::LocalApplicationModel()
     : QStandardItemModel()
 {}
@@ -33,3 +37,5 @@ std::vector<LocalApplication *> LocalApplicationModel::getAppsByInterface(QStrin
 }
 
 void LocalApplicationModel::setLocale() {}
+} // namespace model
+} // namespace ab

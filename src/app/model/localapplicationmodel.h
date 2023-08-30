@@ -5,6 +5,10 @@
 
 #include <QStandardItemModel>
 
+namespace ab
+{
+namespace model
+{
 class LocalApplicationModel : public QStandardItemModel
 {
 public:
@@ -15,5 +19,7 @@ public:
 
     void setLocale();
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_LOCAL_APPLICATION_MODEL_H

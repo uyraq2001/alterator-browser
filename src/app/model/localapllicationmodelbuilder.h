@@ -9,6 +9,10 @@
 #include <QDBusConnection>
 #include <QString>
 
+namespace ab
+{
+namespace model
+{
 class LocalApllicationModelBuilder
 {
 public:
@@ -35,5 +39,7 @@ private:
     QString m_getFilesMethodName;
     QString m_getDesktopFileMethodName;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_LOCAL_APLLICATION_MODEL_BUILDER_H

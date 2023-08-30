@@ -6,6 +6,10 @@
 #include <QString>
 #include <QVariant>
 
+namespace ab
+{
+namespace model
+{
 struct IniFileKey
 {
     QString keyName{};
@@ -31,5 +35,7 @@ public:
 private:
     Sections m_sections;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_ADT_DESKTOP_FILE_PARSER_H

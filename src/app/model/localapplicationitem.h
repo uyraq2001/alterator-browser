@@ -5,6 +5,10 @@
 
 #include <QStandardItemModel>
 
+namespace ab
+{
+namespace model
+{
 class LocalApplicationItem : public QStandardItem
 {
 public:
@@ -17,5 +21,7 @@ public:
 public:
     std::unique_ptr<LocalApplication> m_acLocalApplication;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_LOCAL_APPLICATION_ITEM_H

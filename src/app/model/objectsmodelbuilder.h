@@ -9,6 +9,10 @@
 #include <QDBusConnection>
 #include <QStandardItemModel>
 
+namespace ab
+{
+namespace model
+{
 class ObjectsModelBuilder
 {
 public:
@@ -49,5 +53,7 @@ private:
     QString m_categoryInterfaceName;
     QString m_categoryMethodName;
 };
+} // namespace model
+} // namespace ab
 
 #endif // AB_OBJECTS_MODEL_BUILDER_H

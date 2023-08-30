@@ -2,6 +2,10 @@
 
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
 const QString LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME         = "Desktop Entry";
 const QString LOCAL_APP_NAME_KEY_NAME                      = "name";
 const QString LOCAL_APP_GENERIC_NAME_KEY_NAME              = "genericname";
@@ -289,3 +293,5 @@ std::vector<QString> LocalApplicationBuilder::parseValuesFromKey(DesktopFilePars
 
     return result;
 }
+} // namespace model
+} // namespace ab
