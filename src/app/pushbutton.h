@@ -5,7 +5,7 @@
 #include <QWidget>
 
 #include "mainwindow.h"
-#include "model/acobjectitem.h"
+#include "model/objectitem.h"
 
 class MainWindow;
 

@@ -1,8 +1,8 @@
 #ifndef ACOBJECT_H
 #define ACOBJECT_H
 
-#include "aclocalapplication.h"
-#include "acobjectcategory.h"
+#include "localapplication.h"
+#include "objectcategory.h"
 
 #include <memory>
 #include <QObject>

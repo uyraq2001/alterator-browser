@@ -1,7 +1,7 @@
 #ifndef ACLOCALAPPLICATIONBUILDER_H
 #define ACLOCALAPPLICATIONBUILDER_H
 
-#include "aclocalapplication.h"
+#include "localapplication.h"
 #include "desktopfileparser.h"
 
 #include <memory>

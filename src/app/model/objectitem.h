@@ -1,7 +1,7 @@
 #ifndef ACOBJECTITEM_H
 #define ACOBJECTITEM_H
 
-#include "acobject.h"
+#include "object.h"
 
 #include <QStandardItem>
 

@@ -1,4 +1,4 @@
-#include "acobjectitem.h"
+#include "objectitem.h"
 
 ACObjectItem::ACObjectItem()
     : QStandardItem()

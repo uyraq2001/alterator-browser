@@ -1,4 +1,4 @@
-#include "aclocalapplication.h"
+#include "localapplication.h"
 
 ACLocalApplication::ACLocalApplication()
     : m_id()

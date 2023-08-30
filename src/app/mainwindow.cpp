@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "model/acobjectitem.h"
+#include "model/objectitem.h"
 
 #include <QDBusConnection>
 #include <QDBusInterface>

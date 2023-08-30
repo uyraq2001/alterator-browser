@@ -1,4 +1,4 @@
-#include "aclocalapplicationbuilder.h"
+#include "localapplicationbuilder.h"
 
 #include <QDebug>
 

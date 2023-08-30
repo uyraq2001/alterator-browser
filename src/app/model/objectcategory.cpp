@@ -1,4 +1,4 @@
-#include "acobjectcategory.h"
+#include "objectcategory.h"
 
 ACObjectCategory::ACObjectCategory()
     : m_id()

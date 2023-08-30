@@ -1,7 +1,7 @@
 #ifndef ACOBJECTCATEGORYBUILDER_H
 #define ACOBJECTCATEGORYBUILDER_H
 
-#include "acobjectcategory.h"
+#include "objectcategory.h"
 #include "desktopfileparser.h"
 
 #include <memory>

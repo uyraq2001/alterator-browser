@@ -5,8 +5,8 @@
 #include <QDBusConnection>
 #include <QString>
 
-#include "aclocalapplication.h"
-#include "aclocalapplicationmodel.h"
+#include "localapplication.h"
+#include "localapplicationmodel.h"
 
 class ACLocalApllicationModelBuilder
 {

@@ -4,9 +4,9 @@
 #include <QStandardItemModel>
 #include <QWidget>
 
-#include "accontroller.h"
-#include "acpushbutton.h"
-#include "model/acobjectitem.h"
+#include "controller.h"
+#include "pushbutton.h"
+#include "model/objectitem.h"
 
 class ACController;
 class MainWindow;

@@ -1,9 +1,9 @@
 #include "../core/logger/prelude.h"
-#include "accontroller.h"
+#include "controller.h"
 #include "mainwindow.h"
-#include "model/aclocalapllicationmodelbuilder.h"
-#include "model/acmodel.h"
-#include "model/acobjectsmodelbuilder.h"
+#include "model/localapllicationmodelbuilder.h"
+#include "model/model.h"
+#include "model/objectsmodelbuilder.h"
 
 #include <QApplication>
 #include <QStandardItemModel>

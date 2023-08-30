@@ -1,12 +1,12 @@
-#include "acpushbutton.h"
+#include "pushbutton.h"
 
 #include <QAction>
 #include <QDebug>
 #include <QMenu>
 #include <QProcess>
 
-#include <model/aclocalapplication.h>
-#include <model/acobject.h>
+#include <model/localapplication.h>
+#include <model/object.h>
 
 ACPushButton::ACPushButton(MainWindow *w, QWidget *parent)
     : data(nullptr)

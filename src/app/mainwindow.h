@@ -5,11 +5,11 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 
-#include "accontroller.h"
-#include "acpushbutton.h"
+#include "controller.h"
+#include "pushbutton.h"
 #include "categorywidget.h"
 #include "mainwindowsettings.h"
-#include "model/acmodel.h"
+#include "model/model.h"
 
 class CategoryWidget;
 class ACController;

@@ -8,9 +8,9 @@
 
 #include "mainwindow.h"
 
-#include "acpushbutton.h"
+#include "pushbutton.h"
 #include "categorywidget.h"
-#include "model/acmodel.h"
+#include "model/model.h"
 
 class CategoryWidget;
 class MainWindow;

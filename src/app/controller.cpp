@@ -1,4 +1,4 @@
-#include "accontroller.h"
+#include "controller.h"
 
 #include <QAction>
 #include <QDBusConnection>
@@ -11,8 +11,8 @@
 #include <QPushButton>
 #include <QScrollArea>
 
-#include "model/aclocalapllicationmodelbuilder.h"
-#include "model/acobjectsmodelbuilder.h"
+#include "model/localapllicationmodelbuilder.h"
+#include "model/objectsmodelbuilder.h"
 
 const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
 const QString DBUS_PATH                            = "/ru/basealt/alterator";

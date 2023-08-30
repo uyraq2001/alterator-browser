@@ -1,7 +1,7 @@
 #ifndef ACLOCALAPPLICATIONMODEL_H
 #define ACLOCALAPPLICATIONMODEL_H
 
-#include "aclocalapplication.h"
+#include "localapplication.h"
 
 #include <QStandardItemModel>
 

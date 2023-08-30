@@ -1,4 +1,4 @@
-#include "aclocalapplicationitem.h"
+#include "localapplicationitem.h"
 
 ACLocalApplicationItem::ACLocalApplicationItem()
     : m_acLocalApplication(nullptr)

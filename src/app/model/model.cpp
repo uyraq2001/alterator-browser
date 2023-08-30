@@ -1,5 +1,5 @@
-#include "acmodel.h"
-#include "acobjectitem.h"
+#include "model.h"
+#include "objectitem.h"
 
 #include <QDebug>
 

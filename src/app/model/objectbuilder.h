@@ -1,7 +1,7 @@
 #ifndef ACOBJECTBUILDER_H
 #define ACOBJECTBUILDER_H
 
-#include "acobject.h"
+#include "object.h"
 #include "desktopfileparser.h"
 
 #include <memory>

@@ -1,5 +1,5 @@
-#include "aclocalapplicationmodel.h"
-#include "aclocalapplicationitem.h"
+#include "localapplicationmodel.h"
+#include "localapplicationitem.h"
 
 #include <QDebug>
 

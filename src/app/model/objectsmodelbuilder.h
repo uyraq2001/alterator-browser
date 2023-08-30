@@ -1,10 +1,10 @@
 #ifndef ACOBJECTSMODELBUILDER_H
 #define ACOBJECTSMODELBUILDER_H
 
-#include "aclocalapplicationmodel.h"
-#include "acmodel.h"
-#include "acobject.h"
-#include "acobjectitem.h"
+#include "localapplicationmodel.h"
+#include "model.h"
+#include "object.h"
+#include "objectitem.h"
 
 #include <QDBusConnection>
 #include <QStandardItemModel>

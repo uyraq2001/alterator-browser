@@ -1,10 +1,10 @@
-#include "acobjectsmodelbuilder.h"
-#include "aclocalapplicationmodel.h"
-#include "acobjectbuilder.h"
-#include "acobjectitem.h"
+#include "objectsmodelbuilder.h"
+#include "localapplicationmodel.h"
+#include "objectbuilder.h"
+#include "objectitem.h"
 #include "desktopfileparser.h"
 
-#include "model/acmodel.h"
+#include "model/model.h"
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>

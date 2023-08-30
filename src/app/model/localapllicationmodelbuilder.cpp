@@ -1,6 +1,6 @@
-#include "aclocalapllicationmodelbuilder.h"
-#include "aclocalapplicationbuilder.h"
-#include "aclocalapplicationitem.h"
+#include "localapllicationmodelbuilder.h"
+#include "localapplicationbuilder.h"
+#include "localapplicationitem.h"
 #include "desktopfileparser.h"
 
 #include <QDBusInterface>
