@@ -9,33 +9,33 @@
 
 class MainWindow;
 
-class ACPushButton : public QPushButton
+class PushButton : public QPushButton
 {
     Q_OBJECT
 
 public:
-    explicit ACPushButton(MainWindow *w, QWidget *parent = nullptr);
-    ~ACPushButton();
+    explicit PushButton(MainWindow *w, QWidget *parent = nullptr);
+    ~PushButton();
 
-    void setItem(ACObjectItem *item);
-    ACObjectItem *getItem();
+    void setItem(ObjectItem *item);
+    ObjectItem *getItem();
 
-    void showMenu(ACObjectItem *item);
+    void showMenu(ObjectItem *item);
 
 private:
-    ACObjectItem *data;
+    ObjectItem *data;
     MainWindow *window;
 
     void onClicked(bool b);
 
-    ACPushButton(const ACPushButton &) = delete;
-    ACPushButton(ACPushButton &&)      = delete;
-    ACPushButton &operator=(const ACPushButton &) = delete;
-    ACPushButton &operator=(ACPushButton &&) = delete;
+    PushButton(const PushButton &) = delete;
+    PushButton(PushButton &&)      = delete;
+    PushButton &operator=(const PushButton &) = delete;
+    PushButton &operator=(PushButton &&) = delete;
 
 signals:
 
-    void moduleClicked(ACPushButton *button);
+    void moduleClicked(PushButton *button);
 };
 
 #endif // ACPUSHBUTTON_H

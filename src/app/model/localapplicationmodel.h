@@ -5,13 +5,13 @@
 
 #include <QStandardItemModel>
 
-class ACLocalApplicationModel : public QStandardItemModel
+class LocalApplicationModel : public QStandardItemModel
 {
 public:
-    ACLocalApplicationModel();
-    ~ACLocalApplicationModel();
+    LocalApplicationModel();
+    ~LocalApplicationModel();
 
-    std::vector<ACLocalApplication *> getAppsByInterface(QString interface);
+    std::vector<LocalApplication *> getAppsByInterface(QString interface);
 
     void setLocale();
 };

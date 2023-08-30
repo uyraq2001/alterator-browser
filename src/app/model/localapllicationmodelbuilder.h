@@ -8,21 +8,21 @@
 #include "localapplication.h"
 #include "localapplicationmodel.h"
 
-class ACLocalApllicationModelBuilder
+class LocalApllicationModelBuilder
 {
 public:
-    ACLocalApllicationModelBuilder(QString serviceName,
+    LocalApllicationModelBuilder(QString serviceName,
                                    QString dbusPath,
                                    QString interfaceName,
                                    QString getListOfFilesMethod,
                                    QString getDesktopFileMethod);
 
-    std::unique_ptr<ACLocalApplicationModel> buildModel();
+    std::unique_ptr<LocalApplicationModel> buildModel();
 
 private:
     QStringList getListOfDesktopFiles();
 
-    std::vector<std::unique_ptr<ACLocalApplication>> parseDesktopFiles(QStringList files);
+    std::vector<std::unique_ptr<LocalApplication>> parseDesktopFiles(QStringList files);
 
     QString getDesktopFile(QString file);
 

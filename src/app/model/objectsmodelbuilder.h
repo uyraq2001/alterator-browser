@@ -9,10 +9,10 @@
 #include <QDBusConnection>
 #include <QStandardItemModel>
 
-class ACObjectsModelBuilder
+class ObjectsModelBuilder
 {
 public:
-    ACObjectsModelBuilder(QString serviceName,
+    ObjectsModelBuilder(QString serviceName,
                           QString dbusPath,
                           QString managerIface,
                           QString findInterface,
@@ -21,22 +21,22 @@ public:
                           QString categoryInterfaceName,
                           QString categoryMethodName);
 
-    std::unique_ptr<ACModel> buildModel(ACLocalApplicationModel *appModel);
+    std::unique_ptr<Model> buildModel(LocalApplicationModel *appModel);
 
 private:
-    void mergeApplicationModel(ACModel *objectModel, ACLocalApplicationModel *appModel);
+    void mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel);
 
-    void mergeObjectWithApp(ACObjectItem *item, ACLocalApplicationModel *appModel);
+    void mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel);
 
     QStringList getListOfACObjects();
 
-    std::vector<std::unique_ptr<ACObject>> parseACObjects(QStringList &pathsList);
+    std::vector<std::unique_ptr<Object>> parseACObjects(QStringList &pathsList);
 
     QString getObjectInfo(QDBusInterface &iface);
 
-    std::unique_ptr<ACModel> buildModelFromACObjects(std::vector<std::unique_ptr<ACObject>> objects);
+    std::unique_ptr<Model> buildModelFromACObjects(std::vector<std::unique_ptr<Object>> objects);
 
-    ACObjectItem *createCategoryItem(QString name, ACObjectCategory *nameTranslations);
+    ObjectItem *createCategoryItem(QString name, ObjectCategory *nameTranslations);
 
 private:
     QDBusConnection m_dbusConnection;

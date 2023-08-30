@@ -28,7 +28,7 @@ const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.applicati
 const QString DBUS_LOCAL_APP_GET_LIST_OF_FILES = "list";
 const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
-ACController::ACController(MainWindow *w, std::unique_ptr<ACModel> m, QObject *parent)
+Controller::Controller(MainWindow *w, std::unique_ptr<Model> m, QObject *parent)
     : QObject{parent}
     , window(w)
     , model(std::move(m))
@@ -42,12 +42,12 @@ ACController::ACController(MainWindow *w, std::unique_ptr<ACModel> m, QObject *p
                                                                     QDBusConnection::systemBus(),
                                                                     QDBusServiceWatcher::WatchForOwnerChange,
                                                                     this);
-    connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &ACController::onDBusStructureUpdate);
+    connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
 }
 
-ACController::~ACController() {}
+Controller::~Controller() {}
 
-void ACController::moduleClicked(ACObjectItem *moduleItem)
+void Controller::moduleClicked(ObjectItem *moduleItem)
 {
     if (moduleItem->m_acObject->m_isLegacy)
     {
@@ -60,23 +60,23 @@ void ACController::moduleClicked(ACObjectItem *moduleItem)
     }
 }
 
-void ACController::onInterfaceClicked(ACLocalApplication *app)
+void Controller::onInterfaceClicked(LocalApplication *app)
 {
     QProcess *proc = new QProcess(this);
     proc->start(app->m_desktopExec, QStringList());
 }
 
-void ACController::onDBusStructureUpdate(QString service, QString prev, QString next)
+void Controller::onDBusStructureUpdate(QString service, QString prev, QString next)
 {
-    ACLocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
+    LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
                                                    DBUS_LOCAL_APP_PATH,
                                                    DBUS_LOCAL_APP_INTERFACE_NAME,
                                                    DBUS_LOCAL_APP_GET_LIST_OF_FILES,
                                                    DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<ACLocalApplicationModel> appModel = appModelBuilder.buildModel();
+    std::unique_ptr<LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
-    ACObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
+    ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
                                              DBUS_PATH,
                                              DBUS_MANAGER_INTERFACE_NAME,
                                              DBUS_FIND_INTERFACE_NAME,
@@ -86,7 +86,7 @@ void ACController::onDBusStructureUpdate(QString service, QString prev, QString 
 
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
-    std::unique_ptr<ACModel> objModel = objectModelBuilder.buildModel(appModel.get());
+    std::unique_ptr<Model> objModel = objectModelBuilder.buildModel(appModel.get());
 
     if (!objModel)
     {

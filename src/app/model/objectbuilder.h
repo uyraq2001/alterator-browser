@@ -7,19 +7,19 @@
 #include <memory>
 #include <QDBusInterface>
 
-class ACObjectBuilder
+class ObjectBuilder
 {
 public:
-    ACObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName);
+    ObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName);
 
-    std::unique_ptr<ACObject> buildACObject();
+    std::unique_ptr<Object> buildACObject();
 
-    bool buildNames(DesktopFileParser::Section &section, ACObject *object);
+    bool buildNames(DesktopFileParser::Section &section, Object *object);
 
 private:
-    void setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, ACObject *acObject);
+    void setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, Object *acObject);
 
-    void setDefaultCategory(ACObject *object);
+    void setDefaultCategory(Object *object);
 
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
 
@@ -33,10 +33,10 @@ private:
     QString m_dbusMethodName;
 
 private:
-    ACObjectBuilder(const ACObjectBuilder &) = delete;
-    ACObjectBuilder(ACObjectBuilder &&)      = delete;
-    ACObjectBuilder &operator=(const ACObjectBuilder &) = delete;
-    ACObjectBuilder &operator=(ACObjectBuilder &&) = delete;
+    ObjectBuilder(const ObjectBuilder &) = delete;
+    ObjectBuilder(ObjectBuilder &&)      = delete;
+    ObjectBuilder &operator=(const ObjectBuilder &) = delete;
+    ObjectBuilder &operator=(ObjectBuilder &&) = delete;
 };
 
 #endif // ACOBJECTBUILDER_H

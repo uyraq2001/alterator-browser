@@ -30,7 +30,7 @@ CategoryWidget::~CategoryWidget()
     delete ui;
 }
 
-void CategoryWidget::setItem(ACObjectItem *item)
+void CategoryWidget::setItem(ObjectItem *item)
 {
     data = item;
 
@@ -53,8 +53,8 @@ void CategoryWidget::setItem(ACObjectItem *item)
 
     for (int i = 0; i < item->model()->rowCount(item->index()); ++i)
     {
-        ACPushButton *moduleButton = new ACPushButton(window);
+        PushButton *moduleButton = new PushButton(window);
         modulesLayout->addWidget(moduleButton);
-        moduleButton->setItem(dynamic_cast<ACObjectItem *>(item->child(i)));
+        moduleButton->setItem(dynamic_cast<ObjectItem *>(item->child(i)));
     }
 }

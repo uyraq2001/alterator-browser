@@ -1,19 +1,19 @@
 #include "objectitem.h"
 
-ACObjectItem::ACObjectItem()
+ObjectItem::ObjectItem()
     : QStandardItem()
     , m_itemType(ITEM_TYPE::category)
-    , m_acObject(new ACObject())
+    , m_acObject(new Object())
 {}
 
-ACObjectItem::~ACObjectItem() {}
+ObjectItem::~ObjectItem() {}
 
-int ACObjectItem::type() const
+int ObjectItem::type() const
 {
     return static_cast<int>(m_itemType);
 }
 
-ACObject *ACObjectItem::getACObject()
+Object *ObjectItem::getACObject()
 {
     return m_acObject.get();
 }

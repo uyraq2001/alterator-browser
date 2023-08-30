@@ -12,9 +12,9 @@
 #include "model/model.h"
 
 class CategoryWidget;
-class ACController;
+class Controller;
 class MainWindowSettings;
-class ACPushButton;
+class PushButton;
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -33,16 +33,16 @@ public:
 
     void paintEvent(QPaintEvent *event);
 
-    void setController(ACController *c);
+    void setController(Controller *c);
 
     bool eventFilter(QObject *watched, QEvent *event);
 
-    void setModel(ACModel *m);
+    void setModel(Model *m);
     void clearUi();
 
-    void showModuleMenu(ACObjectItem *item);
-    void onModuleClicked(ACPushButton *button);
-    void onInterfaceClicked(ACLocalApplication *app);
+    void showModuleMenu(ObjectItem *item);
+    void onModuleClicked(PushButton *button);
+    void onInterfaceClicked(LocalApplication *app);
 
 private:
     MainWindow(const MainWindow &) = delete;
@@ -52,11 +52,11 @@ private:
 
     Ui::MainWindow *ui;
     QStandardItemModel *model;
-    ACController *controller;
+    Controller *controller;
     std::unique_ptr<MainWindowSettings> settings;
 
 signals:
 
-    void showMenu(ACObjectItem *item);
+    void showMenu(ObjectItem *item);
 };
 #endif // MAINWINDOW_H

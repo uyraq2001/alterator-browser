@@ -17,7 +17,7 @@ const QString X_ALTERATOR_HELP_NAME          = "x-alterator-help";
 const QString X_ALTERATOR_UI_NAME            = "x-alterator-ui";
 const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
 
-ACObjectBuilder::ACObjectBuilder(DesktopFileParser *infoParser,
+ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser,
                                  QDBusInterface *categoryIface,
                                  QString getCategoryMethodName)
     : m_infoParser(infoParser)
@@ -25,9 +25,9 @@ ACObjectBuilder::ACObjectBuilder(DesktopFileParser *infoParser,
     , m_dbusMethodName(getCategoryMethodName)
 {}
 
-std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
+std::unique_ptr<Object> ObjectBuilder::buildACObject()
 {
-    std::unique_ptr<ACObject> newObject{new ACObject()};
+    std::unique_ptr<Object> newObject{new Object()};
 
     auto sections = m_infoParser->getSections();
 
@@ -36,7 +36,7 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
-        return std::unique_ptr<ACObject>(nullptr);
+        return std::unique_ptr<Object>(nullptr);
     }
 
     QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
@@ -45,7 +45,7 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
 
     if (!buildNames(*desktopSection, newObject.get()))
     {
-        return std::unique_ptr<ACObject>(nullptr);
+        return std::unique_ptr<Object>(nullptr);
     }
 
     QString type = getValue(*desktopSection, TYPE_KEY_NAME);
@@ -124,7 +124,7 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
     return newObject;
 }
 
-bool ACObjectBuilder::buildNames(DesktopFileParser::Section &section, ACObject *object)
+bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *object)
 {
     auto nameIt = section.find(NAME_KEY_NAME);
 
@@ -156,7 +156,7 @@ bool ACObjectBuilder::buildNames(DesktopFileParser::Section &section, ACObject *
     return true;
 }
 
-void ACObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, ACObject *acObject)
+void ObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, Object *acObject)
 {
     if (categoryName.isEmpty())
     {
@@ -178,9 +178,9 @@ void ACObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, Q
 
     DesktopFileParser categoryParser(categoryData);
 
-    ACObjectCategoryBuilder categoryBuilder(&categoryParser);
+    ObjectCategoryBuilder categoryBuilder(&categoryParser);
 
-    std::unique_ptr<ACObjectCategory> category = categoryBuilder.buildACObjectCategory();
+    std::unique_ptr<ObjectCategory> category = categoryBuilder.buildACObjectCategory();
 
     if (!category)
     {
@@ -194,9 +194,9 @@ void ACObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, Q
     acObject->m_categoryObject = std::move(category);
 }
 
-void ACObjectBuilder::setDefaultCategory(ACObject *object)
+void ObjectBuilder::setDefaultCategory(Object *object)
 {
-    std::unique_ptr<ACObjectCategory> defaultCategory(new ACObjectCategory);
+    std::unique_ptr<ObjectCategory> defaultCategory(new ObjectCategory);
 
     defaultCategory->m_id = "Unknown";
 
@@ -215,7 +215,7 @@ void ACObjectBuilder::setDefaultCategory(ACObject *object)
     defaultCategory->m_commentLocaleStorage["ru_RU"] = "Ошибка при получении категории";
 }
 
-QString ACObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
+QString ObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
 {
     for (IniFileKey &currentIniFileKey : iniFileKey)
     {
@@ -228,7 +228,7 @@ QString ACObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
     return QString();
 }
 
-QString ACObjectBuilder::getValue(DesktopFileParser::Section &section, QString key)
+QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key)
 {
     auto it = section.find(key);
 
@@ -247,7 +247,7 @@ QString ACObjectBuilder::getValue(DesktopFileParser::Section &section, QString k
     return QString();
 }
 
-std::vector<QString> ACObjectBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
+std::vector<QString> ObjectBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
                                                          QString key,
                                                          QString delimiter)
 {

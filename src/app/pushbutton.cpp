@@ -8,18 +8,18 @@
 #include <model/localapplication.h>
 #include <model/object.h>
 
-ACPushButton::ACPushButton(MainWindow *w, QWidget *parent)
+PushButton::PushButton(MainWindow *w, QWidget *parent)
     : data(nullptr)
     , window(w)
 {
     setParent(parent);
-    connect(this, &ACPushButton::clicked, window, [this]() { window->onModuleClicked(this); });
-    connect(window, &MainWindow::showMenu, this, &ACPushButton::showMenu);
+    connect(this, &PushButton::clicked, window, [this]() { window->onModuleClicked(this); });
+    connect(window, &MainWindow::showMenu, this, &PushButton::showMenu);
 }
 
-ACPushButton::~ACPushButton() {}
+PushButton::~PushButton() {}
 
-void ACPushButton::setItem(ACObjectItem *item)
+void PushButton::setItem(ObjectItem *item)
 {
     data = item;
 
@@ -27,12 +27,12 @@ void ACPushButton::setItem(ACObjectItem *item)
     this->setMinimumWidth(this->sizeHint().width());
 }
 
-ACObjectItem *ACPushButton::getItem()
+ObjectItem *PushButton::getItem()
 {
     return data;
 }
 
-void ACPushButton::showMenu(ACObjectItem *item)
+void PushButton::showMenu(ObjectItem *item)
 {
     if (item == this->data)
     {

@@ -7,7 +7,7 @@
 #include <QDBusReply>
 #include <QDebug>
 
-ACLocalApllicationModelBuilder::ACLocalApllicationModelBuilder(QString serviceName,
+LocalApllicationModelBuilder::LocalApllicationModelBuilder(QString serviceName,
                                                                QString dbusPath,
                                                                QString interfaceName,
                                                                QString getListOfFilesMethod,
@@ -20,7 +20,7 @@ ACLocalApllicationModelBuilder::ACLocalApllicationModelBuilder(QString serviceNa
     , m_getDesktopFileMethodName(getDesktopFileMethod)
 {}
 
-std::unique_ptr<ACLocalApplicationModel> ACLocalApllicationModelBuilder::buildModel()
+std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel()
 {
     QStringList listOfDesktopFiles = getListOfDesktopFiles();
 
@@ -28,25 +28,25 @@ std::unique_ptr<ACLocalApplicationModel> ACLocalApllicationModelBuilder::buildMo
     {
         qCritical() << "Can't get list of local applications!";
 
-        return std::unique_ptr<ACLocalApplicationModel>(new ACLocalApplicationModel());
+        return std::unique_ptr<LocalApplicationModel>(new LocalApplicationModel());
     }
 
-    std::vector<std::unique_ptr<ACLocalApplication>> listOfApps = parseDesktopFiles(listOfDesktopFiles);
+    std::vector<std::unique_ptr<LocalApplication>> listOfApps = parseDesktopFiles(listOfDesktopFiles);
 
     if (listOfApps.empty())
     {
         qCritical() << "Can't create ACLocalApplications objects!";
 
-        return std::unique_ptr<ACLocalApplicationModel>(new ACLocalApplicationModel());
+        return std::unique_ptr<LocalApplicationModel>(new LocalApplicationModel());
     }
 
-    std::unique_ptr<ACLocalApplicationModel> model(new ACLocalApplicationModel);
+    std::unique_ptr<LocalApplicationModel> model(new LocalApplicationModel);
 
     auto rootItem = model.get()->invisibleRootItem();
 
     for (size_t i = 0; i < listOfApps.size(); ++i)
     {
-        ACLocalApplicationItem *newItem = new ACLocalApplicationItem();
+        LocalApplicationItem *newItem = new LocalApplicationItem();
         newItem->m_acLocalApplication   = std::move(listOfApps.at(i));
 
         rootItem->appendRow(newItem);
@@ -55,7 +55,7 @@ std::unique_ptr<ACLocalApplicationModel> ACLocalApllicationModelBuilder::buildMo
     return model;
 }
 
-QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
+QStringList LocalApllicationModelBuilder::getListOfDesktopFiles()
 {
     QDBusInterface iface(m_dbusServiceName, m_dbusPath, m_interface, m_dbusConnection);
 
@@ -80,9 +80,9 @@ QStringList ACLocalApllicationModelBuilder::getListOfDesktopFiles()
     return listOfDesktopFiles;
 }
 
-std::vector<std::unique_ptr<ACLocalApplication>> ACLocalApllicationModelBuilder::parseDesktopFiles(QStringList files)
+std::vector<std::unique_ptr<LocalApplication>> LocalApllicationModelBuilder::parseDesktopFiles(QStringList files)
 {
-    std::vector<std::unique_ptr<ACLocalApplication>> result;
+    std::vector<std::unique_ptr<LocalApplication>> result;
 
     for (QString currentFile : files)
     {
@@ -95,9 +95,9 @@ std::vector<std::unique_ptr<ACLocalApplication>> ACLocalApllicationModelBuilder:
 
         DesktopFileParser parser(currentFileData);
 
-        ACLocalApplicationBuilder builder;
+        LocalApplicationBuilder builder;
 
-        std::unique_ptr<ACLocalApplication> newACLocalApp = builder.buildACLocalApplicationObject(parser);
+        std::unique_ptr<LocalApplication> newACLocalApp = builder.buildACLocalApplicationObject(parser);
 
         if (newACLocalApp)
         {
@@ -108,7 +108,7 @@ std::vector<std::unique_ptr<ACLocalApplication>> ACLocalApllicationModelBuilder:
     return result;
 }
 
-QString ACLocalApllicationModelBuilder::getDesktopFile(QString file)
+QString LocalApllicationModelBuilder::getDesktopFile(QString file)
 {
     QString result;
 

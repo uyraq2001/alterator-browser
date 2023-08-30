@@ -5,7 +5,7 @@
 
 #include <QStandardItem>
 
-class ACObjectItem : public QStandardItem
+class ObjectItem : public QStandardItem
 {
 public:
     enum class ITEM_TYPE
@@ -15,18 +15,18 @@ public:
     };
 
 public:
-    ACObjectItem();
+    ObjectItem();
 
-    ~ACObjectItem();
+    ~ObjectItem();
 
     int type() const override;
 
-    ACObject *getACObject();
+    Object *getACObject();
 
 public:
     ITEM_TYPE m_itemType;
 
-    std::unique_ptr<ACObject> m_acObject;
+    std::unique_ptr<Object> m_acObject;
 };
 
 #endif // ACOBJECTITEM_H

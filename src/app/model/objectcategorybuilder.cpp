@@ -11,15 +11,15 @@ const QString CATEGORY_ICON_KEY_NAME                 = "icon";
 const QString CATEGORY_TYPE_KEY_NAME                 = "type";
 const QString CATEGORY_X_ALTERATOR_CATEGORY_KEY_NAME = "x-alterator-category";
 
-ACObjectCategoryBuilder::ACObjectCategoryBuilder(DesktopFileParser *categoryParser)
+ObjectCategoryBuilder::ObjectCategoryBuilder(DesktopFileParser *categoryParser)
     : m_categoryParser(categoryParser)
 {}
 
-ACObjectCategoryBuilder::~ACObjectCategoryBuilder() {}
+ObjectCategoryBuilder::~ObjectCategoryBuilder() {}
 
-std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory()
+std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildACObjectCategory()
 {
-    std::unique_ptr<ACObjectCategory> result{new ACObjectCategory};
+    std::unique_ptr<ObjectCategory> result{new ObjectCategory};
 
     auto sections = m_categoryParser->getSections();
 
@@ -28,24 +28,24 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section! Skipping..";
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
 
     if (!buildNames(*desktopSection, result.get()))
     {
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
 
     if (!buildComments(*desktopSection, result.get()))
     {
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
 
     QString icon = getValue(*desktopSection, CATEGORY_ICON_KEY_NAME);
     if (icon.isEmpty())
     {
         qWarning() << "Can't find icon for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
     result->m_icon = icon;
 
@@ -53,7 +53,7 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     if (type.isEmpty())
     {
         qWarning() << "Can't find type for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
     result->m_type = type;
 
@@ -61,14 +61,14 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     if (xAlteratorCategory.isEmpty())
     {
         qWarning() << "Can't find X-Alterator-Category for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
     result->m_xAlteratorCategory = xAlteratorCategory;
 
     return result;
 }
 
-bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ACObjectCategory *categoryObject)
+bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
 {
     auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
 
@@ -100,7 +100,7 @@ bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, AC
     return true;
 }
 
-bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ACObjectCategory *categoryObject)
+bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
 {
     auto commentIt = section.find(CATEGORY_COMMENT_KEY_NAME);
 
@@ -130,7 +130,7 @@ bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section,
     return true;
 }
 
-QString ACObjectCategoryBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
+QString ObjectCategoryBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
 {
     for (IniFileKey &currentIniFileKey : iniFileKey)
     {
@@ -143,7 +143,7 @@ QString ACObjectCategoryBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
     return QString();
 }
 
-QString ACObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, QString key)
+QString ObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, QString key)
 {
     auto it = section.find(key);
 

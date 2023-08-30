@@ -10,7 +10,7 @@
 #include <QDebug>
 #include <qdbusreply.h>
 
-ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
+ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
                                              QString dbusPath,
                                              QString managerIface,
                                              QString findInterface,
@@ -29,7 +29,7 @@ ACObjectsModelBuilder::ACObjectsModelBuilder(QString serviceName,
     , m_categoryMethodName(categoryMethodName)
 {}
 
-std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationModel *appModel)
+std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *appModel)
 {
     if (!appModel)
     {
@@ -40,26 +40,26 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModel(ACLocalApplicationMod
 
     if (pathsOfACObjects.isEmpty())
     {
-        return std::unique_ptr<ACModel>(new ACModel());
+        return std::unique_ptr<Model>(new Model());
     }
 
-    std::vector<std::unique_ptr<ACObject>> acObjects = parseACObjects(pathsOfACObjects);
+    std::vector<std::unique_ptr<Object>> acObjects = parseACObjects(pathsOfACObjects);
 
     if (acObjects.empty())
     {
         qCritical() << "Can't access alterator manager interface!";
 
-        return std::unique_ptr<ACModel>(new ACModel());
+        return std::unique_ptr<Model>(new Model());
     }
 
-    std::unique_ptr<ACModel> model = buildModelFromACObjects(std::move(acObjects));
+    std::unique_ptr<Model> model = buildModelFromACObjects(std::move(acObjects));
 
     mergeApplicationModel(model.get(), appModel);
 
     return model;
 }
 
-void ACObjectsModelBuilder::mergeApplicationModel(ACModel *objectModel, ACLocalApplicationModel *appModel)
+void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel)
 {
     QStandardItem *rootItem = objectModel->invisibleRootItem();
 
@@ -68,7 +68,7 @@ void ACObjectsModelBuilder::mergeApplicationModel(ACModel *objectModel, ACLocalA
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = rootItem->child(i);
-        ACObjectItem *currentCategoryItem  = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        ObjectItem *currentCategoryItem  = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
             qWarning() << "Can't cast category item to ACObjectItem to merge models!";
@@ -80,12 +80,12 @@ void ACObjectsModelBuilder::mergeApplicationModel(ACModel *objectModel, ACLocalA
     }
 }
 
-void ACObjectsModelBuilder::mergeObjectWithApp(ACObjectItem *item, ACLocalApplicationModel *appModel)
+void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel)
 {
     for (int i = 0; i < item->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = item->child(i);
-        ACObjectItem *currentModuleItem    = dynamic_cast<ACObjectItem *>(currentStandardItem);
+        ObjectItem *currentModuleItem    = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
             qWarning() << "Can't cast item to ACObjectItem to merge application object!";
@@ -102,9 +102,9 @@ void ACObjectsModelBuilder::mergeObjectWithApp(ACObjectItem *item, ACLocalApplic
         {
             for (QString &currentIface : currentModuleItem->getACObject()->m_interfaces)
             {
-                std::vector<ACLocalApplication *> apps = appModel->getAppsByInterface(currentIface);
+                std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
-                std::for_each(apps.begin(), apps.end(), [currentModuleItem](ACLocalApplication *app) {
+                std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
                     currentModuleItem->getACObject()->m_applications.push_back(app);
                 });
             }
@@ -112,7 +112,7 @@ void ACObjectsModelBuilder::mergeObjectWithApp(ACObjectItem *item, ACLocalApplic
     }
 }
 
-QStringList ACObjectsModelBuilder::getListOfACObjects()
+QStringList ObjectsModelBuilder::getListOfACObjects()
 {
     QDBusInterface managerIface(m_dbusServiceName, m_dbusPath, m_managerInterface, m_dbusConnection);
 
@@ -141,9 +141,9 @@ QStringList ACObjectsModelBuilder::getListOfACObjects()
     return paths;
 }
 
-std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QStringList &pathsList)
+std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseACObjects(QStringList &pathsList)
 {
-    std::vector<std::unique_ptr<ACObject>> acObjects;
+    std::vector<std::unique_ptr<Object>> acObjects;
 
     QDBusInterface categoryIface(m_dbusServiceName, m_dbusPath, m_managerInterface, m_dbusConnection);
 
@@ -197,9 +197,9 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
 
         DesktopFileParser infoParsingResult(currentObjectInfo);
 
-        ACObjectBuilder objectBuilder(&infoParsingResult, &categoryInfoIface, m_categoryMethodName);
+        ObjectBuilder objectBuilder(&infoParsingResult, &categoryInfoIface, m_categoryMethodName);
 
-        std::unique_ptr<ACObject> newObject = objectBuilder.buildACObject();
+        std::unique_ptr<Object> newObject = objectBuilder.buildACObject();
 
         if (newObject)
         {
@@ -210,7 +210,7 @@ std::vector<std::unique_ptr<ACObject>> ACObjectsModelBuilder::parseACObjects(QSt
     return acObjects;
 }
 
-QString ACObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
+QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 {
     QDBusReply<QByteArray> reply = iface.call(m_infoMethodName);
 
@@ -224,39 +224,39 @@ QString ACObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
     return result;
 }
 
-std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModelFromACObjects(std::vector<std::unique_ptr<ACObject>> objects)
+std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromACObjects(std::vector<std::unique_ptr<Object>> objects)
 {
-    std::unique_ptr<ACModel> model(new ACModel());
+    std::unique_ptr<Model> model(new Model());
 
-    QMap<QString, ACObjectItem *> categories;
+    QMap<QString, ObjectItem *> categories;
 
     for (size_t i = 0; i < objects.size(); ++i)
     {
-        ACObject *currentObject = objects.at(i).get();
+        Object *currentObject = objects.at(i).get();
 
         auto it = categories.find(currentObject->m_displayCategory);
 
         if (it == categories.end())
         {
-            ACObjectItem *newCategoryItem = createCategoryItem(currentObject->m_displayCategory,
+            ObjectItem *newCategoryItem = createCategoryItem(currentObject->m_displayCategory,
                                                                currentObject->m_categoryObject.get());
 
             categories[newCategoryItem->getACObject()->m_displayCategory] = newCategoryItem;
 
             model->appendRow(newCategoryItem);
 
-            ACObjectItem *newModuleItem = new ACObjectItem();
-            newModuleItem->m_itemType   = ACObjectItem::ITEM_TYPE::module;
+            ObjectItem *newModuleItem = new ObjectItem();
+            newModuleItem->m_itemType   = ObjectItem::ITEM_TYPE::module;
             newModuleItem->m_acObject   = std::move(objects.at(i));
 
             newCategoryItem->appendRow(newModuleItem);
         }
         else
         {
-            ACObjectItem *categoryItem = *it;
+            ObjectItem *categoryItem = *it;
 
-            ACObjectItem *newModuleItem = new ACObjectItem();
-            newModuleItem->m_itemType   = ACObjectItem::ITEM_TYPE::module;
+            ObjectItem *newModuleItem = new ObjectItem();
+            newModuleItem->m_itemType   = ObjectItem::ITEM_TYPE::module;
             newModuleItem->m_acObject   = std::move(objects.at(i));
 
             categoryItem->appendRow(newModuleItem);
@@ -265,15 +265,15 @@ std::unique_ptr<ACModel> ACObjectsModelBuilder::buildModelFromACObjects(std::vec
     return model;
 }
 
-ACObjectItem *ACObjectsModelBuilder::createCategoryItem(QString name, ACObjectCategory *nameTranslations)
+ObjectItem *ObjectsModelBuilder::createCategoryItem(QString name, ObjectCategory *nameTranslations)
 {
-    ACObjectItem *newCategoryItem = new ACObjectItem();
+    ObjectItem *newCategoryItem = new ObjectItem();
 
-    newCategoryItem->m_itemType = ACObjectItem::ITEM_TYPE::category;
+    newCategoryItem->m_itemType = ObjectItem::ITEM_TYPE::category;
 
-    ACObject *newACObject = newCategoryItem->getACObject();
+    Object *newACObject = newCategoryItem->getACObject();
 
-    ACObjectCategory *newACObjectCategory = newACObject->m_categoryObject.get();
+    ObjectCategory *newACObjectCategory = newACObject->m_categoryObject.get();
 
     for (QString currentKey : nameTranslations->m_nameLocaleStorage.keys())
     {

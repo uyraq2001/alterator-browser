@@ -3,20 +3,20 @@
 
 #include <QDebug>
 
-ACLocalApplicationModel::ACLocalApplicationModel()
+LocalApplicationModel::LocalApplicationModel()
     : QStandardItemModel()
 {}
 
-ACLocalApplicationModel::~ACLocalApplicationModel() {}
+LocalApplicationModel::~LocalApplicationModel() {}
 
-std::vector<ACLocalApplication *> ACLocalApplicationModel::getAppsByInterface(QString interface)
+std::vector<LocalApplication *> LocalApplicationModel::getAppsByInterface(QString interface)
 {
-    std::vector<ACLocalApplication *> result;
+    std::vector<LocalApplication *> result;
 
     QStandardItem *rootItem = invisibleRootItem();
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
-        ACLocalApplicationItem *currentApp = dynamic_cast<ACLocalApplicationItem *>(rootItem->child(i));
+        LocalApplicationItem *currentApp = dynamic_cast<LocalApplicationItem *>(rootItem->child(i));
         if (!currentApp)
         {
             qWarning() << "Can't cast to ACLocalApplicationItem when try to find apps by interface!";
@@ -32,4 +32,4 @@ std::vector<ACLocalApplication *> ACLocalApplicationModel::getAppsByInterface(QS
     return result;
 }
 
-void ACLocalApplicationModel::setLocale() {}
+void LocalApplicationModel::setLocale() {}

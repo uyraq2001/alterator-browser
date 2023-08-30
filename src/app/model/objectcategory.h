@@ -4,11 +4,11 @@
 #include <QMap>
 #include <QObject>
 
-class ACObjectCategory
+class ObjectCategory
 {
 public:
-    ACObjectCategory();
-    ~ACObjectCategory();
+    ObjectCategory();
+    ~ObjectCategory();
 
     QString m_id;
     QString m_name;

@@ -1,6 +1,6 @@
 #include "localapplication.h"
 
-ACLocalApplication::ACLocalApplication()
+LocalApplication::LocalApplication()
     : m_id()
     , m_name()
     , m_genericName()
@@ -22,9 +22,9 @@ ACLocalApplication::ACLocalApplication()
 
 {}
 
-ACLocalApplication::~ACLocalApplication() {}
+LocalApplication::~LocalApplication() {}
 
-void ACLocalApplication::setLocale(QString locale)
+void LocalApplication::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);
     if (nameIt != m_nameLocaleStorage.end())

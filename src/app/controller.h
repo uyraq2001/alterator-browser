@@ -15,27 +15,27 @@
 class CategoryWidget;
 class MainWindow;
 
-class ACController : public QObject
+class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit ACController(MainWindow *w, std::unique_ptr<ACModel> m, QObject *parent = nullptr);
-    ~ACController();
+    explicit Controller(MainWindow *w, std::unique_ptr<Model> m, QObject *parent = nullptr);
+    ~Controller();
 
 public slots:
 
-    void moduleClicked(ACObjectItem *moduleItem);
-    void onInterfaceClicked(ACLocalApplication *app);
+    void moduleClicked(ObjectItem *moduleItem);
+    void onInterfaceClicked(LocalApplication *app);
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:
     MainWindow *window;
-    std::unique_ptr<ACModel> model;
+    std::unique_ptr<Model> model;
 
-    ACController(const ACController &) = delete;
-    ACController(ACController &&)      = delete;
-    ACController &operator=(const ACController &) = delete;
-    ACController &operator=(ACController &&) = delete;
+    Controller(const Controller &) = delete;
+    Controller(Controller &&)      = delete;
+    Controller &operator=(const Controller &) = delete;
+    Controller &operator=(Controller &&) = delete;
 };
 
 #endif // ACCONTROLLER_H

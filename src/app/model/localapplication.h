@@ -6,12 +6,12 @@
 #include <QObject>
 #include <QString>
 
-class ACLocalApplication : public QObject
+class LocalApplication : public QObject
 {
     Q_OBJECT
 public:
-    ACLocalApplication();
-    ~ACLocalApplication();
+    LocalApplication();
+    ~LocalApplication();
 
     void setLocale(QString locale);
 

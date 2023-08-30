@@ -39,15 +39,15 @@ int main(int argc, char *argv[])
     translator.load(language, ".");
     app.installTranslator(&translator);
 
-    ACLocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
+    LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
                                                    DBUS_LOCAL_APP_PATH,
                                                    DBUS_LOCAL_APP_INTERFACE_NAME,
                                                    DBUS_LOCAL_APP_GET_LIST_OF_FILES,
                                                    DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<ACLocalApplicationModel> appModel = appModelBuilder.buildModel();
+    std::unique_ptr<LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
-    ACObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
+    ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
                                              DBUS_PATH,
                                              DBUS_MANAGER_INTERFACE_NAME,
                                              DBUS_FIND_INTERFACE_NAME,
@@ -56,12 +56,13 @@ int main(int argc, char *argv[])
                                              CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
-    std::unique_ptr<ACModel> model = objectModelBuilder.buildModel(appModel.get());
+    std::unique_ptr<Model> model = objectModelBuilder.buildModel(appModel.get());
     model->translateModel(language);
 
     MainWindow mainWindow;
 
-    ACController controller(&mainWindow, std::move(model));
+    Controller controller(&mainWindow, std::move(model));
+
     mainWindow.setController(&controller);
 
     mainWindow.show();

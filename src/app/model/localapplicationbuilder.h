@@ -6,19 +6,19 @@
 
 #include <memory>
 
-class ACLocalApplicationBuilder
+class LocalApplicationBuilder
 {
 public:
-    ACLocalApplicationBuilder() = default;
+    LocalApplicationBuilder() = default;
 
-    std::unique_ptr<ACLocalApplication> buildACLocalApplicationObject(DesktopFileParser &parser);
+    std::unique_ptr<LocalApplication> buildACLocalApplicationObject(DesktopFileParser &parser);
 
 private:
-    bool parseXAlteratorEntrySection(DesktopFileParser &parser, ACLocalApplication *localApplication);
+    bool parseXAlteratorEntrySection(DesktopFileParser &parser, LocalApplication *localApplication);
 
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
 
-    bool buildNames(DesktopFileParser::Section &section, ACLocalApplication *localAppObject);
+    bool buildNames(DesktopFileParser::Section &section, LocalApplication *localAppObject);
 
     bool buildFieldWithLocale(DesktopFileParser::Section &section,
                               QString entryName,

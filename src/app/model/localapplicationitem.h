@@ -5,17 +5,17 @@
 
 #include <QStandardItemModel>
 
-class ACLocalApplicationItem : public QStandardItem
+class LocalApplicationItem : public QStandardItem
 {
 public:
-    ACLocalApplicationItem();
+    LocalApplicationItem();
 
-    ACLocalApplication *getACLocalApplicationObject();
+    LocalApplication *getACLocalApplicationObject();
 
     void setLocale(QString locale);
 
 public:
-    std::unique_ptr<ACLocalApplication> m_acLocalApplication;
+    std::unique_ptr<LocalApplication> m_acLocalApplication;
 };
 
 #endif // ACLOCALAPPLICATIONITEM_H

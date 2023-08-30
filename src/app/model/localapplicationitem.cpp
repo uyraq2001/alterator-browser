@@ -1,15 +1,15 @@
 #include "localapplicationitem.h"
 
-ACLocalApplicationItem::ACLocalApplicationItem()
+LocalApplicationItem::LocalApplicationItem()
     : m_acLocalApplication(nullptr)
 {}
 
-ACLocalApplication *ACLocalApplicationItem::getACLocalApplicationObject()
+LocalApplication *LocalApplicationItem::getACLocalApplicationObject()
 {
     return m_acLocalApplication.get();
 }
 
-void ACLocalApplicationItem::setLocale(QString locale)
+void LocalApplicationItem::setLocale(QString locale)
 {
     if (m_acLocalApplication)
     {

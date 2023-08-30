@@ -8,9 +8,9 @@
 #include "pushbutton.h"
 #include "model/objectitem.h"
 
-class ACController;
+class Controller;
 class MainWindow;
-class ACPushButton;
+class PushButton;
 
 namespace Ui
 {
@@ -27,11 +27,11 @@ public:
     void setGeometry(const QRect &rect);
     void paintEvent(QPaintEvent *event);
 
-    void setItem(ACObjectItem *item);
+    void setItem(ObjectItem *item);
 
 private:
     Ui::CategoryWidget *ui;
-    ACObjectItem *data;
+    ObjectItem *data;
     MainWindow *window;
 
     CategoryWidget(const CategoryWidget &) = delete;
@@ -41,7 +41,7 @@ private:
 
 signals:
 
-    void showMenu(ACObjectItem *item);
+    void showMenu(ObjectItem *item);
 };
 
 #endif // CATEGORYWIDGET_H

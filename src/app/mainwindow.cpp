@@ -53,7 +53,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     settings.get()->saveSettings();
 }
 
-void MainWindow::setController(ACController *c)
+void MainWindow::setController(Controller *c)
 {
     controller = c;
 }
@@ -65,7 +65,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
-void MainWindow::setModel(ACModel *m)
+void MainWindow::setModel(Model *m)
 {
     model                   = m;
     QLayout *categoryLayout = ui->scrollArea->widget()->layout();
@@ -73,7 +73,7 @@ void MainWindow::setModel(ACModel *m)
     {
         CategoryWidget *catWidget = new CategoryWidget(this);
         categoryLayout->addWidget(catWidget);
-        catWidget->setItem(dynamic_cast<ACObjectItem *>(model->item(i)));
+        catWidget->setItem(dynamic_cast<ObjectItem *>(model->item(i)));
     }
 }
 
@@ -88,17 +88,17 @@ void MainWindow::clearUi()
     }
 }
 
-void MainWindow::onModuleClicked(ACPushButton *button)
+void MainWindow::onModuleClicked(PushButton *button)
 {
     controller->moduleClicked(button->getItem());
 }
 
-void MainWindow::showModuleMenu(ACObjectItem *item)
+void MainWindow::showModuleMenu(ObjectItem *item)
 {
     emit showMenu(item);
 }
 
-void MainWindow::onInterfaceClicked(ACLocalApplication *app)
+void MainWindow::onInterfaceClicked(LocalApplication *app)
 {
     controller->onInterfaceClicked(app);
 }

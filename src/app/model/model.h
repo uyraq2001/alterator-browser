@@ -3,11 +3,11 @@
 
 #include <QStandardItemModel>
 
-class ACModel : public QStandardItemModel
+class Model : public QStandardItemModel
 {
 public:
-    ACModel();
-    ~ACModel() = default;
+    Model();
+    ~Model() = default;
 
     void translateModel(QString locale);
 
@@ -15,10 +15,10 @@ private:
     void translateItem(QStandardItem *item, QString locale);
 
 private:
-    ACModel(const ACModel &) = delete;
-    ACModel(ACModel &&)      = delete;
-    ACModel &operator=(const ACModel &) = delete;
-    ACModel &operator=(ACModel &&) = delete;
+    Model(const Model &) = delete;
+    Model(Model &&)      = delete;
+    Model &operator=(const Model &) = delete;
+    Model &operator=(Model &&) = delete;
 };
 
 #endif // ACMODEL_H

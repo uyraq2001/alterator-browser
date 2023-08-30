@@ -8,12 +8,12 @@
 #include <QObject>
 #include <qmap.h>
 
-class ACObject : public QObject
+class Object : public QObject
 {
     Q_OBJECT
 public:
-    ACObject();
-    ~ACObject();
+    Object();
+    ~Object();
 
     void setLocale(QString locale);
 
@@ -31,11 +31,11 @@ public:
     QString m_x_Alterator_UI;
 
     std::vector<QString> m_interfaces;
-    std::vector<ACLocalApplication *> m_applications;
+    std::vector<LocalApplication *> m_applications;
 
     QMap<QString, QString> m_nameLocaleStorage;
 
-    std::unique_ptr<ACObjectCategory> m_categoryObject;
+    std::unique_ptr<ObjectCategory> m_categoryObject;
 
     bool m_isLegacy;
 };
