@@ -1,5 +1,5 @@
-#ifndef ACLOCALAPPLICATIONBUILDER_H
-#define ACLOCALAPPLICATIONBUILDER_H
+#ifndef AB_LOCAL_APPLICATION_BUILDER_H
+#define AB_LOCAL_APPLICATION_BUILDER_H
 
 #include "localapplication.h"
 #include "desktopfileparser.h"
@@ -30,4 +30,4 @@ private:
     std::vector<QString> parseValuesFromKey(DesktopFileParser::Section &section, QString key, QString delimiter);
 };
 
-#endif // ACLOCALAPPLICATIONBUILDER_H
+#endif // AB_LOCAL_APPLICATION_BUILDER_H

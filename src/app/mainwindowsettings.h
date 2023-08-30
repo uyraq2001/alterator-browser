@@ -1,5 +1,5 @@
-#ifndef MAINWINDOWSETTINGS_H
-#define MAINWINDOWSETTINGS_H
+#ifndef AB_MAIN_WINDOW_SETTINGS_H
+#define AB_MAIN_WINDOW_SETTINGS_H
 
 #include "./ui_mainwindow.h"
 #include "mainwindow.h"
@@ -31,4 +31,4 @@ private:
     MainWindowSettingsPrivate *d;
 };
 
-#endif // MAINWINDOWSETTINGS_H
+#endif // AB_MAIN_WINDOW_SETTINGS_H

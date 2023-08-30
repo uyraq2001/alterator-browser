@@ -1,5 +1,5 @@
-#ifndef CATEGORYWIDGET_H
-#define CATEGORYWIDGET_H
+#ifndef AB_CATEGORY_WIDGET_H
+#define AB_CATEGORY_WIDGET_H
 
 #include <QStandardItemModel>
 #include <QWidget>
@@ -44,4 +44,4 @@ signals:
     void showMenu(ObjectItem *item);
 };
 
-#endif // CATEGORYWIDGET_H
+#endif // AB_CATEGORY_WIDGET_H

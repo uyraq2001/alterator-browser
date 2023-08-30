@@ -1,5 +1,5 @@
-#ifndef ACOBJECTCATEGORYBUILDER_H
-#define ACOBJECTCATEGORYBUILDER_H
+#ifndef AB_OBJECT_CATEGORY_BUILDER_H
+#define AB_OBJECT_CATEGORY_BUILDER_H
 
 #include "objectcategory.h"
 #include "desktopfileparser.h"
@@ -33,4 +33,4 @@ private:
     ObjectCategoryBuilder &operator=(ObjectCategoryBuilder &&) = delete;
 };
 
-#endif // ACOBJECTCATEGORYBUILDER_H
+#endif // AB_OBJECT_CATEGORY_BUILDER_H

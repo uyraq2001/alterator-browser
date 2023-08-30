@@ -1,5 +1,5 @@
-#ifndef ACLOCALAPPLICATIONITEM_H
-#define ACLOCALAPPLICATIONITEM_H
+#ifndef AB_LOCAL_APPLICATION_ITEM_H
+#define AB_LOCAL_APPLICATION_ITEM_H
 
 #include "localapplication.h"
 
@@ -18,4 +18,4 @@ public:
     std::unique_ptr<LocalApplication> m_acLocalApplication;
 };
 
-#endif // ACLOCALAPPLICATIONITEM_H
+#endif // AB_LOCAL_APPLICATION_ITEM_H

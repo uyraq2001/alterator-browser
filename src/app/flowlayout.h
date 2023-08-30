@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef FLOWLAYOUT_H
-#define FLOWLAYOUT_H
+#ifndef AB_FLOW_LAYOUT_H
+#define AB_FLOW_LAYOUT_H
 
 #include <QLayout>
 #include <QRect>
@@ -75,4 +75,4 @@ private:
     int m_vSpace;
 };
 
-#endif
+#endif // AB_FLOW_LAYOUT_H

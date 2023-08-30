@@ -1,5 +1,5 @@
-#ifndef ACMODEL_H
-#define ACMODEL_H
+#ifndef AB_MODEL_H
+#define AB_MODEL_H
 
 #include <QStandardItemModel>
 
@@ -21,4 +21,4 @@ private:
     Model &operator=(Model &&) = delete;
 };
 
-#endif // ACMODEL_H
+#endif // AB_MODEL_H

@@ -1,5 +1,5 @@
-#ifndef ACOBJECTCATEGORY_H
-#define ACOBJECTCATEGORY_H
+#ifndef AB_OBJECT_CATEGORY_H
+#define AB_OBJECT_CATEGORY_H
 
 #include <QMap>
 #include <QObject>
@@ -23,4 +23,4 @@ public:
     void setLocale(QString locale);
 };
 
-#endif // ACOBJECTCATEGORY_H
+#endif // AB_OBJECT_CATEGORY_H

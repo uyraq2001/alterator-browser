@@ -1,5 +1,5 @@
-#ifndef ADTDESKTOPFILEPARSER_H
-#define ADTDESKTOPFILEPARSER_H
+#ifndef AB_ADT_DESKTOP_FILE_PARSER_H
+#define AB_ADT_DESKTOP_FILE_PARSER_H
 
 #include <unordered_map>
 #include <QString>
@@ -31,4 +31,4 @@ private:
     Sections m_sections;
 };
 
-#endif // ADTDESKTOPFILEPARSER_H
+#endif // AB_ADT_DESKTOP_FILE_PARSER_H

@@ -1,5 +1,5 @@
-#ifndef ACLOCALAPPLICATIONMODEL_H
-#define ACLOCALAPPLICATIONMODEL_H
+#ifndef AB_LOCAL_APPLICATION_MODEL_H
+#define AB_LOCAL_APPLICATION_MODEL_H
 
 #include "localapplication.h"
 
@@ -16,4 +16,4 @@ public:
     void setLocale();
 };
 
-#endif // ACLOCALAPPLICATIONMODEL_H
+#endif // AB_LOCAL_APPLICATION_MODEL_H

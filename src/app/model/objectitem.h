@@ -1,5 +1,5 @@
-#ifndef ACOBJECTITEM_H
-#define ACOBJECTITEM_H
+#ifndef AB_OBJECT_ITEM_H
+#define AB_OBJECT_ITEM_H
 
 #include "object.h"
 
@@ -29,4 +29,4 @@ public:
     std::unique_ptr<Object> m_acObject;
 };
 
-#endif // ACOBJECTITEM_H
+#endif // AB_OBJECT_ITEM_H

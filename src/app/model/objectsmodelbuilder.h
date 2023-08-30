@@ -1,5 +1,5 @@
-#ifndef ACOBJECTSMODELBUILDER_H
-#define ACOBJECTSMODELBUILDER_H
+#ifndef AB_OBJECTS_MODEL_BUILDER_H
+#define AB_OBJECTS_SMODELBUILDER_H
 
 #include "localapplicationmodel.h"
 #include "model.h"
@@ -50,4 +50,4 @@ private:
     QString m_categoryMethodName;
 };
 
-#endif // ACOBJECTSMODELBUILDER_H
+#endif // AB_OBJECTS_MODEL_BUILDER_H

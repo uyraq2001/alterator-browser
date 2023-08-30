@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef AB_MAIN_WINDOW_H
+#define AB_MAIN_WINDOW_H
 
 #include <utility>
 #include <QMainWindow>
@@ -59,4 +59,4 @@ signals:
 
     void showMenu(ObjectItem *item);
 };
-#endif // MAINWINDOW_H
+#endif // AB_MAIN_WINDOW_H

@@ -1,5 +1,5 @@
-#ifndef ACOBJECT_H
-#define ACOBJECT_H
+#ifndef AB_OBJECT_H
+#define AB_OBJECT_H
 
 #include "localapplication.h"
 #include "objectcategory.h"
@@ -40,4 +40,4 @@ public:
     bool m_isLegacy;
 };
 
-#endif // ACOBJECT_H
+#endif // AB_OBJECT_H

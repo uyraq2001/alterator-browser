@@ -1,5 +1,5 @@
-#ifndef ACLOCALAPPLICATION_H
-#define ACLOCALAPPLICATION_H
+#ifndef AB_LOCAL_APPLICATION_H
+#define AB_LOCAL_APPLICATION_H
 
 #include <vector>
 #include <QMap>
@@ -38,4 +38,4 @@ public:
     QMap<QString, QString> m_commentLocaleStorage;
 };
 
-#endif // ACLOCALAPPLICATION_H
+#endif // AB_LOCAL_APPLICATION_H

@@ -1,5 +1,5 @@
-#ifndef ACOBJECTBUILDER_H
-#define ACOBJECTBUILDER_H
+#ifndef AB_OBJECT_BUILDER_H
+#define AB_OBJECT_BUILDER_H
 
 #include "object.h"
 #include "desktopfileparser.h"
@@ -39,4 +39,4 @@ private:
     ObjectBuilder &operator=(ObjectBuilder &&) = delete;
 };
 
-#endif // ACOBJECTBUILDER_H
+#endif // AB_OBJECT_BUILDER_H

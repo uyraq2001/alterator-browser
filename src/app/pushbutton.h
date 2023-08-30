@@ -1,5 +1,5 @@
-#ifndef ACPUSHBUTTON_H
-#define ACPUSHBUTTON_H
+#ifndef AB_PUSH_BUTTON_H
+#define AB_PUSH_BUTTON_H
 
 #include <QPushButton>
 #include <QWidget>
@@ -38,4 +38,4 @@ signals:
     void moduleClicked(PushButton *button);
 };
 
-#endif // ACPUSHBUTTON_H
+#endif // AB_PUSH_BUTTON_H

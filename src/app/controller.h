@@ -1,5 +1,5 @@
-#ifndef ACCONTROLLER_H
-#define ACCONTROLLER_H
+#ifndef AB_CONTROLLER_H
+#define AB_CONTROLLER_H
 
 #include <utility>
 #include <QObject>
@@ -38,4 +38,4 @@ private:
     Controller &operator=(Controller &&) = delete;
 };
 
-#endif // ACCONTROLLER_H
+#endif // AB_CONTROLLER_H
