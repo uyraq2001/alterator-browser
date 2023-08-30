@@ -43,8 +43,8 @@
 
 #include <QLayout>
 #include <QRect>
-#include <QWidgetItem>
 #include <QStyle>
+#include <QWidgetItem>
 
 class FlowLayout : public QLayout
 {
