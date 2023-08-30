@@ -2,28 +2,28 @@
 #include "./ui_mainwindow.h"
 #include "model/acobjectitem.h"
 
-#include <QStandardItemModel>
-#include <QTreeView>
-#include <QDBusInterface>
 #include <QDBusConnection>
-#include <QString>
-#include <QDomDocument>
-#include <QDomNodeList>
-#include <QDomNode>
-#include <QDomElement>
+#include <QDBusInterface>
 #include <QDebug>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QDomNode>
+#include <QDomNodeList>
 #include <QDomText>
-#include <QStandardItem>
 #include <QLayout>
 #include <QMouseEvent>
 #include <QShortcut>
+#include <QStandardItem>
+#include <QStandardItemModel>
+#include <QString>
+#include <QTreeView>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-      ui(new Ui::MainWindow),
-      model(nullptr),
-      controller(nullptr),
-      settings(new MainWindowSettings(this, ui))
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , model(nullptr)
+    , controller(nullptr)
+    , settings(new MainWindowSettings(this, ui))
 {
     ui->setupUi(this);
     settings.get()->restoreSettings();
@@ -52,23 +52,24 @@ void MainWindow::paintEvent(QPaintEvent *event)
     settings.get()->saveSettings();
 }
 
-void MainWindow::setController(ACController *c){
+void MainWindow::setController(ACController *c)
+{
     controller = c;
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    if (watched == ui->scrollArea->viewport() && event->type() == QEvent::MouseButtonDblClick){
-
-    }
+    if (watched == ui->scrollArea->viewport() && event->type() == QEvent::MouseButtonDblClick)
+    {}
     return QWidget::eventFilter(watched, event);
 }
 
 void MainWindow::setModel(ACModel *m)
 {
-    model = m;
+    model                   = m;
     QLayout *categoryLayout = ui->scrollArea->widget()->layout();
-    for (int i = 0; i < model->rowCount(); ++i){
+    for (int i = 0; i < model->rowCount(); ++i)
+    {
         CategoryWidget *catWidget = new CategoryWidget(this);
         categoryLayout->addWidget(catWidget);
         catWidget->setItem(dynamic_cast<ACObjectItem *>(model->item(i)));
@@ -78,7 +79,8 @@ void MainWindow::setModel(ACModel *m)
 void MainWindow::clearUi()
 {
     QLayout *categoryLayout = ui->scrollArea->widget()->layout();
-    while (categoryLayout->itemAt(0) != nullptr){
+    while (categoryLayout->itemAt(0) != nullptr)
+    {
         QWidget *categoryWidget = categoryLayout->itemAt(0)->widget();
         categoryLayout->removeWidget(categoryWidget);
         delete categoryWidget;
