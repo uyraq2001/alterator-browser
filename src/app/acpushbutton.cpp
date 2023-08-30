@@ -25,10 +25,6 @@ void ACPushButton::setItem(ACObjectItem *item)
 
     this->setText(item->getACObject()->m_displayName);
     this->setMinimumWidth(this->sizeHint().width());
-    if (item->getACObject()->m_interfaces.empty())
-    {
-        //        setEnabled(false);
-    }
 }
 
 ACObjectItem *ACPushButton::getItem()
@@ -40,10 +36,10 @@ void ACPushButton::showMenu(ACObjectItem *item)
 {
     if (item == this->data)
     {
-        if (item->m_acObject.get()->m_applications.size() > 1)
+        if (item->m_acObject->m_applications.size() > 1)
         {
             QMenu *menu = new QMenu(this);
-            for (auto i : item->m_acObject.get()->m_applications)
+            for (auto i : item->m_acObject->m_applications)
             {
                 QAction *interfaceAction = new QAction("&" + i->m_implementedInterface, menu);
                 menu->addAction(interfaceAction);
@@ -52,9 +48,9 @@ void ACPushButton::showMenu(ACObjectItem *item)
             this->setMenu(menu);
             QPushButton::showMenu();
         }
-        else if (item->m_acObject.get()->m_applications.size() == 1)
+        else if (item->m_acObject->m_applications.size() == 1)
         {
-            auto app = item->m_acObject.get()->m_applications[0];
+            auto app = item->m_acObject->m_applications[0];
             window->onInterfaceClicked(app);
         }
     }
