@@ -6,7 +6,7 @@
     : QStandardItemModel()
 {}
 
-void ACModel::translateModel(QString locale)
+void Model::translateModel(QString locale)
 {
     translateItem(invisibleRootItem(), locale);
 }
@@ -16,7 +16,7 @@ void Model::translateItem(QStandardItem *item, QString locale)
     for (int i = 0; i < item->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = item->child(i);
-        ObjectItem *currentItem          = dynamic_cast<ObjectItem *>(currentStandardItem);
+        ObjectItem *currentItem            = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentItem)
         {
             qWarning() << "Can't cast item to ACObjectItem to translate!";

@@ -1,8 +1,8 @@
 #ifndef AB_OBJECT_CATEGORY_BUILDER_H
 #define AB_OBJECT_CATEGORY_BUILDER_H
 
-#include "objectcategory.h"
 #include "desktopfileparser.h"
+#include "objectcategory.h"
 
 #include <memory>
 

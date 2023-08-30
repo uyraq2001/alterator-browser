@@ -1,6 +1,8 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "ui_mainwindow.h"
+#include "mainwindowsettings.h"
 #include "model/objectitem.h"
+#include "categorywidget.h"
 
 #include <QDBusConnection>
 #include <QDBusInterface>

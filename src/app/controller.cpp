@@ -1,4 +1,7 @@
 #include "controller.h"
+#include "mainwindow.h"
+#include "model/localapllicationmodelbuilder.h"
+#include "model/objectsmodelbuilder.h"
 
 #include <QAction>
 #include <QDBusConnection>
@@ -10,9 +13,6 @@
 #include <QProcess>
 #include <QPushButton>
 #include <QScrollArea>
-
-#include "model/localapllicationmodelbuilder.h"
-#include "model/objectsmodelbuilder.h"
 
 const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
 const QString DBUS_PATH                            = "/ru/basealt/alterator";
@@ -69,22 +69,22 @@ void Controller::onInterfaceClicked(LocalApplication *app)
 void Controller::onDBusStructureUpdate(QString service, QString prev, QString next)
 {
     LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
-                                                   DBUS_LOCAL_APP_PATH,
-                                                   DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                   DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                   DBUS_LOCAL_APP_GET_DESKTOP_FILE);
+                                                 DBUS_LOCAL_APP_PATH,
+                                                 DBUS_LOCAL_APP_INTERFACE_NAME,
+                                                 DBUS_LOCAL_APP_GET_LIST_OF_FILES,
+                                                 DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
     std::unique_ptr<LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
     ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
-                                             DBUS_PATH,
-                                             DBUS_MANAGER_INTERFACE_NAME,
-                                             DBUS_FIND_INTERFACE_NAME,
-                                             GET_OBJECTS_METHOD_NAME,
-                                             INFO_METHOD_NAME_FOR_ACOBJECT,
-                                             CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+                                           DBUS_PATH,
+                                           DBUS_MANAGER_INTERFACE_NAME,
+                                           DBUS_FIND_INTERFACE_NAME,
+                                           GET_OBJECTS_METHOD_NAME,
+                                           INFO_METHOD_NAME_FOR_ACOBJECT,
+                                           CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
 
-                                             CATEGORY_METHOD_NAME_FOR_ACOBJECT);
+                                           CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
     std::unique_ptr<Model> objModel = objectModelBuilder.buildModel(appModel.get());
 

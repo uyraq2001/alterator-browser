@@ -1,17 +1,17 @@
 #include "localapllicationmodelbuilder.h"
+#include "desktopfileparser.h"
 #include "localapplicationbuilder.h"
 #include "localapplicationitem.h"
-#include "desktopfileparser.h"
 
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
 
 LocalApllicationModelBuilder::LocalApllicationModelBuilder(QString serviceName,
-                                                               QString dbusPath,
-                                                               QString interfaceName,
-                                                               QString getListOfFilesMethod,
-                                                               QString getDesktopFileMethod)
+                                                           QString dbusPath,
+                                                           QString interfaceName,
+                                                           QString getListOfFilesMethod,
+                                                           QString getDesktopFileMethod)
     : m_dbusConnection(QDBusConnection::systemBus())
     , m_dbusServiceName(serviceName)
     , m_dbusPath(dbusPath)
@@ -47,7 +47,7 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
     for (size_t i = 0; i < listOfApps.size(); ++i)
     {
         LocalApplicationItem *newItem = new LocalApplicationItem();
-        newItem->m_acLocalApplication   = std::move(listOfApps.at(i));
+        newItem->m_acLocalApplication = std::move(listOfApps.at(i));
 
         rootItem->appendRow(newItem);
     }

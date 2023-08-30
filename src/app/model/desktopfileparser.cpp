@@ -4,6 +4,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include <QDebug>
+
 DesktopFileParser::DesktopFileParser(QString data)
     : m_sections()
 {

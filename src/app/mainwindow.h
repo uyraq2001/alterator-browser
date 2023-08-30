@@ -1,15 +1,14 @@
 #ifndef AB_MAIN_WINDOW_H
 #define AB_MAIN_WINDOW_H
 
+#include "controller.h"
+#include "model/model.h"
+#include "pushbutton.h"
+
 #include <utility>
+
 #include <QMainWindow>
 #include <QStandardItemModel>
-
-#include "controller.h"
-#include "pushbutton.h"
-#include "categorywidget.h"
-#include "mainwindowsettings.h"
-#include "model/model.h"
 
 class CategoryWidget;
 class Controller;

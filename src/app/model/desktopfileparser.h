@@ -2,6 +2,7 @@
 #define AB_ADT_DESKTOP_FILE_PARSER_H
 
 #include <unordered_map>
+
 #include <QString>
 #include <QVariant>
 

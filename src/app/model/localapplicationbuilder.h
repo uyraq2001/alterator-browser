@@ -1,8 +1,8 @@
 #ifndef AB_LOCAL_APPLICATION_BUILDER_H
 #define AB_LOCAL_APPLICATION_BUILDER_H
 
-#include "localapplication.h"
 #include "desktopfileparser.h"
+#include "localapplication.h"
 
 #include <memory>
 

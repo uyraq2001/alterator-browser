@@ -103,8 +103,7 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildACLocalApplicati
     return result;
 }
 
-bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &parser,
-                                                            LocalApplication *localApplication)
+bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &parser, LocalApplication *localApplication)
 {
     auto sections = parser.getSections();
 
@@ -196,9 +195,9 @@ bool LocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, Lo
 }
 
 bool LocalApplicationBuilder::buildFieldWithLocale(DesktopFileParser::Section &section,
-                                                     QString entryName,
-                                                     QString &field,
-                                                     QMap<QString, QString> &localeStorage)
+                                                   QString entryName,
+                                                   QString &field,
+                                                   QMap<QString, QString> &localeStorage)
 {
     auto nameIt = section.find(entryName);
 
@@ -261,8 +260,8 @@ QString LocalApplicationBuilder::getValue(DesktopFileParser::Section &section, Q
 }
 
 std::vector<QString> LocalApplicationBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
-                                                                   QString key,
-                                                                   QString delimiter)
+                                                                 QString key,
+                                                                 QString delimiter)
 {
     QString values = getValue(section, key);
     if (values.isEmpty())

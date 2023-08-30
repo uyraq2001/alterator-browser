@@ -1,23 +1,22 @@
 #include "objectsmodelbuilder.h"
+#include "desktopfileparser.h"
 #include "localapplicationmodel.h"
+#include "model/model.h"
 #include "objectbuilder.h"
 #include "objectitem.h"
-#include "desktopfileparser.h"
 
-#include "model/model.h"
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
-#include <qdbusreply.h>
 
 ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
-                                             QString dbusPath,
-                                             QString managerIface,
-                                             QString findInterface,
-                                             QString getObjectMethodName,
-                                             QString infoMethodName,
-                                             QString categoryInterfaceName,
-                                             QString categoryMethodName)
+                                         QString dbusPath,
+                                         QString managerIface,
+                                         QString findInterface,
+                                         QString getObjectMethodName,
+                                         QString infoMethodName,
+                                         QString categoryInterfaceName,
+                                         QString categoryMethodName)
     : m_dbusConnection(QDBusConnection::systemBus())
     , m_dbusServiceName(serviceName)
     , m_dbusPath(dbusPath)
@@ -68,7 +67,7 @@ void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplica
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = rootItem->child(i);
-        ObjectItem *currentCategoryItem  = dynamic_cast<ObjectItem *>(currentStandardItem);
+        ObjectItem *currentCategoryItem    = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
             qWarning() << "Can't cast category item to ACObjectItem to merge models!";
@@ -85,7 +84,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
     for (int i = 0; i < item->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = item->child(i);
-        ObjectItem *currentModuleItem    = dynamic_cast<ObjectItem *>(currentStandardItem);
+        ObjectItem *currentModuleItem      = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
             qWarning() << "Can't cast item to ACObjectItem to merge application object!";
@@ -239,15 +238,15 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromACObjects(std::vector<
         if (it == categories.end())
         {
             ObjectItem *newCategoryItem = createCategoryItem(currentObject->m_displayCategory,
-                                                               currentObject->m_categoryObject.get());
+                                                             currentObject->m_categoryObject.get());
 
             categories[newCategoryItem->getACObject()->m_displayCategory] = newCategoryItem;
 
             model->appendRow(newCategoryItem);
 
             ObjectItem *newModuleItem = new ObjectItem();
-            newModuleItem->m_itemType   = ObjectItem::ITEM_TYPE::module;
-            newModuleItem->m_acObject   = std::move(objects.at(i));
+            newModuleItem->m_itemType = ObjectItem::ITEM_TYPE::module;
+            newModuleItem->m_acObject = std::move(objects.at(i));
 
             newCategoryItem->appendRow(newModuleItem);
         }
@@ -256,8 +255,8 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromACObjects(std::vector<
             ObjectItem *categoryItem = *it;
 
             ObjectItem *newModuleItem = new ObjectItem();
-            newModuleItem->m_itemType   = ObjectItem::ITEM_TYPE::module;
-            newModuleItem->m_acObject   = std::move(objects.at(i));
+            newModuleItem->m_itemType = ObjectItem::ITEM_TYPE::module;
+            newModuleItem->m_acObject = std::move(objects.at(i));
 
             categoryItem->appendRow(newModuleItem);
         }

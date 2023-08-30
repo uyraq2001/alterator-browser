@@ -1,4 +1,6 @@
 #include "categorywidget.h"
+#include "flowlayout.h"
+#include "pushbutton.h"
 #include "ui_categorywidget.h"
 
 #include <QAction>
@@ -8,8 +10,6 @@
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QStandardItemModel>
-
-#include "flowlayout.h"
 
 CategoryWidget::CategoryWidget(MainWindow *w, QWidget *parent)
     : QWidget{parent}

@@ -1,8 +1,8 @@
 #ifndef AB_OBJECT_BUILDER_H
 #define AB_OBJECT_BUILDER_H
 
-#include "object.h"
 #include "desktopfileparser.h"
+#include "object.h"
 
 #include <memory>
 #include <QDBusInterface>

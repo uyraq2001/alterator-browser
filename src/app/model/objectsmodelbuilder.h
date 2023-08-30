@@ -1,5 +1,5 @@
 #ifndef AB_OBJECTS_MODEL_BUILDER_H
-#define AB_OBJECTS_SMODELBUILDER_H
+#define AB_OBJECTS_MODEL_BUILDER_H
 
 #include "localapplicationmodel.h"
 #include "model.h"
@@ -13,13 +13,13 @@ class ObjectsModelBuilder
 {
 public:
     ObjectsModelBuilder(QString serviceName,
-                          QString dbusPath,
-                          QString managerIface,
-                          QString findInterface,
-                          QString getObjectMethodName,
-                          QString infoMethodName,
-                          QString categoryInterfaceName,
-                          QString categoryMethodName);
+                        QString dbusPath,
+                        QString managerIface,
+                        QString findInterface,
+                        QString getObjectMethodName,
+                        QString infoMethodName,
+                        QString categoryInterfaceName,
+                        QString categoryMethodName);
 
     std::unique_ptr<Model> buildModel(LocalApplicationModel *appModel);
 

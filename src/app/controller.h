@@ -1,16 +1,14 @@
 #ifndef AB_CONTROLLER_H
 #define AB_CONTROLLER_H
 
+#include "model/model.h"
+#include "model/objectitem.h"
+
 #include <utility>
+
 #include <QObject>
 #include <QPushButton>
 #include <QStandardItemModel>
-
-#include "mainwindow.h"
-
-#include "pushbutton.h"
-#include "categorywidget.h"
-#include "model/model.h"
 
 class CategoryWidget;
 class MainWindow;

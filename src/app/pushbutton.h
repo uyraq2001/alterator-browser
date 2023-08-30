@@ -1,11 +1,10 @@
 #ifndef AB_PUSH_BUTTON_H
 #define AB_PUSH_BUTTON_H
 
+#include "model/objectitem.h"
+
 #include <QPushButton>
 #include <QWidget>
-
-#include "mainwindow.h"
-#include "model/objectitem.h"
 
 class MainWindow;
 

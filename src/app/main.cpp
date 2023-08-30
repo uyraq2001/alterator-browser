@@ -40,10 +40,10 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
 
     LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
-                                                   DBUS_LOCAL_APP_PATH,
-                                                   DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                   DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                   DBUS_LOCAL_APP_GET_DESKTOP_FILE);
+                                                 DBUS_LOCAL_APP_PATH,
+                                                 DBUS_LOCAL_APP_INTERFACE_NAME,
+                                                 DBUS_LOCAL_APP_GET_LIST_OF_FILES,
+                                                 DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
     std::unique_ptr<LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
@@ -54,10 +54,10 @@ int main(int argc, char *argv[])
                                              GET_OBJECTS_METHOD_NAME,
                                              INFO_METHOD_NAME_FOR_ACOBJECT,
                                              CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
     std::unique_ptr<Model> model = objectModelBuilder.buildModel(appModel.get());
-    model->translateModel(language);
 
     MainWindow mainWindow;
 

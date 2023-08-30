@@ -1,12 +1,12 @@
 #include "pushbutton.h"
+#include "mainwindow.h"
+#include "model/localapplication.h"
+#include "model/object.h"
 
 #include <QAction>
 #include <QDebug>
 #include <QMenu>
 #include <QProcess>
-
-#include <model/localapplication.h>
-#include <model/object.h>
 
 PushButton::PushButton(MainWindow *w, QWidget *parent)
     : data(nullptr)

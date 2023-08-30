@@ -1,21 +1,22 @@
 #ifndef AB_LOCAL_APLLICATION_MODEL_BUILDER_H
 #define AB_LOCAL_APLLICATION_MODEL_BUILDER_H
 
-#include <memory>
-#include <QDBusConnection>
-#include <QString>
-
 #include "localapplication.h"
 #include "localapplicationmodel.h"
+
+#include <memory>
+
+#include <QDBusConnection>
+#include <QString>
 
 class LocalApllicationModelBuilder
 {
 public:
     LocalApllicationModelBuilder(QString serviceName,
-                                   QString dbusPath,
-                                   QString interfaceName,
-                                   QString getListOfFilesMethod,
-                                   QString getDesktopFileMethod);
+                                 QString dbusPath,
+                                 QString interfaceName,
+                                 QString getListOfFilesMethod,
+                                 QString getDesktopFileMethod);
 
     std::unique_ptr<LocalApplicationModel> buildModel();
 

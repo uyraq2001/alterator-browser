@@ -17,9 +17,7 @@ const QString X_ALTERATOR_HELP_NAME          = "x-alterator-help";
 const QString X_ALTERATOR_UI_NAME            = "x-alterator-ui";
 const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
 
-ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser,
-                                 QDBusInterface *categoryIface,
-                                 QString getCategoryMethodName)
+ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName)
     : m_infoParser(infoParser)
     , m_dbusInterface(categoryIface)
     , m_dbusMethodName(getCategoryMethodName)
@@ -248,8 +246,8 @@ QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key
 }
 
 std::vector<QString> ObjectBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
-                                                         QString key,
-                                                         QString delimiter)
+                                                       QString key,
+                                                       QString delimiter)
 {
     QString values = getValue(section, key);
     if (values.isEmpty())
