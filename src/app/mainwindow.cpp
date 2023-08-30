@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->scrollArea->widget()->setLayout(categoryLayout);
 
     setWindowTitle(tr("altcenter"));
+    setWindowIcon(QIcon(":/logo.png"));
 
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this, SLOT(close()));
 }
