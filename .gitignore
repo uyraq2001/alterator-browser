@@ -2,5 +2,5 @@
 build/
 CMakeLists.txt.user*
 
-*.qrc
+*.tr.qrc
 *.qm

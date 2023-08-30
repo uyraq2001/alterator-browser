@@ -45,7 +45,6 @@
 
 FlowLayout::FlowLayout(QWidget *parent, int margin, int hSpacing, int vSpacing)
     : QLayout(parent), itemList(QList<QLayoutItem*>()), m_hSpace(hSpacing), m_vSpace(vSpacing)
-
 {
     setContentsMargins(margin, margin, margin, margin);
 }
@@ -116,8 +115,7 @@ bool FlowLayout::hasHeightForWidth() const
 
 int FlowLayout::heightForWidth(int width) const
 {
-    int height = doLayout(QRect(0, 0, width, 0), true);
-    return height;
+    return doLayout(QRect(0, 0, width, 0), true);
 }
 
 void FlowLayout::setGeometry(const QRect &rect)
