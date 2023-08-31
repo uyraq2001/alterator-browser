@@ -59,10 +59,9 @@ int main(int argc, char *argv[])
     std::unique_ptr<ab::model::Model> model = objectModelBuilder.buildModel(appModel.get());
     model->translateModel(QString("ru"));
 
-    MainWindow mainWindow;
-==== BASE ====
+    ab::MainWindow mainWindow;
 
-    Controller controller(&mainWindow, std::move(model));
+    ab::Controller controller(&mainWindow, std::move(model));
 
     mainWindow.setController(&controller);
 
