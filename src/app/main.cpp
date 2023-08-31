@@ -54,24 +54,17 @@ int main(int argc, char *argv[])
                                              GET_OBJECTS_METHOD_NAME,
                                              INFO_METHOD_NAME_FOR_ACOBJECT,
                                              CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
-
                                              CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
     std::unique_ptr<ACModel> model = objectModelBuilder.buildModel(appModel.get());
-
-    if (!model)
-    {
-        exit(1);
-    }
-
-    model->translateModel(QString("ru"));
+    model->translateModel(language);
 
     MainWindow mainWindow;
 
     ACController controller(&mainWindow, std::move(model));
-
     mainWindow.setController(&controller);
 
     mainWindow.show();
+
     return app.exec();
 }

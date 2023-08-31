@@ -9,23 +9,7 @@ ACModel::ACModel()
 
 void ACModel::translateModel(QString locale)
 {
-    QStandardItem *rootItem = invisibleRootItem();
-
-    for (int i = 0; i < rootItem->rowCount(); ++i)
-    {
-        QStandardItem *currentStandardItem = rootItem->child(i);
-        ACObjectItem *currentItem          = dynamic_cast<ACObjectItem *>(currentStandardItem);
-        if (!currentItem)
-        {
-            qWarning() << "Can't cast category item to ACObjectItem to translate!";
-
-            continue;
-        }
-
-        translateItem(this->item(i), locale);
-
-        currentItem->getACObject()->setLocale(locale);
-    }
+    translateItem(invisibleRootItem(), locale);
 }
 
 void ACModel::translateItem(QStandardItem *item, QString locale)
@@ -37,7 +21,6 @@ void ACModel::translateItem(QStandardItem *item, QString locale)
         if (!currentItem)
         {
             qWarning() << "Can't cast item to ACObjectItem to translate!";
-
             continue;
         }
 
