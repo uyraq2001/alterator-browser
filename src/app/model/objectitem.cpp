@@ -5,21 +5,18 @@ namespace ab
 namespace model
 {
 ObjectItem::ObjectItem()
-    : QStandardItem()
-    , m_itemType(ITEM_TYPE::category)
-    , m_acObject(new Object())
+    : m_itemType(ItemType::category)
+    , m_object(new Object())
 {}
-
-ObjectItem::~ObjectItem() {}
 
 int ObjectItem::type() const
 {
     return static_cast<int>(m_itemType);
 }
 
-Object *ObjectItem::getACObject()
+Object *ObjectItem::getObject()
 {
-    return m_acObject.get();
+    return m_object.get();
 }
 } // namespace model
 } // namespace ab

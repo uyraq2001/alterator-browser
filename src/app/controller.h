@@ -20,10 +20,9 @@ class Controller : public QObject
     Q_OBJECT
 public:
     explicit Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent = nullptr);
-    ~Controller();
+    ~Controller() = default;
 
 public slots:
-
     void moduleClicked(model::ObjectItem *moduleItem);
     void onInterfaceClicked(model::LocalApplication *app);
     void onDBusStructureUpdate(QString service, QString prev, QString next);

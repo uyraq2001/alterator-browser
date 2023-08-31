@@ -27,7 +27,7 @@ ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *cate
     , m_dbusMethodName(getCategoryMethodName)
 {}
 
-std::unique_ptr<Object> ObjectBuilder::buildACObject()
+std::unique_ptr<Object> ObjectBuilder::buildObject()
 {
     std::unique_ptr<Object> newObject{new Object()};
 
@@ -132,7 +132,7 @@ bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *obje
 
     if (nameIt == section.end())
     {
-        qWarning() << "Can't find names for the ACObject!";
+        qWarning() << "Can't find names for the Object!";
         return false;
     }
 
@@ -182,7 +182,7 @@ void ObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, QSt
 
     ObjectCategoryBuilder categoryBuilder(&categoryParser);
 
-    std::unique_ptr<ObjectCategory> category = categoryBuilder.buildACObjectCategory();
+    std::unique_ptr<ObjectCategory> category = categoryBuilder.buildObjectCategory();
 
     if (!category)
     {

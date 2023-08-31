@@ -22,7 +22,7 @@ const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME     = "Alterator Entry";
 const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_PREFIX   = "Alterator Interface";
 const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME = "exec";
 
-std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildACLocalApplicationObject(DesktopFileParser &parser)
+std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplicationObject(DesktopFileParser &parser)
 {
     std::unique_ptr<LocalApplication> result(new LocalApplication);
 
@@ -31,14 +31,14 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildACLocalApplicati
     auto desktopEntrySectionIt = sections.find(LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME);
     if (desktopEntrySectionIt == sections.end())
     {
-        qWarning() << "Can't find " << LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME
-                   << " section to buils ACLocalApplicationObject! Skipping..";
+        qWarning() << "Can't find" << LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME
+                   << "section to buils LocalApplicationObject! Skipping..";
         return std::unique_ptr<LocalApplication>(nullptr);
     }
 
     DesktopFileParser::Section desktopEntrySection = *desktopEntrySectionIt;
 
-    if (!buildNames(desktopEntrySection, result.get())) //TODO BY buildFieldWithLocale
+    if (!buildNames(desktopEntrySection, result.get())) // TODO: buildFieldWithLocale
     {
         return std::unique_ptr<LocalApplication>();
     }
@@ -101,7 +101,6 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildACLocalApplicati
     bool xAlteratorEntrySectionParsingResult = parseXAlteratorEntrySection(parser, result.get());
 
     result->m_categories = parseValuesFromKey(desktopEntrySection, LOCAL_APP_CATEGORIES_KEY_NAME, ";");
-
     result->m_mimeTypes = parseValuesFromKey(desktopEntrySection, LOCAL_APP_MIMETYPE_KEY_NAME, ";");
 
     return result;
@@ -110,13 +109,12 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildACLocalApplicati
 bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &parser, LocalApplication *localApplication)
 {
     auto sections = parser.getSections();
-
     auto xAlteratorEntrySectionIt = sections.find(LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME);
 
     if (xAlteratorEntrySectionIt == sections.end())
     {
-        qWarning() << "Can't find " << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME
-                   << " section to buils ACLocalApplicationObject! Skipping..";
+        qWarning() << "Can't find" << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME
+                   << " section to buils LocalApplicationObject! Skipping...";
         return false;
     }
 
@@ -128,8 +126,8 @@ bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &par
 
     if (interfacesList.isEmpty())
     {
-        qWarning() << "Can't find interfaces list in section " << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME
-                   << " section to buils ACLocalApplicationObject! Skipping..";
+        qWarning() << "Can't find interfaces list in section" << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME
+                   << " section to buils LocalApplicationObject! Skipping...";
         return false;
     }
 
@@ -142,7 +140,7 @@ bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &par
         if (currentSectionIt == sections.end())
         {
             qWarning() << "Can't find section X_Alterator section" << currentSectionName
-                       << " section to buils ACLocalApplicationObject! Skipping..";
+                       << " section to buils LocalApplicationObject! Skipping...";
 
             return false;
         }
@@ -151,8 +149,8 @@ bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &par
 
         if (execValue.isEmpty())
         {
-            qWarning() << "Can't find key " << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME
-                       << " in section: " << currentSectionName << "Skipping..";
+            qWarning() << "Can't find key" << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME
+                       << "in section:" << currentSectionName << "Skipping...";
 
             return false;
         }
@@ -282,7 +280,6 @@ std::vector<QString> LocalApplicationBuilder::parseValuesFromKey(DesktopFilePars
     QStringList valuesList = values.split(delimiter);
 
     std::vector<QString> result;
-
     for (QString &currentValue : valuesList)
     {
         if (!currentValue.isEmpty())

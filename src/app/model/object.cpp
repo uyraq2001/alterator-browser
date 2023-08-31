@@ -23,8 +23,6 @@ Object::Object()
     , m_isLegacy(false)
 {}
 
-Object::~Object() {}
-
 void Object::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);

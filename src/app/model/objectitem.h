@@ -12,7 +12,7 @@ namespace model
 class ObjectItem : public QStandardItem
 {
 public:
-    enum class ITEM_TYPE
+    enum class ItemType
     {
         category = QStandardItem::UserType + 1,
         module
@@ -20,17 +20,16 @@ public:
 
 public:
     ObjectItem();
-
-    ~ObjectItem();
+    ~ObjectItem() = default;
 
     int type() const override;
 
-    Object *getACObject();
+    Object *getObject();
 
 public:
-    ITEM_TYPE m_itemType;
+    ItemType m_itemType;
 
-    std::unique_ptr<Object> m_acObject;
+    std::unique_ptr<Object> m_object{nullptr};
 };
 } // namespace model
 } // namespace ab

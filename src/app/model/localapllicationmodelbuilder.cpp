@@ -31,7 +31,6 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
     if (listOfDesktopFiles.isEmpty())
     {
         qCritical() << "Can't get list of local applications!";
-
         return std::unique_ptr<LocalApplicationModel>(new LocalApplicationModel());
     }
 
@@ -39,13 +38,11 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
 
     if (listOfApps.empty())
     {
-        qCritical() << "Can't create ACLocalApplications objects!";
-
+        qCritical() << "Can't create LocalApplications objects!";
         return std::unique_ptr<LocalApplicationModel>(new LocalApplicationModel());
     }
 
     std::unique_ptr<LocalApplicationModel> model(new LocalApplicationModel);
-
     auto rootItem = model.get()->invisibleRootItem();
 
     for (size_t i = 0; i < listOfApps.size(); ++i)
@@ -66,7 +63,6 @@ QStringList LocalApllicationModelBuilder::getListOfDesktopFiles()
     if (!iface.isValid())
     {
         qCritical() << "Can't access alterator manager interface to build local applications model!";
-
         return QStringList();
     }
 
@@ -75,7 +71,6 @@ QStringList LocalApllicationModelBuilder::getListOfDesktopFiles()
     if (!reply.isValid())
     {
         qCritical() << "Can't get reply from alterator manager interface to build local applications model!";
-
         return QStringList();
     }
 
@@ -98,14 +93,12 @@ std::vector<std::unique_ptr<LocalApplication>> LocalApllicationModelBuilder::par
         }
 
         DesktopFileParser parser(currentFileData);
-
         LocalApplicationBuilder builder;
+        std::unique_ptr<LocalApplication> newLocalApp = builder.buildLocalApplicationObject(parser);
 
-        std::unique_ptr<LocalApplication> newACLocalApp = builder.buildACLocalApplicationObject(parser);
-
-        if (newACLocalApp)
+        if (newLocalApp)
         {
-            result.push_back(std::move(newACLocalApp));
+            result.push_back(std::move(newLocalApp));
         }
     }
 
@@ -121,7 +114,6 @@ QString LocalApllicationModelBuilder::getDesktopFile(QString file)
     if (!iface.isValid())
     {
         qCritical() << "Can't access alterator manager interface to get desktop file: " << file;
-
         return result;
     }
 
@@ -130,7 +122,6 @@ QString LocalApllicationModelBuilder::getDesktopFile(QString file)
     if (!reply.isValid())
     {
         qCritical() << "Can't get reply from alterator manager interface to to get desktop file: " << file;
-
         return result;
     }
 

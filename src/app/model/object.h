@@ -17,7 +17,7 @@ class Object : public QObject
     Q_OBJECT
 public:
     Object();
-    ~Object();
+    ~Object() = default;
 
     void setLocale(QString locale);
 

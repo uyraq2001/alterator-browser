@@ -25,13 +25,11 @@ public:
     ~CategoryWidget();
 
     void setGeometry(const QRect &rect);
-    void paintEvent(QPaintEvent *event);
-
     void setItem(model::ObjectItem *item);
 
 private:
     Ui::CategoryWidget *ui;
-    model::ObjectItem *data;
+    model::ObjectItem *item;
     MainWindow *window;
 
     CategoryWidget(const CategoryWidget &) = delete;
@@ -40,7 +38,6 @@ private:
     CategoryWidget &operator=(CategoryWidget &&) = delete;
 
 signals:
-
     void showMenu(model::ObjectItem *item);
 };
 } // namespace ab

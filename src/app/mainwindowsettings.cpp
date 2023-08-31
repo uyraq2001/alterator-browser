@@ -13,12 +13,11 @@ public:
     MainWindowSettingsPrivate(MainWindow *mWindow, Ui::MainWindow *ui)
         : m_mainWindow(mWindow)
         , m_ui(ui)
-        , m_settings("BaseALT", "ADT")
+        , m_settings("BaseALT", "alterator-browser")
     {}
 
-    MainWindow *m_mainWindow;
-    Ui::MainWindow *m_ui;
-
+    MainWindow *m_mainWindow = nullptr;
+    Ui::MainWindow *m_ui = nullptr;
     QSettings m_settings{};
 
 private:

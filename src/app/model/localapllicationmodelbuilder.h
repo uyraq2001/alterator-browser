@@ -26,9 +26,7 @@ public:
 
 private:
     QStringList getListOfDesktopFiles();
-
     std::vector<std::unique_ptr<LocalApplication>> parseDesktopFiles(QStringList files);
-
     QString getDesktopFile(QString file);
 
 private:

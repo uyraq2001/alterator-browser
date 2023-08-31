@@ -35,7 +35,7 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
     , window(w)
     , model(std::move(m))
 {
-    if (model.get())
+    if (this->model != nullptr)
     {
         w->setModel(model.get());
     }
@@ -47,14 +47,12 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
     connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
 }
 
-Controller::~Controller() {}
-
 void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
-    if (moduleItem->m_acObject->m_isLegacy)
+    if (moduleItem->m_object->m_isLegacy)
     {
         QProcess *proc = new QProcess(this);
-        proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_acObject.get()->m_icon);
+        proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_object.get()->m_icon);
     }
     else
     {
@@ -68,36 +66,34 @@ void Controller::onInterfaceClicked(model::LocalApplication *app)
     proc->start(app->m_desktopExec, QStringList());
 }
 
-void Controller::onDBusStructureUpdate(QString service, QString prev, QString next)
+void Controller::onDBusStructureUpdate(QString, QString, QString)
 {
     model::LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
-                                                 DBUS_LOCAL_APP_PATH,
-                                                 DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                 DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                 DBUS_LOCAL_APP_GET_DESKTOP_FILE);
+                                                        DBUS_LOCAL_APP_PATH,
+                                                        DBUS_LOCAL_APP_INTERFACE_NAME,
+                                                        DBUS_LOCAL_APP_GET_LIST_OF_FILES,
+                                                        DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
     std::unique_ptr<model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
     model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
-                                           DBUS_PATH,
-                                           DBUS_MANAGER_INTERFACE_NAME,
-                                           DBUS_FIND_INTERFACE_NAME,
-                                           GET_OBJECTS_METHOD_NAME,
-                                           INFO_METHOD_NAME_FOR_ACOBJECT,
-                                           CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+                                                  DBUS_PATH,
+                                                  DBUS_MANAGER_INTERFACE_NAME,
+                                                  DBUS_FIND_INTERFACE_NAME,
+                                                  GET_OBJECTS_METHOD_NAME,
+                                                  INFO_METHOD_NAME_FOR_ACOBJECT,
+                                                  CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
-                                           CATEGORY_METHOD_NAME_FOR_ACOBJECT);
+    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel(appModel.get());
 
-    std::unique_ptr<model::Model> objModel = objectModelBuilder.buildModel(appModel.get());
+    this->model = std::move(objectModel);
 
-    if (!objModel)
-    {
-        return;
-    }
+    QLocale locale;
+    QString language = locale.system().name().split("_").at(0);
+    this->model->translateModel(language);
 
-    model = std::move(objModel);
-    model->translateModel(QString("ru"));
-    window->clearUi();
-    window->setModel(model.get());
+    this->window->clearUi();
+    this->window->setModel(this->model.get());
 }
 } // namespace ab

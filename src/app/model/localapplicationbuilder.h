@@ -15,7 +15,7 @@ class LocalApplicationBuilder
 public:
     LocalApplicationBuilder() = default;
 
-    std::unique_ptr<LocalApplication> buildACLocalApplicationObject(DesktopFileParser &parser);
+    std::unique_ptr<LocalApplication> buildLocalApplicationObject(DesktopFileParser &parser);
 
 private:
     bool parseXAlteratorEntrySection(DesktopFileParser &parser, LocalApplication *localApplication);

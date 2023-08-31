@@ -31,11 +31,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void closeEvent(QCloseEvent *event);
     void paintEvent(QPaintEvent *event);
 
     void setController(Controller *c);
-
-    bool eventFilter(QObject *watched, QEvent *event);
 
     void setModel(model::Model *m);
     void clearUi();
@@ -50,13 +49,12 @@ private:
     MainWindow &operator=(const MainWindow &) = delete;
     MainWindow &operator=(MainWindow &&) = delete;
 
-    Ui::MainWindow *ui;
-    QStandardItemModel *model;
-    Controller *controller;
+    Ui::MainWindow *ui = nullptr;
+    QStandardItemModel *model = nullptr;
+    Controller *controller = nullptr;
     std::unique_ptr<MainWindowSettings> settings;
 
 signals:
-
     void showMenu(model::ObjectItem *item);
 };
 } // namespace ab

@@ -15,7 +15,7 @@ class LocalApplication : public QObject
     Q_OBJECT
 public:
     LocalApplication();
-    ~LocalApplication();
+    ~LocalApplication() = default;
 
     void setLocale(QString locale);
 

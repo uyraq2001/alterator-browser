@@ -23,13 +23,13 @@ std::vector<LocalApplication *> LocalApplicationModel::getAppsByInterface(QStrin
         LocalApplicationItem *currentApp = dynamic_cast<LocalApplicationItem *>(rootItem->child(i));
         if (!currentApp)
         {
-            qWarning() << "Can't cast to ACLocalApplicationItem when try to find apps by interface!";
+            qWarning() << "Can't cast to LocalApplicationItem when try to find apps by interface!";
             continue;
         }
 
-        if (interface == currentApp->getACLocalApplicationObject()->m_implementedInterface)
+        if (interface == currentApp->getLocalApplicationObject()->m_implementedInterface)
         {
-            result.push_back(currentApp->getACLocalApplicationObject());
+            result.push_back(currentApp->getLocalApplicationObject());
         }
     }
 

@@ -8,7 +8,7 @@ LocalApplicationItem::LocalApplicationItem()
     : m_acLocalApplication(nullptr)
 {}
 
-LocalApplication *LocalApplicationItem::getACLocalApplicationObject()
+LocalApplication *LocalApplicationItem::getLocalApplicationObject()
 {
     return m_acLocalApplication.get();
 }

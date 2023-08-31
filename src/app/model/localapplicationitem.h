@@ -14,7 +14,7 @@ class LocalApplicationItem : public QStandardItem
 public:
     LocalApplicationItem();
 
-    LocalApplication *getACLocalApplicationObject();
+    LocalApplication *getLocalApplicationObject();
 
     void setLocale(QString locale);
 

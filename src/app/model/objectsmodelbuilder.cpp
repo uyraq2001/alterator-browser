@@ -39,14 +39,14 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *ap
         qCritical() << "Local applications model is empty!!";
     }
 
-    QStringList pathsOfACObjects = getListOfACObjects();
+    QStringList pathsOfObjects = getListOfObjects();
 
-    if (pathsOfACObjects.isEmpty())
+    if (pathsOfObjects.isEmpty())
     {
         return std::unique_ptr<Model>(new Model());
     }
 
-    std::vector<std::unique_ptr<Object>> acObjects = parseACObjects(pathsOfACObjects);
+    std::vector<std::unique_ptr<Object>> acObjects = parseObjects(pathsOfObjects);
 
     if (acObjects.empty())
     {
@@ -55,7 +55,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *ap
         return std::unique_ptr<Model>(new Model());
     }
 
-    std::unique_ptr<Model> model = buildModelFromACObjects(std::move(acObjects));
+    std::unique_ptr<Model> model = buildModelFromObjects(std::move(acObjects));
 
     mergeApplicationModel(model.get(), appModel);
 
@@ -74,7 +74,7 @@ void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplica
         ObjectItem *currentCategoryItem    = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
-            qWarning() << "Can't cast category item to ACObjectItem to merge models!";
+            qWarning() << "Can't cast category item to ObjectItem to merge models!";
 
             continue;
         }
@@ -91,7 +91,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
         ObjectItem *currentModuleItem      = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
-            qWarning() << "Can't cast item to ACObjectItem to merge application object!";
+            qWarning() << "Can't cast item to ObjectItem to merge application object!";
 
             continue;
         }
@@ -101,21 +101,21 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
             mergeObjectWithApp(currentModuleItem, appModel);
         }
 
-        if (!currentModuleItem->getACObject()->m_interfaces.empty())
+        if (!currentModuleItem->getObject()->m_interfaces.empty())
         {
-            for (QString &currentIface : currentModuleItem->getACObject()->m_interfaces)
+            for (QString &currentIface : currentModuleItem->getObject()->m_interfaces)
             {
                 std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
                 std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
-                    currentModuleItem->getACObject()->m_applications.push_back(app);
+                    currentModuleItem->getObject()->m_applications.push_back(app);
                 });
             }
         }
     }
 }
 
-QStringList ObjectsModelBuilder::getListOfACObjects()
+QStringList ObjectsModelBuilder::getListOfObjects()
 {
     QDBusInterface managerIface(m_dbusServiceName, m_dbusPath, m_managerInterface, m_dbusConnection);
 
@@ -144,7 +144,7 @@ QStringList ObjectsModelBuilder::getListOfACObjects()
     return paths;
 }
 
-std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseACObjects(QStringList &pathsList)
+std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseObjects(QStringList &pathsList)
 {
     std::vector<std::unique_ptr<Object>> acObjects;
 
@@ -166,7 +166,7 @@ std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseACObjects(QString
         return acObjects;
     }
 
-    //TO DO check for empty QList
+    // TODO: check for empty QList
     QString categoryObjectPath = reply.value().at(0).path();
 
     QDBusInterface categoryInfoIface(m_dbusServiceName, categoryObjectPath, m_categoryInterfaceName, m_dbusConnection);
@@ -202,7 +202,7 @@ std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseACObjects(QString
 
         ObjectBuilder objectBuilder(&infoParsingResult, &categoryInfoIface, m_categoryMethodName);
 
-        std::unique_ptr<Object> newObject = objectBuilder.buildACObject();
+        std::unique_ptr<Object> newObject = objectBuilder.buildObject();
 
         if (newObject)
         {
@@ -227,7 +227,7 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
     return result;
 }
 
-std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromACObjects(std::vector<std::unique_ptr<Object>> objects)
+std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<std::unique_ptr<Object>> objects)
 {
     std::unique_ptr<Model> model(new Model());
 
@@ -244,13 +244,13 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromACObjects(std::vector<
             ObjectItem *newCategoryItem = createCategoryItem(currentObject->m_displayCategory,
                                                              currentObject->m_categoryObject.get());
 
-            categories[newCategoryItem->getACObject()->m_displayCategory] = newCategoryItem;
+            categories[newCategoryItem->getObject()->m_displayCategory] = newCategoryItem;
 
             model->appendRow(newCategoryItem);
 
             ObjectItem *newModuleItem = new ObjectItem();
-            newModuleItem->m_itemType = ObjectItem::ITEM_TYPE::module;
-            newModuleItem->m_acObject = std::move(objects.at(i));
+            newModuleItem->m_itemType = ObjectItem::ItemType::module;
+            newModuleItem->m_object = std::move(objects.at(i));
 
             newCategoryItem->appendRow(newModuleItem);
         }
@@ -259,8 +259,8 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromACObjects(std::vector<
             ObjectItem *categoryItem = *it;
 
             ObjectItem *newModuleItem = new ObjectItem();
-            newModuleItem->m_itemType = ObjectItem::ITEM_TYPE::module;
-            newModuleItem->m_acObject = std::move(objects.at(i));
+            newModuleItem->m_itemType = ObjectItem::ItemType::module;
+            newModuleItem->m_object = std::move(objects.at(i));
 
             categoryItem->appendRow(newModuleItem);
         }
@@ -268,40 +268,34 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromACObjects(std::vector<
     return model;
 }
 
-ObjectItem *ObjectsModelBuilder::createCategoryItem(QString name, ObjectCategory *nameTranslations)
+ObjectItem *ObjectsModelBuilder::createCategoryItem(QString, ObjectCategory *nameTranslations)
 {
     ObjectItem *newCategoryItem = new ObjectItem();
 
-    newCategoryItem->m_itemType = ObjectItem::ITEM_TYPE::category;
+    newCategoryItem->m_itemType = ObjectItem::ItemType::category;
 
-    Object *newACObject = newCategoryItem->getACObject();
+    Object *newObject = newCategoryItem->getObject();
 
-    ObjectCategory *newACObjectCategory = newACObject->m_categoryObject.get();
+    ObjectCategory *newObjectCategory = newObject->m_categoryObject.get();
 
     for (QString currentKey : nameTranslations->m_nameLocaleStorage.keys())
     {
-        newACObjectCategory->m_nameLocaleStorage.insert(currentKey, nameTranslations->m_nameLocaleStorage[currentKey]);
+        newObjectCategory->m_nameLocaleStorage.insert(currentKey, nameTranslations->m_nameLocaleStorage[currentKey]);
     }
 
     for (QString currentKey : nameTranslations->m_commentLocaleStorage.keys())
     {
-        newACObjectCategory->m_commentLocaleStorage.insert(currentKey,
+        newObjectCategory->m_commentLocaleStorage.insert(currentKey,
                                                            nameTranslations->m_commentLocaleStorage[currentKey]);
     }
 
-    newACObjectCategory->m_id = nameTranslations->m_id;
-
-    newACObject->m_displayCategory = nameTranslations->m_id;
-
-    newACObjectCategory->m_name = nameTranslations->m_name;
-
-    newACObjectCategory->m_comment = nameTranslations->m_comment;
-
-    newACObjectCategory->m_icon = nameTranslations->m_icon;
-
-    newACObjectCategory->m_type = nameTranslations->m_type;
-
-    newACObjectCategory->m_xAlteratorCategory = nameTranslations->m_xAlteratorCategory;
+    newObjectCategory->m_id = nameTranslations->m_id;
+    newObject->m_displayCategory = nameTranslations->m_id;
+    newObjectCategory->m_name = nameTranslations->m_name;
+    newObjectCategory->m_comment = nameTranslations->m_comment;
+    newObjectCategory->m_icon = nameTranslations->m_icon;
+    newObjectCategory->m_type = nameTranslations->m_type;
+    newObjectCategory->m_xAlteratorCategory = nameTranslations->m_xAlteratorCategory;
 
     return newCategoryItem;
 }

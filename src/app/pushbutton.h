@@ -16,16 +16,16 @@ class PushButton : public QPushButton
 
 public:
     explicit PushButton(MainWindow *w, QWidget *parent = nullptr);
-    ~PushButton();
+    ~PushButton() = default;
 
     void setItem(model::ObjectItem *item);
     model::ObjectItem *getItem();
 
-    void showMenu(model::ObjectItem *item);
+    void showMenu();
 
 private:
-    model::ObjectItem *data;
-    MainWindow *window;
+    model::ObjectItem *item = nullptr;
+    MainWindow *window = nullptr;
 
     void onClicked(bool b);
 
@@ -35,7 +35,6 @@ private:
     PushButton &operator=(PushButton &&) = delete;
 
 signals:
-
     void moduleClicked(PushButton *button);
 };
 } // namespace ab

@@ -23,10 +23,7 @@ LocalApplication::LocalApplication()
     , m_genericNameLocaleStorage()
     , m_keywordsLocaleStorage()
     , m_commentLocaleStorage()
-
 {}
-
-LocalApplication::~LocalApplication() {}
 
 void LocalApplication::setLocale(QString locale)
 {

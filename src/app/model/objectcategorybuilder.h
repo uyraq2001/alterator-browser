@@ -13,21 +13,16 @@ namespace model
 class ObjectCategoryBuilder
 {
 public:
-public:
     ObjectCategoryBuilder(DesktopFileParser *categoryParser);
-    ~ObjectCategoryBuilder();
+    ~ObjectCategoryBuilder() = default;
 
-    std::unique_ptr<ObjectCategory> buildACObjectCategory();
-
-private:
-    DesktopFileParser *m_categoryParser;
+    std::unique_ptr<ObjectCategory> buildObjectCategory();
 
 private:
     bool buildNames(DesktopFileParser::Section &section, ObjectCategory *categoryObject);
     bool buildComments(DesktopFileParser::Section &section, ObjectCategory *categoryObject);
 
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
-
     QString getValue(DesktopFileParser::Section &section, QString key);
 
 private:
@@ -35,6 +30,9 @@ private:
     ObjectCategoryBuilder(ObjectCategoryBuilder &&)      = delete;
     ObjectCategoryBuilder &operator=(const ObjectCategoryBuilder &) = delete;
     ObjectCategoryBuilder &operator=(ObjectCategoryBuilder &&) = delete;
+
+private:
+    DesktopFileParser *m_categoryParser;
 };
 } // namespace model
 } // namespace ab

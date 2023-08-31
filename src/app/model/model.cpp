@@ -24,7 +24,7 @@ void Model::translateItem(QStandardItem *item, QString locale)
         ObjectItem *currentItem            = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentItem)
         {
-            qWarning() << "Can't cast item to ACObjectItem to translate!";
+            qWarning() << "Can't cast item to ObjectItem to translate!";
 
             continue;
         }
@@ -34,7 +34,7 @@ void Model::translateItem(QStandardItem *item, QString locale)
             translateItem(currentItem, locale);
         }
 
-        currentItem->getACObject()->setLocale(locale);
+        currentItem->getObject()->setLocale(locale);
     }
 }
 } // namespace model

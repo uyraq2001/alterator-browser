@@ -19,19 +19,16 @@ ObjectCategoryBuilder::ObjectCategoryBuilder(DesktopFileParser *categoryParser)
     : m_categoryParser(categoryParser)
 {}
 
-ObjectCategoryBuilder::~ObjectCategoryBuilder() {}
-
-std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildACObjectCategory()
+std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
 {
-    std::unique_ptr<ObjectCategory> result{new ObjectCategory};
+    auto result = std::make_unique<ObjectCategory>();
 
     auto sections = m_categoryParser->getSections();
 
     auto desktopSection = sections.find(DESKTOP_ENTRY_SECTION_NAME);
-
     if (desktopSection == sections.end())
     {
-        qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section! Skipping..";
+        qWarning() << "Can't find" << DESKTOP_ENTRY_SECTION_NAME << "section! Skipping...";
         return std::unique_ptr<ObjectCategory>();
     }
 
@@ -75,7 +72,6 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildACObjectCategory()
 bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
 {
     auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
-
     if (nameIt == section.end())
     {
         qWarning() << "Can't find names for the category!";
@@ -83,9 +79,7 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Obje
     }
 
     QList<IniFileKey> listOfKeys = section.values(CATEGORY_NAME_KEY_NAME);
-
     QString defaultName = getDefaultValue(listOfKeys);
-
     if (defaultName.isEmpty())
     {
         qWarning() << "Can't default name for the category!";
@@ -93,7 +87,6 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Obje
     }
 
     categoryObject->m_id = defaultName;
-
     categoryObject->m_name = defaultName;
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
@@ -107,7 +100,6 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Obje
 bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
 {
     auto commentIt = section.find(CATEGORY_COMMENT_KEY_NAME);
-
     if (commentIt == section.end())
     {
         qWarning() << "Can't find comments for the category!";
@@ -115,9 +107,7 @@ bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, O
     }
 
     QList<IniFileKey> listOfKeys = section.values(CATEGORY_COMMENT_KEY_NAME);
-
     QString defaultComment = getDefaultValue(listOfKeys);
-
     if (defaultComment.isEmpty())
     {
         qWarning() << "Can't default comment for the category!";

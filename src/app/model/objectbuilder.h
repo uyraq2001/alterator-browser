@@ -16,7 +16,7 @@ class ObjectBuilder
 public:
     ObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName);
 
-    std::unique_ptr<Object> buildACObject();
+    std::unique_ptr<Object> buildObject();
 
     bool buildNames(DesktopFileParser::Section &section, Object *object);
 

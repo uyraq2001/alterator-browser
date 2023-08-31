@@ -29,17 +29,12 @@ public:
 
 private:
     void mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel);
-
     void mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel);
 
-    QStringList getListOfACObjects();
-
-    std::vector<std::unique_ptr<Object>> parseACObjects(QStringList &pathsList);
-
+    QStringList getListOfObjects();
+    std::vector<std::unique_ptr<Object>> parseObjects(QStringList &pathsList);
     QString getObjectInfo(QDBusInterface &iface);
-
-    std::unique_ptr<Model> buildModelFromACObjects(std::vector<std::unique_ptr<Object>> objects);
-
+    std::unique_ptr<Model> buildModelFromObjects(std::vector<std::unique_ptr<Object>> objects);
     ObjectItem *createCategoryItem(QString name, ObjectCategory *nameTranslations);
 
 private:

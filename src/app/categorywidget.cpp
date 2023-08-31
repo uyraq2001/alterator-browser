@@ -16,15 +16,10 @@ namespace ab
 CategoryWidget::CategoryWidget(MainWindow *w, QWidget *parent)
     : QWidget{parent}
     , ui(new Ui::CategoryWidget)
-    , data(nullptr)
+    , item(nullptr)
     , window(w)
 {
     ui->setupUi(this);
-}
-
-void CategoryWidget::paintEvent(QPaintEvent *event)
-{
-    QWidget::paintEvent(event);
 }
 
 CategoryWidget::~CategoryWidget()
@@ -32,32 +27,32 @@ CategoryWidget::~CategoryWidget()
     delete ui;
 }
 
-void CategoryWidget::setItem(model::ObjectItem *item)
+void CategoryWidget::setItem(model::ObjectItem *newItem)
 {
-    data = item;
+    this->item = newItem;
 
-    QLayout *ihdLayout        = ui->headerWidget->layout();
-    QLayout *ihdmLayout       = this->layout();
-    FlowLayout *modulesLayout = new FlowLayout(10, 10, 10);
+    QPixmap iconMap("/usr/share/alterator/design/images/" + newItem->getObject()->m_categoryObject->m_icon + ".png");
+    ui->iconLabel->setPixmap(iconMap);
+    ui->iconLabel->setMinimumSize(iconMap.size());
 
+    ui->titleLabel->setText(newItem->getObject()->m_categoryObject->m_name);
+    ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
+
+    ui->descriptionLabel->setText(newItem->getObject()->m_categoryObject->m_comment);
+
+    ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
+
+    auto modulesLayout = std::make_unique<FlowLayout>(10, 10, 10);
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    ui->headerLabel->setText(item->getACObject()->m_categoryObject->m_name);
-    ui->descriptionLabel->setText(item->getACObject()->m_categoryObject->m_comment);
-    QPixmap iconMap("/usr/share/alterator/design/images/" + item->getACObject()->m_categoryObject->m_icon + ".png");
-    ui->iconLabel->setPixmap(iconMap);
-    ui->headerLabel->setMinimumSize(ui->headerLabel->sizeHint());
-    ui->iconLabel->setMinimumSize(iconMap.size());
-    ui->headerWidget->setLayout(ihdLayout);
-    ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
-    ui->modulesWidget->setLayout(modulesLayout);
-
-    for (int i = 0; i < item->model()->rowCount(item->index()); ++i)
+    for (int i = 0; i < newItem->model()->rowCount(newItem->index()); ++i)
     {
-        PushButton *moduleButton = new PushButton(window);
-        modulesLayout->addWidget(moduleButton);
-        moduleButton->setItem(dynamic_cast<model::ObjectItem *>(item->child(i)));
+        auto moduleButton = std::make_unique<PushButton>(window);
+        moduleButton->setItem(dynamic_cast<model::ObjectItem *>(newItem->child(i)));
+        modulesLayout->addWidget(moduleButton.release());
     }
+
+    ui->modulesWidget->setLayout(modulesLayout.release());
 }
 } // namespace ab

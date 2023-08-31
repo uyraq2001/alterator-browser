@@ -1,5 +1,5 @@
-#ifndef AB_ADT_DESKTOP_FILE_PARSER_H
-#define AB_ADT_DESKTOP_FILE_PARSER_H
+#ifndef AB_DESKTOP_FILE_PARSER_H
+#define AB_DESKTOP_FILE_PARSER_H
 
 #include <unordered_map>
 
@@ -26,10 +26,9 @@ public:
 public:
     DesktopFileParser(QString data);
 
+public:
     QString getKeyLocale(QString keyName);
-
     QString getKeyNameWithoutLocale(QString keyName);
-
     Sections getSections();
 
 private:
@@ -38,4 +37,4 @@ private:
 } // namespace model
 } // namespace ab
 
-#endif // AB_ADT_DESKTOP_FILE_PARSER_H
+#endif // AB_DESKTOP_FILE_PARSER_H
