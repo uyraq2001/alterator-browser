@@ -16,6 +16,13 @@
 
 namespace ab
 {
+class ControllerPrivate
+{
+public:
+    MainWindow *window{nullptr};
+    std::unique_ptr<model::Model> model{nullptr};
+};
+
 const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
 const QString DBUS_PATH                            = "/ru/basealt/alterator";
 const QString DBUS_FIND_INTERFACE_NAME             = "ru.basealt.alterator.object";
@@ -32,12 +39,14 @@ const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
 Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent)
     : QObject{parent}
-    , window(w)
-    , model(std::move(m))
+    , d(new ControllerPrivate)
 {
-    if (this->model != nullptr)
+    d->window = w;
+    d->model  = std::move(m);
+
+    if (d->model != nullptr)
     {
-        w->setModel(model.get());
+        w->setModel(d->model.get());
     }
 
     QDBusServiceWatcher *alteratorWatcher = new QDBusServiceWatcher(DBUS_SERVICE_NAME,
@@ -56,7 +65,7 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
     }
     else
     {
-        window->showModuleMenu(moduleItem);
+        d->window->showModuleMenu(moduleItem);
     }
 }
 
@@ -87,13 +96,13 @@ void Controller::onDBusStructureUpdate(QString, QString, QString)
 
     std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel(appModel.get());
 
-    this->model = std::move(objectModel);
+    d->model = std::move(objectModel);
 
     QLocale locale;
     QString language = locale.system().name().split("_").at(0);
-    this->model->translateModel(language);
+    d->model->translateModel(language);
 
-    this->window->clearUi();
-    this->window->setModel(this->model.get());
+    d->window->clearUi();
+    d->window->setModel(d->model.get());
 }
 } // namespace ab

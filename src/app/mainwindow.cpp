@@ -23,38 +23,23 @@
 
 namespace ab
 {
-class MainWindowPrivate{
+class MainWindowPrivate
+{
 public:
-    MainWindowPrivate(MainWindow *window)
-        : ui(new Ui::MainWindow)
-        , quitShortcut(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), window, SLOT(close())))
-        , model(nullptr)
-        , controller(nullptr)
-        , settings(std::make_unique<MainWindowSettings>(window, ui)){}
-
-    ~MainWindowPrivate()
-    {
-        delete ui;
-        controller.release();
-        model.release();
-    }
-
-    MainWindowPrivate(const MainWindowPrivate &) = delete;
-    MainWindowPrivate(MainWindowPrivate &&)      = delete;
-    MainWindowPrivate &operator=(const MainWindowPrivate &) = delete;
-    MainWindowPrivate &operator=(MainWindowPrivate &&) = delete;
-
-    Ui::MainWindow *ui = nullptr;
-    QShortcut *quitShortcut = nullptr;
-    std::unique_ptr<QStandardItemModel> model = nullptr;
-    std::unique_ptr<Controller> controller = nullptr;
+    Ui::MainWindow *ui                           = nullptr;
+    QShortcut *quitShortcut                      = nullptr;
+    model::Model *model                          = nullptr;
+    Controller *controller                       = nullptr;
     std::unique_ptr<MainWindowSettings> settings = nullptr;
 };
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , d(new MainWindowPrivate(this))
+    , d(new MainWindowPrivate())
 {
+    d->ui           = new Ui::MainWindow;
+    d->quitShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this, SLOT(close()));
+    d->settings     = std::make_unique<MainWindowSettings>(this, d->ui);
     d->ui->setupUi(this);
     d->settings->restoreSettings();
 
@@ -88,12 +73,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::setController(Controller *newContoller)
 {
-    d->controller = std::unique_ptr<Controller>(newContoller);
+    d->controller = newContoller;
 }
 
 void MainWindow::setModel(model::Model *newModel)
 {
-    d->model = std::unique_ptr<model::Model>(newModel);
+    d->model                = newModel;
     QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
     for (int i = 0; i < d->model->rowCount(); ++i)
     {

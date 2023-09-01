@@ -15,6 +15,8 @@ namespace ab
 class CategoryWidget;
 class MainWindow;
 
+class ControllerPrivate;
+
 class Controller : public QObject
 {
     Q_OBJECT
@@ -28,8 +30,7 @@ public slots:
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:
-    MainWindow *window;
-    std::unique_ptr<model::Model> model;
+    ControllerPrivate *d;
 
     Controller(const Controller &) = delete;
     Controller(Controller &&)      = delete;
