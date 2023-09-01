@@ -1,11 +1,13 @@
-#ifndef MAINWINDOWSETTINGS_H
-#define MAINWINDOWSETTINGS_H
+#ifndef AB_MAIN_WINDOW_SETTINGS_H
+#define AB_MAIN_WINDOW_SETTINGS_H
 
-#include "./ui_mainwindow.h"
+#include "ui_mainwindow.h"
 #include "mainwindow.h"
 
 #include <QObject>
 
+namespace ab
+{
 class MainWindow;
 class MainWindowSettingsPrivate;
 
@@ -30,5 +32,6 @@ private:
 private:
     MainWindowSettingsPrivate *d;
 };
+} // namespace ab
 
-#endif // MAINWINDOWSETTINGS_H
+#endif // AB_MAIN_WINDOW_SETTINGS_H

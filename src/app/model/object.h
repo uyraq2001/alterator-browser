@@ -1,19 +1,23 @@
-#ifndef ACOBJECT_H
-#define ACOBJECT_H
+#ifndef AB_OBJECT_H
+#define AB_OBJECT_H
 
-#include "aclocalapplication.h"
-#include "acobjectcategory.h"
+#include "localapplication.h"
+#include "objectcategory.h"
 
 #include <memory>
 #include <QObject>
 #include <qmap.h>
 
-class ACObject : public QObject
+namespace ab
+{
+namespace model
+{
+class Object : public QObject
 {
     Q_OBJECT
 public:
-    ACObject();
-    ~ACObject();
+    Object();
+    ~Object() = default;
 
     void setLocale(QString locale);
 
@@ -31,13 +35,15 @@ public:
     QString m_x_Alterator_UI;
 
     std::vector<QString> m_interfaces;
-    std::vector<ACLocalApplication *> m_applications;
+    std::vector<LocalApplication *> m_applications;
 
     QMap<QString, QString> m_nameLocaleStorage;
 
-    std::unique_ptr<ACObjectCategory> m_categoryObject;
+    std::unique_ptr<ObjectCategory> m_categoryObject;
 
     bool m_isLegacy;
 };
+} // namespace model
+} // namespace ab
 
-#endif // ACOBJECT_H
+#endif // AB_OBJECT_H

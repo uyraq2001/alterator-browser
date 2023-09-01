@@ -1,21 +1,21 @@
-#ifndef CATEGORYWIDGET_H
-#define CATEGORYWIDGET_H
+#ifndef AB_CATEGORY_WIDGET_H
+#define AB_CATEGORY_WIDGET_H
+
+#include "model/objectitem.h"
 
 #include <QStandardItemModel>
 #include <QWidget>
-
-#include "accontroller.h"
-#include "acpushbutton.h"
-#include "model/acobjectitem.h"
-
-class ACController;
-class MainWindow;
-class ACPushButton;
 
 namespace Ui
 {
 class CategoryWidget;
 }
+
+namespace ab
+{
+class Controller;
+class MainWindow;
+class PushButton;
 
 class CategoryWidget : public QWidget
 {
@@ -25,13 +25,11 @@ public:
     ~CategoryWidget();
 
     void setGeometry(const QRect &rect);
-    void paintEvent(QPaintEvent *event);
-
-    void setItem(ACObjectItem *item);
+    void setItem(model::ObjectItem *item);
 
 private:
     Ui::CategoryWidget *ui;
-    ACObjectItem *data;
+    model::ObjectItem *item;
     MainWindow *window;
 
     CategoryWidget(const CategoryWidget &) = delete;
@@ -40,8 +38,8 @@ private:
     CategoryWidget &operator=(CategoryWidget &&) = delete;
 
 signals:
-
-    void showMenu(ACObjectItem *item);
+    void showMenu(model::ObjectItem *item);
 };
+} // namespace ab
 
-#endif // CATEGORYWIDGET_H
+#endif // AB_CATEGORY_WIDGET_H

@@ -1,6 +1,9 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
-#include "model/acobjectitem.h"
+#include "categorywidget.h"
+#include "controller.h"
+#include "mainwindowsettings.h"
+#include "model/objectitem.h"
+#include "ui_mainwindow.h"
 
 #include <QDBusConnection>
 #include <QDBusInterface>
@@ -18,11 +21,11 @@
 #include <QString>
 #include <QTreeView>
 
+namespace ab
+{
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , model(nullptr)
-    , controller(nullptr)
     , settings(new MainWindowSettings(this, ui))
 {
     ui->setupUi(this);
@@ -32,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->scrollArea->widget()->setLayout(categoryLayout);
 
-    setWindowTitle(tr("altcenter"));
+    setWindowTitle(tr("Alterator Browser"));
     setWindowIcon(QIcon(":/logo.png"));
 
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this, SLOT(close()));
@@ -46,40 +49,38 @@ MainWindow::~MainWindow()
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     QMainWindow::paintEvent(event);
-    QWidget *scrollWidget = ui->scrollArea->widget();
+    QWidget *scrollWidget = this->ui->scrollArea->widget();
     scrollWidget->setMinimumWidth(scrollWidget->layout()->minimumSize().width());
-    ui->scrollArea->setMinimumWidth(scrollWidget->minimumWidth());
+    this->ui->scrollArea->setMinimumWidth(scrollWidget->minimumWidth());
     this->setMinimumWidth(ui->scrollArea->minimumWidth());
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
     settings.get()->saveSettings();
+    QMainWindow::closeEvent(event);
 }
 
-void MainWindow::setController(ACController *c)
+void MainWindow::setController(Controller *newContoller)
 {
-    controller = c;
+    this->controller = newContoller;
 }
 
-bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+void MainWindow::setModel(model::Model *newModel)
 {
-    if (watched == ui->scrollArea->viewport() && event->type() == QEvent::MouseButtonDblClick)
-    {}
-    return QWidget::eventFilter(watched, event);
-}
-
-void MainWindow::setModel(ACModel *m)
-{
-    model                   = m;
-    QLayout *categoryLayout = ui->scrollArea->widget()->layout();
-    for (int i = 0; i < model->rowCount(); ++i)
+    this->model             = newModel;
+    QLayout *categoryLayout = this->ui->scrollArea->widget()->layout();
+    for (int i = 0; i < this->model->rowCount(); ++i)
     {
-        CategoryWidget *catWidget = new CategoryWidget(this);
-        categoryLayout->addWidget(catWidget);
-        catWidget->setItem(dynamic_cast<ACObjectItem *>(model->item(i)));
+        CategoryWidget *categoryWidget = new CategoryWidget(this);
+        categoryLayout->addWidget(categoryWidget);
+        categoryWidget->setItem(dynamic_cast<model::ObjectItem *>(this->model->item(i)));
     }
 }
 
 void MainWindow::clearUi()
 {
-    QLayout *categoryLayout = ui->scrollArea->widget()->layout();
+    QLayout *categoryLayout = this->ui->scrollArea->widget()->layout();
     while (categoryLayout->itemAt(0) != nullptr)
     {
         QWidget *categoryWidget = categoryLayout->itemAt(0)->widget();
@@ -88,17 +89,18 @@ void MainWindow::clearUi()
     }
 }
 
-void MainWindow::onModuleClicked(ACPushButton *button)
+void MainWindow::onModuleClicked(PushButton *button)
 {
-    controller->moduleClicked(button->getItem());
+    this->controller->moduleClicked(button->getItem());
 }
 
-void MainWindow::showModuleMenu(ACObjectItem *item)
+void MainWindow::showModuleMenu(model::ObjectItem *item)
 {
     emit showMenu(item);
 }
 
-void MainWindow::onInterfaceClicked(ACLocalApplication *app)
+void MainWindow::onInterfaceClicked(model::LocalApplication *app)
 {
-    controller->onInterfaceClicked(app);
+    this->controller->onInterfaceClicked(app);
 }
+} // namespace ab

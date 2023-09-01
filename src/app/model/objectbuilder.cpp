@@ -1,9 +1,13 @@
-#include "acobjectbuilder.h"
-#include "acobjectcategorybuilder.h"
+#include "objectbuilder.h"
+#include "objectcategorybuilder.h"
 
 #include <QDBusReply>
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
 const QString DESKTOP_ENTRY_SECTION_NAME     = "Desktop Entry";
 const QString ALT_CENTER_SECTION_NAME        = "X-Alterator";
 const QString NAME_KEY_NAME                  = "name";
@@ -17,17 +21,15 @@ const QString X_ALTERATOR_HELP_NAME          = "x-alterator-help";
 const QString X_ALTERATOR_UI_NAME            = "x-alterator-ui";
 const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
 
-ACObjectBuilder::ACObjectBuilder(DesktopFileParser *infoParser,
-                                 QDBusInterface *categoryIface,
-                                 QString getCategoryMethodName)
+ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName)
     : m_infoParser(infoParser)
     , m_dbusInterface(categoryIface)
     , m_dbusMethodName(getCategoryMethodName)
 {}
 
-std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
+std::unique_ptr<Object> ObjectBuilder::buildObject()
 {
-    std::unique_ptr<ACObject> newObject{new ACObject()};
+    std::unique_ptr<Object> newObject{new Object()};
 
     auto sections = m_infoParser->getSections();
 
@@ -36,7 +38,7 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
-        return std::unique_ptr<ACObject>(nullptr);
+        return std::unique_ptr<Object>(nullptr);
     }
 
     QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
@@ -45,7 +47,7 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
 
     if (!buildNames(*desktopSection, newObject.get()))
     {
-        return std::unique_ptr<ACObject>(nullptr);
+        return std::unique_ptr<Object>(nullptr);
     }
 
     QString type = getValue(*desktopSection, TYPE_KEY_NAME);
@@ -124,13 +126,13 @@ std::unique_ptr<ACObject> ACObjectBuilder::buildACObject()
     return newObject;
 }
 
-bool ACObjectBuilder::buildNames(DesktopFileParser::Section &section, ACObject *object)
+bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *object)
 {
     auto nameIt = section.find(NAME_KEY_NAME);
 
     if (nameIt == section.end())
     {
-        qWarning() << "Can't find names for the ACObject!";
+        qWarning() << "Can't find names for the Object!";
         return false;
     }
 
@@ -156,7 +158,7 @@ bool ACObjectBuilder::buildNames(DesktopFileParser::Section &section, ACObject *
     return true;
 }
 
-void ACObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, ACObject *acObject)
+void ObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, Object *acObject)
 {
     if (categoryName.isEmpty())
     {
@@ -178,9 +180,9 @@ void ACObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, Q
 
     DesktopFileParser categoryParser(categoryData);
 
-    ACObjectCategoryBuilder categoryBuilder(&categoryParser);
+    ObjectCategoryBuilder categoryBuilder(&categoryParser);
 
-    std::unique_ptr<ACObjectCategory> category = categoryBuilder.buildACObjectCategory();
+    std::unique_ptr<ObjectCategory> category = categoryBuilder.buildObjectCategory();
 
     if (!category)
     {
@@ -194,9 +196,9 @@ void ACObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, Q
     acObject->m_categoryObject = std::move(category);
 }
 
-void ACObjectBuilder::setDefaultCategory(ACObject *object)
+void ObjectBuilder::setDefaultCategory(Object *object)
 {
-    std::unique_ptr<ACObjectCategory> defaultCategory(new ACObjectCategory);
+    std::unique_ptr<ObjectCategory> defaultCategory(new ObjectCategory);
 
     defaultCategory->m_id = "Unknown";
 
@@ -215,7 +217,7 @@ void ACObjectBuilder::setDefaultCategory(ACObject *object)
     defaultCategory->m_commentLocaleStorage["ru_RU"] = "Ошибка при получении категории";
 }
 
-QString ACObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
+QString ObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
 {
     for (IniFileKey &currentIniFileKey : iniFileKey)
     {
@@ -228,7 +230,7 @@ QString ACObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
     return QString();
 }
 
-QString ACObjectBuilder::getValue(DesktopFileParser::Section &section, QString key)
+QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key)
 {
     auto it = section.find(key);
 
@@ -247,9 +249,9 @@ QString ACObjectBuilder::getValue(DesktopFileParser::Section &section, QString k
     return QString();
 }
 
-std::vector<QString> ACObjectBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
-                                                         QString key,
-                                                         QString delimiter)
+std::vector<QString> ObjectBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
+                                                       QString key,
+                                                       QString delimiter)
 {
     QString values = getValue(section, key);
     if (values.isEmpty())
@@ -277,3 +279,5 @@ std::vector<QString> ACObjectBuilder::parseValuesFromKey(DesktopFileParser::Sect
 
     return result;
 }
+} // namespace model
+} // namespace ab

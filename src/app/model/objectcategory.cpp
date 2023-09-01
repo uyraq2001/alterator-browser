@@ -1,6 +1,10 @@
-#include "acobjectcategory.h"
+#include "objectcategory.h"
 
-ACObjectCategory::ACObjectCategory()
+namespace ab
+{
+namespace model
+{
+ObjectCategory::ObjectCategory()
     : m_id()
     , m_name()
     , m_comment()
@@ -11,9 +15,9 @@ ACObjectCategory::ACObjectCategory()
     , m_commentLocaleStorage()
 {}
 
-ACObjectCategory::~ACObjectCategory() {}
+ObjectCategory::~ObjectCategory() {}
 
-void ACObjectCategory::setLocale(QString locale)
+void ObjectCategory::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);
     if (nameIt != m_nameLocaleStorage.end())
@@ -27,3 +31,5 @@ void ACObjectCategory::setLocale(QString locale)
         m_comment = *commentIt;
     }
 }
+} // namespace model
+} // namespace ab

@@ -1,7 +1,11 @@
-#include "aclocalapplicationbuilder.h"
+#include "localapplicationbuilder.h"
 
 #include <QDebug>
 
+namespace ab
+{
+namespace model
+{
 const QString LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME         = "Desktop Entry";
 const QString LOCAL_APP_NAME_KEY_NAME                      = "name";
 const QString LOCAL_APP_GENERIC_NAME_KEY_NAME              = "genericname";
@@ -18,25 +22,25 @@ const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME     = "Alterator Entry";
 const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_PREFIX   = "Alterator Interface";
 const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME = "exec";
 
-std::unique_ptr<ACLocalApplication> ACLocalApplicationBuilder::buildACLocalApplicationObject(DesktopFileParser &parser)
+std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplicationObject(DesktopFileParser &parser)
 {
-    std::unique_ptr<ACLocalApplication> result(new ACLocalApplication);
+    std::unique_ptr<LocalApplication> result(new LocalApplication);
 
     auto sections = parser.getSections();
 
     auto desktopEntrySectionIt = sections.find(LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME);
     if (desktopEntrySectionIt == sections.end())
     {
-        qWarning() << "Can't find " << LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME
-                   << " section to buils ACLocalApplicationObject! Skipping..";
-        return std::unique_ptr<ACLocalApplication>(nullptr);
+        qWarning() << "Can't find" << LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME
+                   << "section to buils LocalApplicationObject! Skipping..";
+        return std::unique_ptr<LocalApplication>(nullptr);
     }
 
     DesktopFileParser::Section desktopEntrySection = *desktopEntrySectionIt;
 
-    if (!buildNames(desktopEntrySection, result.get())) //TODO BY buildFieldWithLocale
+    if (!buildNames(desktopEntrySection, result.get())) // TODO: buildFieldWithLocale
     {
-        return std::unique_ptr<ACLocalApplication>();
+        return std::unique_ptr<LocalApplication>();
     }
 
     if (!buildFieldWithLocale(desktopEntrySection,
@@ -68,7 +72,7 @@ std::unique_ptr<ACLocalApplication> ACLocalApplicationBuilder::buildACLocalAppli
     if (exec.isEmpty())
     {
         qWarning() << "Can't find key:" << LOCAL_APP_EXEC_KEY_NAME;
-        return std::unique_ptr<ACLocalApplication>(nullptr);
+        return std::unique_ptr<LocalApplication>(nullptr);
     }
     result->m_desktopExec = exec;
 
@@ -97,23 +101,20 @@ std::unique_ptr<ACLocalApplication> ACLocalApplicationBuilder::buildACLocalAppli
     bool xAlteratorEntrySectionParsingResult = parseXAlteratorEntrySection(parser, result.get());
 
     result->m_categories = parseValuesFromKey(desktopEntrySection, LOCAL_APP_CATEGORIES_KEY_NAME, ";");
-
     result->m_mimeTypes = parseValuesFromKey(desktopEntrySection, LOCAL_APP_MIMETYPE_KEY_NAME, ";");
 
     return result;
 }
 
-bool ACLocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &parser,
-                                                            ACLocalApplication *localApplication)
+bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &parser, LocalApplication *localApplication)
 {
     auto sections = parser.getSections();
-
     auto xAlteratorEntrySectionIt = sections.find(LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME);
 
     if (xAlteratorEntrySectionIt == sections.end())
     {
-        qWarning() << "Can't find " << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME
-                   << " section to buils ACLocalApplicationObject! Skipping..";
+        qWarning() << "Can't find" << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME
+                   << " section to buils LocalApplicationObject! Skipping...";
         return false;
     }
 
@@ -125,8 +126,8 @@ bool ACLocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &p
 
     if (interfacesList.isEmpty())
     {
-        qWarning() << "Can't find interfaces list in section " << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME
-                   << " section to buils ACLocalApplicationObject! Skipping..";
+        qWarning() << "Can't find interfaces list in section" << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME
+                   << " section to buils LocalApplicationObject! Skipping...";
         return false;
     }
 
@@ -139,7 +140,7 @@ bool ACLocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &p
         if (currentSectionIt == sections.end())
         {
             qWarning() << "Can't find section X_Alterator section" << currentSectionName
-                       << " section to buils ACLocalApplicationObject! Skipping..";
+                       << " section to buils LocalApplicationObject! Skipping...";
 
             return false;
         }
@@ -148,8 +149,8 @@ bool ACLocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &p
 
         if (execValue.isEmpty())
         {
-            qWarning() << "Can't find key " << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME
-                       << " in section: " << currentSectionName << "Skipping..";
+            qWarning() << "Can't find key" << LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME
+                       << "in section:" << currentSectionName << "Skipping...";
 
             return false;
         }
@@ -163,7 +164,7 @@ bool ACLocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &p
     return true;
 }
 
-bool ACLocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, ACLocalApplication *localAppObject)
+bool LocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, LocalApplication *localAppObject)
 {
     auto nameIt = section.find(LOCAL_APP_NAME_KEY_NAME);
 
@@ -195,10 +196,10 @@ bool ACLocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, 
     return true;
 }
 
-bool ACLocalApplicationBuilder::buildFieldWithLocale(DesktopFileParser::Section &section,
-                                                     QString entryName,
-                                                     QString &field,
-                                                     QMap<QString, QString> &localeStorage)
+bool LocalApplicationBuilder::buildFieldWithLocale(DesktopFileParser::Section &section,
+                                                   QString entryName,
+                                                   QString &field,
+                                                   QMap<QString, QString> &localeStorage)
 {
     auto nameIt = section.find(entryName);
 
@@ -228,7 +229,7 @@ bool ACLocalApplicationBuilder::buildFieldWithLocale(DesktopFileParser::Section 
     return true;
 }
 
-QString ACLocalApplicationBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
+QString LocalApplicationBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
 {
     for (IniFileKey &currentIniFileKey : iniFileKey)
     {
@@ -241,7 +242,7 @@ QString ACLocalApplicationBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
     return QString();
 }
 
-QString ACLocalApplicationBuilder::getValue(DesktopFileParser::Section &section, QString key)
+QString LocalApplicationBuilder::getValue(DesktopFileParser::Section &section, QString key)
 {
     auto it = section.find(key);
 
@@ -260,9 +261,9 @@ QString ACLocalApplicationBuilder::getValue(DesktopFileParser::Section &section,
     return QString();
 }
 
-std::vector<QString> ACLocalApplicationBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
-                                                                   QString key,
-                                                                   QString delimiter)
+std::vector<QString> LocalApplicationBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
+                                                                 QString key,
+                                                                 QString delimiter)
 {
     QString values = getValue(section, key);
     if (values.isEmpty())
@@ -279,7 +280,6 @@ std::vector<QString> ACLocalApplicationBuilder::parseValuesFromKey(DesktopFilePa
     QStringList valuesList = values.split(delimiter);
 
     std::vector<QString> result;
-
     for (QString &currentValue : valuesList)
     {
         if (!currentValue.isEmpty())
@@ -290,3 +290,5 @@ std::vector<QString> ACLocalApplicationBuilder::parseValuesFromKey(DesktopFilePa
 
     return result;
 }
+} // namespace model
+} // namespace ab

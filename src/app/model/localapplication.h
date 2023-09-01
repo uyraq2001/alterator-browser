@@ -1,17 +1,21 @@
-#ifndef ACLOCALAPPLICATION_H
-#define ACLOCALAPPLICATION_H
+#ifndef AB_LOCAL_APPLICATION_H
+#define AB_LOCAL_APPLICATION_H
 
 #include <vector>
 #include <QMap>
 #include <QObject>
 #include <QString>
 
-class ACLocalApplication : public QObject
+namespace ab
+{
+namespace model
+{
+class LocalApplication : public QObject
 {
     Q_OBJECT
 public:
-    ACLocalApplication();
-    ~ACLocalApplication();
+    LocalApplication();
+    ~LocalApplication() = default;
 
     void setLocale(QString locale);
 
@@ -37,5 +41,7 @@ public:
     QMap<QString, QString> m_keywordsLocaleStorage;
     QMap<QString, QString> m_commentLocaleStorage;
 };
+} // namespace model
+} // namespace ab
 
-#endif // ACLOCALAPPLICATION_H
+#endif // AB_LOCAL_APPLICATION_H

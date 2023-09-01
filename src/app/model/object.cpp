@@ -1,6 +1,10 @@
-#include "acobject.h"
+#include "object.h"
 
-ACObject::ACObject()
+namespace ab
+{
+namespace model
+{
+Object::Object()
     : m_id()
     , m_displayName()
     , m_displayCategory()
@@ -15,13 +19,11 @@ ACObject::ACObject()
     , m_interfaces()
     , m_applications()
     , m_nameLocaleStorage()
-    , m_categoryObject(new ACObjectCategory())
+    , m_categoryObject(new ObjectCategory())
     , m_isLegacy(false)
 {}
 
-ACObject::~ACObject() {}
-
-void ACObject::setLocale(QString locale)
+void Object::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);
     if (nameIt != m_nameLocaleStorage.end())
@@ -35,3 +37,5 @@ void ACObject::setLocale(QString locale)
         m_displayCategory = m_categoryObject->m_name;
     }
 }
+} // namespace model
+} // namespace ab

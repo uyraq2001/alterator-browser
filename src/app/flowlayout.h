@@ -38,14 +38,16 @@
 **
 ****************************************************************************/
 
-#ifndef FLOWLAYOUT_H
-#define FLOWLAYOUT_H
+#ifndef AB_FLOW_LAYOUT_H
+#define AB_FLOW_LAYOUT_H
 
 #include <QLayout>
 #include <QRect>
 #include <QStyle>
 #include <QWidgetItem>
 
+namespace ab
+{
 class FlowLayout : public QLayout
 {
 public:
@@ -74,5 +76,6 @@ private:
     int m_hSpace;
     int m_vSpace;
 };
+} // namespace ab
 
-#endif
+#endif // AB_FLOW_LAYOUT_H

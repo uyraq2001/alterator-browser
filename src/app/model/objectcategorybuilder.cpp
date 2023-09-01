@@ -1,9 +1,13 @@
-#include "acobjectcategorybuilder.h"
+#include "objectcategorybuilder.h"
 
 #include <QDebug>
 #include <QList>
 #include <QMultiMap>
 
+namespace ab
+{
+namespace model
+{
 const QString DESKTOP_ENTRY_SECTION_NAME             = "Desktop Entry";
 const QString CATEGORY_NAME_KEY_NAME                 = "name";
 const QString CATEGORY_COMMENT_KEY_NAME              = "comment";
@@ -11,41 +15,38 @@ const QString CATEGORY_ICON_KEY_NAME                 = "icon";
 const QString CATEGORY_TYPE_KEY_NAME                 = "type";
 const QString CATEGORY_X_ALTERATOR_CATEGORY_KEY_NAME = "x-alterator-category";
 
-ACObjectCategoryBuilder::ACObjectCategoryBuilder(DesktopFileParser *categoryParser)
+ObjectCategoryBuilder::ObjectCategoryBuilder(DesktopFileParser *categoryParser)
     : m_categoryParser(categoryParser)
 {}
 
-ACObjectCategoryBuilder::~ACObjectCategoryBuilder() {}
-
-std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory()
+std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
 {
-    std::unique_ptr<ACObjectCategory> result{new ACObjectCategory};
+    auto result = std::make_unique<ObjectCategory>();
 
     auto sections = m_categoryParser->getSections();
 
     auto desktopSection = sections.find(DESKTOP_ENTRY_SECTION_NAME);
-
     if (desktopSection == sections.end())
     {
-        qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section! Skipping..";
-        return std::unique_ptr<ACObjectCategory>();
+        qWarning() << "Can't find" << DESKTOP_ENTRY_SECTION_NAME << "section! Skipping...";
+        return std::unique_ptr<ObjectCategory>();
     }
 
     if (!buildNames(*desktopSection, result.get()))
     {
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
 
     if (!buildComments(*desktopSection, result.get()))
     {
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
 
     QString icon = getValue(*desktopSection, CATEGORY_ICON_KEY_NAME);
     if (icon.isEmpty())
     {
         qWarning() << "Can't find icon for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
     result->m_icon = icon;
 
@@ -53,7 +54,7 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     if (type.isEmpty())
     {
         qWarning() << "Can't find type for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
     result->m_type = type;
 
@@ -61,17 +62,16 @@ std::unique_ptr<ACObjectCategory> ACObjectCategoryBuilder::buildACObjectCategory
     if (xAlteratorCategory.isEmpty())
     {
         qWarning() << "Can't find X-Alterator-Category for the category: " << result->m_id;
-        return std::unique_ptr<ACObjectCategory>();
+        return std::unique_ptr<ObjectCategory>();
     }
     result->m_xAlteratorCategory = xAlteratorCategory;
 
     return result;
 }
 
-bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ACObjectCategory *categoryObject)
+bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
 {
     auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
-
     if (nameIt == section.end())
     {
         qWarning() << "Can't find names for the category!";
@@ -79,9 +79,7 @@ bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, AC
     }
 
     QList<IniFileKey> listOfKeys = section.values(CATEGORY_NAME_KEY_NAME);
-
     QString defaultName = getDefaultValue(listOfKeys);
-
     if (defaultName.isEmpty())
     {
         qWarning() << "Can't default name for the category!";
@@ -89,7 +87,6 @@ bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, AC
     }
 
     categoryObject->m_id = defaultName;
-
     categoryObject->m_name = defaultName;
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
@@ -100,10 +97,9 @@ bool ACObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, AC
     return true;
 }
 
-bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ACObjectCategory *categoryObject)
+bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
 {
     auto commentIt = section.find(CATEGORY_COMMENT_KEY_NAME);
-
     if (commentIt == section.end())
     {
         qWarning() << "Can't find comments for the category!";
@@ -111,9 +107,7 @@ bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section,
     }
 
     QList<IniFileKey> listOfKeys = section.values(CATEGORY_COMMENT_KEY_NAME);
-
     QString defaultComment = getDefaultValue(listOfKeys);
-
     if (defaultComment.isEmpty())
     {
         qWarning() << "Can't default comment for the category!";
@@ -130,7 +124,7 @@ bool ACObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section,
     return true;
 }
 
-QString ACObjectCategoryBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
+QString ObjectCategoryBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
 {
     for (IniFileKey &currentIniFileKey : iniFileKey)
     {
@@ -143,7 +137,7 @@ QString ACObjectCategoryBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
     return QString();
 }
 
-QString ACObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, QString key)
+QString ObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, QString key)
 {
     auto it = section.find(key);
 
@@ -161,3 +155,5 @@ QString ACObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, Q
 
     return QString();
 }
+} // namespace model
+} // namespace ab

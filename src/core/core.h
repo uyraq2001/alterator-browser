@@ -18,8 +18,8 @@
 **
 ***********************************************************************************************************************/
 
-#ifndef AB_MODEL_H
-#define AB_MODEL_H
+#ifndef AB_CORE_H
+#define AB_CORE_H
 
 #include "common.h"
 
@@ -29,4 +29,4 @@
 #define AB_CORE_EXPORT AB_SYMBOL_IMPORT
 #endif
 
-#endif // AB_MODEL_H
+#endif // AB_CORE_H

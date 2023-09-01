@@ -28,26 +28,26 @@ set(HEADERS
     mainwindow.h
     categorywidget.h
     flowlayout.h
-    accontroller.h
-    acpushbutton.h
+    controller.h
+    pushbutton.h
     mainwindowsettings.h
 
-    model/acobject.h
-    model/acmodel.h
-    model/acobjectcategory.h
-    model/acobjectcategorybuilder.h
-    model/aclocalapplication.h
-    model/acobjectitem.h
-    model/acobjectsmodelbuilder.h
+    model/object.h
+    model/model.h
+    model/objectcategory.h
+    model/objectcategorybuilder.h
+    model/localapplication.h
+    model/objectitem.h
+    model/objectsmodelbuilder.h
     model/desktopfileparser.h
-    model/acobjectbuilder.h
+    model/objectbuilder.h
 
-    model/aclocalapplication.h
-    model/aclocalapplicationbuilder.h
-    model/aclocalapllicationmodelbuilder.h
-    model/aclocalapplicationmodel.h
-    model/aclocalapplicationitem.h
-    model/acmodel.h
+    model/localapplication.h
+    model/localapplicationbuilder.h
+    model/localapllicationmodelbuilder.h
+    model/localapplicationmodel.h
+    model/localapplicationitem.h
+    model/model.h
 )
 
 set(SOURCES
@@ -55,26 +55,26 @@ set(SOURCES
     mainwindow.cpp
     categorywidget.cpp
     flowlayout.cpp
-    accontroller.cpp
-    acpushbutton.cpp
+    controller.cpp
+    pushbutton.cpp
     mainwindowsettings.cpp
 
-    model/acobject.cpp
-    model/acmodel.cpp
-    model/acobjectcategory.cpp
-    model/acobjectcategorybuilder.cpp
-    model/aclocalapplication.cpp
-    model/acobjectitem.cpp
-    model/acobjectsmodelbuilder.cpp
+    model/object.cpp
+    model/model.cpp
+    model/objectcategory.cpp
+    model/objectcategorybuilder.cpp
+    model/localapplication.cpp
+    model/objectitem.cpp
+    model/objectsmodelbuilder.cpp
     model/desktopfileparser.cpp
-    model/acobjectbuilder.cpp
+    model/objectbuilder.cpp
 
-    model/aclocalapplication.cpp
-    model/aclocalapplicationbuilder.cpp
-    model/aclocalapllicationmodelbuilder.cpp
-    model/aclocalapplicationmodel.cpp
-    model/aclocalapplicationitem.cpp
-    model/acmodel.cpp
+    model/localapplication.cpp
+    model/localapplicationbuilder.cpp
+    model/localapllicationmodelbuilder.cpp
+    model/localapplicationmodel.cpp
+    model/localapplicationitem.cpp
+    model/model.cpp
 )
 
 set(UI_FORMS

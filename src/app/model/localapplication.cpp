@@ -1,6 +1,10 @@
-#include "aclocalapplication.h"
+#include "localapplication.h"
 
-ACLocalApplication::ACLocalApplication()
+namespace ab
+{
+namespace model
+{
+LocalApplication::LocalApplication()
     : m_id()
     , m_name()
     , m_genericName()
@@ -19,12 +23,9 @@ ACLocalApplication::ACLocalApplication()
     , m_genericNameLocaleStorage()
     , m_keywordsLocaleStorage()
     , m_commentLocaleStorage()
-
 {}
 
-ACLocalApplication::~ACLocalApplication() {}
-
-void ACLocalApplication::setLocale(QString locale)
+void LocalApplication::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);
     if (nameIt != m_nameLocaleStorage.end())
@@ -50,3 +51,5 @@ void ACLocalApplication::setLocale(QString locale)
         m_displayComment = *commentsIt;
     }
 }
+} // namespace model
+} // namespace ab

@@ -1,20 +1,13 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef AB_MAIN_WINDOW_H
+#define AB_MAIN_WINDOW_H
+
+#include "model/model.h"
+#include "pushbutton.h"
 
 #include <utility>
+
 #include <QMainWindow>
 #include <QStandardItemModel>
-
-#include "accontroller.h"
-#include "acpushbutton.h"
-#include "categorywidget.h"
-#include "mainwindowsettings.h"
-#include "model/acmodel.h"
-
-class CategoryWidget;
-class ACController;
-class MainWindowSettings;
-class ACPushButton;
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -22,6 +15,13 @@ namespace Ui
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+namespace ab
+{
+class CategoryWidget;
+class Controller;
+class MainWindowSettings;
+class PushButton;
 
 class MainWindow : public QMainWindow
 {
@@ -31,18 +31,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void closeEvent(QCloseEvent *event);
     void paintEvent(QPaintEvent *event);
 
-    void setController(ACController *c);
+    void setController(Controller *c);
 
-    bool eventFilter(QObject *watched, QEvent *event);
-
-    void setModel(ACModel *m);
+    void setModel(model::Model *m);
     void clearUi();
 
-    void showModuleMenu(ACObjectItem *item);
-    void onModuleClicked(ACPushButton *button);
-    void onInterfaceClicked(ACLocalApplication *app);
+    void showModuleMenu(model::ObjectItem *item);
+    void onModuleClicked(PushButton *button);
+    void onInterfaceClicked(model::LocalApplication *app);
 
 private:
     MainWindow(const MainWindow &) = delete;
@@ -50,13 +49,14 @@ private:
     MainWindow &operator=(const MainWindow &) = delete;
     MainWindow &operator=(MainWindow &&) = delete;
 
-    Ui::MainWindow *ui;
-    QStandardItemModel *model;
-    ACController *controller;
+    Ui::MainWindow *ui = nullptr;
+    QStandardItemModel *model = nullptr;
+    Controller *controller = nullptr;
     std::unique_ptr<MainWindowSettings> settings;
 
 signals:
-
-    void showMenu(ACObjectItem *item);
+    void showMenu(model::ObjectItem *item);
 };
-#endif // MAINWINDOW_H
+} // namespace ab
+
+#endif // AB_MAIN_WINDOW_H

@@ -1,9 +1,9 @@
 #include "../core/logger/prelude.h"
-#include "accontroller.h"
+#include "controller.h"
 #include "mainwindow.h"
-#include "model/aclocalapllicationmodelbuilder.h"
-#include "model/acmodel.h"
-#include "model/acobjectsmodelbuilder.h"
+#include "model/localapllicationmodelbuilder.h"
+#include "model/model.h"
+#include "model/objectsmodelbuilder.h"
 
 #include <QApplication>
 #include <QStandardItemModel>
@@ -39,29 +39,30 @@ int main(int argc, char *argv[])
     translator.load(language, ".");
     app.installTranslator(&translator);
 
-    ACLocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
-                                                   DBUS_LOCAL_APP_PATH,
-                                                   DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                   DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                   DBUS_LOCAL_APP_GET_DESKTOP_FILE);
+    ab::model::LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
+                                                 DBUS_LOCAL_APP_PATH,
+                                                 DBUS_LOCAL_APP_INTERFACE_NAME,
+                                                 DBUS_LOCAL_APP_GET_LIST_OF_FILES,
+                                                 DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<ACLocalApplicationModel> appModel = appModelBuilder.buildModel();
+    std::unique_ptr<ab::model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
-    ACObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
-                                             DBUS_PATH,
-                                             DBUS_MANAGER_INTERFACE_NAME,
-                                             DBUS_FIND_INTERFACE_NAME,
-                                             GET_OBJECTS_METHOD_NAME,
-                                             INFO_METHOD_NAME_FOR_ACOBJECT,
-                                             CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
-                                             CATEGORY_METHOD_NAME_FOR_ACOBJECT);
+    ab::model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
+                                           DBUS_PATH,
+                                           DBUS_MANAGER_INTERFACE_NAME,
+                                           DBUS_FIND_INTERFACE_NAME,
+                                           GET_OBJECTS_METHOD_NAME,
+                                           INFO_METHOD_NAME_FOR_ACOBJECT,
+                                           CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+                                           CATEGORY_METHOD_NAME_FOR_ACOBJECT);
 
-    std::unique_ptr<ACModel> model = objectModelBuilder.buildModel(appModel.get());
-    model->translateModel(language);
+    std::unique_ptr<ab::model::Model> model = objectModelBuilder.buildModel(appModel.get());
+    model->translateModel(QString("ru"));
 
-    MainWindow mainWindow;
+    ab::MainWindow mainWindow;
 
-    ACController controller(&mainWindow, std::move(model));
+    ab::Controller controller(&mainWindow, std::move(model));
+
     mainWindow.setController(&controller);
 
     mainWindow.show();

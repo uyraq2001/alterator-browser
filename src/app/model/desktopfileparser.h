@@ -1,10 +1,15 @@
-#ifndef ADTDESKTOPFILEPARSER_H
-#define ADTDESKTOPFILEPARSER_H
+#ifndef AB_DESKTOP_FILE_PARSER_H
+#define AB_DESKTOP_FILE_PARSER_H
 
 #include <unordered_map>
+
 #include <QString>
 #include <QVariant>
 
+namespace ab
+{
+namespace model
+{
 struct IniFileKey
 {
     QString keyName{};
@@ -21,14 +26,15 @@ public:
 public:
     DesktopFileParser(QString data);
 
+public:
     QString getKeyLocale(QString keyName);
-
     QString getKeyNameWithoutLocale(QString keyName);
-
     Sections getSections();
 
 private:
     Sections m_sections;
 };
+} // namespace model
+} // namespace ab
 
-#endif // ADTDESKTOPFILEPARSER_H
+#endif // AB_DESKTOP_FILE_PARSER_H
