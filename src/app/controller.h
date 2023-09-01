@@ -28,8 +28,8 @@ public slots:
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:
-    MainWindow *window;
-    std::unique_ptr<model::Model> model;
+    MainWindow *window = nullptr;
+    std::unique_ptr<model::Model> model{nullptr};
 
     Controller(const Controller &) = delete;
     Controller(Controller &&)      = delete;

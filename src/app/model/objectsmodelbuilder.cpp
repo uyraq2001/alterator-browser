@@ -43,7 +43,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *ap
 
     if (pathsOfObjects.isEmpty())
     {
-        return std::unique_ptr<Model>(new Model());
+        return std::make_unique<Model>();
     }
 
     std::vector<std::unique_ptr<Object>> acObjects = parseObjects(pathsOfObjects);
@@ -51,8 +51,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *ap
     if (acObjects.empty())
     {
         qCritical() << "Can't access alterator manager interface!";
-
-        return std::unique_ptr<Model>(new Model());
+        return std::make_unique<Model>();
     }
 
     std::unique_ptr<Model> model = buildModelFromObjects(std::move(acObjects));
@@ -92,7 +91,6 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
         if (!currentModuleItem)
         {
             qWarning() << "Can't cast item to ObjectItem to merge application object!";
-
             continue;
         }
 
@@ -122,7 +120,6 @@ QStringList ObjectsModelBuilder::getListOfObjects()
     if (!managerIface.isValid())
     {
         qCritical() << "Can't access alterator manager interface!";
-
         return QStringList();
     }
 
@@ -131,7 +128,6 @@ QStringList ObjectsModelBuilder::getListOfObjects()
     if (!reply.isValid())
     {
         qCritical() << "Can't get reply from alterator manager interface!";
-
         return QStringList();
     }
 
@@ -229,7 +225,7 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 
 std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<std::unique_ptr<Object>> objects)
 {
-    std::unique_ptr<Model> model(new Model());
+    auto model = std::make_unique<Model>();
 
     QMap<QString, ObjectItem *> categories;
 

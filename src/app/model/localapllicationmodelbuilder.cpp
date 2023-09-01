@@ -31,7 +31,7 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
     if (listOfDesktopFiles.isEmpty())
     {
         qCritical() << "Can't get list of local applications!";
-        return std::unique_ptr<LocalApplicationModel>(new LocalApplicationModel());
+        return std::make_unique<LocalApplicationModel>();
     }
 
     std::vector<std::unique_ptr<LocalApplication>> listOfApps = parseDesktopFiles(listOfDesktopFiles);
@@ -39,10 +39,10 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
     if (listOfApps.empty())
     {
         qCritical() << "Can't create LocalApplications objects!";
-        return std::unique_ptr<LocalApplicationModel>(new LocalApplicationModel());
+        return std::make_unique<LocalApplicationModel>();
     }
 
-    std::unique_ptr<LocalApplicationModel> model(new LocalApplicationModel);
+    auto model = std::make_unique<LocalApplicationModel>();
     auto rootItem = model.get()->invisibleRootItem();
 
     for (size_t i = 0; i < listOfApps.size(); ++i)

@@ -24,7 +24,7 @@ const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME = "exec";
 
 std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplicationObject(DesktopFileParser &parser)
 {
-    std::unique_ptr<LocalApplication> result(new LocalApplication);
+    auto result = std::make_unique<LocalApplication>();
 
     auto sections = parser.getSections();
 
@@ -33,7 +33,7 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplication
     {
         qWarning() << "Can't find" << LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME
                    << "section to buils LocalApplicationObject! Skipping..";
-        return std::unique_ptr<LocalApplication>(nullptr);
+        return nullptr;
     }
 
     DesktopFileParser::Section desktopEntrySection = *desktopEntrySectionIt;
@@ -72,7 +72,7 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplication
     if (exec.isEmpty())
     {
         qWarning() << "Can't find key:" << LOCAL_APP_EXEC_KEY_NAME;
-        return std::unique_ptr<LocalApplication>(nullptr);
+        return nullptr;
     }
     result->m_desktopExec = exec;
 
