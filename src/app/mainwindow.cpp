@@ -23,64 +23,89 @@
 
 namespace ab
 {
+class MainWindowPrivate{
+public:
+    MainWindowPrivate(MainWindow *window)
+        : ui(new Ui::MainWindow)
+        , quitShortcut(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), window, SLOT(close())))
+        , model(nullptr)
+        , controller(nullptr)
+        , settings(std::make_unique<MainWindowSettings>(window, ui)){}
+
+    ~MainWindowPrivate()
+    {
+        delete ui;
+        controller.release();
+        model.release();
+    }
+
+    MainWindowPrivate(const MainWindowPrivate &) = delete;
+    MainWindowPrivate(MainWindowPrivate &&)      = delete;
+    MainWindowPrivate &operator=(const MainWindowPrivate &) = delete;
+    MainWindowPrivate &operator=(MainWindowPrivate &&) = delete;
+
+    Ui::MainWindow *ui = nullptr;
+    QShortcut *quitShortcut = nullptr;
+    std::unique_ptr<QStandardItemModel> model = nullptr;
+    std::unique_ptr<Controller> controller = nullptr;
+    std::unique_ptr<MainWindowSettings> settings = nullptr;
+};
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-    , settings(new MainWindowSettings(this, ui))
+    , d(new MainWindowPrivate(this))
 {
-    ui->setupUi(this);
-    settings.get()->restoreSettings();
+    d->ui->setupUi(this);
+    d->settings->restoreSettings();
 
     QVBoxLayout *categoryLayout = new QVBoxLayout();
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    ui->scrollArea->widget()->setLayout(categoryLayout);
+    d->ui->scrollArea->widget()->setLayout(categoryLayout);
 
     setWindowTitle(tr("Alterator Browser"));
     setWindowIcon(QIcon(":/logo.png"));
-
-    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this, SLOT(close()));
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    delete d;
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
     QMainWindow::paintEvent(event);
-    QWidget *scrollWidget = this->ui->scrollArea->widget();
+    QWidget *scrollWidget = d->ui->scrollArea->widget();
     scrollWidget->setMinimumWidth(scrollWidget->layout()->minimumSize().width());
-    this->ui->scrollArea->setMinimumWidth(scrollWidget->minimumWidth());
-    this->setMinimumWidth(ui->scrollArea->minimumWidth());
+    d->ui->scrollArea->setMinimumWidth(scrollWidget->minimumWidth());
+    this->setMinimumWidth(d->ui->scrollArea->minimumWidth());
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    settings.get()->saveSettings();
+    d->settings->saveSettings();
     QMainWindow::closeEvent(event);
 }
 
 void MainWindow::setController(Controller *newContoller)
 {
-    this->controller = newContoller;
+    d->controller = std::unique_ptr<Controller>(newContoller);
 }
 
 void MainWindow::setModel(model::Model *newModel)
 {
-    this->model             = newModel;
-    QLayout *categoryLayout = this->ui->scrollArea->widget()->layout();
-    for (int i = 0; i < this->model->rowCount(); ++i)
+    d->model = std::unique_ptr<model::Model>(newModel);
+    QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
+    for (int i = 0; i < d->model->rowCount(); ++i)
     {
         CategoryWidget *categoryWidget = new CategoryWidget(this);
         categoryLayout->addWidget(categoryWidget);
-        categoryWidget->setItem(dynamic_cast<model::ObjectItem *>(this->model->item(i)));
+        categoryWidget->setItem(dynamic_cast<model::ObjectItem *>(d->model->item(i)));
     }
 }
 
 void MainWindow::clearUi()
 {
-    QLayout *categoryLayout = this->ui->scrollArea->widget()->layout();
+    QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
     while (categoryLayout->itemAt(0) != nullptr)
     {
         QWidget *categoryWidget = categoryLayout->itemAt(0)->widget();
@@ -91,7 +116,7 @@ void MainWindow::clearUi()
 
 void MainWindow::onModuleClicked(PushButton *button)
 {
-    this->controller->moduleClicked(button->getItem());
+    d->controller->moduleClicked(button->getItem());
 }
 
 void MainWindow::showModuleMenu(model::ObjectItem *item)
@@ -101,6 +126,6 @@ void MainWindow::showModuleMenu(model::ObjectItem *item)
 
 void MainWindow::onInterfaceClicked(model::LocalApplication *app)
 {
-    this->controller->onInterfaceClicked(app);
+    d->controller->onInterfaceClicked(app);
 }
 } // namespace ab
