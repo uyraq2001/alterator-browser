@@ -52,6 +52,7 @@ private:
     MainWindow &operator=(MainWindow &&) = delete;
 
     MainWindowPrivate *d;
+
 signals:
     void showMenu(model::ObjectItem *item);
 };

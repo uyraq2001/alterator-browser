@@ -19,7 +19,7 @@ public:
     void setLocale(QString locale);
 
 public:
-    std::unique_ptr<LocalApplication> m_acLocalApplication;
+    std::unique_ptr<LocalApplication> m_acLocalApplication{nullptr};
 };
 } // namespace model
 } // namespace ab
