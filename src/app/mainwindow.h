@@ -52,7 +52,7 @@ private:
     Ui::MainWindow *ui = nullptr;
     QStandardItemModel *model = nullptr;
     Controller *controller = nullptr;
-    std::unique_ptr<MainWindowSettings> settings;
+    std::unique_ptr<MainWindowSettings> settings{nullptr};
 
 signals:
     void showMenu(model::ObjectItem *item);
