@@ -17,5 +17,7 @@ if (CMAKE_COMPILER_IS_GNUCXX AND NOT WIN32)
   endif()
 endif()
 
+set_property(DIRECTORY PROPERTY CXX_STANDARD 17)
+
 add_subdirectory(app)
 add_subdirectory(core)
