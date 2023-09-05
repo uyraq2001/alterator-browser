@@ -29,24 +29,24 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find" << DESKTOP_ENTRY_SECTION_NAME << "section! Skipping...";
-        return std::unique_ptr<ObjectCategory>();
+        return nullptr;
     }
 
     if (!buildNames(*desktopSection, result.get()))
     {
-        return std::unique_ptr<ObjectCategory>();
+        return nullptr;
     }
 
     if (!buildComments(*desktopSection, result.get()))
     {
-        return std::unique_ptr<ObjectCategory>();
+        return nullptr;
     }
 
     QString icon = getValue(*desktopSection, CATEGORY_ICON_KEY_NAME);
     if (icon.isEmpty())
     {
         qWarning() << "Can't find icon for the category: " << result->m_id;
-        return std::unique_ptr<ObjectCategory>();
+        return nullptr;
     }
     result->m_icon = icon;
 
@@ -54,7 +54,7 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     if (type.isEmpty())
     {
         qWarning() << "Can't find type for the category: " << result->m_id;
-        return std::unique_ptr<ObjectCategory>();
+        return nullptr;
     }
     result->m_type = type;
 
@@ -62,7 +62,7 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     if (xAlteratorCategory.isEmpty())
     {
         qWarning() << "Can't find X-Alterator-Category for the category: " << result->m_id;
-        return std::unique_ptr<ObjectCategory>();
+        return nullptr;
     }
     result->m_xAlteratorCategory = xAlteratorCategory;
 

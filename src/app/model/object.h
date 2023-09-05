@@ -39,7 +39,7 @@ public:
 
     QMap<QString, QString> m_nameLocaleStorage;
 
-    std::unique_ptr<ObjectCategory> m_categoryObject;
+    std::unique_ptr<ObjectCategory> m_categoryObject{nullptr};
 
     bool m_isLegacy;
 };
