@@ -1,6 +1,8 @@
 #include "objectbuilder.h"
 #include "objectcategorybuilder.h"
 
+#include <utility>
+
 #include <QDBusReply>
 #include <QDebug>
 
@@ -24,7 +26,7 @@ const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
 ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName)
     : m_infoParser(infoParser)
     , m_dbusInterface(categoryIface)
-    , m_dbusMethodName(getCategoryMethodName)
+    , m_dbusMethodName(std::move(getCategoryMethodName))
 {}
 
 std::unique_ptr<Object> ObjectBuilder::buildObject()
@@ -38,7 +40,7 @@ std::unique_ptr<Object> ObjectBuilder::buildObject()
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
-        return std::unique_ptr<Object>(nullptr);
+        return nullptr;
     }
 
     QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
@@ -47,7 +49,7 @@ std::unique_ptr<Object> ObjectBuilder::buildObject()
 
     if (!buildNames(*desktopSection, newObject.get()))
     {
-        return std::unique_ptr<Object>(nullptr);
+        return nullptr;
     }
 
     QString type = getValue(*desktopSection, TYPE_KEY_NAME);
@@ -196,24 +198,17 @@ void ObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, QSt
     acObject->m_categoryObject = std::move(category);
 }
 
-void ObjectBuilder::setDefaultCategory(Object *object)
+void ObjectBuilder::setDefaultCategory(Object *)
 {
     std::unique_ptr<ObjectCategory> defaultCategory(new ObjectCategory);
 
     defaultCategory->m_id = "Unknown";
-
     defaultCategory->m_name = "Unknown";
-
     defaultCategory->m_comment = "Unable to get category";
-
     defaultCategory->m_icon = "groups/system";
-
     defaultCategory->m_type = "Directory";
-
     defaultCategory->m_xAlteratorCategory = "X-Alterator-Unknown";
-
     defaultCategory->m_nameLocaleStorage["ru_RU"] = "Без категории";
-
     defaultCategory->m_commentLocaleStorage["ru_RU"] = "Ошибка при получении категории";
 }
 
@@ -227,7 +222,7 @@ QString ObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
         }
     }
 
-    return QString();
+    return {};
 }
 
 QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key)
@@ -236,7 +231,7 @@ QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key
 
     if (it == section.end())
     {
-        return QString();
+        return {};
     }
 
     QList<IniFileKey> listOfKeys = section.values(key);
@@ -246,7 +241,7 @@ QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key
         return listOfKeys.at(0).value.toString();
     }
 
-    return QString();
+    return {};
 }
 
 std::vector<QString> ObjectBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
@@ -257,7 +252,7 @@ std::vector<QString> ObjectBuilder::parseValuesFromKey(DesktopFileParser::Sectio
     if (values.isEmpty())
     {
         qWarning() << "Can't find key:" << key;
-        return std::vector<QString>();
+        return {};
     }
 
     if (values.back() == delimiter)

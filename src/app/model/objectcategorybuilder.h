@@ -18,6 +18,12 @@ public:
 
     std::unique_ptr<ObjectCategory> buildObjectCategory();
 
+public:
+    ObjectCategoryBuilder(const ObjectCategoryBuilder &) = delete;
+    ObjectCategoryBuilder(ObjectCategoryBuilder &&)      = delete;
+    ObjectCategoryBuilder &operator=(const ObjectCategoryBuilder &) = delete;
+    ObjectCategoryBuilder &operator=(ObjectCategoryBuilder &&) = delete;
+
 private:
     bool buildNames(DesktopFileParser::Section &section, ObjectCategory *categoryObject);
     bool buildComments(DesktopFileParser::Section &section, ObjectCategory *categoryObject);
@@ -26,13 +32,7 @@ private:
     QString getValue(DesktopFileParser::Section &section, QString key);
 
 private:
-    ObjectCategoryBuilder(const ObjectCategoryBuilder &) = delete;
-    ObjectCategoryBuilder(ObjectCategoryBuilder &&)      = delete;
-    ObjectCategoryBuilder &operator=(const ObjectCategoryBuilder &) = delete;
-    ObjectCategoryBuilder &operator=(ObjectCategoryBuilder &&) = delete;
-
-private:
-    DesktopFileParser *m_categoryParser;
+    DesktopFileParser *m_categoryParser = nullptr;
 };
 } // namespace model
 } // namespace ab

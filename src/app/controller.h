@@ -20,7 +20,13 @@ class Controller : public QObject
     Q_OBJECT
 public:
     explicit Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent = nullptr);
-    ~Controller() = default;
+    ~Controller() override = default;
+
+public:
+    Controller(const Controller &) = delete;
+    Controller(Controller &&)      = delete;
+    Controller &operator=(const Controller &) = delete;
+    Controller &operator=(Controller &&) = delete;
 
 public slots:
     void moduleClicked(model::ObjectItem *moduleItem);
@@ -30,11 +36,6 @@ public slots:
 private:
     MainWindow *window;
     std::unique_ptr<model::Model> model;
-
-    Controller(const Controller &) = delete;
-    Controller(Controller &&)      = delete;
-    Controller &operator=(const Controller &) = delete;
-    Controller &operator=(Controller &&) = delete;
 };
 } // namespace ab
 

@@ -11,20 +11,18 @@ namespace model
 class ObjectCategory
 {
 public:
-    ObjectCategory();
-    ~ObjectCategory();
-
-    QString m_id;
-    QString m_name;
-    QString m_comment;
-    QString m_icon;
-    QString m_type;
-    QString m_xAlteratorCategory;
-
-    QMap<QString, QString> m_nameLocaleStorage;
-    QMap<QString, QString> m_commentLocaleStorage;
-
     void setLocale(QString locale);
+
+public:
+    QString m_id{};
+    QString m_name{};
+    QString m_comment{};
+    QString m_icon{};
+    QString m_type{};
+    QString m_xAlteratorCategory{};
+
+    QMap<QString, QString> m_nameLocaleStorage{};
+    QMap<QString, QString> m_commentLocaleStorage{};
 };
 } // namespace model
 } // namespace ab

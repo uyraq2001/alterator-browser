@@ -20,15 +20,19 @@ public:
 
 public:
     ObjectItem();
-    ~ObjectItem() = default;
+    ~ObjectItem() override = default;
+
+public:
+    ObjectItem(const ObjectItem &) = delete;
+    ObjectItem(ObjectItem &&)      = delete;
+    ObjectItem &operator=(const ObjectItem &) = delete;
+    ObjectItem &operator=(ObjectItem &&) = delete;
 
     int type() const override;
-
     Object *getObject();
 
 public:
-    ItemType m_itemType;
-
+    ItemType m_itemType = ItemType::category;
     std::unique_ptr<Object> m_object{nullptr};
 };
 } // namespace model

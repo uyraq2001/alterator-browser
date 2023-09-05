@@ -5,8 +5,7 @@ namespace ab
 namespace model
 {
 ObjectItem::ObjectItem()
-    : m_itemType(ItemType::category)
-    , m_object(new Object())
+    : m_object(new Object())
 {}
 
 int ObjectItem::type() const

@@ -45,7 +45,7 @@ QString DesktopFileParser::getKeyLocale(QString keyName)
 
     if (indexOfOpeningBracket >= indexOfClosingBracket || indexOfOpeningBracket == -1 || indexOfClosingBracket == -1)
     {
-        return QString();
+        return {};
     }
 
     return keyName.mid(indexOfOpeningBracket + 1, indexOfClosingBracket - indexOfOpeningBracket - 1);

@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     settings.get()->restoreSettings();
 
-    QVBoxLayout *categoryLayout = new QVBoxLayout();
+    auto categoryLayout = new QVBoxLayout();
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->scrollArea->widget()->setLayout(categoryLayout);
 
@@ -72,7 +72,7 @@ void MainWindow::setModel(model::Model *newModel)
     QLayout *categoryLayout = this->ui->scrollArea->widget()->layout();
     for (int i = 0; i < this->model->rowCount(); ++i)
     {
-        CategoryWidget *categoryWidget = new CategoryWidget(this);
+        auto categoryWidget = new CategoryWidget(this);
         categoryLayout->addWidget(categoryWidget);
         categoryWidget->setItem(dynamic_cast<model::ObjectItem *>(this->model->item(i)));
     }

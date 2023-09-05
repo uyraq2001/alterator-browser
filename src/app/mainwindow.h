@@ -29,10 +29,17 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
-    void closeEvent(QCloseEvent *event);
-    void paintEvent(QPaintEvent *event);
+public:
+    MainWindow(const MainWindow &) = delete;
+    MainWindow(MainWindow &&)      = delete;
+    MainWindow &operator=(const MainWindow &) = delete;
+    MainWindow &operator=(MainWindow &&) = delete;
+
+public:
+    void closeEvent(QCloseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
     void setController(Controller *c);
 
@@ -42,12 +49,6 @@ public:
     void showModuleMenu(model::ObjectItem *item);
     void onModuleClicked(PushButton *button);
     void onInterfaceClicked(model::LocalApplication *app);
-
-private:
-    MainWindow(const MainWindow &) = delete;
-    MainWindow(MainWindow &&)      = delete;
-    MainWindow &operator=(const MainWindow &) = delete;
-    MainWindow &operator=(MainWindow &&) = delete;
 
     Ui::MainWindow *ui = nullptr;
     QStandardItemModel *model = nullptr;

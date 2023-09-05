@@ -40,10 +40,10 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
         w->setModel(model.get());
     }
 
-    QDBusServiceWatcher *alteratorWatcher = new QDBusServiceWatcher(DBUS_SERVICE_NAME,
-                                                                    QDBusConnection::systemBus(),
-                                                                    QDBusServiceWatcher::WatchForOwnerChange,
-                                                                    this);
+    auto alteratorWatcher = new QDBusServiceWatcher(DBUS_SERVICE_NAME,
+                                                    QDBusConnection::systemBus(),
+                                                    QDBusServiceWatcher::WatchForOwnerChange,
+                                                    this);
     connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
 }
 
@@ -51,7 +51,7 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
     if (moduleItem->m_object->m_isLegacy)
     {
-        QProcess *proc = new QProcess(this);
+        auto proc = new QProcess(this);
         proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_object.get()->m_icon);
     }
     else
@@ -62,7 +62,7 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
 
 void Controller::onInterfaceClicked(model::LocalApplication *app)
 {
-    QProcess *proc = new QProcess(this);
+    auto proc = new QProcess(this);
     proc->start(app->m_desktopExec, QStringList());
 }
 

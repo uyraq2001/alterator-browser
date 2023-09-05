@@ -5,22 +5,7 @@ namespace ab
 namespace model
 {
 Object::Object()
-    : m_id()
-    , m_displayName()
-    , m_displayCategory()
-    , m_type()
-    , m_categoryId()
-    , m_terminal(false)
-    , m_icon()
-    , m_x_Alterator_URI()
-    , m_x_Alterator_Weight()
-    , m_x_Alterator_Help()
-    , m_x_Alterator_UI()
-    , m_interfaces()
-    , m_applications()
-    , m_nameLocaleStorage()
-    , m_categoryObject(new ObjectCategory())
-    , m_isLegacy(false)
+    : m_categoryObject(new ObjectCategory())
 {}
 
 void Object::setLocale(QString locale)
