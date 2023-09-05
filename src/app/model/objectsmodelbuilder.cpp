@@ -250,7 +250,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<st
 
             ObjectItem *newModuleItem = new ObjectItem();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object = std::move(objects.at(i));
+            newModuleItem->m_object   = std::move(objects.at(i));
 
             newCategoryItem->appendRow(newModuleItem);
         }
@@ -260,7 +260,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<st
 
             ObjectItem *newModuleItem = new ObjectItem();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object = std::move(objects.at(i));
+            newModuleItem->m_object   = std::move(objects.at(i));
 
             categoryItem->appendRow(newModuleItem);
         }
@@ -286,15 +286,15 @@ ObjectItem *ObjectsModelBuilder::createCategoryItem(QString, ObjectCategory *nam
     for (QString currentKey : nameTranslations->m_commentLocaleStorage.keys())
     {
         newObjectCategory->m_commentLocaleStorage.insert(currentKey,
-                                                           nameTranslations->m_commentLocaleStorage[currentKey]);
+                                                         nameTranslations->m_commentLocaleStorage[currentKey]);
     }
 
-    newObjectCategory->m_id = nameTranslations->m_id;
-    newObject->m_displayCategory = nameTranslations->m_id;
-    newObjectCategory->m_name = nameTranslations->m_name;
-    newObjectCategory->m_comment = nameTranslations->m_comment;
-    newObjectCategory->m_icon = nameTranslations->m_icon;
-    newObjectCategory->m_type = nameTranslations->m_type;
+    newObjectCategory->m_id                 = nameTranslations->m_id;
+    newObject->m_displayCategory            = nameTranslations->m_id;
+    newObjectCategory->m_name               = nameTranslations->m_name;
+    newObjectCategory->m_comment            = nameTranslations->m_comment;
+    newObjectCategory->m_icon               = nameTranslations->m_icon;
+    newObjectCategory->m_type               = nameTranslations->m_type;
     newObjectCategory->m_xAlteratorCategory = nameTranslations->m_xAlteratorCategory;
 
     return newCategoryItem;

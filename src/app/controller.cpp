@@ -60,11 +60,14 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
     if (moduleItem->m_object->m_isLegacy)
     {
-        QProcess *proc = new QProcess(this);
+        QProcess *proc = new QProcess();
+
         connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
             qCritical() << proc->readAllStandardError();
         });
         connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() { qInfo() << proc->readAllStandardOutput(); });
+        connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) { delete (proc); });
+
         proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_object.get()->m_icon);
     }
     else
