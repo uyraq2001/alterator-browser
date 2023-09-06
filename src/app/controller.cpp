@@ -56,6 +56,11 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
     connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
 }
 
+Controller::~Controller()
+{
+    delete d;
+}
+
 void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
     if (moduleItem->m_object->m_isLegacy)

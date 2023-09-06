@@ -22,7 +22,7 @@ class Controller : public QObject
     Q_OBJECT
 public:
     explicit Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent = nullptr);
-    ~Controller() = default;
+    ~Controller();
 
 public slots:
     void moduleClicked(model::ObjectItem *moduleItem);
