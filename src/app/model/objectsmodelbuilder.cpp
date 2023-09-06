@@ -1,6 +1,7 @@
 #include "objectsmodelbuilder.h"
 #include "desktopfileparser.h"
 #include "localapplicationmodel.h"
+#include "model/localapllicationmodelbuilder.h"
 #include "model/model.h"
 #include "objectbuilder.h"
 #include "objectitem.h"
@@ -8,6 +9,20 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
+
+const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
+const QString DBUS_PATH                            = "/ru/basealt/alterator";
+const QString DBUS_FIND_INTERFACE_NAME             = "ru.basealt.alterator.object";
+const QString DBUS_MANAGER_INTERFACE_NAME          = "ru.basealt.alterator.manager";
+const QString GET_OBJECTS_METHOD_NAME              = "get_objects";
+const QString INFO_METHOD_NAME_FOR_ACOBJECT        = "info";
+const QString CATEGORY_INTERFACE_NAME_FOR_ACOBJECT = "ru.basealt.alterator.categories";
+const QString CATEGORY_METHOD_NAME_FOR_ACOBJECT    = "info";
+
+const QString DBUS_LOCAL_APP_PATH              = "/ru/basealt/alterator/applications";
+const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.applications";
+const QString DBUS_LOCAL_APP_GET_LIST_OF_FILES = "list";
+const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
 namespace ab
 {
@@ -20,7 +35,10 @@ ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
                                          QString getObjectMethodName,
                                          QString infoMethodName,
                                          QString categoryInterfaceName,
-                                         QString categoryMethodName)
+                                         QString categoryMethodName,
+                                         QString interfaceName,
+                                         QString getListOfFilesMethod,
+                                         QString getDesktopFileMethod)
     : m_dbusConnection(QDBusConnection::systemBus())
     , m_dbusServiceName(serviceName)
     , m_dbusPath(dbusPath)
@@ -30,10 +48,21 @@ ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
     , m_infoMethodName(infoMethodName)
     , m_categoryInterfaceName(categoryInterfaceName)
     , m_categoryMethodName(categoryMethodName)
+    , m_interface(interfaceName)
+    , m_getFilesMethodName(getListOfFilesMethod)
+    , m_getDesktopFileMethodName(getDesktopFileMethod)
 {}
 
-std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *appModel)
+std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 {
+    model::LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
+                                                        DBUS_LOCAL_APP_PATH,
+                                                        DBUS_LOCAL_APP_INTERFACE_NAME,
+                                                        DBUS_LOCAL_APP_GET_LIST_OF_FILES,
+                                                        DBUS_LOCAL_APP_GET_DESKTOP_FILE);
+
+    std::unique_ptr<model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
+
     if (!appModel)
     {
         qCritical() << "Local applications model is empty!!";
@@ -56,7 +85,11 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *ap
 
     std::unique_ptr<Model> model = buildModelFromObjects(std::move(acObjects));
 
-    mergeApplicationModel(model.get(), appModel);
+    mergeApplicationModel(model.get(), appModel.release());
+
+    QLocale locale;
+    QString language = locale.system().name().split("_").at(0);
+    model->translateModel(language);
 
     return model;
 }
@@ -246,7 +279,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<st
 
             ObjectItem *newModuleItem = new ObjectItem();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object = std::move(objects.at(i));
+            newModuleItem->m_object   = std::move(objects.at(i));
 
             newCategoryItem->appendRow(newModuleItem);
         }
@@ -256,7 +289,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<st
 
             ObjectItem *newModuleItem = new ObjectItem();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object = std::move(objects.at(i));
+            newModuleItem->m_object   = std::move(objects.at(i));
 
             categoryItem->appendRow(newModuleItem);
         }
@@ -282,15 +315,15 @@ ObjectItem *ObjectsModelBuilder::createCategoryItem(QString, ObjectCategory *nam
     for (QString currentKey : nameTranslations->m_commentLocaleStorage.keys())
     {
         newObjectCategory->m_commentLocaleStorage.insert(currentKey,
-                                                           nameTranslations->m_commentLocaleStorage[currentKey]);
+                                                         nameTranslations->m_commentLocaleStorage[currentKey]);
     }
 
-    newObjectCategory->m_id = nameTranslations->m_id;
-    newObject->m_displayCategory = nameTranslations->m_id;
-    newObjectCategory->m_name = nameTranslations->m_name;
-    newObjectCategory->m_comment = nameTranslations->m_comment;
-    newObjectCategory->m_icon = nameTranslations->m_icon;
-    newObjectCategory->m_type = nameTranslations->m_type;
+    newObjectCategory->m_id                 = nameTranslations->m_id;
+    newObject->m_displayCategory            = nameTranslations->m_id;
+    newObjectCategory->m_name               = nameTranslations->m_name;
+    newObjectCategory->m_comment            = nameTranslations->m_comment;
+    newObjectCategory->m_icon               = nameTranslations->m_icon;
+    newObjectCategory->m_type               = nameTranslations->m_type;
     newObjectCategory->m_xAlteratorCategory = nameTranslations->m_xAlteratorCategory;
 
     return newCategoryItem;

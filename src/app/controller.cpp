@@ -68,14 +68,6 @@ void Controller::onInterfaceClicked(model::LocalApplication *app)
 
 void Controller::onDBusStructureUpdate(QString, QString, QString)
 {
-    model::LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
-                                                        DBUS_LOCAL_APP_PATH,
-                                                        DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                        DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                        DBUS_LOCAL_APP_GET_DESKTOP_FILE);
-
-    std::unique_ptr<model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
-
     model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
                                                   DBUS_PATH,
                                                   DBUS_MANAGER_INTERFACE_NAME,
@@ -83,15 +75,14 @@ void Controller::onDBusStructureUpdate(QString, QString, QString)
                                                   GET_OBJECTS_METHOD_NAME,
                                                   INFO_METHOD_NAME_FOR_ACOBJECT,
                                                   CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
-                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT);
+                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT,
+                                                  DBUS_LOCAL_APP_INTERFACE_NAME,
+                                                  DBUS_LOCAL_APP_GET_LIST_OF_FILES,
+                                                  DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel(appModel.get());
+    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel();
 
     this->model = std::move(objectModel);
-
-    QLocale locale;
-    QString language = locale.system().name().split("_").at(0);
-    this->model->translateModel(language);
 
     this->window->clearUi();
     this->window->setModel(this->model.get());

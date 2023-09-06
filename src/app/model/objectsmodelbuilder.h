@@ -23,9 +23,12 @@ public:
                         QString getObjectMethodName,
                         QString infoMethodName,
                         QString categoryInterfaceName,
-                        QString categoryMethodName);
+                        QString categoryMethodName,
+                        QString interfaceName,
+                        QString getListOfFilesMethod,
+                        QString getDesktopFileMethod);
 
-    std::unique_ptr<Model> buildModel(LocalApplicationModel *appModel);
+    std::unique_ptr<Model> buildModel();
 
 private:
     void mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel);
@@ -47,6 +50,10 @@ private:
     QString m_infoMethodName;
     QString m_categoryInterfaceName;
     QString m_categoryMethodName;
+
+    QString m_interface;
+    QString m_getFilesMethodName;
+    QString m_getDesktopFileMethodName;
 };
 } // namespace model
 } // namespace ab
