@@ -3,6 +3,7 @@
 
 #include "model/model.h"
 #include "pushbutton.h"
+#include "mainwindowsettings.h"
 
 #include <utility>
 

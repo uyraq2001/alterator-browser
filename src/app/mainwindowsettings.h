@@ -2,7 +2,6 @@
 #define AB_MAIN_WINDOW_SETTINGS_H
 
 #include "ui_mainwindow.h"
-#include "mainwindow.h"
 
 #include <QObject>
 
