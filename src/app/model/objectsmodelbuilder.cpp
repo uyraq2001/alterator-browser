@@ -5,6 +5,9 @@
 #include "objectbuilder.h"
 #include "objectitem.h"
 
+#include <memory>
+#include <utility>
+
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
@@ -22,14 +25,14 @@ ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
                                          QString categoryInterfaceName,
                                          QString categoryMethodName)
     : m_dbusConnection(QDBusConnection::systemBus())
-    , m_dbusServiceName(serviceName)
-    , m_dbusPath(dbusPath)
-    , m_managerInterface(managerIface)
-    , m_dbusFindInterface(findInterface)
-    , m_getObjectMethodName(getObjectMethodName)
-    , m_infoMethodName(infoMethodName)
-    , m_categoryInterfaceName(categoryInterfaceName)
-    , m_categoryMethodName(categoryMethodName)
+    , m_dbusServiceName(std::move(serviceName))
+    , m_dbusPath(std::move(dbusPath))
+    , m_managerInterface(std::move(managerIface))
+    , m_dbusFindInterface(std::move(findInterface))
+    , m_getObjectMethodName(std::move(getObjectMethodName))
+    , m_infoMethodName(std::move(infoMethodName))
+    , m_categoryInterfaceName(std::move(categoryInterfaceName))
+    , m_categoryMethodName(std::move(categoryMethodName))
 {}
 
 std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *appModel)
@@ -51,6 +54,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel(LocalApplicationModel *ap
     if (acObjects.empty())
     {
         qCritical() << "Can't access alterator manager interface!";
+
         return std::make_unique<Model>();
     }
 
@@ -70,7 +74,7 @@ void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplica
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = rootItem->child(i);
-        ObjectItem *currentCategoryItem    = dynamic_cast<ObjectItem *>(currentStandardItem);
+        auto currentCategoryItem           = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
             qWarning() << "Can't cast category item to ObjectItem to merge models!";
@@ -87,7 +91,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
     for (int i = 0; i < item->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = item->child(i);
-        ObjectItem *currentModuleItem      = dynamic_cast<ObjectItem *>(currentStandardItem);
+        auto currentModuleItem             = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
             qWarning() << "Can't cast item to ObjectItem to merge application object!";
@@ -120,7 +124,8 @@ QStringList ObjectsModelBuilder::getListOfObjects()
     if (!managerIface.isValid())
     {
         qCritical() << "Can't access alterator manager interface!";
-        return QStringList();
+
+        return {};
     }
 
     QDBusReply<QList<QDBusObjectPath>> reply = managerIface.call(m_getObjectMethodName, m_dbusFindInterface);
@@ -128,7 +133,8 @@ QStringList ObjectsModelBuilder::getListOfObjects()
     if (!reply.isValid())
     {
         qCritical() << "Can't get reply from alterator manager interface!";
-        return QStringList();
+
+        return {};
     }
 
     QList<QDBusObjectPath> pathList = reply.value();
@@ -225,48 +231,47 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 
 std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<std::unique_ptr<Object>> objects)
 {
-    auto model = std::make_unique<Model>();
+    std::map<QString, std::unique_ptr<ObjectItem>> categories;
 
-    QMap<QString, ObjectItem *> categories;
-
-    for (size_t i = 0; i < objects.size(); ++i)
+    for (auto &object : objects)
     {
-        Object *currentObject = objects.at(i).get();
+        Object *currentObject = object.get();
 
-        auto it = categories.find(currentObject->m_displayCategory);
-
-        if (it == categories.end())
+        auto find = categories.find(currentObject->m_displayCategory);
+        if (find == categories.end())
         {
-            ObjectItem *newCategoryItem = createCategoryItem(currentObject->m_displayCategory,
-                                                             currentObject->m_categoryObject.get());
+            std::unique_ptr<ObjectItem> newCategoryItem = createCategoryItem(currentObject->m_displayCategory,
+                                                                             currentObject->m_categoryObject.get());
+            auto newModuleItem                          = std::make_unique<ObjectItem>();
+            newModuleItem->m_itemType                   = ObjectItem::ItemType::module;
+            newModuleItem->m_object                     = std::move(object);
 
-            categories[newCategoryItem->getObject()->m_displayCategory] = newCategoryItem;
-
-            model->appendRow(newCategoryItem);
-
-            ObjectItem *newModuleItem = new ObjectItem();
-            newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object = std::move(objects.at(i));
-
-            newCategoryItem->appendRow(newModuleItem);
+            newCategoryItem->appendRow(newModuleItem.release());
+            categories[newCategoryItem->getObject()->m_displayCategory] = std::move(newCategoryItem);
         }
         else
         {
-            ObjectItem *categoryItem = *it;
+            auto categoryItem = &find->second;
 
-            ObjectItem *newModuleItem = new ObjectItem();
+            auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object = std::move(objects.at(i));
-
-            categoryItem->appendRow(newModuleItem);
+            newModuleItem->m_object   = std::move(object);
+            categoryItem->get()->appendRow(newModuleItem.release());
         }
     }
+
+    auto model = std::make_unique<Model>();
+    for (auto &category : categories)
+    {
+        model->appendRow(category.second.release());
+    }
+
     return model;
 }
 
-ObjectItem *ObjectsModelBuilder::createCategoryItem(QString, ObjectCategory *nameTranslations)
+std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString, ObjectCategory *nameTranslations)
 {
-    ObjectItem *newCategoryItem = new ObjectItem();
+    auto newCategoryItem = std::make_unique<ObjectItem>();
 
     newCategoryItem->m_itemType = ObjectItem::ItemType::category;
 
@@ -282,15 +287,15 @@ ObjectItem *ObjectsModelBuilder::createCategoryItem(QString, ObjectCategory *nam
     for (QString currentKey : nameTranslations->m_commentLocaleStorage.keys())
     {
         newObjectCategory->m_commentLocaleStorage.insert(currentKey,
-                                                           nameTranslations->m_commentLocaleStorage[currentKey]);
+                                                         nameTranslations->m_commentLocaleStorage[currentKey]);
     }
 
-    newObjectCategory->m_id = nameTranslations->m_id;
-    newObject->m_displayCategory = nameTranslations->m_id;
-    newObjectCategory->m_name = nameTranslations->m_name;
-    newObjectCategory->m_comment = nameTranslations->m_comment;
-    newObjectCategory->m_icon = nameTranslations->m_icon;
-    newObjectCategory->m_type = nameTranslations->m_type;
+    newObjectCategory->m_id                 = nameTranslations->m_id;
+    newObject->m_displayCategory            = nameTranslations->m_id;
+    newObjectCategory->m_name               = nameTranslations->m_name;
+    newObjectCategory->m_comment            = nameTranslations->m_comment;
+    newObjectCategory->m_icon               = nameTranslations->m_icon;
+    newObjectCategory->m_type               = nameTranslations->m_type;
     newObjectCategory->m_xAlteratorCategory = nameTranslations->m_xAlteratorCategory;
 
     return newCategoryItem;

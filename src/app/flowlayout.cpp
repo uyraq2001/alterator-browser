@@ -64,7 +64,7 @@ FlowLayout::FlowLayout(int margin, int hSpacing, int vSpacing)
 
 FlowLayout::~FlowLayout()
 {
-    QLayoutItem *item;
+    QLayoutItem *item = nullptr;
     while ((item = takeAt(0)) != nullptr)
     {
         delete item;
@@ -162,7 +162,7 @@ QSize FlowLayout::minimumSize() const
 
 int FlowLayout::doLayout(const QRect &rect, bool testOnly) const
 {
-    int left, top, right, bottom;
+    int left = 0, top = 0, right = 0, bottom = 0;
     getContentsMargins(&left, &top, &right, &bottom);
     QRect effectiveRect = rect.adjusted(+left, +top, -right, -bottom);
     int x               = effectiveRect.x();
@@ -213,10 +213,10 @@ int FlowLayout::smartSpacing(QStyle::PixelMetric pm) const
 
     if (parent->isWidgetType())
     {
-        QWidget *pw = static_cast<QWidget *>(parent);
-        return pw->style()->pixelMetric(pm, 0, pw);
+        auto pw = dynamic_cast<QWidget *>(parent);
+        return pw->style()->pixelMetric(pm, nullptr, pw);
     }
 
-    return static_cast<QLayout *>(parent)->spacing();
+    return dynamic_cast<QLayout *>(parent)->spacing();
 }
 } // namespace ab

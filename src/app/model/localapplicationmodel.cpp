@@ -7,12 +7,6 @@ namespace ab
 {
 namespace model
 {
-LocalApplicationModel::LocalApplicationModel()
-    : QStandardItemModel()
-{}
-
-LocalApplicationModel::~LocalApplicationModel() {}
-
 std::vector<LocalApplication *> LocalApplicationModel::getAppsByInterface(QString interface)
 {
     std::vector<LocalApplication *> result;
@@ -20,7 +14,7 @@ std::vector<LocalApplication *> LocalApplicationModel::getAppsByInterface(QStrin
     QStandardItem *rootItem = invisibleRootItem();
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
-        LocalApplicationItem *currentApp = dynamic_cast<LocalApplicationItem *>(rootItem->child(i));
+        auto currentApp = dynamic_cast<LocalApplicationItem *>(rootItem->child(i));
         if (!currentApp)
         {
             qWarning() << "Can't cast to LocalApplicationItem when try to find apps by interface!";

@@ -16,23 +16,23 @@ class PushButton : public QPushButton
 
 public:
     explicit PushButton(MainWindow *w, QWidget *parent = nullptr);
-    ~PushButton() = default;
+    ~PushButton() override = default;
 
     void setItem(model::ObjectItem *item);
     model::ObjectItem *getItem();
-
     void showMenu();
+
+public:
+    PushButton(const PushButton &) = delete;
+    PushButton(PushButton &&)      = delete;
+    PushButton &operator=(const PushButton &) = delete;
+    PushButton &operator=(PushButton &&) = delete;
 
 private:
     model::ObjectItem *item = nullptr;
     MainWindow *window = nullptr;
 
     void onClicked(bool b);
-
-    PushButton(const PushButton &) = delete;
-    PushButton(PushButton &&)      = delete;
-    PushButton &operator=(const PushButton &) = delete;
-    PushButton &operator=(PushButton &&) = delete;
 
 signals:
     void moduleClicked(PushButton *button);

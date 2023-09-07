@@ -12,9 +12,6 @@ namespace model
 class LocalApplicationModel : public QStandardItemModel
 {
 public:
-    LocalApplicationModel();
-    ~LocalApplicationModel();
-
     std::vector<LocalApplication *> getAppsByInterface(QString interface);
 
     void setLocale();

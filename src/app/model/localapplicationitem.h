@@ -12,8 +12,6 @@ namespace model
 class LocalApplicationItem : public QStandardItem
 {
 public:
-    LocalApplicationItem();
-
     LocalApplication *getLocalApplicationObject();
 
     void setLocale(QString locale);

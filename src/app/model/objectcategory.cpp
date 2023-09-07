@@ -4,19 +4,6 @@ namespace ab
 {
 namespace model
 {
-ObjectCategory::ObjectCategory()
-    : m_id()
-    , m_name()
-    , m_comment()
-    , m_icon()
-    , m_type()
-    , m_xAlteratorCategory()
-    , m_nameLocaleStorage()
-    , m_commentLocaleStorage()
-{}
-
-ObjectCategory::~ObjectCategory() {}
-
 void ObjectCategory::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);

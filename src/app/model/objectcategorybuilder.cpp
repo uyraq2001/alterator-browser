@@ -29,24 +29,24 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find" << DESKTOP_ENTRY_SECTION_NAME << "section! Skipping...";
-        return nullptr;
+        return {};
     }
 
     if (!buildNames(*desktopSection, result.get()))
     {
-        return nullptr;
+        return {};
     }
 
     if (!buildComments(*desktopSection, result.get()))
     {
-        return nullptr;
+        return {};
     }
 
     QString icon = getValue(*desktopSection, CATEGORY_ICON_KEY_NAME);
     if (icon.isEmpty())
     {
         qWarning() << "Can't find icon for the category: " << result->m_id;
-        return nullptr;
+        return {};
     }
     result->m_icon = icon;
 
@@ -54,7 +54,7 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     if (type.isEmpty())
     {
         qWarning() << "Can't find type for the category: " << result->m_id;
-        return nullptr;
+        return {};
     }
     result->m_type = type;
 
@@ -62,7 +62,7 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     if (xAlteratorCategory.isEmpty())
     {
         qWarning() << "Can't find X-Alterator-Category for the category: " << result->m_id;
-        return nullptr;
+        return {};
     }
     result->m_xAlteratorCategory = xAlteratorCategory;
 
@@ -79,14 +79,14 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Obje
     }
 
     QList<IniFileKey> listOfKeys = section.values(CATEGORY_NAME_KEY_NAME);
-    QString defaultName = getDefaultValue(listOfKeys);
+    QString defaultName          = getDefaultValue(listOfKeys);
     if (defaultName.isEmpty())
     {
         qWarning() << "Can't default name for the category!";
         return false;
     }
 
-    categoryObject->m_id = defaultName;
+    categoryObject->m_id   = defaultName;
     categoryObject->m_name = defaultName;
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
@@ -107,7 +107,7 @@ bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, O
     }
 
     QList<IniFileKey> listOfKeys = section.values(CATEGORY_COMMENT_KEY_NAME);
-    QString defaultComment = getDefaultValue(listOfKeys);
+    QString defaultComment       = getDefaultValue(listOfKeys);
     if (defaultComment.isEmpty())
     {
         qWarning() << "Can't default comment for the category!";
@@ -134,7 +134,7 @@ QString ObjectCategoryBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
         }
     }
 
-    return QString();
+    return {};
 }
 
 QString ObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, QString key)
@@ -143,7 +143,7 @@ QString ObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, QSt
 
     if (it == section.end())
     {
-        return QString();
+        return {};
     }
 
     QList<IniFileKey> listOfKeys = section.values(key);
@@ -153,7 +153,7 @@ QString ObjectCategoryBuilder::getValue(DesktopFileParser::Section &section, QSt
         return listOfKeys.at(0).value.toString();
     }
 
-    return QString();
+    return {};
 }
 } // namespace model
 } // namespace ab

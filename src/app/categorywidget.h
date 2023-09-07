@@ -22,20 +22,21 @@ class CategoryWidget : public QWidget
     Q_OBJECT
 public:
     explicit CategoryWidget(MainWindow *w, QWidget *parent = nullptr);
-    ~CategoryWidget();
+    ~CategoryWidget() override;
 
     void setGeometry(const QRect &rect);
     void setItem(model::ObjectItem *item);
+
+public:
+    CategoryWidget(const CategoryWidget &) = delete;
+    CategoryWidget(CategoryWidget &&)      = delete;
+    CategoryWidget &operator=(const CategoryWidget &) = delete;
+    CategoryWidget &operator=(CategoryWidget &&) = delete;
 
 private:
     Ui::CategoryWidget *ui;
     model::ObjectItem *item;
     MainWindow *window;
-
-    CategoryWidget(const CategoryWidget &) = delete;
-    CategoryWidget(CategoryWidget &&)      = delete;
-    CategoryWidget &operator=(const CategoryWidget &) = delete;
-    CategoryWidget &operator=(CategoryWidget &&) = delete;
 
 signals:
     void showMenu(model::ObjectItem *item);

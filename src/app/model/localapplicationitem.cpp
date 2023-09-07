@@ -4,10 +4,6 @@ namespace ab
 {
 namespace model
 {
-LocalApplicationItem::LocalApplicationItem()
-    : m_acLocalApplication(nullptr)
-{}
-
 LocalApplication *LocalApplicationItem::getLocalApplicationObject()
 {
     return m_acLocalApplication.get();

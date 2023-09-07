@@ -34,8 +34,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void closeEvent(QCloseEvent *event);
-    void paintEvent(QPaintEvent *event);
+public:
+    MainWindow(const MainWindow &) = delete;
+    MainWindow(MainWindow &&)      = delete;
+    MainWindow &operator=(const MainWindow &) = delete;
+    MainWindow &operator=(MainWindow &&) = delete;
+
+public:
+    void closeEvent(QCloseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
     void setController(Controller *c);
 
@@ -47,11 +54,6 @@ public:
     void onInterfaceClicked(model::LocalApplication *app);
 
 private:
-    MainWindow(const MainWindow &) = delete;
-    MainWindow(MainWindow &&)      = delete;
-    MainWindow &operator=(const MainWindow &) = delete;
-    MainWindow &operator=(MainWindow &&) = delete;
-
     MainWindowPrivate *d;
 
 signals:
