@@ -24,7 +24,7 @@ const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME = "exec";
 
 std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplicationObject(DesktopFileParser &parser)
 {
-    std::unique_ptr<LocalApplication> result(new LocalApplication);
+    auto result = std::make_unique<LocalApplication>();
 
     auto sections = parser.getSections();
 

@@ -1,8 +1,8 @@
 #ifndef AB_MAIN_WINDOW_SETTINGS_H
 #define AB_MAIN_WINDOW_SETTINGS_H
 
-#include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "mainwindow.h"
 
 #include <QObject>
 

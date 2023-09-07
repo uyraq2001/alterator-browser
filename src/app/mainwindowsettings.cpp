@@ -1,4 +1,5 @@
 #include "mainwindowsettings.h"
+#include "mainwindow.h"
 
 #include <QSettings>
 

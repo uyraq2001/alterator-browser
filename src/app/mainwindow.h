@@ -3,6 +3,7 @@
 
 #include "model/model.h"
 #include "pushbutton.h"
+#include "mainwindowsettings.h"
 
 #include <utility>
 
@@ -23,13 +24,15 @@ class Controller;
 class MainWindowSettings;
 class PushButton;
 
+class MainWindowPrivate;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow() override;
+    ~MainWindow();
 
 public:
     MainWindow(const MainWindow &) = delete;
@@ -50,10 +53,8 @@ public:
     void onModuleClicked(PushButton *button);
     void onInterfaceClicked(model::LocalApplication *app);
 
-    Ui::MainWindow *ui = nullptr;
-    QStandardItemModel *model = nullptr;
-    Controller *controller = nullptr;
-    std::unique_ptr<MainWindowSettings> settings;
+private:
+    MainWindowPrivate *d;
 
 signals:
     void showMenu(model::ObjectItem *item);

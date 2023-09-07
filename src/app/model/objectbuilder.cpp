@@ -192,15 +192,13 @@ void ObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, QSt
     }
 
     acObject->m_categoryId = category->m_id;
-
     acObject->m_displayCategory = category->m_id;
-
     acObject->m_categoryObject = std::move(category);
 }
 
 void ObjectBuilder::setDefaultCategory(Object *)
 {
-    std::unique_ptr<ObjectCategory> defaultCategory(new ObjectCategory);
+    auto defaultCategory = std::make_unique<ObjectCategory>();
 
     defaultCategory->m_id = "Unknown";
     defaultCategory->m_name = "Unknown";
@@ -228,7 +226,6 @@ QString ObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
 QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key)
 {
     auto it = section.find(key);
-
     if (it == section.end())
     {
         return {};

@@ -95,7 +95,6 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
         if (!currentModuleItem)
         {
             qWarning() << "Can't cast item to ObjectItem to merge application object!";
-
             continue;
         }
 
@@ -222,7 +221,7 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 
     if (!reply.isValid())
     {
-        return {};
+        return QString();
     }
 
     QString result = QString(reply.value());

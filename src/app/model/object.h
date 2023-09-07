@@ -17,13 +17,7 @@ class Object : public QObject
     Q_OBJECT
 public:
     Object();
-    ~Object() override = default;
-
-public:
-    Object(const Object &) = delete;
-    Object(Object &&)      = delete;
-    Object &operator=(const Object &) = delete;
-    Object &operator=(Object &&) = delete;
+    ~Object() = default;
 
     void setLocale(QString locale);
 

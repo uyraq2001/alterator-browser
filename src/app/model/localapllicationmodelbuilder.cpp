@@ -45,7 +45,7 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
         return std::make_unique<LocalApplicationModel>();
     }
 
-    std::unique_ptr<LocalApplicationModel> model(new LocalApplicationModel);
+    auto model = std::make_unique<LocalApplicationModel>();
     auto rootItem = model.get()->invisibleRootItem();
 
     for (auto &listOfApp : listOfApps)
