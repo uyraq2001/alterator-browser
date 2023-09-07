@@ -15,12 +15,14 @@ namespace ab
 class CategoryWidget;
 class MainWindow;
 
+class ControllerPrivate;
+
 class Controller : public QObject
 {
     Q_OBJECT
 public:
     explicit Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent = nullptr);
-    ~Controller() = default;
+    ~Controller();
 
 public slots:
     void moduleClicked(model::ObjectItem *moduleItem);
@@ -28,8 +30,7 @@ public slots:
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:
-    MainWindow *window = nullptr;
-    std::unique_ptr<model::Model> model{nullptr};
+    ControllerPrivate *d;
 
     Controller(const Controller &) = delete;
     Controller(Controller &&)      = delete;

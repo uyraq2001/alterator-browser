@@ -23,6 +23,8 @@ class Controller;
 class MainWindowSettings;
 class PushButton;
 
+class MainWindowPrivate;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -49,10 +51,7 @@ private:
     MainWindow &operator=(const MainWindow &) = delete;
     MainWindow &operator=(MainWindow &&) = delete;
 
-    Ui::MainWindow *ui = nullptr;
-    QStandardItemModel *model = nullptr;
-    Controller *controller = nullptr;
-    std::unique_ptr<MainWindowSettings> settings{nullptr};
+    MainWindowPrivate *d;
 
 signals:
     void showMenu(model::ObjectItem *item);
