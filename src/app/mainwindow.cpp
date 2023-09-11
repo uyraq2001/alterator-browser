@@ -102,12 +102,12 @@ void MainWindow::clearUi()
 
 void MainWindow::onModuleClicked(PushButton *button)
 {
-    d->controller->moduleClicked(button->getItem());
+    d->controller->moduleClicked(button);
 }
 
-void MainWindow::showModuleMenu(model::ObjectItem *item)
+void MainWindow::showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu)
 {
-    emit showMenu(item);
+    button->showMenu(std::move(menu));
 }
 
 void MainWindow::onInterfaceClicked(model::LocalApplication *app)

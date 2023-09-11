@@ -56,8 +56,9 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
     connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
 }
 
-void Controller::moduleClicked(model::ObjectItem *moduleItem)
+void Controller::moduleClicked(PushButton *moduleButton)
 {
+    model::ObjectItem *moduleItem = moduleButton->getItem();
     if (moduleItem->m_object->m_isLegacy)
     {
         QProcess *proc = new QProcess();
@@ -72,7 +73,22 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
     }
     else
     {
-        d->window->showModuleMenu(moduleItem);
+        if (moduleItem->m_object->m_applications.size() == 1)
+        {
+            auto app = moduleItem->m_object->m_applications[0];
+            onInterfaceClicked(app);
+            return;
+        }
+
+        auto menu = std::make_unique<QMenu>(moduleButton);
+        for (const auto &app : moduleItem->m_object->m_applications)
+        {
+            auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
+            connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() { this->onInterfaceClicked(app); });
+            menu->addAction(interfaceAction.release());
+        }
+
+        d->window->showModuleMenu(moduleButton, std::move(menu));
     }
 }
 

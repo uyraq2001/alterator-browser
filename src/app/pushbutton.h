@@ -21,11 +21,11 @@ public:
     void setItem(model::ObjectItem *item);
     model::ObjectItem *getItem();
 
-    void showMenu();
+    void showMenu(std::unique_ptr<QMenu> menu);
 
 private:
     model::ObjectItem *item = nullptr;
-    MainWindow *window = nullptr;
+    MainWindow *window      = nullptr;
 
     void onClicked(bool b);
 

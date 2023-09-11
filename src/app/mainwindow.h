@@ -41,7 +41,7 @@ public:
     void setModel(model::Model *m);
     void clearUi();
 
-    void showModuleMenu(model::ObjectItem *item);
+    void showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu);
     void onModuleClicked(PushButton *button);
     void onInterfaceClicked(model::LocalApplication *app);
 
@@ -52,9 +52,6 @@ private:
     MainWindow &operator=(MainWindow &&) = delete;
 
     MainWindowPrivate *d;
-
-signals:
-    void showMenu(model::ObjectItem *item);
 };
 } // namespace ab
 

@@ -3,6 +3,7 @@
 
 #include "model/model.h"
 #include "model/objectitem.h"
+#include "pushbutton.h"
 
 #include <utility>
 
@@ -25,7 +26,7 @@ public:
     ~Controller() = default;
 
 public slots:
-    void moduleClicked(model::ObjectItem *moduleItem);
+    void moduleClicked(PushButton *moduleButton);
     void onInterfaceClicked(model::LocalApplication *app);
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 
