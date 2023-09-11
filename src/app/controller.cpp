@@ -16,6 +16,13 @@
 
 namespace ab
 {
+class ControllerPrivate
+{
+public:
+    MainWindow *window{nullptr};
+    std::unique_ptr<model::Model> model{nullptr};
+};
+
 const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
 const QString DBUS_PATH                            = "/ru/basealt/alterator";
 const QString DBUS_FIND_INTERFACE_NAME             = "ru.basealt.alterator.object";
@@ -32,12 +39,14 @@ const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
 Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent)
     : QObject{parent}
-    , window(w)
-    , model(std::move(m))
+    , d(new ControllerPrivate)
 {
-    if (this->model != nullptr)
+    d->window = w;
+    d->model  = std::move(m);
+
+    if (d->model != nullptr)
     {
-        w->setModel(model.get());
+        w->setModel(d->model.get());
     }
 
     QDBusServiceWatcher *alteratorWatcher = new QDBusServiceWatcher(DBUS_SERVICE_NAME,
@@ -47,16 +56,39 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
     connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
 }
 
-void Controller::moduleClicked(model::ObjectItem *moduleItem)
+void Controller::moduleClicked(PushButton *moduleButton)
 {
+    model::ObjectItem *moduleItem = moduleButton->getItem();
     if (moduleItem->m_object->m_isLegacy)
     {
-        QProcess *proc = new QProcess(this);
+        QProcess *proc = new QProcess();
+
+        connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
+            qCritical() << proc->readAllStandardError();
+        });
+        connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() { qInfo() << proc->readAllStandardOutput(); });
+        connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) { delete (proc); });
+
         proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_object.get()->m_icon);
     }
     else
     {
-        window->showModuleMenu(moduleItem);
+        if (moduleItem->m_object->m_applications.size() == 1)
+        {
+            auto app = moduleItem->m_object->m_applications[0];
+            onInterfaceClicked(app);
+            return;
+        }
+
+        auto menu = std::make_unique<QMenu>(moduleButton);
+        for (const auto &app : moduleItem->m_object->m_applications)
+        {
+            auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
+            connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() { this->onInterfaceClicked(app); });
+            menu->addAction(interfaceAction.release());
+        }
+
+        d->window->showModuleMenu(moduleButton, std::move(menu));
     }
 }
 
@@ -82,9 +114,13 @@ void Controller::onDBusStructureUpdate(QString, QString, QString)
 
     std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel();
 
-    this->model = std::move(objectModel);
+    d->model = std::move(objectModel);
 
-    this->window->clearUi();
-    this->window->setModel(this->model.get());
+    QLocale locale;
+    QString language = locale.system().name().split("_").at(0);
+    d->model->translateModel(language);
+
+    d->window->clearUi();
+    d->window->setModel(d->model.get());
 }
 } // namespace ab
