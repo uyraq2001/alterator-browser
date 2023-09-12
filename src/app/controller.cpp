@@ -79,16 +79,6 @@ void Controller::moduleClicked(PushButton *moduleButton)
             onInterfaceClicked(app);
             return;
         }
-
-        auto menu = std::make_unique<QMenu>(moduleButton);
-        for (const auto &app : moduleItem->m_object->m_applications)
-        {
-            auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
-            connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() { this->onInterfaceClicked(app); });
-            menu->addAction(interfaceAction.release());
-        }
-
-        d->window->showModuleMenu(moduleButton, std::move(menu));
     }
 }
 

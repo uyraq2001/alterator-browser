@@ -24,6 +24,20 @@ void PushButton::setItem(model::ObjectItem *newItem)
 
     this->setText(item->getObject()->m_displayName);
     this->setMinimumWidth(this->sizeHint().width());
+
+    if (newItem->m_object->m_applications.size() > 1)
+    {
+        auto menu = std::make_unique<QMenu>(this);
+        for (const auto &app : newItem->m_object->m_applications)
+        {
+            auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
+            connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() {
+                window->onInterfaceClicked(app);
+            });
+            menu->addAction(interfaceAction.release());
+        }
+        setMenu(menu.release());
+    }
 }
 
 model::ObjectItem *PushButton::getItem()
