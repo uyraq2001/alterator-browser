@@ -4,8 +4,10 @@
 #include "model/localapllicationmodelbuilder.h"
 #include "model/model.h"
 #include "objectbuilder.h"
+#include "objectcategorybuilder.h"
 #include "objectitem.h"
 
+#include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
@@ -17,6 +19,7 @@ const QString DBUS_MANAGER_INTERFACE_NAME          = "ru.basealt.alterator.manag
 const QString GET_OBJECTS_METHOD_NAME              = "get_objects";
 const QString INFO_METHOD_NAME_FOR_ACOBJECT        = "info";
 const QString CATEGORY_INTERFACE_NAME_FOR_ACOBJECT = "ru.basealt.alterator.categories";
+const QString CATEGORY_OBJECT_PATH                 = "/ru/basealt/alterator/categories";
 const QString CATEGORY_METHOD_NAME_FOR_ACOBJECT    = "info";
 
 const QString DBUS_LOCAL_APP_PATH              = "/ru/basealt/alterator/applications";
@@ -132,14 +135,14 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
             mergeObjectWithApp(currentModuleItem, appModel);
         }
 
-        if (!currentModuleItem->getObject()->m_interfaces.empty())
+        if (!currentModuleItem->getObject()->toObject()->m_interfaces.empty())
         {
-            for (QString &currentIface : currentModuleItem->getObject()->m_interfaces)
+            for (QString &currentIface : currentModuleItem->getObject()->toObject()->m_interfaces)
             {
                 std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
                 std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
-                    currentModuleItem->getObject()->m_applications.push_back(app);
+                    currentModuleItem->getObject()->toObject()->m_applications.push_back(app);
                 });
             }
         }
@@ -177,36 +180,6 @@ std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseObjects(QStringLi
 {
     std::vector<std::unique_ptr<Object>> acObjects;
 
-    QDBusInterface categoryIface(m_dbusServiceName, m_dbusPath, m_managerInterface, m_dbusConnection);
-
-    if (!categoryIface.isValid())
-    {
-        qCritical() << "can't find interface to find object with categories interface";
-
-        return acObjects;
-    }
-
-    QDBusReply<QList<QDBusObjectPath>> reply = categoryIface.call(m_getObjectMethodName, m_categoryInterfaceName);
-
-    if (!reply.isValid())
-    {
-        qCritical() << "Reply is invalid. Can't find find interface to find object with categories interface";
-
-        return acObjects;
-    }
-
-    // TODO: check for empty QList
-    QString categoryObjectPath = reply.value().at(0).path();
-
-    QDBusInterface categoryInfoIface(m_dbusServiceName, categoryObjectPath, m_categoryInterfaceName, m_dbusConnection);
-
-    if (!categoryIface.isValid())
-    {
-        qCritical() << "can't connect to category object!";
-
-        return acObjects;
-    }
-
     for (QString &currentPath : pathsList)
     {
         QDBusInterface iface(m_dbusServiceName, currentPath, m_dbusFindInterface, m_dbusConnection);
@@ -229,7 +202,7 @@ std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseObjects(QStringLi
 
         DesktopFileParser infoParsingResult(currentObjectInfo);
 
-        ObjectBuilder objectBuilder(&infoParsingResult, &categoryInfoIface, m_categoryMethodName);
+        ObjectBuilder objectBuilder(&infoParsingResult);
 
         std::unique_ptr<Object> newObject = objectBuilder.buildObject();
 
@@ -266,14 +239,13 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<st
     {
         Object *currentObject = objects.at(i).get();
 
-        auto it = categories.find(currentObject->m_displayCategory);
+        auto it = categories.find(currentObject->m_categoryId);
 
         if (it == categories.end())
         {
-            ObjectItem *newCategoryItem = createCategoryItem(currentObject->m_displayCategory,
-                                                             currentObject->m_categoryObject.get());
+            ObjectItem *newCategoryItem = createCategoryItem(currentObject->m_categoryId);
 
-            categories[newCategoryItem->getObject()->m_displayCategory] = newCategoryItem;
+            categories[currentObject->m_categoryId] = newCategoryItem;
 
             model->appendRow(newCategoryItem);
 
@@ -297,34 +269,53 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<st
     return model;
 }
 
-ObjectItem *ObjectsModelBuilder::createCategoryItem(QString, ObjectCategory *nameTranslations)
+ObjectItem *ObjectsModelBuilder::createCategoryItem(QString categoryName)
 {
     ObjectItem *newCategoryItem = new ObjectItem();
 
+    if (categoryName.isEmpty())
+    {
+        categoryName = "Miscellaneous";
+    }
+
+    std::unique_ptr<QDBusInterface> iface = std::make_unique<QDBusInterface>(DBUS_SERVICE_NAME,
+                                                                             CATEGORY_OBJECT_PATH,
+                                                                             CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+                                                                             QDBusConnection::systemBus());
+    if (!iface->isValid())
+    {
+        qWarning() << "Can not connect to " + CATEGORY_INTERFACE_NAME_FOR_ACOBJECT + " interface";
+    }
+    QDBusReply<QByteArray> reply = iface->call(CATEGORY_METHOD_NAME_FOR_ACOBJECT, categoryName);
+
+    if (!reply.isValid())
+    {
+        qWarning() << "Can't reply with category name for the category: " << categoryName;
+        return newCategoryItem;
+    }
+
+    QString categoryData(reply.value());
+
+    DesktopFileParser categoryParser(categoryData);
+
+    ObjectCategoryBuilder categoryBuilder(&categoryParser);
+
+    std::unique_ptr<Category> category = categoryBuilder.buildObjectCategory();
+
+    if (!category)
+    {
+        category->m_id                            = "Unknown";
+        category->m_name                          = "Unknown";
+        category->m_comment                       = "Unable to get category";
+        category->m_icon                          = "groups/system";
+        category->m_type                          = "Directory";
+        category->m_xAlteratorCategory            = "X-Alterator-Unknown";
+        category->m_nameLocaleStorage["ru_RU"]    = "Без категории";
+        category->m_commentLocaleStorage["ru_RU"] = "Ошибка при получении категории";
+    }
+
     newCategoryItem->m_itemType = ObjectItem::ItemType::category;
-
-    Object *newObject = newCategoryItem->getObject();
-
-    ObjectCategory *newObjectCategory = newObject->m_categoryObject.get();
-
-    for (QString currentKey : nameTranslations->m_nameLocaleStorage.keys())
-    {
-        newObjectCategory->m_nameLocaleStorage.insert(currentKey, nameTranslations->m_nameLocaleStorage[currentKey]);
-    }
-
-    for (QString currentKey : nameTranslations->m_commentLocaleStorage.keys())
-    {
-        newObjectCategory->m_commentLocaleStorage.insert(currentKey,
-                                                         nameTranslations->m_commentLocaleStorage[currentKey]);
-    }
-
-    newObjectCategory->m_id                 = nameTranslations->m_id;
-    newObject->m_displayCategory            = nameTranslations->m_id;
-    newObjectCategory->m_name               = nameTranslations->m_name;
-    newObjectCategory->m_comment            = nameTranslations->m_comment;
-    newObjectCategory->m_icon               = nameTranslations->m_icon;
-    newObjectCategory->m_type               = nameTranslations->m_type;
-    newObjectCategory->m_xAlteratorCategory = nameTranslations->m_xAlteratorCategory;
+    newCategoryItem->m_object   = std::move(category);
 
     return newCategoryItem;
 }

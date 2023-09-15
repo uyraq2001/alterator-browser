@@ -1,5 +1,6 @@
 #include "categorywidget.h"
 #include "flowlayout.h"
+#include "model/category.h"
 #include "pushbutton.h"
 #include "ui_categorywidget.h"
 
@@ -31,14 +32,14 @@ void CategoryWidget::setItem(model::ObjectItem *newItem)
 {
     this->item = newItem;
 
-    QPixmap iconMap("/usr/share/alterator/design/images/" + newItem->getObject()->m_categoryObject->m_icon + ".png");
+    QPixmap iconMap("/usr/share/alterator/design/images/" + newItem->getObject()->toCategory()->m_icon + ".png");
     ui->iconLabel->setPixmap(iconMap);
     ui->iconLabel->setMinimumSize(iconMap.size());
 
-    ui->titleLabel->setText(newItem->getObject()->m_categoryObject->m_name);
+    ui->titleLabel->setText(newItem->getObject()->toCategory()->m_name);
     ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
 
-    ui->descriptionLabel->setText(newItem->getObject()->m_categoryObject->m_comment);
+    ui->descriptionLabel->setText(newItem->getObject()->toCategory()->m_comment);
 
     ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
 

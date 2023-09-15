@@ -14,7 +14,7 @@ int ObjectItem::type() const
     return static_cast<int>(m_itemType);
 }
 
-Object *ObjectItem::getObject()
+AbstractEntity *ObjectItem::getObject()
 {
     return m_object.get();
 }

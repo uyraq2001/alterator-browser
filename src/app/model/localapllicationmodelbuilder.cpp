@@ -42,7 +42,7 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
         return std::make_unique<LocalApplicationModel>();
     }
 
-    auto model = std::make_unique<LocalApplicationModel>();
+    auto model    = std::make_unique<LocalApplicationModel>();
     auto rootItem = model.get()->invisibleRootItem();
 
     for (size_t i = 0; i < listOfApps.size(); ++i)

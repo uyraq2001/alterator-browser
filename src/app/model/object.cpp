@@ -1,4 +1,4 @@
-#include "object.h"
+#include "entityheaders.h"
 
 namespace ab
 {
@@ -19,7 +19,6 @@ Object::Object()
     , m_interfaces()
     , m_applications()
     , m_nameLocaleStorage()
-    , m_categoryObject(new ObjectCategory())
     , m_isLegacy(false)
 {}
 
@@ -31,11 +30,29 @@ void Object::setLocale(QString locale)
         m_displayName = *nameIt;
     }
 
-    if (m_categoryObject)
-    {
-        m_categoryObject->setLocale(locale);
-        m_displayCategory = m_categoryObject->m_name;
-    }
+    //    if (m_categoryObject)
+    //    {
+    //        m_categoryObject->setLocale(locale);
+    //        m_displayCategory = m_categoryObject->m_name;
+    //    }
 }
+
+Object *Object::toObject()
+{
+    return this;
+}
+Category *Object::toCategory()
+{
+    return new Category();
+}
+Interface *Object::toInterface()
+{
+    return new Interface();
+}
+Application *Object::toAplication()
+{
+    return new Application();
+}
+
 } // namespace model
 } // namespace ab

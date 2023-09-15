@@ -1,6 +1,8 @@
 #ifndef AB_OBJECT_H
 #define AB_OBJECT_H
 
+#include "abstractentity.h"
+#include "entitydefinitions.h"
 #include "localapplication.h"
 #include "objectcategory.h"
 
@@ -12,7 +14,7 @@ namespace ab
 {
 namespace model
 {
-class Object : public QObject
+class Object : public AbstractEntity
 {
     Q_OBJECT
 public:
@@ -20,6 +22,11 @@ public:
     ~Object() = default;
 
     void setLocale(QString locale);
+
+    Object *toObject() override;
+    Category *toCategory() override;
+    Interface *toInterface() override;
+    Application *toAplication() override;
 
 public:
     QString m_id;
@@ -39,7 +46,7 @@ public:
 
     QMap<QString, QString> m_nameLocaleStorage;
 
-    std::unique_ptr<ObjectCategory> m_categoryObject{nullptr};
+    //    std::unique_ptr<ObjectCategory> m_categoryObject{nullptr};
 
     bool m_isLegacy;
 };

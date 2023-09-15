@@ -14,17 +14,13 @@ namespace model
 class ObjectBuilder
 {
 public:
-    ObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName);
+    ObjectBuilder(DesktopFileParser *infoParser);
 
     std::unique_ptr<Object> buildObject();
 
     bool buildNames(DesktopFileParser::Section &section, Object *object);
 
 private:
-    void setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, Object *acObject);
-
-    void setDefaultCategory(Object *object);
-
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
 
     QString getValue(DesktopFileParser::Section &section, QString key);
@@ -33,8 +29,6 @@ private:
 
 private:
     DesktopFileParser *m_infoParser;
-    QDBusInterface *m_dbusInterface;
-    QString m_dbusMethodName;
 
 private:
     ObjectBuilder(const ObjectBuilder &) = delete;

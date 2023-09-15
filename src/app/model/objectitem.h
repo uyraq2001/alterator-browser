@@ -24,12 +24,12 @@ public:
 
     int type() const override;
 
-    Object *getObject();
+    AbstractEntity *getObject();
 
 public:
     ItemType m_itemType;
 
-    std::unique_ptr<Object> m_object{nullptr};
+    std::unique_ptr<AbstractEntity> m_object{nullptr};
 };
 } // namespace model
 } // namespace ab

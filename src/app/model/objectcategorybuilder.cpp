@@ -19,9 +19,9 @@ ObjectCategoryBuilder::ObjectCategoryBuilder(DesktopFileParser *categoryParser)
     : m_categoryParser(categoryParser)
 {}
 
-std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
+std::unique_ptr<Category> ObjectCategoryBuilder::buildObjectCategory()
 {
-    auto result = std::make_unique<ObjectCategory>();
+    auto result = std::make_unique<Category>();
 
     auto sections = m_categoryParser->getSections();
 
@@ -69,7 +69,7 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     return result;
 }
 
-bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
+bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Category *categoryObject)
 {
     auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
     if (nameIt == section.end())
@@ -79,14 +79,14 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Obje
     }
 
     QList<IniFileKey> listOfKeys = section.values(CATEGORY_NAME_KEY_NAME);
-    QString defaultName = getDefaultValue(listOfKeys);
+    QString defaultName          = getDefaultValue(listOfKeys);
     if (defaultName.isEmpty())
     {
         qWarning() << "Can't default name for the category!";
         return false;
     }
 
-    categoryObject->m_id = defaultName;
+    categoryObject->m_id   = defaultName;
     categoryObject->m_name = defaultName;
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
@@ -97,7 +97,7 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Obje
     return true;
 }
 
-bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
+bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, Category *categoryObject)
 {
     auto commentIt = section.find(CATEGORY_COMMENT_KEY_NAME);
     if (commentIt == section.end())
@@ -107,7 +107,7 @@ bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, O
     }
 
     QList<IniFileKey> listOfKeys = section.values(CATEGORY_COMMENT_KEY_NAME);
-    QString defaultComment = getDefaultValue(listOfKeys);
+    QString defaultComment       = getDefaultValue(listOfKeys);
     if (defaultComment.isEmpty())
     {
         qWarning() << "Can't default comment for the category!";
