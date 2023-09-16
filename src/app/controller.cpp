@@ -56,9 +56,8 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
     connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
 }
 
-void Controller::moduleClicked(PushButton *moduleButton)
+void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
-    model::ObjectItem *moduleItem = moduleButton->getItem();
     if (moduleItem->m_object->toObject()->m_isLegacy)
     {
         QProcess *proc = new QProcess();

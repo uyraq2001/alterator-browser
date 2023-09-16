@@ -26,7 +26,7 @@ public:
     ~Controller() = default;
 
 public slots:
-    void moduleClicked(PushButton *moduleButton);
+    void moduleClicked(model::ObjectItem *moduleItem);
     void onInterfaceClicked(model::LocalApplication *app);
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 

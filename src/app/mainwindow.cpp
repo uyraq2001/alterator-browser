@@ -102,7 +102,7 @@ void MainWindow::clearUi()
 
 void MainWindow::onModuleClicked(PushButton *button)
 {
-    d->controller->moduleClicked(button);
+    d->controller->moduleClicked(button->getItem());
 }
 
 void MainWindow::showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu)
