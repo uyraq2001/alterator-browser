@@ -11,9 +11,6 @@ namespace model
 class Interface : public AbstractEntity
 {
 public:
-    Interface();
-    ~Interface();
-
     void setLocale(QString locale) override;
 
     Object *toObject() override;
@@ -21,7 +18,7 @@ public:
     Interface *toInterface() override;
     Application *toAplication() override;
 
-    QString m_name;
+    QString m_name = {};
 };
 } // namespace model
 } // namespace ab

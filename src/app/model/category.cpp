@@ -4,19 +4,6 @@ namespace ab
 {
 namespace model
 {
-Category::Category()
-    : m_id()
-    , m_name()
-    , m_comment()
-    , m_icon()
-    , m_type()
-    , m_xAlteratorCategory()
-    , m_nameLocaleStorage()
-    , m_commentLocaleStorage()
-{}
-
-Category::~Category() {}
-
 Object *Category::toObject()
 {
     return new Object();

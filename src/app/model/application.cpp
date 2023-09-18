@@ -4,29 +4,6 @@ namespace ab
 {
 namespace model
 {
-Application::Application()
-    : m_id()
-    , m_name()
-    , m_genericName()
-    , m_displayName()
-    , m_displayComment()
-    , m_try_Exec()
-    , m_exec()
-    , m_icon()
-    , m_type()
-    , m_displayKeywords()
-    , m_implementedInterface()
-    , m_categories()
-    , m_mimeTypes()
-    , m_alteratorIterfaces()
-    , m_nameLocaleStorage()
-    , m_genericNameLocaleStorage()
-    , m_keywordsLocaleStorage()
-    , m_commentLocaleStorage()
-{}
-
-Application::~Application() {}
-
 void Application::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);

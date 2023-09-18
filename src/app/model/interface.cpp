@@ -4,12 +4,6 @@ namespace ab
 {
 namespace model
 {
-Interface::Interface()
-    : m_name()
-{}
-
-Interface::~Interface() {}
-
 void Interface::setLocale(QString locale) {}
 
 Object *Interface::toObject()
