@@ -18,7 +18,7 @@ public:
     Interface *toInterface() override;
     Application *toAplication() override;
 
-    QString m_name = {};
+    QString m_name  {};
 };
 } // namespace model
 } // namespace ab
