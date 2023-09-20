@@ -23,8 +23,8 @@
         <translation></translation>
     </message>
     <message>
-        <source>altcenter</source>
-        <translation>altcenter</translation>
+        <source>alterator-browser</source>
+        <translation>alterator-browser</translation>
     </message>
 </context>
 <context>
