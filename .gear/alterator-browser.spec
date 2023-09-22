@@ -35,7 +35,7 @@ Alterator operating via D-Bus.
 %cmakeinstall_std
 
 %files
-%_bindir/altcenter
+%_bindir/alterator-browser
 %doc README.md INSTALL.md
 
 %changelog
