@@ -1,4 +1,5 @@
 #include "mainwindowsettings.h"
+#include "mainwindow.h"
 
 #include <QSettings>
 
@@ -15,16 +16,17 @@ public:
         , m_ui(ui)
         , m_settings("BaseALT", "alterator-browser")
     {}
+    ~MainWindowSettingsPrivate() = default;
 
-    MainWindow *m_mainWindow = nullptr;
-    Ui::MainWindow *m_ui = nullptr;
-    QSettings m_settings{};
-
-private:
+public:
     MainWindowSettingsPrivate(const MainWindowSettingsPrivate &) = delete;
     MainWindowSettingsPrivate(MainWindowSettingsPrivate &&)      = delete;
     MainWindowSettingsPrivate &operator=(const MainWindowSettingsPrivate &) = delete;
     MainWindowSettingsPrivate &operator=(MainWindowSettingsPrivate &&) = delete;
+
+    MainWindow *m_mainWindow = nullptr;
+    Ui::MainWindow *m_ui     = nullptr;
+    QSettings m_settings{};
 };
 
 MainWindowSettings::MainWindowSettings(MainWindow *mWindow, Ui::MainWindow *ui)

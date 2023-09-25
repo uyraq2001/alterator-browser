@@ -40,7 +40,7 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplication
 
     if (!buildNames(desktopEntrySection, result.get())) // TODO: buildFieldWithLocale
     {
-        return std::unique_ptr<LocalApplication>();
+        return {};
     }
 
     if (!buildFieldWithLocale(desktopEntrySection,
@@ -239,7 +239,7 @@ QString LocalApplicationBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
         }
     }
 
-    return QString();
+    return {};
 }
 
 QString LocalApplicationBuilder::getValue(DesktopFileParser::Section &section, QString key)
@@ -248,7 +248,7 @@ QString LocalApplicationBuilder::getValue(DesktopFileParser::Section &section, Q
 
     if (it == section.end())
     {
-        return QString();
+        return {};
     }
 
     QList<IniFileKey> listOfKeys = section.values(key);
@@ -258,7 +258,7 @@ QString LocalApplicationBuilder::getValue(DesktopFileParser::Section &section, Q
         return listOfKeys.at(0).value.toString();
     }
 
-    return QString();
+    return {};
 }
 
 std::vector<QString> LocalApplicationBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
@@ -269,7 +269,7 @@ std::vector<QString> LocalApplicationBuilder::parseValuesFromKey(DesktopFilePars
     if (values.isEmpty())
     {
         qWarning() << "Can't find key:" << key;
-        return std::vector<QString>();
+        return {};
     }
 
     if (values.back() == delimiter)

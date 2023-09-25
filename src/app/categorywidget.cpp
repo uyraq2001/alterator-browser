@@ -44,7 +44,10 @@ void CategoryWidget::setItem(model::ObjectItem *newItem)
 
     ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
 
-    auto modulesLayout = std::make_unique<FlowLayout>(10, 10, 10);
+    const int margin            = 10;
+    const int horizontalSpacing = 10;
+    const int verticalSpacing   = 10;
+    auto modulesLayout          = std::make_unique<FlowLayout>(margin, horizontalSpacing, verticalSpacing);
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 

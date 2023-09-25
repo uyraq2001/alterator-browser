@@ -9,8 +9,7 @@
 namespace ab
 {
 PushButton::PushButton(MainWindow *w, QWidget *parent)
-    : item(nullptr)
-    , window(w)
+    : window(w)
 {
     setParent(parent);
     connect(this, &PushButton::clicked, this->window, [this]() { this->window->onModuleClicked(this); });
