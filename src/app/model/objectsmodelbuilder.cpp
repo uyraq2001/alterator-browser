@@ -1,8 +1,10 @@
 #include "objectsmodelbuilder.h"
+#include "category.h"
 #include "desktopfileparser.h"
 #include "localapplicationmodel.h"
 #include "model/localapllicationmodelbuilder.h"
 #include "model/model.h"
+#include "object.h"
 #include "objectbuilder.h"
 #include "objectcategorybuilder.h"
 #include "objectitem.h"
@@ -78,7 +80,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
         return std::make_unique<Model>();
     }
 
-    std::vector<std::unique_ptr<Object>> acObjects = parseObjects(pathsOfObjects);
+    std::vector<std::unique_ptr<std::variant<Object, Category>>> acObjects = parseObjects(pathsOfObjects);
 
     if (acObjects.empty())
     {
@@ -135,14 +137,16 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
             mergeObjectWithApp(currentModuleItem, appModel);
         }
 
-        if (!currentModuleItem->getObject()->toObject()->m_interfaces.empty())
+        if (!std::get<ab::model::Object>(currentModuleItem->getObject()).m_interfaces.empty())
         {
-            for (QString &currentIface : currentModuleItem->getObject()->toObject()->m_interfaces)
+            for (std::size_t j = 0; j < std::get<ab::model::Object>(currentModuleItem->getObject()).m_interfaces.size();
+                 j++)
             {
+                QString currentIface = std::get<ab::model::Object>(currentModuleItem->getObject()).m_interfaces.at(j);
                 std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
                 std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
-                    currentModuleItem->getObject()->toObject()->m_applications.push_back(app);
+                    std::get<ab::model::Object>(currentModuleItem->getObject()).m_applications.push_back(app);
                 });
             }
         }
@@ -176,9 +180,9 @@ QStringList ObjectsModelBuilder::getListOfObjects()
     return paths;
 }
 
-std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseObjects(QStringList &pathsList)
+std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder::parseObjects(QStringList &pathsList)
 {
-    std::vector<std::unique_ptr<Object>> acObjects;
+    std::vector<std::unique_ptr<std::variant<Object, Category>>> acObjects;
 
     for (QString &currentPath : pathsList)
     {
@@ -204,7 +208,8 @@ std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseObjects(QStringLi
 
         ObjectBuilder objectBuilder(&infoParsingResult);
 
-        std::unique_ptr<Object> newObject = objectBuilder.buildObject();
+        std::unique_ptr<std::variant<Object, Category>> newObject = std::make_unique<std::variant<Object, Category>>(
+            *(objectBuilder.buildObject()));
 
         if (newObject)
         {
@@ -229,7 +234,8 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
     return result;
 }
 
-std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<std::unique_ptr<Object>> objects)
+std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
+    std::vector<std::unique_ptr<std::variant<Object, Category>>> objects)
 {
     auto model = std::make_unique<Model>();
 
@@ -237,15 +243,15 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<st
 
     for (size_t i = 0; i < objects.size(); ++i)
     {
-        Object *currentObject = objects.at(i).get();
+        Object currentObject = std::get<Object>(*objects.at(i));
 
-        auto it = categories.find(currentObject->m_categoryId);
+        auto it = categories.find(currentObject.m_categoryId);
 
         if (it == categories.end())
         {
-            ObjectItem *newCategoryItem = createCategoryItem(currentObject->m_categoryId);
+            ObjectItem *newCategoryItem = createCategoryItem(currentObject.m_categoryId);
 
-            categories[currentObject->m_categoryId] = newCategoryItem;
+            categories[currentObject.m_categoryId] = newCategoryItem;
 
             model->appendRow(newCategoryItem);
 
@@ -315,7 +321,7 @@ ObjectItem *ObjectsModelBuilder::createCategoryItem(QString categoryName)
     }
 
     newCategoryItem->m_itemType = ObjectItem::ItemType::category;
-    newCategoryItem->m_object   = std::move(category);
+    newCategoryItem->m_object   = std::move(std::make_unique<std::variant<Object, Category>>(*category));
 
     return newCategoryItem;
 }

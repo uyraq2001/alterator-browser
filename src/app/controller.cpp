@@ -1,5 +1,6 @@
 #include "controller.h"
 #include "mainwindow.h"
+#include "model/entityheaders.h"
 #include "model/localapllicationmodelbuilder.h"
 #include "model/objectsmodelbuilder.h"
 
@@ -58,7 +59,7 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
 
 void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
-    if (moduleItem->m_object->toObject()->m_isLegacy)
+    if (std::get<ab::model::Object>(*(moduleItem->m_object)).m_isLegacy)
     {
         QProcess *proc = new QProcess();
 
@@ -68,13 +69,14 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
         connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() { qInfo() << proc->readAllStandardOutput(); });
         connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) { delete (proc); });
 
-        proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_object.get()->toObject()->m_icon);
+        proc->start("alterator-standalone",
+                    QStringList() << "-l" << std::get<ab::model::Object>(*moduleItem->m_object).m_icon);
     }
     else
     {
-        if (moduleItem->m_object->toObject()->m_applications.size() == 1)
+        if (std::get<ab::model::Object>(*moduleItem->m_object).m_applications.size() == 1)
         {
-            auto app = moduleItem->m_object->toObject()->m_applications[0];
+            auto app = std::get<ab::model::Object>(*moduleItem->m_object).m_applications[0];
             onInterfaceClicked(app);
             return;
         }

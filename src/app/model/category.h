@@ -10,25 +10,20 @@ namespace ab
 {
 namespace model
 {
-class Category : public AbstractEntity
+class Category
 {
 public:
-    void setLocale(QString locale) override;
+    void setLocale(QString locale);
 
-    Object *toObject() override;
-    Category *toCategory() override;
-    Interface *toInterface() override;
-    Application *toAplication() override;
+    QString m_id{};
+    QString m_name{};
+    QString m_comment{};
+    QString m_icon{};
+    QString m_type{};
+    QString m_xAlteratorCategory{};
 
-    QString m_id                  {};
-    QString m_name                {};
-    QString m_comment             {};
-    QString m_icon                {};
-    QString m_type                {};
-    QString m_xAlteratorCategory  {};
-
-    QMap<QString, QString> m_nameLocaleStorage     {};
-    QMap<QString, QString> m_commentLocaleStorage  {};
+    QMap<QString, QString> m_nameLocaleStorage{};
+    QMap<QString, QString> m_commentLocaleStorage{};
 };
 } // namespace model
 } // namespace ab

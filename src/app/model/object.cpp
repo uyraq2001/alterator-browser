@@ -12,23 +12,5 @@ void Object::setLocale(QString locale)
         m_displayName = *nameIt;
     }
 }
-
-Object *Object::toObject()
-{
-    return this;
-}
-Category *Object::toCategory()
-{
-    return new Category();
-}
-Interface *Object::toInterface()
-{
-    return new Interface();
-}
-Application *Object::toAplication()
-{
-    return new Application();
-}
-
 } // namespace model
 } // namespace ab

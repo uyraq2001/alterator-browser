@@ -1,7 +1,19 @@
 #include "model.h"
+#include "model/category.h"
+#include "model/object.h"
 #include "objectitem.h"
 
 #include <QDebug>
+
+#include <variant>
+
+template<typename... Ts> // (7)
+struct Overload : Ts...
+{
+    using Ts::operator()...;
+};
+template<class... Ts>
+Overload(Ts...) -> Overload<Ts...>;
 
 namespace ab
 {
@@ -34,7 +46,7 @@ void Model::translateItem(QStandardItem *item, QString locale)
             translateItem(currentItem, locale);
         }
 
-        currentItem->getObject()->setLocale(locale);
+        std::visit(Overload{[locale](auto obj) -> void { obj.setLocale(locale); }}, currentItem->getObject());
     }
 }
 } // namespace model

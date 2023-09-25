@@ -1,7 +1,7 @@
 #include "pushbutton.h"
 #include "mainwindow.h"
-#include "model/localapplication.h"
-#include "model/object.h"
+#include "model/entityheaders.h"
+//#include "model/localapplication.h"
 
 #include <QAction>
 #include <QDebug>
@@ -21,14 +21,17 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
 void PushButton::setItem(model::ObjectItem *newItem)
 {
     this->item = newItem;
+    auto t     = newItem->getObject();
+    //    auto b            = t;
+    model::Object obj = std::get<ab::model::Object>(std::move(t));
 
-    this->setText(item->getObject()->toObject()->m_displayName);
+    this->setText(obj.m_displayName);
     this->setMinimumWidth(this->sizeHint().width());
 
-    if (newItem->m_object->toObject()->m_applications.size() > 1)
+    if (obj.m_applications.size() > 1)
     {
         auto menu = std::make_unique<QMenu>(this);
-        for (const auto &app : newItem->m_object->toObject()->m_applications)
+        for (const auto &app : obj.m_applications)
         {
             auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
             connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() {
