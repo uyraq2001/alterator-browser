@@ -1,7 +1,5 @@
 #include "pushbutton.h"
 #include "mainwindow.h"
-#include "model/entityheaders.h"
-//#include "model/localapplication.h"
 
 #include <QAction>
 #include <QDebug>

@@ -1,8 +1,6 @@
 #ifndef AB_OBJECT_H
 #define AB_OBJECT_H
 
-#include "abstractentity.h"
-#include "entitydefinitions.h"
 #include "localapplication.h"
 
 namespace ab
@@ -11,16 +9,9 @@ namespace model
 {
 class Object
 {
-    //    Q_OBJECT
 public:
     void setLocale(QString locale);
 
-    //    Object *toObject() override;
-    //    Category *toCategory() override;
-    //    Interface *toInterface() override;
-    //    Application *toAplication() override;
-
-public:
     QString m_id{};
     QString m_displayName{};
     QString m_displayCategory{};

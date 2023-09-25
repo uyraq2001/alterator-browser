@@ -1,5 +1,5 @@
 #include "objectbuilder.h"
-#include "objectcategorybuilder.h"
+#include "categorybuilder.h"
 
 #include <QDBusReply>
 #include <QDebug>

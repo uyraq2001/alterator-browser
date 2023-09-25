@@ -34,11 +34,8 @@ set(HEADERS
 
     model/object.h
     model/category.h
-    model/interface.h
-    model/application.h
     model/model.h
-    model/objectcategory.h
-    model/objectcategorybuilder.h
+    model/categorybuilder.h
     model/localapplication.h
     model/objectitem.h
     model/objectsmodelbuilder.h
@@ -51,10 +48,6 @@ set(HEADERS
     model/localapplicationmodel.h
     model/localapplicationitem.h
     model/model.h
-    model/abstractentity.h
-
-    model/entitydefinitions.h
-    model/entityheaders.h
 )
 
 set(SOURCES
@@ -68,11 +61,8 @@ set(SOURCES
 
     model/object.cpp
     model/category.cpp
-    model/interface.cpp
-    model/application.cpp
     model/model.cpp
-    model/objectcategory.cpp
-    model/objectcategorybuilder.cpp
+    model/categorybuilder.cpp
     model/localapplication.cpp
     model/objectitem.cpp
     model/objectsmodelbuilder.cpp
@@ -85,7 +75,6 @@ set(SOURCES
     model/localapplicationmodel.cpp
     model/localapplicationitem.cpp
     model/model.cpp
-    model/abstractentity.cpp
 )
 
 set(UI_FORMS

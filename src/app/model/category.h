@@ -3,9 +3,6 @@
 
 #include <QMap>
 
-#include "abstractentity.h"
-#include "entitydefinitions.h"
-
 namespace ab
 {
 namespace model

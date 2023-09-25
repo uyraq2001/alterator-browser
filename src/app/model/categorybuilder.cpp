@@ -1,4 +1,4 @@
-#include "objectcategorybuilder.h"
+#include "categorybuilder.h"
 
 #include <QDebug>
 #include <QList>

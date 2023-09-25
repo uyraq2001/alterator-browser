@@ -1,26 +1,9 @@
-#include "entityheaders.h"
+#include "category.h"
 
 namespace ab
 {
 namespace model
 {
-//Object *Category::toObject()
-//{
-//    return new Object();
-//}
-//Category *Category::toCategory()
-//{
-//    return this;
-//}
-//Interface *Category::toInterface()
-//{
-//    return new Interface();
-//}
-//Application *Category::toAplication()
-//{
-//    return new Application();
-//}
-
 void Category::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);

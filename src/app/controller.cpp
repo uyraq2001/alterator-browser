@@ -1,6 +1,5 @@
 #include "controller.h"
 #include "mainwindow.h"
-#include "model/entityheaders.h"
 #include "model/localapllicationmodelbuilder.h"
 #include "model/objectsmodelbuilder.h"
 

@@ -1,12 +1,12 @@
 #include "objectsmodelbuilder.h"
 #include "category.h"
+#include "categorybuilder.h"
 #include "desktopfileparser.h"
 #include "localapplicationmodel.h"
 #include "model/localapllicationmodelbuilder.h"
 #include "model/model.h"
 #include "object.h"
 #include "objectbuilder.h"
-#include "objectcategorybuilder.h"
 #include "objectitem.h"
 
 #include <QDBusConnection>
