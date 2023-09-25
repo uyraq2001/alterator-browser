@@ -41,19 +41,19 @@ private:
     ObjectItem *createCategoryItem(QString categoryName);
 
 private:
-    QDBusConnection m_dbusConnection;
-    QString m_dbusServiceName;
-    QString m_dbusPath;
-    QString m_managerInterface;
-    QString m_dbusFindInterface;
-    QString m_getObjectMethodName;
-    QString m_infoMethodName;
-    QString m_categoryInterfaceName;
-    QString m_categoryMethodName;
+    QDBusConnection m_dbusConnection = QDBusConnection::systemBus();
+    QString m_dbusServiceName{};
+    QString m_dbusPath{};
+    QString m_managerInterface{};
+    QString m_dbusFindInterface{};
+    QString m_getObjectMethodName{};
+    QString m_infoMethodName{};
+    QString m_categoryInterfaceName{};
+    QString m_categoryMethodName{};
 
-    QString m_interface;
-    QString m_getFilesMethodName;
-    QString m_getDesktopFileMethodName;
+    QString m_interface{};
+    QString m_getFilesMethodName{};
+    QString m_getDesktopFileMethodName{};
 };
 } // namespace model
 } // namespace ab
