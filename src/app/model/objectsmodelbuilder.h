@@ -38,7 +38,7 @@ private:
     std::vector<std::unique_ptr<std::variant<Object, Category>>> parseObjects(QStringList &pathsList);
     QString getObjectInfo(QDBusInterface &iface);
     std::unique_ptr<Model> buildModelFromObjects(std::vector<std::unique_ptr<std::variant<Object, Category>>> objects);
-    ObjectItem *createCategoryItem(QString categoryName);
+    std::unique_ptr<ObjectItem> createCategoryItem(QString categoryName);
 
 private:
     QDBusConnection m_dbusConnection = QDBusConnection::systemBus();

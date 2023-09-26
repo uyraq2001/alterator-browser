@@ -160,7 +160,7 @@ QStringList ObjectsModelBuilder::getListOfObjects()
     if (!managerIface.isValid())
     {
         qCritical() << "Can't access alterator manager interface!";
-        return QStringList();
+        return {};
     }
 
     QDBusReply<QList<QDBusObjectPath>> reply = managerIface.call(m_getObjectMethodName, m_dbusFindInterface);
@@ -168,7 +168,7 @@ QStringList ObjectsModelBuilder::getListOfObjects()
     if (!reply.isValid())
     {
         qCritical() << "Can't get reply from alterator manager interface!";
-        return QStringList();
+        return {};
     }
 
     QList<QDBusObjectPath> pathList = reply.value();
@@ -226,7 +226,7 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 
     if (!reply.isValid())
     {
-        return QString();
+        return {};
     }
 
     QString result = QString(reply.value());
@@ -237,47 +237,49 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
     std::vector<std::unique_ptr<std::variant<Object, Category>>> objects)
 {
-    auto model = std::make_unique<Model>();
-
-    QMap<QString, ObjectItem *> categories;
+    std::map<QString, std::unique_ptr<ObjectItem>> categories;
 
     for (size_t i = 0; i < objects.size(); ++i)
     {
         Object currentObject = std::get<Object>(*objects.at(i));
 
-        auto it = categories.find(currentObject.m_categoryId);
+        auto find = categories.find(currentObject.m_categoryId);
 
-        if (it == categories.end())
+        if (find == categories.end())
         {
-            ObjectItem *newCategoryItem = createCategoryItem(currentObject.m_categoryId);
+            auto newCategoryItem = createCategoryItem(currentObject.m_categoryId);
 
-            categories[currentObject.m_categoryId] = newCategoryItem;
-
-            model->appendRow(newCategoryItem);
-
-            ObjectItem *newModuleItem = new ObjectItem();
+            auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
             newModuleItem->m_object   = std::move(objects.at(i));
 
-            newCategoryItem->appendRow(newModuleItem);
+            newCategoryItem->appendRow(newModuleItem.release());
+
+            categories[currentObject.m_categoryId] = std::move(newCategoryItem);
         }
         else
         {
-            ObjectItem *categoryItem = *it;
+            auto categoryItem = &find->second;
 
-            ObjectItem *newModuleItem = new ObjectItem();
+            auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
             newModuleItem->m_object   = std::move(objects.at(i));
 
-            categoryItem->appendRow(newModuleItem);
+            categoryItem->get()->appendRow(newModuleItem.release());
         }
+    }
+
+    auto model = std::make_unique<Model>();
+    for (auto &category : categories)
+    {
+        model->appendRow(category.second.release());
     }
     return model;
 }
 
-ObjectItem *ObjectsModelBuilder::createCategoryItem(QString categoryName)
+std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString categoryName)
 {
-    ObjectItem *newCategoryItem = new ObjectItem();
+    auto newCategoryItem = std::make_unique<ObjectItem>();
 
     if (categoryName.isEmpty())
     {

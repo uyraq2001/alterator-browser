@@ -7,7 +7,7 @@
 
 #include <variant>
 
-template<typename... Ts> // (7)
+template<typename... Ts>
 struct Overload : Ts...
 {
     using Ts::operator()...;

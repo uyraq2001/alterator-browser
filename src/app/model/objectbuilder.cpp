@@ -166,7 +166,7 @@ QString ObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)
         }
     }
 
-    return QString();
+    return {};
 }
 
 QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key)
@@ -174,7 +174,7 @@ QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key
     auto it = section.find(key);
     if (it == section.end())
     {
-        return QString();
+        return {};
     }
 
     QList<IniFileKey> listOfKeys = section.values(key);
@@ -184,7 +184,7 @@ QString ObjectBuilder::getValue(DesktopFileParser::Section &section, QString key
         return listOfKeys.at(0).value.toString();
     }
 
-    return QString();
+    return {};
 }
 
 std::vector<QString> ObjectBuilder::parseValuesFromKey(DesktopFileParser::Section &section,
@@ -195,7 +195,7 @@ std::vector<QString> ObjectBuilder::parseValuesFromKey(DesktopFileParser::Sectio
     if (values.isEmpty())
     {
         qWarning() << "Can't find key:" << key;
-        return std::vector<QString>();
+        return {};
     }
 
     if (values.back() == delimiter)

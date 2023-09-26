@@ -1,5 +1,5 @@
-#ifndef CATEGORY_H
-#define CATEGORY_H
+#ifndef AB_CATEGORY_H
+#define AB_CATEGORY_H
 
 #include <QMap>
 
@@ -25,4 +25,4 @@ public:
 } // namespace model
 } // namespace ab
 
-#endif // CATEGORY_H
+#endif // AB_CATEGORY_H
