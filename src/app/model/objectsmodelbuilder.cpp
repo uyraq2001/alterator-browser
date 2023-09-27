@@ -94,7 +94,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 
     QLocale locale;
     QString language = locale.system().name().split("_").at(0);
-    model->translateModel(language);
+    model->translateModel("ru");
 
     return model;
 }
