@@ -1,3 +1,5 @@
+%define _unpackaged_files_terminate_build 1
+
 Name: alterator-browser
 Version: 0.1.0
 Release: alt1
@@ -35,6 +37,8 @@ Alterator operating via D-Bus.
 %cmakeinstall_std
 
 %files
+%_datadir/alterator/backends/*.backend
+%_datadir/alterator/scripts/*.sh
 %_bindir/alterator-browser
 %doc README.md INSTALL.md
 
