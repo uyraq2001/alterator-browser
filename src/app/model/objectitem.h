@@ -27,7 +27,7 @@ public:
 
     int type() const override;
 
-    std::variant<Object, Category> getObject();
+    std::variant<Object, Category>* getObject();
 
 public:
     ItemType m_itemType;

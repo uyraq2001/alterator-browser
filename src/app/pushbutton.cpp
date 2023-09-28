@@ -18,9 +18,7 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
 void PushButton::setItem(model::ObjectItem *newItem)
 {
     this->item = newItem;
-    auto t     = newItem->getObject();
-    //    auto b            = t;
-    model::Object obj = std::get<ab::model::Object>(std::move(t));
+    model::Object obj = std::get<ab::model::Object>(*newItem->getObject());
 
     this->setText(obj.m_displayName);
     this->setMinimumWidth(this->sizeHint().width());

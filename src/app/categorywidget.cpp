@@ -32,15 +32,15 @@ void CategoryWidget::setItem(model::ObjectItem *newItem)
 {
     this->item = newItem;
 
-    QPixmap iconMap("/usr/share/alterator/design/images/" + std::get<ab::model::Category>(newItem->getObject()).m_icon
+    QPixmap iconMap("/usr/share/alterator/design/images/" + std::get<ab::model::Category>(*newItem->getObject()).m_icon
                     + ".png");
     ui->iconLabel->setPixmap(iconMap);
     ui->iconLabel->setMinimumSize(iconMap.size());
 
-    ui->titleLabel->setText(std::get<ab::model::Category>(newItem->getObject()).m_name);
+    ui->titleLabel->setText(std::get<ab::model::Category>(*newItem->getObject()).m_name);
     ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
 
-    ui->descriptionLabel->setText(std::get<ab::model::Category>(newItem->getObject()).m_comment);
+    ui->descriptionLabel->setText(std::get<ab::model::Category>(*newItem->getObject()).m_comment);
 
     ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
 

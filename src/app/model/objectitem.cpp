@@ -13,9 +13,9 @@ int ObjectItem::type() const
     return static_cast<int>(m_itemType);
 }
 
-std::variant<Object, Category> ObjectItem::getObject()
+std::variant<Object, Category>* ObjectItem::getObject()
 {
-    return *m_object;
+    return m_object.get(); //is it the best way?
 }
 } // namespace model
 } // namespace ab

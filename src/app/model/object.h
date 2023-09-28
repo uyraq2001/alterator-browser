@@ -30,6 +30,8 @@ public:
     QMap<QString, QString> m_nameLocaleStorage{};
 
     bool m_isLegacy{};
+
+    int test = 0;
 };
 } // namespace model
 } // namespace ab

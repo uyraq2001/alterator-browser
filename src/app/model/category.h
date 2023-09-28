@@ -21,6 +21,8 @@ public:
 
     QMap<QString, QString> m_nameLocaleStorage{};
     QMap<QString, QString> m_commentLocaleStorage{};
+
+    int test = 0;
 };
 } // namespace model
 } // namespace ab

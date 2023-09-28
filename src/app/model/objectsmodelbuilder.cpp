@@ -137,16 +137,16 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
             mergeObjectWithApp(currentModuleItem, appModel);
         }
 
-        if (!std::get<ab::model::Object>(currentModuleItem->getObject()).m_interfaces.empty())
+        if (!std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.empty())
         {
-            for (std::size_t j = 0; j < std::get<ab::model::Object>(currentModuleItem->getObject()).m_interfaces.size();
+            for (std::size_t j = 0; j < std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.size();
                  j++)
             {
-                QString currentIface = std::get<ab::model::Object>(currentModuleItem->getObject()).m_interfaces.at(j);
+                QString currentIface = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.at(j);
                 std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
                 std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
-                    std::get<ab::model::Object>(currentModuleItem->getObject()).m_applications.push_back(app);
+                    std::get<ab::model::Object>(*currentModuleItem->getObject()).m_applications.push_back(app);
                 });
             }
         }

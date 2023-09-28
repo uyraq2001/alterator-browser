@@ -11,6 +11,7 @@ void Object::setLocale(QString locale)
     {
         m_displayName = *nameIt;
     }
+    test += 1;
 }
 } // namespace model
 } // namespace ab
