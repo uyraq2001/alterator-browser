@@ -27,11 +27,6 @@ private:
 
     std::vector<QString> parseValuesFromKey(DesktopFileParser::Section &section, QString key, QString delimiter);
 
-    ObjectBuilder(const ObjectBuilder &) = delete;
-    ObjectBuilder(ObjectBuilder &&)      = delete;
-    ObjectBuilder &operator=(const ObjectBuilder &) = delete;
-    ObjectBuilder &operator=(ObjectBuilder &&) = delete;
-
 private:
     DesktopFileParser *m_infoParser = nullptr;
 };

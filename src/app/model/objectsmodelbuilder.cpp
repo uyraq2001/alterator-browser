@@ -45,17 +45,17 @@ ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
                                          QString getListOfFilesMethod,
                                          QString getDesktopFileMethod)
     : m_dbusConnection(QDBusConnection::systemBus())
-    , m_dbusServiceName(serviceName)
-    , m_dbusPath(dbusPath)
-    , m_managerInterface(managerIface)
-    , m_dbusFindInterface(findInterface)
-    , m_getObjectMethodName(getObjectMethodName)
-    , m_infoMethodName(infoMethodName)
-    , m_categoryInterfaceName(categoryInterfaceName)
-    , m_categoryMethodName(categoryMethodName)
-    , m_interface(interfaceName)
-    , m_getFilesMethodName(getListOfFilesMethod)
-    , m_getDesktopFileMethodName(getDesktopFileMethod)
+    , m_dbusServiceName(std::move(serviceName))
+    , m_dbusPath(std::move(dbusPath))
+    , m_managerInterface(std::move(managerIface))
+    , m_dbusFindInterface(std::move(findInterface))
+    , m_getObjectMethodName(std::move(getObjectMethodName))
+    , m_infoMethodName(std::move(infoMethodName))
+    , m_categoryInterfaceName(std::move(categoryInterfaceName))
+    , m_categoryMethodName(std::move(categoryMethodName))
+    , m_interface(std::move(interfaceName))
+    , m_getFilesMethodName(std::move(getListOfFilesMethod))
+    , m_getDesktopFileMethodName(std::move(getDesktopFileMethod))
 {}
 
 std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
@@ -137,13 +137,12 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
             mergeObjectWithApp(currentModuleItem, appModel);
         }
 
-        if (!std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.empty())
+        auto interfaces = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces;
+        if (!interfaces.empty())
         {
-            for (std::size_t j = 0;
-                 j < std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.size();
-                 j++)
+            for (std::size_t j = 0; j < interfaces.size(); j++)
             {
-                QString currentIface = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.at(j);
+                QString currentIface                 = interfaces.at(j);
                 std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
                 std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
@@ -294,6 +293,7 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
     if (!iface->isValid())
     {
         qWarning() << "Can not connect to " + CATEGORY_INTERFACE_NAME_FOR_ACOBJECT + " interface";
+        return newCategoryItem;
     }
     QDBusReply<QByteArray> reply = iface->call(CATEGORY_METHOD_NAME_FOR_ACOBJECT, categoryName);
 

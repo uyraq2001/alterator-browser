@@ -78,11 +78,10 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
     }
     else
     {
-        if (std::get<ab::model::Object>(*moduleItem->m_object).m_applications.size() == 1)
+        auto apps = std::get<ab::model::Object>(*moduleItem->m_object).m_applications;
+        if (apps.size() == 1)
         {
-            auto app = std::get<ab::model::Object>(*moduleItem->m_object).m_applications[0];
-            onInterfaceClicked(app);
-            return;
+            onInterfaceClicked(apps[0]);
         }
     }
 }

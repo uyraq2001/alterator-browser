@@ -17,7 +17,7 @@ public:
     QString m_displayCategory{};
     QString m_type{};
     QString m_categoryId{};
-    bool m_terminal{};
+    bool m_terminal = false;
     QString m_icon{};
     QString m_x_Alterator_URI{};
     QString m_x_Alterator_Weight{};
@@ -29,7 +29,7 @@ public:
 
     QMap<QString, QString> m_nameLocaleStorage{};
 
-    bool m_isLegacy{};
+    bool m_isLegacy = false;
 };
 } // namespace model
 } // namespace ab

@@ -1,5 +1,5 @@
 #include "objectbuilder.h"
-#include "categorybuilder.h"
+#include "desktopfileparser.h"
 
 #include <QDBusReply>
 #include <QDebug>

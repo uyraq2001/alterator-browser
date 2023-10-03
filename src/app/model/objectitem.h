@@ -27,7 +27,7 @@ public:
     ObjectItem(ObjectItem &&) = delete;
     ObjectItem &operator=(const ObjectItem &) = delete;
     ObjectItem &operator=(ObjectItem &&) = delete;
-    ~ObjectItem()                        = default;
+    ~ObjectItem() override               = default;
 
     int type() const override;
 
