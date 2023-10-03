@@ -23,11 +23,15 @@ public:
 
 public:
     ObjectItem();
-    ~ObjectItem() = default;
+    ObjectItem(ObjectItem &)  = delete;
+    ObjectItem(ObjectItem &&) = delete;
+    ObjectItem &operator=(const ObjectItem &) = delete;
+    ObjectItem &operator=(ObjectItem &&) = delete;
+    ~ObjectItem()                        = default;
 
     int type() const override;
 
-    std::variant<Object, Category>* getObject();
+    std::variant<Object, Category> *getObject();
 
 public:
     ItemType m_itemType;

@@ -33,7 +33,7 @@ private:
     ObjectBuilder &operator=(ObjectBuilder &&) = delete;
 
 private:
-    DesktopFileParser *m_infoParser;
+    DesktopFileParser *m_infoParser = nullptr;
 };
 } // namespace model
 } // namespace ab

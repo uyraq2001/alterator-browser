@@ -108,7 +108,7 @@ void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplica
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = rootItem->child(i);
-        ObjectItem *currentCategoryItem    = dynamic_cast<ObjectItem *>(currentStandardItem);
+        auto currentCategoryItem           = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
             qWarning() << "Can't cast category item to ObjectItem to merge models!";
@@ -125,7 +125,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
     for (int i = 0; i < item->rowCount(); ++i)
     {
         QStandardItem *currentStandardItem = item->child(i);
-        ObjectItem *currentModuleItem      = dynamic_cast<ObjectItem *>(currentStandardItem);
+        auto currentModuleItem             = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
             qWarning() << "Can't cast item to ObjectItem to merge application object!";
@@ -139,7 +139,8 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
 
         if (!std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.empty())
         {
-            for (std::size_t j = 0; j < std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.size();
+            for (std::size_t j = 0;
+                 j < std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.size();
                  j++)
             {
                 QString currentIface = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces.at(j);
@@ -298,7 +299,7 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
 
     if (!reply.isValid())
     {
-        qWarning() << "Can't reply with category name for the category: " << categoryName;
+        qWarning() << "Can't reply with category name for the category:" << categoryName;
         return newCategoryItem;
     }
 

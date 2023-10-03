@@ -41,7 +41,7 @@ void Model::translateItem(QStandardItem *item, QString locale)
             translateItem(currentItem, locale);
         }
 
-        std::visit(Overload{[locale](auto &&obj) {obj.setLocale(locale); obj.test += 1;}}, *currentItem->getObject()); //?
+        std::visit(Overload{[locale](auto &&obj) { obj.setLocale(locale); }}, *currentItem->getObject()); //?
     }
 }
 } // namespace model
