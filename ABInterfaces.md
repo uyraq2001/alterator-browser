@@ -1,10 +1,10 @@
-# Добавление модулей AltCenter
+# Добавление модулей Alterator Browser
 
-Для корректной работы AltCenter необходимы пакеты `alterator-manager` и `alterator-module-executor`.
+Для корректной работы Alterator Browser необходимы пакеты `alterator-manager` и `alterator-module-executor`.
 
-## Интерфейс добавления модулей
+## Интерфейс `ru.basealt.alterator.object` для добавления модулей
 
-Чтобы быть отобажённым в AltCenter модуль должен быть зарегистрирован на D-Bus, как один из подобъектов объекта `ru.basealt.alterator`, путём добавления .backend-файла в директорию `/usr/share/alterator/backends`, и реализовывать интерфейс `ru.basealt.alterator.object` с методом `info`. Ниже можно увидеть пример такого .backend-файла:
+Чтобы быть отобажённым в Alterator Browser модуль должен быть зарегистрирован на D-Bus, как один из подобъектов объекта `ru.basealt.alterator`, путём добавления .backend-файла в директорию `/usr/share/alterator/backends`, и реализовывать интерфейс `ru.basealt.alterator.object` с методом `info`. Ниже можно увидеть пример такого .backend-файла:
 
 ```
 [Manager]
@@ -34,7 +34,9 @@ Name[ru]=Инструмент диагностики
 Name[ru_RU]=adt-app.desktop
 ```
 
-А метод `category` возвращает данные о категории к которой относится модуль в формате `X-Alterator Entry` или .directory-файла:
+## Интерфейс `ru.basealt.alterator.category` для описания категорий модулей
+
+Данные о категории можно получить с помощью интерфейса `ru.basealt.alterator.category`, метод `info` которого возвращает данные о категории по её названию (например `X-Alterator-System`) в формате `X-Alterator Entry` или .directory-файла:
 
 ```
 [Desktop Entry]
@@ -115,7 +117,7 @@ Name[ru]=об1
 
 ## Интерфейс добавления интерфейсов модулей
 
-Для того чтобы приложение реализующее интерфейс модуля альтератора было обнаружено AltCenter\`ом его .desktop-файл расположенный в `/usr/share/applications`, должен содержать секцию `[X-Alterator]` и имя реализуемого данным приложением интерфейса вычитывается из свойства `interface`.
+Для того чтобы приложение реализующее интерфейс модуля альтератора было обнаружено Alterator Browser\`ом его .desktop-файл расположенный в `/usr/share/applications`, должен содержать секцию `[X-Alterator]` и имя реализуемого данным приложением интерфейса вычитывается из свойства `interface`.
 
 ```
 [X-Alterator]
