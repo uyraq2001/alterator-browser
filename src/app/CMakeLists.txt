@@ -1,4 +1,4 @@
-macro(add_altcenter_executable name)
+macro(add_alterator_browser_executable name)
   # add executable
   add_executable(${name} ${ARGN})
 
@@ -14,7 +14,7 @@ macro(add_altcenter_executable name)
         ${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:${name}>
       COMMENT "Copy ${name} to ${CMAKE_BINARY_DIR}/bin")
 
-endmacro(add_altcenter_executable)
+endmacro(add_alterator_browser_executable)
 
 find_package(Qt5 COMPONENTS Widgets Core Gui DBus Xml LinguistTools REQUIRED)
 
@@ -104,6 +104,6 @@ add_translation_resource(RESOURCES_SRC "alterator-browser" ${QM_FILES})
 
 qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 
-add_altcenter_executable(altcenter ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
+add_alterator_browser_executable(alterator-browser ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
 
-target_link_libraries(altcenter altcenter-core Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)
+target_link_libraries(alterator-browser alterator-browser-core Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)

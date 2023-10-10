@@ -1,4 +1,4 @@
-name: altcenter-ci
+name: alterator-browser-ci
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  altcenter-build-container:
+  alterator-browser-build-container:
     uses: ./.github/workflows/build-container.yml
     secrets: inherit
     strategy:
@@ -24,9 +24,9 @@ jobs:
       distr: ${{ matrix.os.distr }}
       architecture: ${{ matrix.architecture }}
 
-  altcenter-build:
+  alterator-browser-browser-build:
     uses: ./.github/workflows/build.yml
-    needs: [ altcenter-build-container ]
+    needs: [ alterator-browser-build-container ]
     secrets: inherit
     strategy:
       matrix:
