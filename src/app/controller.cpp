@@ -63,26 +63,37 @@ Controller::~Controller()
 
 void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
-    if (std::get<ab::model::Object>(*(moduleItem->m_object)).m_isLegacy)
+    try
     {
-        QProcess *proc = new QProcess();
-
-        connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
-            qCritical() << proc->readAllStandardError();
-        });
-        connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() { qInfo() << proc->readAllStandardOutput(); });
-        connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) { delete (proc); });
-
-        proc->start("alterator-standalone",
-                    QStringList() << "-l" << std::get<ab::model::Object>(*moduleItem->m_object).m_icon);
-    }
-    else
-    {
-        auto apps = std::get<ab::model::Object>(*moduleItem->m_object).m_applications;
-        if (apps.size() == 1)
+        if (std::get<ab::model::Object>(*(moduleItem->m_object)).m_isLegacy)
         {
-            onInterfaceClicked(apps[0]);
+            QProcess *proc = new QProcess();
+
+            connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
+                qCritical() << proc->readAllStandardError();
+            });
+            connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() {
+                qInfo() << proc->readAllStandardOutput();
+            });
+            connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) {
+                delete (proc);
+            });
+
+            proc->start("alterator-standalone",
+                        QStringList() << "-l" << std::get<ab::model::Object>(*moduleItem->m_object).m_icon);
         }
+        else
+        {
+            auto apps = std::get<ab::model::Object>(*moduleItem->m_object).m_applications;
+            if (apps.size() == 1)
+            {
+                onInterfaceClicked(apps[0]);
+            }
+        }
+    }
+    catch (const std::bad_variant_access &e)
+    {
+        qCritical() << "ERROR: the item is not of Object type";
     }
 }
 

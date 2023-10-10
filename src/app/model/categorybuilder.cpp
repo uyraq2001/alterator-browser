@@ -29,7 +29,7 @@ std::unique_ptr<Category> ObjectCategoryBuilder::buildObjectCategory()
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find" << DESKTOP_ENTRY_SECTION_NAME << "section! Skipping...";
-        return {};
+        return nullptr;
     }
 
     if (!buildNames(*desktopSection, result.get()))

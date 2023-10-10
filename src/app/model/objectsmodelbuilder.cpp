@@ -137,18 +137,25 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
             mergeObjectWithApp(currentModuleItem, appModel);
         }
 
-        auto interfaces = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces;
-        if (!interfaces.empty())
+        try
         {
-            for (std::size_t j = 0; j < interfaces.size(); j++)
+            auto interfaces = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces;
+            if (!interfaces.empty())
             {
-                QString currentIface                 = interfaces.at(j);
-                std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
+                for (std::size_t j = 0; j < interfaces.size(); j++)
+                {
+                    QString currentIface                 = interfaces.at(j);
+                    std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
-                std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
-                    std::get<ab::model::Object>(*currentModuleItem->getObject()).m_applications.push_back(app);
-                });
+                    std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
+                        std::get<ab::model::Object>(*currentModuleItem->getObject()).m_applications.push_back(app);
+                    });
+                }
             }
+        }
+        catch (const std::bad_variant_access &e)
+        {
+            qCritical() << "ERROR: the item is not of Object type";
         }
     }
 }
@@ -313,6 +320,7 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
 
     if (!category)
     {
+        category                                  = std::make_unique<Category>();
         category->m_id                            = "Unknown";
         category->m_name                          = "Unknown";
         category->m_comment                       = "Unable to get category";
