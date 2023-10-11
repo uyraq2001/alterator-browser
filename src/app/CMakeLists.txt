@@ -20,6 +20,8 @@ find_package(Qt5 COMPONENTS Widgets Core Gui DBus Xml LinguistTools REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)

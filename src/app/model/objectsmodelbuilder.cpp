@@ -5,7 +5,10 @@
 #include "objectbuilder.h"
 #include "objectitem.h"
 
+#include <chrono>
+#include <future>
 #include <memory>
+#include <thread>
 #include <utility>
 
 #include <QDBusInterface>
@@ -180,27 +183,11 @@ std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseObjects(QStringLi
         return acObjects;
     }
 
-    for (QString &currentPath : pathsList)
+    QStringList objectsInfo = getObjectsInfo(pathsList);
+
+    for (const QString &currentInfo : objectsInfo)
     {
-        QDBusInterface iface(m_dbusServiceName, currentPath, m_dbusFindInterface, m_dbusConnection);
-
-        if (!iface.isValid())
-        {
-            qWarning() << "Warning: object: " + currentPath + " doesn't provide interface " + m_dbusFindInterface;
-
-            continue;
-        }
-
-        QString currentObjectInfo = getObjectInfo(iface);
-
-        if (currentObjectInfo.isEmpty())
-        {
-            qWarning() << "Warning: Can't get info of object: " + currentPath + " in interface: " + m_dbusFindInterface;
-
-            continue;
-        }
-
-        DesktopFileParser infoParsingResult(currentObjectInfo);
+        DesktopFileParser infoParsingResult(currentInfo);
 
         ObjectBuilder objectBuilder(&infoParsingResult, &categoryInfoIface, m_categoryMethodName);
 
@@ -213,20 +200,6 @@ std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseObjects(QStringLi
     }
 
     return acObjects;
-}
-
-QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
-{
-    QDBusReply<QByteArray> reply = iface.call(m_infoMethodName);
-
-    if (!reply.isValid())
-    {
-        return QString();
-    }
-
-    QString result = QString(reply.value());
-
-    return result;
 }
 
 std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<std::unique_ptr<Object>> objects)
@@ -299,6 +272,71 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString, Obj
     newObjectCategory->m_xAlteratorCategory = nameTranslations->m_xAlteratorCategory;
 
     return newCategoryItem;
+}
+
+QStringList ObjectsModelBuilder::getObjectsInfo(QStringList &objectsPaths)
+{
+    std::vector<std::shared_future<QString>> results;
+
+    for (const QString &currentPath : objectsPaths)
+    {
+        results.push_back(
+            std::async(
+                std::launch::async,
+                [this](const QString path, const QString methodName) {
+                    QDBusInterface iface(m_dbusServiceName, path, m_dbusFindInterface, m_dbusConnection);
+
+                    if (!iface.isValid())
+                    {
+                        qWarning() << "Warning: object: " + path + " doesn't provide interface " + m_dbusFindInterface;
+
+                        return QString();
+                    }
+
+                    QDBusReply<QByteArray> reply = iface.call(methodName);
+
+                    if (!reply.isValid())
+                    {
+                        qWarning() << "Warning: object: " + path + " info reply is not valid " + m_dbusFindInterface;
+
+                        return QString();
+                    }
+                    if (reply.value().isEmpty())
+                    {
+                        qWarning() << "Warning: Can't get info of object: " + path
+                                          + " in interface: " + m_dbusFindInterface;
+                    }
+
+                    return QString(reply.value());
+                },
+                currentPath,
+                m_infoMethodName)
+                .share());
+    }
+
+    //Waiting for all threads
+    bool readyFlag = true;
+    do
+    {
+        readyFlag = true;
+        for (auto &currentResult : results)
+        {
+            if (currentResult.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
+                readyFlag = false;
+        }
+        std::this_thread::yield();
+    } while (!readyFlag);
+
+    QStringList result;
+    for (auto &currentResult : results)
+    {
+        if (!currentResult.get().isEmpty())
+        {
+            result.append(currentResult.get());
+        }
+    }
+
+    return result;
 }
 } // namespace model
 } // namespace ab
