@@ -3,6 +3,7 @@
 #include "localapplicationmodel.h"
 #include "model/model.h"
 #include "objectbuilder.h"
+#include "objectinfogetter.h"
 #include "objectitem.h"
 
 #include <chrono>
@@ -183,7 +184,11 @@ std::vector<std::unique_ptr<Object>> ObjectsModelBuilder::parseObjects(QStringLi
         return acObjects;
     }
 
-    QStringList objectsInfo = getObjectsInfo(pathsList);
+    //QStringList objectsInfo = getObjectsInfo(pathsList);
+
+    ObjectInfoGetter getter(m_dbusServiceName, pathsList, m_dbusFindInterface, m_infoMethodName);
+
+    QStringList objectsInfo = getter.getResults();
 
     for (const QString &currentInfo : objectsInfo)
     {

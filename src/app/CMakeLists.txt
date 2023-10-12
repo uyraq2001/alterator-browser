@@ -43,6 +43,7 @@ set(HEADERS
     model/objectsmodelbuilder.h
     model/desktopfileparser.h
     model/objectbuilder.h
+    model/objectinfogetter.h
 
     model/localapplication.h
     model/localapplicationbuilder.h
@@ -70,6 +71,7 @@ set(SOURCES
     model/objectsmodelbuilder.cpp
     model/desktopfileparser.cpp
     model/objectbuilder.cpp
+    model/objectinfogetter.cpp
 
     model/localapplication.cpp
     model/localapplicationbuilder.cpp
