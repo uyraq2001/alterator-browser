@@ -3,6 +3,7 @@
 
 #include "model/model.h"
 #include "model/objectitem.h"
+#include "pushbutton.h"
 
 #include <utility>
 

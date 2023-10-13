@@ -1,7 +1,5 @@
 #include "objectbuilder.h"
-#include "objectcategorybuilder.h"
-
-#include <utility>
+#include "desktopfileparser.h"
 
 #include <QDBusReply>
 #include <QDebug>
@@ -23,10 +21,8 @@ const QString X_ALTERATOR_HELP_NAME          = "x-alterator-help";
 const QString X_ALTERATOR_UI_NAME            = "x-alterator-ui";
 const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
 
-ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser, QDBusInterface *categoryIface, QString getCategoryMethodName)
+ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser)
     : m_infoParser(infoParser)
-    , m_dbusInterface(categoryIface)
-    , m_dbusMethodName(std::move(getCategoryMethodName))
 {}
 
 std::unique_ptr<Object> ObjectBuilder::buildObject()
@@ -45,7 +41,7 @@ std::unique_ptr<Object> ObjectBuilder::buildObject()
 
     QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
 
-    setCategory(currentObjectCategoryName, m_dbusInterface, m_dbusMethodName, newObject.get());
+    newObject->m_categoryId = currentObjectCategoryName;
 
     if (!buildNames(*desktopSection, newObject.get()))
     {
@@ -158,56 +154,6 @@ bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *obje
     }
 
     return true;
-}
-
-void ObjectBuilder::setCategory(QString categoryName, QDBusInterface *iface, QString dbusMethod, Object *acObject)
-{
-    if (categoryName.isEmpty())
-    {
-        qWarning() << "Can't find category name for the object: " << acObject->m_id << " using misc";
-        categoryName = "Miscellaneous";
-    }
-    QDBusReply<QByteArray> reply = iface->call(dbusMethod, categoryName);
-
-    if (!reply.isValid())
-    {
-        qWarning() << "Can't reply with category name for the object: " << acObject->m_id;
-
-        setDefaultCategory(acObject);
-
-        return;
-    }
-
-    QString categoryData(reply.value());
-
-    DesktopFileParser categoryParser(categoryData);
-
-    ObjectCategoryBuilder categoryBuilder(&categoryParser);
-
-    std::unique_ptr<ObjectCategory> category = categoryBuilder.buildObjectCategory();
-
-    if (!category)
-    {
-        return;
-    }
-
-    acObject->m_categoryId = category->m_id;
-    acObject->m_displayCategory = category->m_id;
-    acObject->m_categoryObject = std::move(category);
-}
-
-void ObjectBuilder::setDefaultCategory(Object *)
-{
-    auto defaultCategory = std::make_unique<ObjectCategory>();
-
-    defaultCategory->m_id = "Unknown";
-    defaultCategory->m_name = "Unknown";
-    defaultCategory->m_comment = "Unable to get category";
-    defaultCategory->m_icon = "groups/system";
-    defaultCategory->m_type = "Directory";
-    defaultCategory->m_xAlteratorCategory = "X-Alterator-Unknown";
-    defaultCategory->m_nameLocaleStorage["ru_RU"] = "Без категории";
-    defaultCategory->m_commentLocaleStorage["ru_RU"] = "Ошибка при получении категории";
 }
 
 QString ObjectBuilder::getDefaultValue(QList<IniFileKey> iniFileKey)

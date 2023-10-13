@@ -63,21 +63,37 @@ Controller::~Controller()
 
 void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
-    if (moduleItem->m_object->m_isLegacy)
+    try
     {
-        QProcess *proc = new QProcess();
+        if (std::get<ab::model::Object>(*(moduleItem->m_object)).m_isLegacy)
+        {
+            QProcess *proc = new QProcess();
 
-        connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
-            qCritical() << proc->readAllStandardError();
-        });
-        connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() { qInfo() << proc->readAllStandardOutput(); });
-        connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) { delete (proc); });
+            connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
+                qCritical() << proc->readAllStandardError();
+            });
+            connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() {
+                qInfo() << proc->readAllStandardOutput();
+            });
+            connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) {
+                delete (proc);
+            });
 
-        proc->start("alterator-standalone", QStringList() << "-l" << moduleItem->m_object.get()->m_icon);
+            proc->start("alterator-standalone",
+                        QStringList() << "-l" << std::get<ab::model::Object>(*moduleItem->m_object).m_icon);
+        }
+        else
+        {
+            auto apps = std::get<ab::model::Object>(*moduleItem->m_object).m_applications;
+            if (apps.size() == 1)
+            {
+                onInterfaceClicked(apps[0]);
+            }
+        }
     }
-    else
+    catch (const std::bad_variant_access &e)
     {
-        d->window->showModuleMenu(moduleItem);
+        qCritical() << "ERROR: the item is not of Object type";
     }
 }
 
@@ -89,14 +105,6 @@ void Controller::onInterfaceClicked(model::LocalApplication *app)
 
 void Controller::onDBusStructureUpdate(QString, QString, QString)
 {
-    model::LocalApllicationModelBuilder appModelBuilder(DBUS_SERVICE_NAME,
-                                                        DBUS_LOCAL_APP_PATH,
-                                                        DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                        DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                        DBUS_LOCAL_APP_GET_DESKTOP_FILE);
-
-    std::unique_ptr<model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
-
     model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
                                                   DBUS_PATH,
                                                   DBUS_MANAGER_INTERFACE_NAME,
@@ -104,9 +112,12 @@ void Controller::onDBusStructureUpdate(QString, QString, QString)
                                                   GET_OBJECTS_METHOD_NAME,
                                                   INFO_METHOD_NAME_FOR_ACOBJECT,
                                                   CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
-                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT);
+                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT,
+                                                  DBUS_LOCAL_APP_INTERFACE_NAME,
+                                                  DBUS_LOCAL_APP_GET_LIST_OF_FILES,
+                                                  DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel(appModel.get());
+    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel();
 
     d->model = std::move(objectModel);
 

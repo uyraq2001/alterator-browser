@@ -23,30 +23,37 @@ public:
                         QString getObjectMethodName,
                         QString infoMethodName,
                         QString categoryInterfaceName,
-                        QString categoryMethodName);
+                        QString categoryMethodName,
+                        QString interfaceName,
+                        QString getListOfFilesMethod,
+                        QString getDesktopFileMethod);
 
-    std::unique_ptr<Model> buildModel(LocalApplicationModel *appModel);
+    std::unique_ptr<Model> buildModel();
 
 private:
     void mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel);
     void mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel);
 
     QStringList getListOfObjects();
-    std::vector<std::unique_ptr<Object>> parseObjects(QStringList &pathsList);
+    std::vector<std::unique_ptr<std::variant<Object, Category>>> parseObjects(QStringList &pathsList);
     QString getObjectInfo(QDBusInterface &iface);
-    std::unique_ptr<Model> buildModelFromObjects(std::vector<std::unique_ptr<Object>> objects);
-    std::unique_ptr<ObjectItem> createCategoryItem(QString, ObjectCategory *nameTranslations);
+    std::unique_ptr<Model> buildModelFromObjects(std::vector<std::unique_ptr<std::variant<Object, Category>>> objects);
+    std::unique_ptr<ObjectItem> createCategoryItem(QString categoryName);
 
 private:
-    QDBusConnection m_dbusConnection;
-    QString m_dbusServiceName;
-    QString m_dbusPath;
-    QString m_managerInterface;
-    QString m_dbusFindInterface;
-    QString m_getObjectMethodName;
-    QString m_infoMethodName;
-    QString m_categoryInterfaceName;
-    QString m_categoryMethodName;
+    QDBusConnection m_dbusConnection = QDBusConnection::systemBus();
+    QString m_dbusServiceName{};
+    QString m_dbusPath{};
+    QString m_managerInterface{};
+    QString m_dbusFindInterface{};
+    QString m_getObjectMethodName{};
+    QString m_infoMethodName{};
+    QString m_categoryInterfaceName{};
+    QString m_categoryMethodName{};
+
+    QString m_interface{};
+    QString m_getFilesMethodName{};
+    QString m_getDesktopFileMethodName{};
 };
 } // namespace model
 } // namespace ab

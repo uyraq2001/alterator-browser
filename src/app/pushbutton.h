@@ -20,9 +20,9 @@ public:
 
     void setItem(model::ObjectItem *item);
     model::ObjectItem *getItem();
-    void showMenu();
 
-public:
+    void showMenu(std::unique_ptr<QMenu> menu);
+
     PushButton(const PushButton &) = delete;
     PushButton(PushButton &&)      = delete;
     PushButton &operator=(const PushButton &) = delete;
@@ -30,7 +30,7 @@ public:
 
 private:
     model::ObjectItem *item = nullptr;
-    MainWindow *window = nullptr;
+    MainWindow *window      = nullptr;
 
     void onClicked(bool b);
 

@@ -33,9 +33,9 @@ set(HEADERS
     mainwindowsettings.h
 
     model/object.h
+    model/category.h
     model/model.h
-    model/objectcategory.h
-    model/objectcategorybuilder.h
+    model/categorybuilder.h
     model/localapplication.h
     model/objectitem.h
     model/objectsmodelbuilder.h
@@ -60,9 +60,9 @@ set(SOURCES
     mainwindowsettings.cpp
 
     model/object.cpp
+    model/category.cpp
     model/model.cpp
-    model/objectcategory.cpp
-    model/objectcategorybuilder.cpp
+    model/categorybuilder.cpp
     model/localapplication.cpp
     model/objectitem.cpp
     model/objectsmodelbuilder.cpp

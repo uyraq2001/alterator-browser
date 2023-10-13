@@ -105,9 +105,9 @@ void MainWindow::onModuleClicked(PushButton *button)
     d->controller->moduleClicked(button->getItem());
 }
 
-void MainWindow::showModuleMenu(model::ObjectItem *item)
+void MainWindow::showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu)
 {
-    emit showMenu(item);
+    button->showMenu(std::move(menu));
 }
 
 void MainWindow::onInterfaceClicked(model::LocalApplication *app)

@@ -1,4 +1,4 @@
-#include "objectcategorybuilder.h"
+#include "categorybuilder.h"
 
 #include <QDebug>
 #include <QList>
@@ -19,9 +19,9 @@ ObjectCategoryBuilder::ObjectCategoryBuilder(DesktopFileParser *categoryParser)
     : m_categoryParser(categoryParser)
 {}
 
-std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
+std::unique_ptr<Category> ObjectCategoryBuilder::buildObjectCategory()
 {
-    auto result = std::make_unique<ObjectCategory>();
+    auto result = std::make_unique<Category>();
 
     auto sections = m_categoryParser->getSections();
 
@@ -29,7 +29,7 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find" << DESKTOP_ENTRY_SECTION_NAME << "section! Skipping...";
-        return {};
+        return nullptr;
     }
 
     if (!buildNames(*desktopSection, result.get()))
@@ -69,7 +69,7 @@ std::unique_ptr<ObjectCategory> ObjectCategoryBuilder::buildObjectCategory()
     return result;
 }
 
-bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
+bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Category *categoryObject)
 {
     auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
     if (nameIt == section.end())
@@ -97,7 +97,7 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Obje
     return true;
 }
 
-bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, ObjectCategory *categoryObject)
+bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, Category *categoryObject)
 {
     auto commentIt = section.find(CATEGORY_COMMENT_KEY_NAME);
     if (commentIt == section.end())

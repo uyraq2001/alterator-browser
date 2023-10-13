@@ -1,7 +1,5 @@
 #include "pushbutton.h"
 #include "mainwindow.h"
-#include "model/localapplication.h"
-#include "model/object.h"
 
 #include <QAction>
 #include <QDebug>
@@ -15,15 +13,36 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
 {
     setParent(parent);
     connect(this, &PushButton::clicked, this->window, [this]() { this->window->onModuleClicked(this); });
-    connect(this->window, &MainWindow::showMenu, this, &PushButton::showMenu);
 }
 
 void PushButton::setItem(model::ObjectItem *newItem)
 {
-    this->item = newItem;
+    try
+    {
+        this->item        = newItem;
+        model::Object obj = std::get<ab::model::Object>(*newItem->getObject());
 
-    this->setText(item->getObject()->m_displayName);
-    this->setMinimumWidth(this->sizeHint().width());
+        this->setText(obj.m_displayName);
+        this->setMinimumWidth(this->sizeHint().width());
+
+        if (obj.m_applications.size() > 1)
+        {
+            auto menu = std::make_unique<QMenu>(this);
+            for (const auto &app : obj.m_applications)
+            {
+                auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
+                connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() {
+                    window->onInterfaceClicked(app);
+                });
+                menu->addAction(interfaceAction.release());
+            }
+            setMenu(menu.release());
+        }
+    }
+    catch (const std::bad_variant_access &e)
+    {
+        qCritical() << "ERROR: the item is not of Object type";
+    }
 }
 
 model::ObjectItem *PushButton::getItem()
@@ -31,22 +50,8 @@ model::ObjectItem *PushButton::getItem()
     return item;
 }
 
-void PushButton::showMenu()
+void PushButton::showMenu(std::unique_ptr<QMenu> menu)
 {
-    if (item->m_object->m_applications.size() == 1)
-    {
-        auto app = item->m_object->m_applications[0];
-        window->onInterfaceClicked(app);
-        return;
-    }
-
-    auto menu = std::make_unique<QMenu>(this);
-    for (const auto &app : item->m_object->m_applications)
-    {
-        auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
-        connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() { window->onInterfaceClicked(app); });
-        menu->addAction(interfaceAction.release());
-    }
     this->setMenu(menu.release());
     QPushButton::showMenu();
 }

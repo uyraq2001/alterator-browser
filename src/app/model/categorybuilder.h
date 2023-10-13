@@ -1,8 +1,8 @@
 #ifndef AB_OBJECT_CATEGORY_BUILDER_H
 #define AB_OBJECT_CATEGORY_BUILDER_H
 
+#include "category.h"
 #include "desktopfileparser.h"
-#include "objectcategory.h"
 
 #include <memory>
 
@@ -16,7 +16,7 @@ public:
     ObjectCategoryBuilder(DesktopFileParser *categoryParser);
     ~ObjectCategoryBuilder() = default;
 
-    std::unique_ptr<ObjectCategory> buildObjectCategory();
+    std::unique_ptr<Category> buildObjectCategory();
 
 public:
     ObjectCategoryBuilder(const ObjectCategoryBuilder &) = delete;
@@ -25,8 +25,8 @@ public:
     ObjectCategoryBuilder &operator=(ObjectCategoryBuilder &&) = delete;
 
 private:
-    bool buildNames(DesktopFileParser::Section &section, ObjectCategory *categoryObject);
-    bool buildComments(DesktopFileParser::Section &section, ObjectCategory *categoryObject);
+    bool buildNames(DesktopFileParser::Section &section, Category *categoryObject);
+    bool buildComments(DesktopFileParser::Section &section, Category *categoryObject);
 
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
     QString getValue(DesktopFileParser::Section &section, QString key);

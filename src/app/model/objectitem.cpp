@@ -5,7 +5,7 @@ namespace ab
 namespace model
 {
 ObjectItem::ObjectItem()
-    : m_object(new Object())
+    : m_itemType(ItemType::category)
 {}
 
 int ObjectItem::type() const
@@ -13,7 +13,7 @@ int ObjectItem::type() const
     return static_cast<int>(m_itemType);
 }
 
-Object *ObjectItem::getObject()
+std::variant<Object, Category> *ObjectItem::getObject()
 {
     return m_object.get();
 }

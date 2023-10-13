@@ -1,7 +1,10 @@
 #ifndef AB_OBJECT_ITEM_H
 #define AB_OBJECT_ITEM_H
 
+#include "category.h"
 #include "object.h"
+
+#include <variant>
 
 #include <QStandardItem>
 
@@ -20,20 +23,20 @@ public:
 
 public:
     ObjectItem();
-    ~ObjectItem() override = default;
-
-public:
-    ObjectItem(const ObjectItem &) = delete;
-    ObjectItem(ObjectItem &&)      = delete;
+    ObjectItem(ObjectItem &)  = delete;
+    ObjectItem(ObjectItem &&) = delete;
     ObjectItem &operator=(const ObjectItem &) = delete;
     ObjectItem &operator=(ObjectItem &&) = delete;
+    ~ObjectItem() override               = default;
 
     int type() const override;
-    Object *getObject();
+
+    std::variant<Object, Category> *getObject();
 
 public:
-    ItemType m_itemType = ItemType::category;
-    std::unique_ptr<Object> m_object{nullptr};
+    ItemType m_itemType;
+
+    std::unique_ptr<std::variant<Object, Category>> m_object{nullptr};
 };
 } // namespace model
 } // namespace ab

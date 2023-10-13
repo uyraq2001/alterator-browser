@@ -1,19 +1,17 @@
-#ifndef AB_OBJECT_CATEGORY_H
-#define AB_OBJECT_CATEGORY_H
+#ifndef AB_CATEGORY_H
+#define AB_CATEGORY_H
 
 #include <QMap>
-#include <QObject>
 
 namespace ab
 {
 namespace model
 {
-class ObjectCategory
+class Category
 {
 public:
     void setLocale(QString locale);
 
-public:
     QString m_id{};
     QString m_name{};
     QString m_comment{};
@@ -27,4 +25,4 @@ public:
 } // namespace model
 } // namespace ab
 
-#endif // AB_OBJECT_CATEGORY_H
+#endif // AB_CATEGORY_H

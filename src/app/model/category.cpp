@@ -1,10 +1,10 @@
-#include "objectcategory.h"
+#include "category.h"
 
 namespace ab
 {
 namespace model
 {
-void ObjectCategory::setLocale(QString locale)
+void Category::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);
     if (nameIt != m_nameLocaleStorage.end())
