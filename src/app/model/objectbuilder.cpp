@@ -20,6 +20,14 @@ const QString X_ALTERATOR_WEIGHT_NAME        = "x-alterator-weight";
 const QString X_ALTERATOR_HELP_NAME          = "x-alterator-help";
 const QString X_ALTERATOR_UI_NAME            = "x-alterator-ui";
 const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
+namespace xalterator_entry
+{
+const QString ENTRY_SECTION         = "X-Alterator Entry";
+const QString OBJECTS_LIST_KEY      = "Object";
+const QString OBJECT_SECTION_PREXIX = "X-Alterator Object";
+const QString CATEGORY_KEY          = "CategoryInternalName";
+const QString ICON_KEY              = "Icon";
+} // namespace xalterator_entry
 
 ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser)
     : m_infoParser(infoParser)
@@ -31,96 +39,133 @@ std::unique_ptr<Object> ObjectBuilder::buildObject()
 
     auto sections = m_infoParser->getSections();
 
-    auto desktopSection = sections.find(DESKTOP_ENTRY_SECTION_NAME);
+    auto desktopSection    = sections.find(DESKTOP_ENTRY_SECTION_NAME);
+    auto xalteratorSection = sections.find(xalterator_entry::ENTRY_SECTION);
 
-    if (desktopSection == sections.end())
+    if (xalteratorSection == sections.end() && desktopSection == sections.end())
     {
-        qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
+        qWarning() << "Couldn't find nor" << DESKTOP_ENTRY_SECTION_NAME << "nor" << xalterator_entry::ENTRY_SECTION
+                   << "section for the object! Skipping..";
         return nullptr;
     }
 
-    QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
-
-    newObject->m_categoryId = currentObjectCategoryName;
-
-    if (!buildNames(*desktopSection, newObject.get()))
+    if (xalteratorSection == sections.end())
     {
-        return nullptr;
-    }
+        QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
 
-    QString type = getValue(*desktopSection, TYPE_KEY_NAME);
-    if (type.isEmpty())
-    {
-        qWarning() << "Can't find type for the object: " << newObject->m_id;
-    }
-    newObject->m_type = type;
+        newObject->m_categoryId = currentObjectCategoryName;
 
-    QString icon = getValue(*desktopSection, ICON_KEY_NAME);
-    if (icon.isEmpty())
-    {
-        qWarning() << "Can't find icon for the object: " << newObject->m_id;
-    }
-    newObject->m_icon = icon;
-
-    QString x_Alterator_URI = getValue(*desktopSection, X_ALTERATOR_URI_NAME);
-    if (x_Alterator_URI.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_URI for the object: " << newObject->m_id;
-    }
-    newObject->m_x_Alterator_URI = x_Alterator_URI;
-
-    QString x_Alterator_Weight = getValue(*desktopSection, X_ALTERATOR_WEIGHT_NAME);
-    if (x_Alterator_Weight.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_Weight for the object: " << newObject->m_id;
-    }
-    newObject->m_x_Alterator_Weight = x_Alterator_Weight;
-
-    QString x_Alterator_Help = getValue(*desktopSection, X_ALTERATOR_HELP_NAME);
-    if (x_Alterator_Help.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_Help for the object: " << newObject->m_id;
-    }
-    newObject->m_x_Alterator_Help = x_Alterator_Help;
-
-    QString x_Alterator_UI = getValue(*desktopSection, X_ALTERATOR_UI_NAME);
-    if (x_Alterator_UI.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_UI for the object: " << newObject->m_id;
-    }
-    newObject->m_x_Alterator_UI = x_Alterator_UI;
-
-    QString terminal = getValue(*desktopSection, TERMINAL_KEY_NAME);
-    if (terminal.isEmpty())
-    {
-        qWarning() << "Can't find terminal for the object: " << newObject->m_id;
-    }
-    if (terminal.toLower() == QString("true"))
-    {
-        newObject->m_terminal = true;
-    }
-
-    auto altCenterSection = sections.find(ALT_CENTER_SECTION_NAME);
-
-    if (altCenterSection == sections.end())
-    {
-        qWarning() << "Can't find " << ALT_CENTER_SECTION_NAME << " section for the object! Skipping..";
-    }
-    else
-    {
-        QString interfaces = getValue(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME);
-        if (interfaces.isEmpty())
+        if (!buildNames(*desktopSection, newObject.get()))
         {
-            qWarning() << "Can't find interfaces for the object: " << newObject->m_id;
+            return nullptr;
+        }
+
+        QString type = getValue(*desktopSection, TYPE_KEY_NAME);
+        if (type.isEmpty())
+        {
+            qWarning() << "Can't find type for the object: " << newObject->m_id;
+        }
+        newObject->m_type = type;
+
+        QString icon = getValue(*desktopSection, ICON_KEY_NAME);
+        if (icon.isEmpty())
+        {
+            qWarning() << "Can't find icon for the object: " << newObject->m_id;
+        }
+        newObject->m_icon = icon;
+
+        QString x_Alterator_URI = getValue(*desktopSection, X_ALTERATOR_URI_NAME);
+        if (x_Alterator_URI.isEmpty())
+        {
+            qWarning() << "Can't find x_Alterator_URI for the object: " << newObject->m_id;
+        }
+        newObject->m_x_Alterator_URI = x_Alterator_URI;
+
+        QString x_Alterator_Weight = getValue(*desktopSection, X_ALTERATOR_WEIGHT_NAME);
+        if (x_Alterator_Weight.isEmpty())
+        {
+            qWarning() << "Can't find x_Alterator_Weight for the object: " << newObject->m_id;
+        }
+        newObject->m_x_Alterator_Weight = x_Alterator_Weight;
+
+        QString x_Alterator_Help = getValue(*desktopSection, X_ALTERATOR_HELP_NAME);
+        if (x_Alterator_Help.isEmpty())
+        {
+            qWarning() << "Can't find x_Alterator_Help for the object: " << newObject->m_id;
+        }
+        newObject->m_x_Alterator_Help = x_Alterator_Help;
+
+        QString x_Alterator_UI = getValue(*desktopSection, X_ALTERATOR_UI_NAME);
+        if (x_Alterator_UI.isEmpty())
+        {
+            qWarning() << "Can't find x_Alterator_UI for the object: " << newObject->m_id;
+        }
+        newObject->m_x_Alterator_UI = x_Alterator_UI;
+
+        QString terminal = getValue(*desktopSection, TERMINAL_KEY_NAME);
+        if (terminal.isEmpty())
+        {
+            qWarning() << "Can't find terminal for the object: " << newObject->m_id;
+        }
+        if (terminal.toLower() == QString("true"))
+        {
+            newObject->m_terminal = true;
+        }
+
+        auto altCenterSection = sections.find(ALT_CENTER_SECTION_NAME);
+
+        if (altCenterSection == sections.end())
+        {
+            qWarning() << "Can't find " << ALT_CENTER_SECTION_NAME << " section for the object! Skipping..";
         }
         else
         {
-            newObject->m_interfaces = parseValuesFromKey(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME, ";");
+            QString interfaces = getValue(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME);
+            if (interfaces.isEmpty())
+            {
+                qWarning() << "Can't find interfaces for the object: " << newObject->m_id;
+            }
+            else
+            {
+                newObject->m_interfaces = parseValuesFromKey(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME, ";");
+            }
+        }
+
+        newObject->m_isLegacy = true;
+    }
+    else
+    {
+        using namespace xalterator_entry;
+
+        std::vector<QString> objectNames = getValue(*xalteratorSection, OBJECTS_LIST_KEY).split(";");
+
+        for (auto objectName : objectNames)
+        {
+            QString sectionName = OBJECT_SECTION_PREXIX << objectName;
+            auto currentSection = sections.find(sectionName);
+            if (currentSection == sections.end())
+            {
+                qWarning() << "Couldn't find" << sectionName << "section for the object! Skipping..";
+                continue;
+            }
+
+            QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY);
+            newObject->m_categoryId           = currentObjectCategoryName;
+            if (!buildNames(*desktopSection, newObject.get()))
+            {
+                continue;
+            }
+
+            QString icon = getValue(*desktopSection, ICON_KEY);
+            if (icon.isEmpty())
+            {
+                qWarning() << "Can't find icon for the object: " << newObject->m_id;
+            }
+            newObject->m_icon = icon;
+
+            newObject->m_isLegacy = false;
         }
     }
-
-    newObject->m_isLegacy = true;
-
     return newObject;
 }
 
