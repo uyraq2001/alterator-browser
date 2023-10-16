@@ -15,6 +15,18 @@ namespace model
 class ObjectBuilder : public ObjectBuilderInterface
 {
 public:
+    static const QString DESKTOP_ENTRY_SECTION_NAME;
+    static const QString NAME_KEY_NAME;
+    static const QString CATEGORY_KEY_NAME;
+    static const QString TYPE_KEY_NAME;
+    static const QString TERMINAL_KEY_NAME;
+    static const QString ICON_KEY_NAME;
+    static const QString X_ALTERATOR_URI_NAME;
+    static const QString X_ALTERATOR_WEIGHT_NAME;
+    static const QString X_ALTERATOR_HELP_NAME;
+    static const QString X_ALTERATOR_UI_NAME;
+
+public:
     ~ObjectBuilder() = default;
 
     std::unique_ptr<Object> buildObject(DesktopFileParser *infoParser) override;
