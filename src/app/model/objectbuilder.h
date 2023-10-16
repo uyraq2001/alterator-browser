@@ -3,6 +3,7 @@
 
 #include "desktopfileparser.h"
 #include "object.h"
+#include "objectbuilderinterface.h"
 
 #include <memory>
 #include <QDBusInterface>
@@ -11,12 +12,12 @@ namespace ab
 {
 namespace model
 {
-class ObjectBuilder
+class ObjectBuilder : public ObjectBuilderInterface
 {
 public:
-    ObjectBuilder(DesktopFileParser *infoParser);
+    ~ObjectBuilder() = default;
 
-    std::unique_ptr<Object> buildObject();
+    std::unique_ptr<Object> buildObject(DesktopFileParser *infoParser) override;
 
 private:
     bool buildNames(DesktopFileParser::Section &section, Object *object);
@@ -26,9 +27,6 @@ private:
     QString getValue(DesktopFileParser::Section &section, QString key);
 
     std::vector<QString> parseValuesFromKey(DesktopFileParser::Section &section, QString key, QString delimiter);
-
-private:
-    DesktopFileParser *m_infoParser = nullptr;
 };
 } // namespace model
 } // namespace ab

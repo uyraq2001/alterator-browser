@@ -7,6 +7,7 @@
 #include "model/model.h"
 #include "object.h"
 #include "objectbuilder.h"
+#include "objectbuilderfactory.h"
 #include "objectitem.h"
 
 #include <QDBusConnection>
@@ -213,10 +214,17 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
 
         DesktopFileParser infoParsingResult(currentObjectInfo);
 
-        ObjectBuilder objectBuilder(&infoParsingResult);
+        auto objectBuilder = ObjectBuilderFactory::getBuilder(&infoParsingResult);
+
+        if (!objectBuilder)
+        {
+            qWarning() << "Warning: Bad info format in object: " + currentPath + " in interface: " + m_dbusFindInterface
+                              + " skipping..";
+            continue;
+        }
 
         std::unique_ptr<std::variant<Object, Category>> newObject = std::make_unique<std::variant<Object, Category>>(
-            *(objectBuilder.buildObject()));
+            std::variant<Object, Category>(*(objectBuilder->buildObject(&infoParsingResult).release())));
 
         if (newObject)
         {

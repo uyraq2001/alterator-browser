@@ -21,15 +21,11 @@ const QString X_ALTERATOR_HELP_NAME          = "x-alterator-help";
 const QString X_ALTERATOR_UI_NAME            = "x-alterator-ui";
 const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
 
-ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser)
-    : m_infoParser(infoParser)
-{}
-
-std::unique_ptr<Object> ObjectBuilder::buildObject()
+std::unique_ptr<Object> ObjectBuilder::buildObject(DesktopFileParser *infoParser)
 {
     std::unique_ptr<Object> newObject{new Object()};
 
-    auto sections = m_infoParser->getSections();
+    auto sections = infoParser->getSections();
 
     auto desktopSection = sections.find(DESKTOP_ENTRY_SECTION_NAME);
 
