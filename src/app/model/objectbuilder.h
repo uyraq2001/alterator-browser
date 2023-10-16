@@ -18,9 +18,9 @@ public:
 
     std::unique_ptr<Object> buildObject();
 
+private:
     bool buildNames(DesktopFileParser::Section &section, Object *object);
 
-private:
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
 
     QString getValue(DesktopFileParser::Section &section, QString key);
