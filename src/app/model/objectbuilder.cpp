@@ -4,32 +4,26 @@
 #include <QDBusReply>
 #include <QDebug>
 
+const QString ab::model::ObjectBuilder::DESKTOP_ENTRY_SECTION_NAME = "Desktop Entry";
+const QString ab::model::ObjectBuilder::NAME_KEY_NAME              = "name";
+const QString ab::model::ObjectBuilder::CATEGORY_KEY_NAME          = "categories";
+const QString ab::model::ObjectBuilder::TYPE_KEY_NAME              = "type";
+const QString ab::model::ObjectBuilder::TERMINAL_KEY_NAME          = "terminal";
+const QString ab::model::ObjectBuilder::ICON_KEY_NAME              = "icon";
+const QString ab::model::ObjectBuilder::X_ALTERATOR_URI_NAME       = "x-alterator-uri";
+const QString ab::model::ObjectBuilder::X_ALTERATOR_WEIGHT_NAME    = "x-alterator-weight";
+const QString ab::model::ObjectBuilder::X_ALTERATOR_HELP_NAME      = "x-alterator-help";
+const QString ab::model::ObjectBuilder::X_ALTERATOR_UI_NAME        = "x-alterator-ui";
+
 namespace ab
 {
 namespace model
 {
-const QString DESKTOP_ENTRY_SECTION_NAME     = "Desktop Entry";
-const QString ALT_CENTER_SECTION_NAME        = "X-Alterator";
-const QString NAME_KEY_NAME                  = "name";
-const QString CATEGORY_KEY_NAME              = "categories";
-const QString TYPE_KEY_NAME                  = "type";
-const QString TERMINAL_KEY_NAME              = "terminal";
-const QString ICON_KEY_NAME                  = "icon";
-const QString X_ALTERATOR_URI_NAME           = "x-alterator-uri";
-const QString X_ALTERATOR_WEIGHT_NAME        = "x-alterator-weight";
-const QString X_ALTERATOR_HELP_NAME          = "x-alterator-help";
-const QString X_ALTERATOR_UI_NAME            = "x-alterator-ui";
-const QString ALT_CENTER_INTERFACES_KEY_NAME = "interface";
-
-ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser)
-    : m_infoParser(infoParser)
-{}
-
-std::unique_ptr<Object> ObjectBuilder::buildObject()
+std::unique_ptr<Object> ObjectBuilder::buildObject(DesktopFileParser *infoParser)
 {
     std::unique_ptr<Object> newObject{new Object()};
 
-    auto sections = m_infoParser->getSections();
+    auto sections = infoParser->getSections();
 
     auto desktopSection = sections.find(DESKTOP_ENTRY_SECTION_NAME);
 
@@ -98,25 +92,6 @@ std::unique_ptr<Object> ObjectBuilder::buildObject()
     if (terminal.toLower() == QString("true"))
     {
         newObject->m_terminal = true;
-    }
-
-    auto altCenterSection = sections.find(ALT_CENTER_SECTION_NAME);
-
-    if (altCenterSection == sections.end())
-    {
-        qWarning() << "Can't find " << ALT_CENTER_SECTION_NAME << " section for the object! Skipping..";
-    }
-    else
-    {
-        QString interfaces = getValue(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME);
-        if (interfaces.isEmpty())
-        {
-            qWarning() << "Can't find interfaces for the object: " << newObject->m_id;
-        }
-        else
-        {
-            newObject->m_interfaces = parseValuesFromKey(*altCenterSection, ALT_CENTER_INTERFACES_KEY_NAME, ";");
-        }
     }
 
     newObject->m_isLegacy = true;
