@@ -1,5 +1,5 @@
-#ifndef CONSTATS_H
-#define CONSTATS_H
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
 #include <QString>
 
@@ -9,9 +9,9 @@ namespace model
 {
 namespace xalterator_entry
 {
-const QString OBJECT_SECTION_PREXIX      = "X-Alterator Object ";
-const QString CATEGORY_SECTION_PREXIX    = "X-Alterator Category ";
-const QString APPLICATION_SECTION_PREXIX = "X-Alterator Application ";
+const QString OBJECT_SECTION_PREXIX      = "X-Alterator Object";
+const QString CATEGORY_SECTION_PREXIX    = "X-Alterator Category";
+const QString APPLICATION_SECTION_PREXIX = "X-Alterator Application";
 const QString OBJECTS_LIST_KEY           = "Object";
 const QString CATEGORIES_LIST_KEY        = "Category";
 const QString APPLICATIONS_LIST_KEY      = "Application";
@@ -23,4 +23,4 @@ const QString NAME_KEY                   = "Name";
 } // namespace model
 } // namespace ab
 
-#endif // CONSTATS_H
+#endif // CONSTANTS_H

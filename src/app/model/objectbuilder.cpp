@@ -40,12 +40,7 @@ const QString CATEGORY_KEY          = "CategoryInternalName";
 const QString ICON_KEY              = "Icon";
 } // namespace xalterator_entry
 
-ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser)
-    : m_infoParser(infoParser)
-{}
-
-std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> ObjectBuilder::buildAll(
-    DesktopFileParser *infoParser)
+std::unique_ptr<Object> ObjectBuilder::buildAll(DesktopFileParser *infoParser)
 {
     std::unique_ptr<Object> newObject{new Object()};
 
@@ -122,7 +117,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> O
 
     newObject->m_isLegacy = true;
 
-    return std::vector{std::make_unique(newObject)};
+    return newObject;
 }
 
 bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *object)

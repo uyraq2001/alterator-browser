@@ -2,6 +2,8 @@
 #include "constants.h"
 #include "objectbuilder.h"
 
+#include <QDebug>
+
 template<typename... Ts>
 struct Overload : Ts...
 {
@@ -14,26 +16,20 @@ namespace ab
 {
 namespace model
 {
-MultiEntityBuilder::MultiEntityBuilder(DesktopFileParser *infoParser)
-    : m_infoParser(infoParser)
-{}
-
-std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> MultiEntityBuilder::buildAll()
+std::unique_ptr<Object> MultiEntityBuilder::buildAll(DesktopFileParser *infoParser)
 {
     using namespace xalterator_entry;
 
-    std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> result;
+    std::unique_ptr<Object> result;
 
-    auto sections          = m_infoParser->getSections();
+    auto sections          = infoParser->getSections();
     auto xalteratorSection = sections.find(XALTERATOR_SECTION);
 
-    std::vector<QString> objectNames      = getValue(*xalteratorSection, OBJECTS_LIST_KEY).split(";");
-    std::vector<QString> categoryNames    = getValue(*xalteratorSection, CATEGORIES_LIST_KEY).split(";");
-    std::vector<QString> applicationNames = getValue(*xalteratorSection, APPLICATIONS_LIST_KEY).split(";");
+    QStringList objectNames = getValue(*xalteratorSection, OBJECTS_LIST_KEY).split(";");
 
     for (auto objectName : objectNames)
     {
-        QString sectionName = OBJECT_SECTION_PREXIX << objectName;
+        QString sectionName = OBJECT_SECTION_PREXIX + objectName;
         auto currentSection = sections.find(sectionName);
         if (currentSection == sections.end())
         {
@@ -42,36 +38,10 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> M
             continue;
         }
 
-        result.push_back(buildObject(currentSection));
+        result = buildObject(currentSection.value());
     }
 
-    for (auto categoryName : categoryNames)
-    {
-        QString sectionName = CATEGORY_SECTION_PREXIX << categoryName;
-        auto currentSection = sections.find(sectionName);
-        if (currentSection == sections.end())
-        {
-            qWarning() << "Couldn't find" << sectionName << "section for the category '" << categoryName
-                       << "'! Skipping..";
-            continue;
-        }
-
-        result.push_back(buildCategory(currentSection));
-    }
-
-    for (auto applicationName : applicationNames)
-    {
-        QString sectionName = APPLICATION_SECTION_PREXIX << categoryName;
-        auto currentSection = sections.find(sectionName);
-        if (currentSection == sections.end())
-        {
-            qWarning() << "Couldn't find" << sectionName << "section for the application '" << applicationName
-                       << "'! Skipping..";
-            continue;
-        }
-
-        result.push_back(buildApplication(currentSection));
-    }
+    return result;
 }
 
 std::unique_ptr<Object> MultiEntityBuilder::buildObject(DesktopFileParser::Section section)
@@ -80,7 +50,7 @@ std::unique_ptr<Object> MultiEntityBuilder::buildObject(DesktopFileParser::Secti
 
     auto res = std::make_unique<Object>();
 
-    if (!buildNames(*section, res.get()))
+    if (!buildNames(section, res.get()))
     {
         return nullptr;
     }
@@ -88,7 +58,7 @@ std::unique_ptr<Object> MultiEntityBuilder::buildObject(DesktopFileParser::Secti
     res->m_categoryId = getValue(section, CATEGORY_KEY);
     if (!buildNames(section, res.get()))
     {
-        continue;
+        return nullptr;
     }
 
     QString icon = getValue(section, ICON_KEY);
@@ -99,39 +69,41 @@ std::unique_ptr<Object> MultiEntityBuilder::buildObject(DesktopFileParser::Secti
     res->m_icon = icon;
 
     res->m_isLegacy = false;
+
+    return res;
 }
-std::unique_ptr<Category> MultiEntityBuilder::buildCategory(DesktopFileParser::Section section)
+//std::unique_ptr<Category> MultiEntityBuilder::buildCategory(DesktopFileParser::Section section)
+//{
+//    using namespace xalterator_entry;
+
+//    auto res = std::make_unique<Category>();
+
+//    if (!buildNames(section, res.get()))
+//    {
+//        return nullptr;
+//    }
+
+//    res->m_categoryId = getValue(section, CATEGORY_KEY);
+//    if (!buildNames(section, res.get()))
+//    {
+//        continue;
+//    }
+
+//    QString icon = getValue(section, ICON_KEY);
+//    if (icon.isEmpty())
+//    {
+//        qWarning() << "Can't find icon for the object: " << res->m_id;
+//    }
+//    res->m_icon = icon;
+
+//    res->m_isLegacy = false;
+//}
+//std::unique_ptr<LocalApplication> MultiEntityBuilder::buildApplication(DesktopFileParser::Section section) {}
+
+bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section, Object *object)
 {
     using namespace xalterator_entry;
 
-    auto res = std::make_unique<Category>();
-
-    if (!buildNames(*section, res.get()))
-    {
-        return nullptr;
-    }
-
-    res->m_categoryId = getValue(section, CATEGORY_KEY);
-    if (!buildNames(section, res.get()))
-    {
-        continue;
-    }
-
-    QString icon = getValue(section, ICON_KEY);
-    if (icon.isEmpty())
-    {
-        qWarning() << "Can't find icon for the object: " << res->m_id;
-    }
-    res->m_icon = icon;
-
-    res->m_isLegacy = false;
-}
-std::unique_ptr<LocalApplication> MultiEntityBuilder::buildApplication(DesktopFileParser::Section section) {}
-
-bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
-                                    std::variant<Object, Category, LocalApplication> *entity)
-{
-    using namespace xalterator_entry;
     auto nameIt = section.find(NAME_KEY);
 
     if (nameIt == section.end())
@@ -150,16 +122,14 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
         return false;
     }
 
-    std::visit(
-        [&defaultName, &listOfKeys](auto &&e) {
-            e->m_id          = defaultName;
-            e->m_displayName = defaultName;
-            for (IniFileKey &currentIniFileKey : listOfKeys)
-            {
-                e->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
-            }
-        },
-        entity);
+    object->m_id = defaultName;
+
+    object->m_displayName = defaultName;
+
+    for (IniFileKey &currentIniFileKey : listOfKeys)
+    {
+        object->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
+    }
 
     return true;
 }

@@ -18,9 +18,9 @@ namespace model
 class MultiEntityBuilder : public ObjectBuilderInterface
 {
 public:
-    MultiEntityBuilder(DesktopFileParser *infoParser);
+    MultiEntityBuilder() = default;
 
-    std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> buildAll();
+    std::unique_ptr<Object> buildAll(DesktopFileParser *infoParser) override;
 
 private:
     std::unique_ptr<Object> buildObject(DesktopFileParser::Section section);
@@ -31,8 +31,6 @@ private:
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
     QString getValue(DesktopFileParser::Section &section, QString key);
     std::vector<QString> parseValuesFromKey(DesktopFileParser::Section &section, QString key, QString delimiter);
-
-    DesktopFileParser *m_infoParser = nullptr;
 };
 } // namespace model
 } // namespace ab

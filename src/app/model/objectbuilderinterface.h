@@ -17,8 +17,7 @@ class ObjectBuilderInterface
 public:
     virtual ~ObjectBuilderInterface() = default;
 
-    virtual std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>>
-    buildAll(DesktopFileParser *infoParser) = 0;
+    virtual std::unique_ptr<Object> buildAll(DesktopFileParser *infoParser) = 0;
 };
 } // namespace model
 } // namespace ab

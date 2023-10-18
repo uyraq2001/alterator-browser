@@ -29,8 +29,7 @@ public:
 public:
     ~ObjectBuilder() = default;
 
-    std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> buildAll(
-        DesktopFileParser *infoParser) override;
+    std::unique_ptr<Object> buildAll(DesktopFileParser *infoParser) override;
 
 private:
     bool buildNames(DesktopFileParser::Section &section, Object *object);
