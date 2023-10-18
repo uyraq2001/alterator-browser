@@ -7,12 +7,21 @@
 #include "model/model.h"
 #include "object.h"
 #include "objectbuilder.h"
+#include "objectbuilderfactory.h"
 #include "objectitem.h"
 
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
+
+template<typename... Ts>
+struct Overload : Ts...
+{
+    using Ts::operator()...;
+};
+template<class... Ts>
+Overload(Ts...) -> Overload<Ts...>;
 
 const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
 const QString DBUS_PATH                            = "/ru/basealt/alterator";
@@ -213,14 +222,27 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
 
         DesktopFileParser infoParsingResult(currentObjectInfo);
 
-        ObjectBuilder objectBuilder(&infoParsingResult);
+        auto objectBuilder = ObjectBuilderFactory::getBuilder(&infoParsingResult);
 
-        std::unique_ptr<std::variant<Object, Category>> newObject = std::make_unique<std::variant<Object, Category>>(
-            *(objectBuilder.buildObject()));
-
-        if (newObject)
+        if (!objectBuilder)
         {
-            acObjects.push_back(std::move(newObject));
+            qWarning() << "Warning: Bad info format in object: " + currentPath + " in interface: " + m_dbusFindInterface
+                              + " skipping..";
+            continue;
+        }
+
+        std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> newObjects
+            = objectBuilder->buildAll(&infoParsingResult);
+
+        auto dropApplications = Overload{[&acObjects](auto obj) {
+                                             acObjects.push_back(std::make_unique<std::variant<Object, Category>>(
+                                                 std::variant<Object, Category>(obj)));
+                                         },
+                                         [](LocalApplication) {}};
+
+        for (auto &obj : newObjects)
+        {
+            std::visit(dropApplications, *obj.get());
         }
     }
 

@@ -40,8 +40,11 @@ set(HEADERS
     model/objectitem.h
     model/objectsmodelbuilder.h
     model/desktopfileparser.h
+    model/objectbuilderfactory.h
+    model/objectbuilderinterface.h
     model/objectbuilder.h
     model/multientitybuilder.h
+    model/constants.h
 
     model/localapplication.h
     model/localapplicationbuilder.h
@@ -68,6 +71,7 @@ set(SOURCES
     model/objectitem.cpp
     model/objectsmodelbuilder.cpp
     model/desktopfileparser.cpp
+    model/objectbuilderfactory.cpp
     model/objectbuilder.cpp
     model/multientitybuilder.cpp
 
