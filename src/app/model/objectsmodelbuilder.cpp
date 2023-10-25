@@ -287,17 +287,15 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
     auto model = std::make_unique<Model>();
     for (auto &category : categories)
     {
-        if (category.second->getObject() != nullptr)
-        {
-            model->appendRow(category.second.release());
-        }
+        model->appendRow(category.second.release());
     }
     return model;
 }
 
 std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString categoryName)
 {
-    auto newCategoryItem = std::make_unique<ObjectItem>();
+    auto newCategoryItem               = std::make_unique<ObjectItem>();
+    std::unique_ptr<Category> category = nullptr;
 
     if (categoryName.isEmpty())
     {
@@ -310,24 +308,22 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
                                                                              QDBusConnection::systemBus());
     if (!iface->isValid())
     {
-        qWarning() << "Can not connect to " + CATEGORY_INTERFACE_NAME_FOR_ACOBJECT + " interface";
-        return newCategoryItem;
+        qWarning() << "Can not connect to interface" << CATEGORY_INTERFACE_NAME_FOR_ACOBJECT;
     }
+
     QDBusReply<QByteArray> reply = iface->call(CATEGORY_METHOD_NAME_FOR_ACOBJECT, categoryName);
 
     if (!reply.isValid())
     {
-        qWarning() << "Can't reply with category name for the category:" << categoryName;
-        return newCategoryItem;
+        qWarning() << "Can't reply with category name for the category" << categoryName;
     }
-
-    QString categoryData(reply.value());
-
-    DesktopFileParser categoryParser(categoryData);
-
-    ObjectCategoryBuilder categoryBuilder(&categoryParser);
-
-    std::unique_ptr<Category> category = categoryBuilder.buildObjectCategory();
+    else
+    {
+        QString categoryData(reply.value());
+        DesktopFileParser categoryParser(categoryData);
+        ObjectCategoryBuilder categoryBuilder(&categoryParser);
+        category = categoryBuilder.buildObjectCategory();
+    }
 
     if (!category)
     {
