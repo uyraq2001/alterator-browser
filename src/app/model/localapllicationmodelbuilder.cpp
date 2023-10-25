@@ -33,7 +33,7 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
 
     if (listOfDesktopFiles.isEmpty())
     {
-        qCritical() << "Can't get list of local applications!";
+        qWarning() << "Empty list of local applications";
         return std::make_unique<LocalApplicationModel>();
     }
 
@@ -41,7 +41,7 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
 
     if (listOfApps.empty())
     {
-        qCritical() << "Can't create LocalApplications objects!";
+        qCritical() << "Can't create LocalApplications objects";
         return std::make_unique<LocalApplicationModel>();
     }
 
@@ -65,7 +65,7 @@ QStringList LocalApllicationModelBuilder::getListOfDesktopFiles()
 
     if (!iface.isValid())
     {
-        qCritical() << "Can't access alterator manager interface to build local applications model!";
+        qCritical() << "Can't access alterator manager to build local applications model";
         return {};
     }
 
@@ -73,13 +73,12 @@ QStringList LocalApllicationModelBuilder::getListOfDesktopFiles()
 
     if (!reply.isValid())
     {
-        qCritical() << "Can't get reply from alterator manager interface to build local applications model!";
+        qCritical() << "Invalid reply from alterator manager while trying to build local applications model:"
+                    << reply.error().message();
         return {};
     }
 
-    QStringList listOfDesktopFiles = reply.value();
-
-    return listOfDesktopFiles;
+    return reply.value();
 }
 
 std::vector<std::unique_ptr<LocalApplication>> LocalApllicationModelBuilder::parseDesktopFiles(QStringList files)
@@ -110,27 +109,24 @@ std::vector<std::unique_ptr<LocalApplication>> LocalApllicationModelBuilder::par
 
 QString LocalApllicationModelBuilder::getDesktopFile(QString file)
 {
-    QString result;
-
     QDBusInterface iface(m_dbusServiceName, m_dbusPath, m_interface, m_dbusConnection);
 
     if (!iface.isValid())
     {
-        qCritical() << "Can't access alterator manager interface to get desktop file: " << file;
-        return result;
+        qCritical() << "Can't access alterator manager interface to get desktop file";
+        return {};
     }
 
     QDBusReply<QByteArray> reply = iface.call(m_getDesktopFileMethodName, file);
 
     if (!reply.isValid())
     {
-        qCritical() << "Can't get reply from alterator manager interface to to get desktop file: " << file;
-        return result;
+        qCritical() << "Invalid reply from alterator manager for desktop file" << file << ":"
+                    << reply.error().message();
+        return {};
     }
 
-    result = QString(reply.value());
-
-    return result;
+    return QString(reply.value());
 }
 } // namespace model
 } // namespace ab

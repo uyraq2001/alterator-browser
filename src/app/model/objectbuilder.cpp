@@ -105,7 +105,7 @@ bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *obje
 
     if (nameIt == section.end())
     {
-        qWarning() << "Can't find names for the Object!";
+        qWarning() << "Can't find names for the Object";
         return false;
     }
 
@@ -115,7 +115,7 @@ bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *obje
 
     if (defaultName.isEmpty())
     {
-        qWarning() << "Can't default name for the object!";
+        qWarning() << "Can't default name for the object";
         return false;
     }
 
