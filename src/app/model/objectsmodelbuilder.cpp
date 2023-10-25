@@ -95,7 +95,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 
     QLocale locale;
     QString language = locale.system().name().split("_").at(0);
-    model->translateModel("ru");
+    model->translateModel(language);
 
     return model;
 }
@@ -254,9 +254,9 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 {
     std::map<QString, std::unique_ptr<ObjectItem>> categories;
 
-    for (size_t i = 0; i < objects.size(); ++i)
+    for (auto &object : objects)
     {
-        Object currentObject = std::get<Object>(*objects.at(i));
+        Object currentObject = std::get<Object>(*object);
 
         auto find = categories.find(currentObject.m_categoryId);
 
@@ -266,7 +266,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 
             auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object   = std::move(objects.at(i));
+            newModuleItem->m_object   = std::move(object);
 
             newCategoryItem->appendRow(newModuleItem.release());
 
@@ -278,7 +278,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 
             auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object   = std::move(objects.at(i));
+            newModuleItem->m_object   = std::move(object);
 
             categoryItem->get()->appendRow(newModuleItem.release());
         }
@@ -294,7 +294,8 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 
 std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString categoryName)
 {
-    auto newCategoryItem = std::make_unique<ObjectItem>();
+    auto newCategoryItem               = std::make_unique<ObjectItem>();
+    std::unique_ptr<Category> category = nullptr;
 
     if (categoryName.isEmpty())
     {
@@ -307,24 +308,22 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
                                                                              QDBusConnection::systemBus());
     if (!iface->isValid())
     {
-        qWarning() << "Can not connect to " + CATEGORY_INTERFACE_NAME_FOR_ACOBJECT + " interface";
-        return newCategoryItem;
+        qWarning() << "Can not connect to interface" << CATEGORY_INTERFACE_NAME_FOR_ACOBJECT;
     }
+
     QDBusReply<QByteArray> reply = iface->call(CATEGORY_METHOD_NAME_FOR_ACOBJECT, categoryName);
 
     if (!reply.isValid())
     {
-        qWarning() << "Can't reply with category name for the category:" << categoryName;
-        return newCategoryItem;
+        qWarning() << "Can't reply with category name for the category" << categoryName;
     }
-
-    QString categoryData(reply.value());
-
-    DesktopFileParser categoryParser(categoryData);
-
-    ObjectCategoryBuilder categoryBuilder(&categoryParser);
-
-    std::unique_ptr<Category> category = categoryBuilder.buildObjectCategory();
+    else
+    {
+        QString categoryData(reply.value());
+        DesktopFileParser categoryParser(categoryData);
+        ObjectCategoryBuilder categoryBuilder(&categoryParser);
+        category = categoryBuilder.buildObjectCategory();
+    }
 
     if (!category)
     {
@@ -340,7 +339,7 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
     }
 
     newCategoryItem->m_itemType = ObjectItem::ItemType::category;
-    newCategoryItem->m_object   = std::move(std::make_unique<std::variant<Object, Category>>(*category));
+    newCategoryItem->m_object   = std::make_unique<std::variant<Object, Category>>(*category);
 
     return newCategoryItem;
 }
