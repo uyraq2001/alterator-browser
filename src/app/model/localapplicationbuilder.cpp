@@ -170,7 +170,7 @@ bool LocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, Lo
 
     if (nameIt == section.end())
     {
-        qWarning() << "Can't find names for the local application object!";
+        qWarning() << "Can't find names for the local application object";
         return false;
     }
 
@@ -180,7 +180,7 @@ bool LocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, Lo
 
     if (defaultName.isEmpty())
     {
-        qWarning() << "Can't default name for the local application object!";
+        qWarning() << "Can't default name for the local application object";
         return false;
     }
 
@@ -215,7 +215,7 @@ bool LocalApplicationBuilder::buildFieldWithLocale(DesktopFileParser::Section &s
 
     if (defaultName.isEmpty())
     {
-        qWarning() << "Can't default name for the local application object!";
+        qWarning() << "Can't default name for the local application object";
         return false;
     }
 

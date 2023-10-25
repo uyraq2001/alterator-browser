@@ -45,8 +45,7 @@ ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
                                          QString interfaceName,
                                          QString getListOfFilesMethod,
                                          QString getDesktopFileMethod)
-    : m_dbusConnection(QDBusConnection::systemBus())
-    , m_dbusServiceName(std::move(serviceName))
+    : m_dbusServiceName(std::move(serviceName))
     , m_dbusPath(std::move(dbusPath))
     , m_managerInterface(std::move(managerIface))
     , m_dbusFindInterface(std::move(findInterface))
@@ -71,7 +70,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 
     if (!appModel)
     {
-        qCritical() << "Local applications model is empty!!";
+        qCritical() << "Local applications model is empty";
     }
 
     QStringList pathsOfObjects = getListOfObjects();
@@ -85,7 +84,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 
     if (acObjects.empty())
     {
-        qCritical() << "Can't access alterator manager interface!";
+        qCritical() << "Can't access alterator manager interface";
         return std::make_unique<Model>();
     }
 
@@ -112,8 +111,7 @@ void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplica
         auto currentCategoryItem           = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
-            qWarning() << "Can't cast category item to ObjectItem to merge models!";
-
+            qWarning() << "Can't cast category item to ObjectItem to merge models";
             continue;
         }
 
@@ -129,7 +127,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
         auto currentModuleItem             = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
-            qWarning() << "Can't cast item to ObjectItem to merge application object!";
+            qWarning() << "Can't cast item to ObjectItem to merge application object";
             continue;
         }
 
@@ -156,7 +154,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
         }
         catch (const std::bad_variant_access &e)
         {
-            qCritical() << "ERROR: the item is not of Object type";
+            qCritical() << "Item is not of Object type";
         }
     }
 }
@@ -167,7 +165,7 @@ QStringList ObjectsModelBuilder::getListOfObjects()
 
     if (!managerIface.isValid())
     {
-        qCritical() << "Can't access alterator manager interface!";
+        qCritical() << "Can't access alterator manager interface";
         return {};
     }
 
@@ -175,7 +173,7 @@ QStringList ObjectsModelBuilder::getListOfObjects()
 
     if (!reply.isValid())
     {
-        qCritical() << "Can't get reply from alterator manager interface!";
+        qCritical() << "Can't get reply from alterator manager interface:" << reply.error().message();
         return {};
     }
 
@@ -198,8 +196,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
 
         if (!iface.isValid())
         {
-            qWarning() << "Warning: object: " + currentPath + " doesn't provide interface " + m_dbusFindInterface;
-
+            qWarning() << "Object" << currentPath << "does not provide interface" << m_dbusFindInterface;
             continue;
         }
 
@@ -207,8 +204,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
 
         if (currentObjectInfo.isEmpty())
         {
-            qWarning() << "Warning: Can't get info of object: " + currentPath + " in interface: " + m_dbusFindInterface;
-
+            qWarning() << "Can't get info of object" << currentPath << "in interface" << m_dbusFindInterface;
             continue;
         }
 
@@ -218,8 +214,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
 
         if (!objectBuilder)
         {
-            qWarning() << "Warning: Bad info format in object: " + currentPath + " in interface: " + m_dbusFindInterface
-                              + " skipping..";
+            qWarning() << "Bad info format in object" << currentPath << "in interface" << m_dbusFindInterface;
             continue;
         }
 
@@ -244,9 +239,8 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
         return {};
     }
 
-    QString result = QString(reply.value());
 
-    return result;
+    return QString{reply.value()};
 }
 
 std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
