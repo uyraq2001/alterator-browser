@@ -9,26 +9,12 @@
 #include "objectbuilder.h"
 #include "objectbuilderfactory.h"
 #include "objectitem.h"
+#include "constants.h"
 
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
-
-const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
-const QString DBUS_PATH                            = "/ru/basealt/alterator";
-const QString DBUS_FIND_INTERFACE_NAME             = "ru.basealt.alterator.object";
-const QString DBUS_MANAGER_INTERFACE_NAME          = "ru.basealt.alterator.manager";
-const QString GET_OBJECTS_METHOD_NAME              = "GetObjects";
-const QString INFO_METHOD_NAME_FOR_ACOBJECT        = "Info";
-const QString CATEGORY_INTERFACE_NAME_FOR_ACOBJECT = "ru.basealt.alterator.categories";
-const QString CATEGORY_OBJECT_PATH                 = "/ru/basealt/alterator/categories";
-const QString CATEGORY_METHOD_NAME_FOR_ACOBJECT    = "Info";
-
-const QString DBUS_LOCAL_APP_PATH              = "/ru/basealt/alterator/applications";
-const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.applications";
-const QString DBUS_LOCAL_APP_GET_LIST_OF_FILES = "List";
-const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "Info";
 
 namespace ab
 {
@@ -238,7 +224,6 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
     {
         return {};
     }
-
 
     return QString{reply.value()};
 }
