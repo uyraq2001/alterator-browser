@@ -1,20 +1,57 @@
 #include "objectsmodelbuilder.h"
 #include "category.h"
 #include "categorybuilder.h"
+#include "constants.h"
 #include "desktopfileparser.h"
 #include "localapplicationmodel.h"
 #include "model/localapllicationmodelbuilder.h"
 #include "model/model.h"
 #include "object.h"
-#include "objectbuilder.h"
 #include "objectbuilderfactory.h"
 #include "objectitem.h"
-#include "constants.h"
+
+#include <condition_variable>
+#include <future>
+#include <mutex>
+#include <thread>
 
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
+
+class Semaphore
+{
+public:
+    explicit Semaphore(size_t count)
+        : m_count(count)
+    {}
+
+    void lock()
+    { // call before critical section
+        std::unique_lock<std::mutex> lock(mutex);
+        condition_variable.wait(lock, [this] { return (m_count > 0); });
+        --m_count;
+    }
+
+    void unlock()
+    { // call after critical section
+        std::unique_lock<std::mutex> lock(mutex);
+        ++m_count;
+        condition_variable.notify_one();
+    }
+
+private:
+    std::mutex mutex{};
+    std::condition_variable condition_variable{};
+    size_t m_count;
+};
+
+template<typename T>
+static bool isReady(std::future<T> &f)
+{
+    return f.valid() && f.wait_for(std::chrono::seconds(0)) == std::future_status::ready;
+}
 
 namespace ab
 {
@@ -66,7 +103,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
         return std::make_unique<Model>();
     }
 
-    std::vector<std::unique_ptr<std::variant<Object, Category>>> acObjects = parseObjects(pathsOfObjects);
+    std::vector<std::variant<Object, Category>> acObjects = parseObjects(pathsOfObjects);
 
     if (acObjects.empty())
     {
@@ -172,48 +209,64 @@ QStringList ObjectsModelBuilder::getListOfObjects()
     return paths;
 }
 
-std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder::parseObjects(QStringList &pathsList)
+std::vector<std::variant<Object, Category>> ObjectsModelBuilder::parseObjects(QStringList &pathsList)
 {
-    std::vector<std::unique_ptr<std::variant<Object, Category>>> acObjects;
+    std::vector<std::future<std::variant<Object, Category>>> futureObjects;
+    Semaphore maxConcurrentJobs(std::min(10u, std::thread::hardware_concurrency()));
 
-    for (QString &currentPath : pathsList)
+    std::vector<std::variant<Object, Category>> objects;
+
+    for (const QString &currentPath : pathsList)
     {
-        QDBusInterface iface(m_dbusServiceName, currentPath, m_dbusFindInterface, m_dbusConnection);
+        futureObjects.push_back(std::async(
+            std::launch::async,
+            [this, currentPath](Semaphore &maxJobs) -> std::variant<Object, Category> {
+                maxJobs.lock();
+                QDBusInterface iface(m_dbusServiceName, currentPath, m_dbusFindInterface, m_dbusConnection);
+                if (!iface.isValid())
+                {
+                    qWarning() << "Object" << currentPath << "does not provide interface" << m_dbusFindInterface;
+                    return {};
+                }
 
-        if (!iface.isValid())
-        {
-            qWarning() << "Object" << currentPath << "does not provide interface" << m_dbusFindInterface;
-            continue;
-        }
+                QString currentObjectInfo = getObjectInfo(iface);
+                if (currentObjectInfo.isEmpty())
+                {
+                    qWarning() << "Can't get info of object" << currentPath << "in interface" << m_dbusFindInterface;
+                    return {};
+                }
 
-        QString currentObjectInfo = getObjectInfo(iface);
+                DesktopFileParser infoParsingResult(currentObjectInfo);
 
-        if (currentObjectInfo.isEmpty())
-        {
-            qWarning() << "Can't get info of object" << currentPath << "in interface" << m_dbusFindInterface;
-            continue;
-        }
+                auto objectBuilder = ObjectBuilderFactory::getBuilder(&infoParsingResult);
 
-        DesktopFileParser infoParsingResult(currentObjectInfo);
+                if (!objectBuilder)
+                {
+                    qWarning() << "Bad info format in object" << currentPath << "in interface" << m_dbusFindInterface;
+                    return {};
+                }
 
-        auto objectBuilder = ObjectBuilderFactory::getBuilder(&infoParsingResult);
+                auto newObject = std::variant<Object, Category>(
+                    *(objectBuilder->buildObject(&infoParsingResult).release()));
+                maxJobs.unlock();
 
-        if (!objectBuilder)
-        {
-            qWarning() << "Bad info format in object" << currentPath << "in interface" << m_dbusFindInterface;
-            continue;
-        }
-
-        std::unique_ptr<std::variant<Object, Category>> newObject = std::make_unique<std::variant<Object, Category>>(
-            std::variant<Object, Category>(*(objectBuilder->buildObject(&infoParsingResult).release())));
-
-        if (newObject)
-        {
-            acObjects.push_back(std::move(newObject));
-        }
+                return newObject;
+            },
+            std::ref(maxConcurrentJobs)));
     }
 
-    return acObjects;
+    do
+    {
+        for (auto &future : futureObjects)
+        {
+            if (isReady(future))
+            {
+                objects.push_back(future.get());
+            }
+        }
+    } while (objects.size() < futureObjects.size());
+
+    return objects;
 }
 
 QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
@@ -222,20 +275,20 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 
     if (!reply.isValid())
     {
+        // TODO(mchernigin): log error
         return {};
     }
 
     return QString{reply.value()};
 }
 
-std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
-    std::vector<std::unique_ptr<std::variant<Object, Category>>> objects)
+std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(std::vector<std::variant<Object, Category>> objects)
 {
     std::map<QString, std::unique_ptr<ObjectItem>> categories;
 
     for (auto &object : objects)
     {
-        Object currentObject = std::get<Object>(*object);
+        Object currentObject = std::get<Object>(object);
 
         auto find = categories.find(currentObject.m_categoryId);
 
@@ -245,7 +298,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 
             auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object   = std::move(object);
+            newModuleItem->m_object   = std::make_unique<std::variant<Object, Category>>(std::move(object));
 
             newCategoryItem->appendRow(newModuleItem.release());
 
@@ -257,7 +310,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 
             auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object   = std::move(object);
+            newModuleItem->m_object   = std::make_unique<std::variant<Object, Category>>(std::move(object));
 
             categoryItem->get()->appendRow(newModuleItem.release());
         }

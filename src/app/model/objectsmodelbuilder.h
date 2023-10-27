@@ -35,9 +35,9 @@ private:
     void mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel);
 
     QStringList getListOfObjects();
-    std::vector<std::unique_ptr<std::variant<Object, Category>>> parseObjects(QStringList &pathsList);
+    std::vector<std::variant<Object, Category>> parseObjects(QStringList &pathsList);
     QString getObjectInfo(QDBusInterface &iface);
-    std::unique_ptr<Model> buildModelFromObjects(std::vector<std::unique_ptr<std::variant<Object, Category>>> objects);
+    std::unique_ptr<Model> buildModelFromObjects(std::vector<std::variant<Object, Category>> objects);
     std::unique_ptr<ObjectItem> createCategoryItem(QString categoryName);
 
 private:
