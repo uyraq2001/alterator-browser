@@ -14,6 +14,7 @@ const QString ab::model::ObjectBuilder::X_ALTERATOR_URI_NAME       = "x-alterato
 const QString ab::model::ObjectBuilder::X_ALTERATOR_WEIGHT_NAME    = "x-alterator-weight";
 const QString ab::model::ObjectBuilder::X_ALTERATOR_HELP_NAME      = "x-alterator-help";
 const QString ab::model::ObjectBuilder::X_ALTERATOR_UI_NAME        = "x-alterator-ui";
+const QString ab::model::ObjectBuilder::X_ALTERATOR_INTERNAL_NAME  = "x-alterator-internal-name";
 
 namespace ab
 {
@@ -119,7 +120,12 @@ bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *obje
         return false;
     }
 
-    object->m_id = defaultName;
+    QString x_Alterator_Internal_Name = section.values(X_ALTERATOR_INTERNAL_NAME)[0].keyName;
+    if (x_Alterator_Internal_Name.isEmpty())
+    {
+        qWarning() << "Can't find x_Alterator_Internal_Name for the object";
+    }
+    object->m_id = x_Alterator_Internal_Name;
 
     object->m_displayName = defaultName;
 

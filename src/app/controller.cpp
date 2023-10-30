@@ -67,7 +67,7 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
             });
 
             proc->start("alterator-standalone",
-                        QStringList() << "-l" << std::get<ab::model::Object>(*moduleItem->m_object).m_icon);
+                        QStringList() << "-l" << std::get<ab::model::Object>(*moduleItem->m_object).m_id);
         }
         else
         {
