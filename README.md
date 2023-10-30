@@ -1,4 +1,4 @@
-## AltCenter
+## Alterator-Browser
 
 AltCenter is a graphical user interface that for system configuration using DBus.
 
