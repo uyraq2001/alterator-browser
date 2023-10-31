@@ -46,9 +46,9 @@ void CategoryWidget::setItem(model::ObjectItem *newItem)
 
         ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
 
-        const int margin            = 10;
-        const int horizontalSpacing = 10;
-        const int verticalSpacing   = 10;
+        const int margin            = 0;
+        const int horizontalSpacing = 0;
+        const int verticalSpacing   = 0;
         auto modulesLayout          = std::make_unique<FlowLayout>(margin, horizontalSpacing, verticalSpacing);
         modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
         modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -57,6 +57,7 @@ void CategoryWidget::setItem(model::ObjectItem *newItem)
         {
             auto moduleButton = std::make_unique<PushButton>(window);
             moduleButton->setItem(dynamic_cast<model::ObjectItem *>(newItem->child(i)));
+            moduleButton->setFlat(true);
             modulesLayout->addWidget(moduleButton.release());
         }
 
