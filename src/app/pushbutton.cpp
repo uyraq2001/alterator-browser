@@ -62,12 +62,12 @@ void PushButton::showMenu(std::unique_ptr<QMenu> menu)
 
 bool PushButton::event(QEvent *event)
 {
-    if(event->type() == QEvent::HoverEnter)
+    if (event->type() == QEvent::HoverEnter)
     {
         setFlat(false);
     }
 
-    if(event->type() == QEvent::HoverLeave)
+    if (event->type() == QEvent::HoverLeave)
     {
         setFlat(true);
     }
