@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = groups
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/groups.desktop
-stdout_bytes = enabled

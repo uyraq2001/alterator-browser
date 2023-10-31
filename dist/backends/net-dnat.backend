@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = net-dnat
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/net-dnat.desktop
-stdout_bytes = enabled

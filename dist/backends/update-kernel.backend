@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = update_kernel
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/update-kernel.desktop
-stdout_bytes = enabled

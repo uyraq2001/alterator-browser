@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = quota
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/quota.desktop
-stdout_bytes = enabled

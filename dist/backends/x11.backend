@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = x11
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/x11.desktop
-stdout_bytes = enabled
