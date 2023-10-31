@@ -14,6 +14,7 @@ const QString ab::model::ObjectBuilder::X_ALTERATOR_URI_NAME       = "x-alterato
 const QString ab::model::ObjectBuilder::X_ALTERATOR_WEIGHT_NAME    = "x-alterator-weight";
 const QString ab::model::ObjectBuilder::X_ALTERATOR_HELP_NAME      = "x-alterator-help";
 const QString ab::model::ObjectBuilder::X_ALTERATOR_UI_NAME        = "x-alterator-ui";
+const QString ab::model::ObjectBuilder::X_ALTERATOR_INTERNAL_NAME  = "x-alterator-internal-name";
 
 namespace ab
 {
@@ -93,6 +94,13 @@ std::unique_ptr<Object> ObjectBuilder::buildObject(DesktopFileParser *infoParser
     {
         newObject->m_terminal = true;
     }
+
+    QString x_Alterator_Internal_Name = getValue(*desktopSection, X_ALTERATOR_INTERNAL_NAME);
+    if (x_Alterator_Internal_Name.isEmpty())
+    {
+        qWarning() << "Can't find x_Alterator_Internal_Name for the object";
+    }
+    newObject->m_x_Alterator_Internal_Name = x_Alterator_Internal_Name;
 
     newObject->m_isLegacy = true;
 

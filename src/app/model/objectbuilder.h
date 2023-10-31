@@ -25,6 +25,7 @@ public:
     static const QString X_ALTERATOR_WEIGHT_NAME;
     static const QString X_ALTERATOR_HELP_NAME;
     static const QString X_ALTERATOR_UI_NAME;
+    static const QString X_ALTERATOR_INTERNAL_NAME;
 
 public:
     ~ObjectBuilder() = default;

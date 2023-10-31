@@ -23,6 +23,7 @@ public:
     QString m_x_Alterator_Weight{};
     QString m_x_Alterator_Help{};
     QString m_x_Alterator_UI{};
+    QString m_x_Alterator_Internal_Name{};
 
     std::vector<QString> m_interfaces{};
     std::vector<LocalApplication *> m_applications{};
