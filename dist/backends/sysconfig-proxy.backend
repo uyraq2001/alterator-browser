@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = sysconfig_proxy
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/sysconfig-proxy.desktop
-stdout_bytes = enabled

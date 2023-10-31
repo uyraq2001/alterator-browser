@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = control
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/control.desktop
-stdout_bytes = enabled

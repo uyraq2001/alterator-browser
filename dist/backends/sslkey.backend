@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = sslkey
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/sslkey.desktop
-stdout_bytes = enabled

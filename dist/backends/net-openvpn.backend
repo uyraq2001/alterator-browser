@@ -1,9 +1,0 @@
-[Manager]
-module_name = executor
-node_name = net_openvpn
-
-interface_name = object
-
-[info]
-execute = cat /usr/share/alterator/applications/net-openvpn.desktop
-stdout_bytes = enabled
