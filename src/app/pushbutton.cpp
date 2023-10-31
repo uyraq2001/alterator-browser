@@ -25,6 +25,10 @@ void PushButton::setItem(model::ObjectItem *newItem)
         this->setText(obj.m_displayName);
         this->setMinimumWidth(this->sizeHint().width());
 
+        QFont font = this->font();
+        font.setPointSize(11);
+        this->setFont(font);
+
         if (obj.m_applications.size() > 1)
         {
             auto menu = std::make_unique<QMenu>(this);
