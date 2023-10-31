@@ -34,6 +34,9 @@ private:
 
     void onClicked(bool b);
 
+protected:
+    bool event(QEvent * event) override;
+
 signals:
     void moduleClicked(PushButton *button);
 };

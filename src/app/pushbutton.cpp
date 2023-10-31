@@ -55,4 +55,19 @@ void PushButton::showMenu(std::unique_ptr<QMenu> menu)
     this->setMenu(menu.release());
     QPushButton::showMenu();
 }
+
+bool PushButton::event(QEvent *event)
+{
+    if(event->type() == QEvent::HoverEnter)
+    {
+        setFlat(false);
+    }
+
+    if(event->type() == QEvent::HoverLeave)
+    {
+        setFlat(true);
+    }
+
+    return QPushButton::event(event);
+}
 } // namespace ab

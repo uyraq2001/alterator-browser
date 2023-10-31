@@ -57,6 +57,7 @@ void CategoryWidget::setItem(model::ObjectItem *newItem)
         {
             auto moduleButton = std::make_unique<PushButton>(window);
             moduleButton->setItem(dynamic_cast<model::ObjectItem *>(newItem->child(i)));
+            moduleButton->setFlat(true);
             modulesLayout->addWidget(moduleButton.release());
         }
 
