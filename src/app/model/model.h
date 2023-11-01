@@ -1,5 +1,5 @@
-#ifndef AB_MODEL_H
-#define AB_MODEL_H
+#ifndef AB_MODEL_MODEL_H
+#define AB_MODEL_MODEL_H
 
 #include <QStandardItemModel>
 
@@ -18,4 +18,4 @@ private:
 } // namespace model
 } // namespace ab
 
-#endif // AB_MODEL_H
+#endif // AB_MODEL_MODEL_H

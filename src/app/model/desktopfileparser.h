@@ -1,5 +1,5 @@
-#ifndef AB_DESKTOP_FILE_PARSER_H
-#define AB_DESKTOP_FILE_PARSER_H
+#ifndef AB_MODEL_DESKTOP_FILE_PARSER_H
+#define AB_MODEL_DESKTOP_FILE_PARSER_H
 
 #include <unordered_map>
 
@@ -37,4 +37,4 @@ private:
 } // namespace model
 } // namespace ab
 
-#endif // AB_DESKTOP_FILE_PARSER_H
+#endif // AB_MODEL_DESKTOP_FILE_PARSER_H

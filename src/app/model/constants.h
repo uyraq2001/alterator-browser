@@ -1,5 +1,5 @@
-#ifndef AB_CONSTANTS_H
-#define AB_CONSTANTS_H
+#ifndef AB_MODEL_CONSTANTS_H
+#define AB_MODEL_CONSTANTS_H
 
 #include <QString>
 
@@ -18,4 +18,4 @@ const char *const DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.appli
 const char *const DBUS_LOCAL_APP_GET_LIST_OF_FILES = "List";
 const char *const DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "Info";
 
-#endif // AB_CONSTANTS_H
+#endif // AB_MODEL_CONSTANTS_H

@@ -1,5 +1,5 @@
-#ifndef AB_LOCAL_APPLICATION_ITEM_H
-#define AB_LOCAL_APPLICATION_ITEM_H
+#ifndef AB_MODEL_LOCAL_APPLICATION_ITEM_H
+#define AB_MODEL_LOCAL_APPLICATION_ITEM_H
 
 #include "localapplication.h"
 
@@ -22,4 +22,4 @@ public:
 } // namespace model
 } // namespace ab
 
-#endif // AB_LOCAL_APPLICATION_ITEM_H
+#endif // AB_MODEL_LOCAL_APPLICATION_ITEM_H

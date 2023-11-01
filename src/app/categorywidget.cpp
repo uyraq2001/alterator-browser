@@ -15,8 +15,8 @@
 
 namespace ab
 {
-const QString INGNORE_UI       = "html";
-const QString INGNORE_CATEGORY = "X-Alterator-Hidden";
+const QString IGNORE_UI       = "html";
+const QString IGNORE_CATEGORY = "X-Alterator-Hidden";
 
 CategoryWidget::CategoryWidget(MainWindow *w, QWidget *parent)
     : QWidget{parent}
@@ -80,13 +80,13 @@ unsigned int CategoryWidget::setItem(model::ObjectItem *newItem)
         try
         {
             ab::model::Object childObject = std::get<ab::model::Object>(*childItem);
-            if (childObject.m_x_Alterator_UI == INGNORE_UI)
+            if (childObject.m_x_Alterator_UI == IGNORE_UI)
             {
                 qWarning() << "Ignoring object with html UI:" << childObject.m_id;
                 continue;
             }
 
-            if (childObject.m_categoryId == INGNORE_CATEGORY)
+            if (childObject.m_categoryId == IGNORE_CATEGORY)
             {
                 qWarning() << "Ignoring object with hidden category:" << childObject.m_id;
                 continue;
