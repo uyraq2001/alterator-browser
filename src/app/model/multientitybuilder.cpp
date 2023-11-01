@@ -2,6 +2,8 @@
 #include "constants.h"
 #include "objectbuilder.h"
 
+#include <QDebug>
+
 template<typename... Ts>
 struct Overload : Ts...
 {
@@ -14,11 +16,8 @@ namespace ab
 {
 namespace model
 {
-MultiEntityBuilder::MultiEntityBuilder(DesktopFileParser *infoParser)
-    : m_infoParser(infoParser)
-{}
-
-std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> MultiEntityBuilder::buildAll()
+std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> MultiEntityBuilder::buildAll(
+    DesktopFileParser *infoParser)
 {
     using namespace xalterator_entry;
 
@@ -27,13 +26,13 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> M
     auto sections          = m_infoParser->getSections();
     auto xalteratorSection = sections.find(XALTERATOR_SECTION);
 
-    std::vector<QString> objectNames      = getValue(*xalteratorSection, OBJECTS_LIST_KEY).split(";");
-    std::vector<QString> categoryNames    = getValue(*xalteratorSection, CATEGORIES_LIST_KEY).split(";");
-    std::vector<QString> applicationNames = getValue(*xalteratorSection, APPLICATIONS_LIST_KEY).split(";");
+    QStringList objectNames      = getValue(*xalteratorSection, OBJECTS_LIST_KEY).split(";");
+    QStringList categoryNames    = getValue(*xalteratorSection, CATEGORIES_LIST_KEY).split(";");
+    QStringList applicationNames = getValue(*xalteratorSection, APPLICATIONS_LIST_KEY).split(";");
 
     for (auto objectName : objectNames)
     {
-        QString sectionName = OBJECT_SECTION_PREXIX << objectName;
+        QString sectionName = OBJECT_SECTION_PREXIX + " " + objectName;
         auto currentSection = sections.find(sectionName);
         if (currentSection == sections.end())
         {
@@ -42,12 +41,12 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> M
             continue;
         }
 
-        result.push_back(buildObject(currentSection));
+        result.push_back(buildObject(*currentSection));
     }
 
     for (auto categoryName : categoryNames)
     {
-        QString sectionName = CATEGORY_SECTION_PREXIX << categoryName;
+        QString sectionName = CATEGORY_SECTION_PREXIX + " " + categoryName;
         auto currentSection = sections.find(sectionName);
         if (currentSection == sections.end())
         {
@@ -56,12 +55,12 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> M
             continue;
         }
 
-        result.push_back(buildCategory(currentSection));
+        result.push_back(buildCategory(*currentSection));
     }
 
     for (auto applicationName : applicationNames)
     {
-        QString sectionName = APPLICATION_SECTION_PREXIX << categoryName;
+        QString sectionName = APPLICATION_SECTION_PREXIX + " " + applicationName;
         auto currentSection = sections.find(sectionName);
         if (currentSection == sections.end())
         {
@@ -70,63 +69,55 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> M
             continue;
         }
 
-        result.push_back(buildApplication(currentSection));
+        result.push_back(buildApplication(*currentSection));
     }
+
+    return result;
 }
 
-std::unique_ptr<Object> MultiEntityBuilder::buildObject(DesktopFileParser::Section section)
+std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBuilder::buildObject(
+    DesktopFileParser::Section section)
 {
     using namespace xalterator_entry;
 
-    auto res = std::make_unique<Object>();
+    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(Object());
 
-    if (!buildNames(*section, res.get()))
+    if (!buildNames(section, res.get()))
     {
         return nullptr;
     }
 
-    res->m_categoryId = getValue(section, CATEGORY_KEY);
-    if (!buildNames(section, res.get()))
-    {
-        continue;
-    }
+    QString currentObjectCategoryName   = getValue(section, CATEGORY_KEY);
+    std::get<Object>(*res).m_categoryId = currentObjectCategoryName;
 
     QString icon = getValue(section, ICON_KEY);
     if (icon.isEmpty())
     {
-        qWarning() << "Can't find icon for the object: " << res->m_id;
+        qWarning() << "Can't find icon for the object: " << std::get<Object>(*res).m_id;
     }
-    res->m_icon = icon;
+    std::get<Object>(*res).m_icon = icon;
 
-    res->m_isLegacy = false;
+    std::get<Object>(*res).m_isLegacy = false;
+
+    return res;
 }
-std::unique_ptr<Category> MultiEntityBuilder::buildCategory(DesktopFileParser::Section section)
+
+std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBuilder::buildCategory(
+    DesktopFileParser::Section section)
 {
     using namespace xalterator_entry;
 
-    auto res = std::make_unique<Category>();
-
-    if (!buildNames(*section, res.get()))
-    {
-        return nullptr;
-    }
-
-    res->m_categoryId = getValue(section, CATEGORY_KEY);
-    if (!buildNames(section, res.get()))
-    {
-        continue;
-    }
-
-    QString icon = getValue(section, ICON_KEY);
-    if (icon.isEmpty())
-    {
-        qWarning() << "Can't find icon for the object: " << res->m_id;
-    }
-    res->m_icon = icon;
-
-    res->m_isLegacy = false;
+    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(Category());
+    return res;
 }
-std::unique_ptr<LocalApplication> MultiEntityBuilder::buildApplication(DesktopFileParser::Section section) {}
+std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBuilder::buildApplication(
+    DesktopFileParser::Section section)
+{
+    using namespace xalterator_entry;
+
+    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(Category());
+    return res;
+}
 
 bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
                                     std::variant<Object, Category, LocalApplication> *entity)
@@ -150,16 +141,26 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
         return false;
     }
 
-    std::visit(
-        [&defaultName, &listOfKeys](auto &&e) {
-            e->m_id          = defaultName;
-            e->m_displayName = defaultName;
-            for (IniFileKey &currentIniFileKey : listOfKeys)
-            {
-                e->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
-            }
-        },
-        entity);
+    std::visit(Overload{[&defaultName, &listOfKeys](Object &&e) {
+                            e.m_id          = defaultName;
+                            e.m_displayName = defaultName;
+                            for (IniFileKey &currentIniFileKey : listOfKeys)
+                            {
+                                e.m_nameLocaleStorage.insert(currentIniFileKey.keyLocale,
+                                                             currentIniFileKey.value.toString());
+                            }
+                        },
+                        [&defaultName, &listOfKeys](Category &&e) {
+                            e.m_id   = defaultName;
+                            e.m_name = defaultName;
+                            for (IniFileKey &currentIniFileKey : listOfKeys)
+                            {
+                                e.m_nameLocaleStorage.insert(currentIniFileKey.keyLocale,
+                                                             currentIniFileKey.value.toString());
+                            }
+                        },
+                        [&defaultName, &listOfKeys](LocalApplication &&e) {}},
+               *entity);
 
     return true;
 }

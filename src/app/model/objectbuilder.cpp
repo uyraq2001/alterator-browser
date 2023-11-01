@@ -40,10 +40,6 @@ const QString CATEGORY_KEY          = "CategoryInternalName";
 const QString ICON_KEY              = "Icon";
 } // namespace xalterator_entry
 
-ObjectBuilder::ObjectBuilder(DesktopFileParser *infoParser)
-    : m_infoParser(infoParser)
-{}
-
 std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> ObjectBuilder::buildAll(
     DesktopFileParser *infoParser)
 {
@@ -56,7 +52,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> O
     if (desktopSection == sections.end())
     {
         qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
-        return nullptr;
+        return {};
     }
 
     QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
@@ -65,7 +61,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> O
 
     if (!buildNames(*desktopSection, newObject.get()))
     {
-        return nullptr;
+        return {};
     }
 
     QString type = getValue(*desktopSection, TYPE_KEY_NAME);
@@ -122,7 +118,10 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> O
 
     newObject->m_isLegacy = true;
 
-    return std::vector{std::make_unique(newObject)};
+    std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> ans;
+    ans.push_back(std::make_unique<std::variant<Object, Category, LocalApplication>>(*newObject.release()));
+    return ans;
+    // TODO: go inline
 }
 
 bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *object)

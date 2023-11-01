@@ -234,11 +234,15 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
         std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> newObjects
             = objectBuilder->buildAll(&infoParsingResult);
 
-        auto dropApplications = Overload{[&acObjects](auto obj) {
+        auto dropApplications = Overload{[&acObjects](auto &obj) {
                                              acObjects.push_back(std::make_unique<std::variant<Object, Category>>(
                                                  std::variant<Object, Category>(obj)));
                                          },
-                                         [](LocalApplication) {}};
+                                         [&acObjects](LocalApplication &) {
+                                             acObjects.push_back(std::make_unique<std::variant<Object, Category>>(
+                                                 std::variant<Object, Category>(Object())));
+                                             // TODO: gotta leave this option empty, but unclear how
+                                         }};
 
         for (auto &obj : newObjects)
         {

@@ -27,6 +27,7 @@ public:
     static const QString X_ALTERATOR_UI_NAME;
 
 public:
+    ObjectBuilder()  = default;
     ~ObjectBuilder() = default;
 
     std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> buildAll(
