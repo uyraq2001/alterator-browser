@@ -1,8 +1,8 @@
 #include "controller.h"
 #include "mainwindow.h"
+#include "model/constants.h"
 #include "model/localapllicationmodelbuilder.h"
 #include "model/objectsmodelbuilder.h"
-#include "model/constants.h"
 
 #include <QAction>
 #include <QDBusConnection>
@@ -67,7 +67,8 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
             });
 
             proc->start("alterator-standalone",
-                        QStringList() << "-l" << std::get<ab::model::Object>(*moduleItem->m_object).m_icon);
+                        QStringList() << "-l"
+                                      << std::get<ab::model::Object>(*moduleItem->m_object).m_x_Alterator_Internal_Name);
         }
         else
         {

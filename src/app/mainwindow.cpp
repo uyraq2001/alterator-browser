@@ -84,8 +84,23 @@ void MainWindow::setModel(model::Model *newModel)
     for (int i = 0; i < d->model->rowCount(); ++i)
     {
         auto categoryWidget = new CategoryWidget(this);
-        categoryLayout->addWidget(categoryWidget);
-        categoryWidget->setItem(dynamic_cast<model::ObjectItem *>(d->model->item(i)));
+
+        model::ObjectItem *categoryObject = dynamic_cast<model::ObjectItem *>(d->model->item(i));
+        if (!categoryObject)
+        {
+            qWarning() << "Can't convert item to category object!";
+
+            continue;
+        }
+
+        if (categoryWidget->setItem(categoryObject) > 0)
+        {
+            categoryLayout->addWidget(categoryWidget);
+        }
+        else
+        {
+            qWarning() << "Ignoring empty category!";
+        }
     }
 }
 
