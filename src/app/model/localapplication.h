@@ -10,10 +10,8 @@ namespace ab
 {
 namespace model
 {
-class LocalApplication : public QObject
+class LocalApplication
 {
-    Q_OBJECT
-
 public:
     void setLocale(QString locale);
 

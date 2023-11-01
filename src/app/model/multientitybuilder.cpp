@@ -159,7 +159,11 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
                                                              currentIniFileKey.value.toString());
                             }
                         },
-                        [&defaultName, &listOfKeys](LocalApplication &&e) {}},
+                        [&defaultName, &listOfKeys](auto &&e) {
+                            for (IniFileKey &currentIniFileKey : listOfKeys)
+                            {}
+                            // TODO: needs cleaning up
+                        }},
                *entity);
 
     return true;
