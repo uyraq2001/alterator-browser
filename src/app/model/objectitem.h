@@ -1,5 +1,5 @@
-#ifndef AB_OBJECT_ITEM_H
-#define AB_OBJECT_ITEM_H
+#ifndef AB_MODEL_OBJECT_ITEM_H
+#define AB_MODEL_OBJECT_ITEM_H
 
 #include "category.h"
 #include "object.h"
@@ -41,4 +41,4 @@ public:
 } // namespace model
 } // namespace ab
 
-#endif // AB_OBJECT_ITEM_H
+#endif // AB_MODEL_OBJECT_ITEM_H

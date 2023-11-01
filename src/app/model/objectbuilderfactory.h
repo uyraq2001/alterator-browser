@@ -1,5 +1,5 @@
-#ifndef OBJECTBUILDERFACTORY_H
-#define OBJECTBUILDERFACTORY_H
+#ifndef AB_MODEL_OBJECT_BUILDER_FACTORY_H
+#define AB_MODEL_OBJECT_BUILDER_FACTORY_H
 
 #include <memory>
 
@@ -22,4 +22,4 @@ public:
 } // namespace model
 } // namespace ab
 
-#endif // OBJECTBUILDERFACTORY_H
+#endif // AB_MODEL_OBJECT_BUILDER_FACTORY_H

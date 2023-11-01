@@ -1,5 +1,5 @@
-#ifndef AB_OBJECT_CATEGORY_BUILDER_H
-#define AB_OBJECT_CATEGORY_BUILDER_H
+#ifndef AB_MODEL_CATEGORY_BUILDER_H
+#define AB_MODEL_CATEGORY_BUILDER_H
 
 #include "category.h"
 #include "desktopfileparser.h"
@@ -37,4 +37,4 @@ private:
 } // namespace model
 } // namespace ab
 
-#endif // AB_OBJECT_CATEGORY_BUILDER_H
+#endif // AB_MODEL_CATEGORY_BUILDER_H

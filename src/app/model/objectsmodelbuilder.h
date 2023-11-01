@@ -1,5 +1,5 @@
-#ifndef AB_OBJECTS_MODEL_BUILDER_H
-#define AB_OBJECTS_MODEL_BUILDER_H
+#ifndef AB_MODEL_OBJECTS_MODEL_BUILDER_H
+#define AB_MODEL_OBJECTS_MODEL_BUILDER_H
 
 #include "localapplicationmodel.h"
 #include "model.h"
@@ -58,4 +58,4 @@ private:
 } // namespace model
 } // namespace ab
 
-#endif // AB_OBJECTS_MODEL_BUILDER_H
+#endif // AB_MODEL_OBJECTS_MODEL_BUILDER_H

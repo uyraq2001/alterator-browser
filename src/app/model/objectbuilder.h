@@ -1,5 +1,5 @@
-#ifndef AB_OBJECT_BUILDER_H
-#define AB_OBJECT_BUILDER_H
+#ifndef AB_MODEL_OBJECT_BUILDER_H
+#define AB_MODEL_OBJECT_BUILDER_H
 
 #include "desktopfileparser.h"
 #include "object.h"
@@ -44,4 +44,4 @@ private:
 } // namespace model
 } // namespace ab
 
-#endif // AB_OBJECT_BUILDER_H
+#endif // AB_MODEL_OBJECT_BUILDER_H

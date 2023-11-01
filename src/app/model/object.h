@@ -1,5 +1,5 @@
-#ifndef AB_OBJECT_H
-#define AB_OBJECT_H
+#ifndef AB_MODEL_OBJECT_H
+#define AB_MODEL_OBJECT_H
 
 #include "localapplication.h"
 
@@ -35,4 +35,4 @@ public:
 } // namespace model
 } // namespace ab
 
-#endif // AB_OBJECT_H
+#endif // AB_MODEL_OBJECT_H
