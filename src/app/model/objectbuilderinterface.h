@@ -1,5 +1,5 @@
-#ifndef OBJECTBUILDERINTERFACE_H
-#define OBJECTBUILDERINTERFACE_H
+#ifndef AB_MODEL_OBJECT_BUILDER_INTERFACE_H
+#define AB_MODEL_OBJECT_BUILDER_INTERFACE_H
 
 #include "category.h"
 #include "desktopfileparser.h"
@@ -23,4 +23,4 @@ public:
 } // namespace model
 } // namespace ab
 
-#endif // OBJECTBUILDERINTERFACE_H
+#endif // AB_MODEL_OBJECT_BUILDER_INTERFACE_H

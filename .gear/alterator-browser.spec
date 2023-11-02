@@ -37,13 +37,11 @@ Alterator operating via D-Bus.
 %cmakeinstall_std
 
 %files
-%_datadir/alterator/backends/*.backend
-%_datadir/alterator/scripts/*.sh
 %_bindir/alterator-browser
 %doc README.md INSTALL.md
 
 %changelog
-* Wed Aug 1 2023 Kozyrev Yuri <kozyrevid@altlinux.org> 0.1.0-alt1
+* Wed Oct 25 2023 Aleksey Saprunov <sav@altlinux.org> 0.1.0-alt1
 - added support for acc files
 * Wed Jul 5 2023 Kozyrev Yuri <kozyrevid@altlinux.org> 0.0.1-alt1
 - initial build

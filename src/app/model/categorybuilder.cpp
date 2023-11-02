@@ -74,7 +74,7 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Cate
     auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
     if (nameIt == section.end())
     {
-        qWarning() << "Can't find names for the category!";
+        qWarning() << "Can't find names for the category";
         return false;
     }
 
@@ -82,7 +82,7 @@ bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Cate
     QString defaultName          = getDefaultValue(listOfKeys);
     if (defaultName.isEmpty())
     {
-        qWarning() << "Can't default name for the category!";
+        qWarning() << "Can't default name for the category";
         return false;
     }
 
@@ -102,7 +102,7 @@ bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, C
     auto commentIt = section.find(CATEGORY_COMMENT_KEY_NAME);
     if (commentIt == section.end())
     {
-        qWarning() << "Can't find comments for the category!";
+        qWarning() << "Can't find comments for the category";
         return false;
     }
 
@@ -110,7 +110,7 @@ bool ObjectCategoryBuilder::buildComments(DesktopFileParser::Section &section, C
     QString defaultComment       = getDefaultValue(listOfKeys);
     if (defaultComment.isEmpty())
     {
-        qWarning() << "Can't default comment for the category!";
+        qWarning() << "Can't default comment for the category";
         return false;
     }
 

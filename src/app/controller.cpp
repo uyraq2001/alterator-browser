@@ -1,5 +1,6 @@
 #include "controller.h"
 #include "mainwindow.h"
+#include "model/constants.h"
 #include "model/localapllicationmodelbuilder.h"
 #include "model/objectsmodelbuilder.h"
 
@@ -22,20 +23,6 @@ public:
     MainWindow *window{nullptr};
     std::unique_ptr<model::Model> model{nullptr};
 };
-
-const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
-const QString DBUS_PATH                            = "/ru/basealt/alterator";
-const QString DBUS_FIND_INTERFACE_NAME             = "ru.basealt.alterator.object";
-const QString DBUS_MANAGER_INTERFACE_NAME          = "ru.basealt.alterator.manager";
-const QString GET_OBJECTS_METHOD_NAME              = "get_objects";
-const QString INFO_METHOD_NAME_FOR_ACOBJECT        = "info";
-const QString CATEGORY_INTERFACE_NAME_FOR_ACOBJECT = "ru.basealt.alterator.categories";
-const QString CATEGORY_METHOD_NAME_FOR_ACOBJECT    = "info";
-
-const QString DBUS_LOCAL_APP_PATH              = "/ru/basealt/alterator/applications";
-const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.applications";
-const QString DBUS_LOCAL_APP_GET_LIST_OF_FILES = "list";
-const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
 Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent)
     : QObject{parent}
@@ -80,7 +67,8 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
             });
 
             proc->start("alterator-standalone",
-                        QStringList() << "-l" << std::get<ab::model::Object>(*moduleItem->m_object).m_icon);
+                        QStringList() << "-l"
+                                      << std::get<ab::model::Object>(*moduleItem->m_object).m_x_Alterator_Internal_Name);
         }
         else
         {

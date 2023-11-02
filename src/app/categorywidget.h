@@ -25,7 +25,7 @@ public:
     ~CategoryWidget() override;
 
     void setGeometry(const QRect &rect);
-    void setItem(model::ObjectItem *item);
+    unsigned int setItem(model::ObjectItem *item);
 
 public:
     CategoryWidget(const CategoryWidget &) = delete;

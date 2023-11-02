@@ -14,6 +14,7 @@ const QString ab::model::ObjectBuilder::X_ALTERATOR_URI_NAME       = "x-alterato
 const QString ab::model::ObjectBuilder::X_ALTERATOR_WEIGHT_NAME    = "x-alterator-weight";
 const QString ab::model::ObjectBuilder::X_ALTERATOR_HELP_NAME      = "x-alterator-help";
 const QString ab::model::ObjectBuilder::X_ALTERATOR_UI_NAME        = "x-alterator-ui";
+const QString ab::model::ObjectBuilder::X_ALTERATOR_INTERNAL_NAME  = "x-alterator-internal-name";
 
 namespace ab
 {
@@ -116,6 +117,13 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> O
         newObject->m_terminal = true;
     }
 
+    QString x_Alterator_Internal_Name = getValue(*desktopSection, X_ALTERATOR_INTERNAL_NAME);
+    if (x_Alterator_Internal_Name.isEmpty())
+    {
+        qWarning() << "Can't find x_Alterator_Internal_Name for the object";
+    }
+    newObject->m_x_Alterator_Internal_Name = x_Alterator_Internal_Name;
+
     newObject->m_isLegacy = true;
 
     std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> ans;
@@ -130,7 +138,7 @@ bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *obje
 
     if (nameIt == section.end())
     {
-        qWarning() << "Can't find names for the Object!";
+        qWarning() << "Can't find names for the Object";
         return false;
     }
 
@@ -140,7 +148,7 @@ bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *obje
 
     if (defaultName.isEmpty())
     {
-        qWarning() << "Can't default name for the object!";
+        qWarning() << "Can't default name for the object";
         return false;
     }
 

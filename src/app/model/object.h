@@ -1,5 +1,5 @@
-#ifndef AB_OBJECT_H
-#define AB_OBJECT_H
+#ifndef AB_MODEL_OBJECT_H
+#define AB_MODEL_OBJECT_H
 
 #include "localapplication.h"
 
@@ -23,6 +23,7 @@ public:
     QString m_x_Alterator_Weight{};
     QString m_x_Alterator_Help{};
     QString m_x_Alterator_UI{};
+    QString m_x_Alterator_Internal_Name{};
 
     std::vector<QString> m_interfaces{};
     std::vector<LocalApplication *> m_applications{};
@@ -34,4 +35,4 @@ public:
 } // namespace model
 } // namespace ab
 
-#endif // AB_OBJECT_H
+#endif // AB_MODEL_OBJECT_H

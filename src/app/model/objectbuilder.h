@@ -1,5 +1,5 @@
-#ifndef AB_OBJECT_BUILDER_H
-#define AB_OBJECT_BUILDER_H
+#ifndef AB_MODEL_OBJECT_BUILDER_H
+#define AB_MODEL_OBJECT_BUILDER_H
 
 #include "desktopfileparser.h"
 #include "object.h"
@@ -25,6 +25,7 @@ public:
     static const QString X_ALTERATOR_WEIGHT_NAME;
     static const QString X_ALTERATOR_HELP_NAME;
     static const QString X_ALTERATOR_UI_NAME;
+    static const QString X_ALTERATOR_INTERNAL_NAME;
 
 public:
     ObjectBuilder()  = default;
@@ -45,4 +46,4 @@ private:
 } // namespace model
 } // namespace ab
 
-#endif // AB_OBJECT_BUILDER_H
+#endif // AB_MODEL_OBJECT_BUILDER_H

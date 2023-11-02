@@ -9,6 +9,7 @@
 #include "objectbuilder.h"
 #include "objectbuilderfactory.h"
 #include "objectitem.h"
+#include "constants.h"
 
 #include <QDBusConnection>
 #include <QDBusInterface>
@@ -53,8 +54,7 @@ ObjectsModelBuilder::ObjectsModelBuilder(QString serviceName,
                                          QString interfaceName,
                                          QString getListOfFilesMethod,
                                          QString getDesktopFileMethod)
-    : m_dbusConnection(QDBusConnection::systemBus())
-    , m_dbusServiceName(std::move(serviceName))
+    : m_dbusServiceName(std::move(serviceName))
     , m_dbusPath(std::move(dbusPath))
     , m_managerInterface(std::move(managerIface))
     , m_dbusFindInterface(std::move(findInterface))
@@ -79,7 +79,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 
     if (!appModel)
     {
-        qCritical() << "Local applications model is empty!!";
+        qCritical() << "Local applications model is empty";
     }
 
     QStringList pathsOfObjects = getListOfObjects();
@@ -93,7 +93,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 
     if (acObjects.empty())
     {
-        qCritical() << "Can't access alterator manager interface!";
+        qCritical() << "Can't access alterator manager interface";
         return std::make_unique<Model>();
     }
 
@@ -103,7 +103,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 
     QLocale locale;
     QString language = locale.system().name().split("_").at(0);
-    model->translateModel("ru");
+    model->translateModel(language);
 
     return model;
 }
@@ -120,8 +120,7 @@ void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplica
         auto currentCategoryItem           = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentCategoryItem)
         {
-            qWarning() << "Can't cast category item to ObjectItem to merge models!";
-
+            qWarning() << "Can't cast category item to ObjectItem to merge models";
             continue;
         }
 
@@ -137,7 +136,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
         auto currentModuleItem             = dynamic_cast<ObjectItem *>(currentStandardItem);
         if (!currentModuleItem)
         {
-            qWarning() << "Can't cast item to ObjectItem to merge application object!";
+            qWarning() << "Can't cast item to ObjectItem to merge application object";
             continue;
         }
 
@@ -164,7 +163,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
         }
         catch (const std::bad_variant_access &e)
         {
-            qCritical() << "ERROR: the item is not of Object type";
+            qCritical() << "Item is not of Object type";
         }
     }
 }
@@ -175,7 +174,7 @@ QStringList ObjectsModelBuilder::getListOfObjects()
 
     if (!managerIface.isValid())
     {
-        qCritical() << "Can't access alterator manager interface!";
+        qCritical() << "Can't access alterator manager interface";
         return {};
     }
 
@@ -183,7 +182,7 @@ QStringList ObjectsModelBuilder::getListOfObjects()
 
     if (!reply.isValid())
     {
-        qCritical() << "Can't get reply from alterator manager interface!";
+        qCritical() << "Can't get reply from alterator manager interface:" << reply.error().message();
         return {};
     }
 
@@ -206,8 +205,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
 
         if (!iface.isValid())
         {
-            qWarning() << "Warning: object: " + currentPath + " doesn't provide interface " + m_dbusFindInterface;
-
+            qWarning() << "Object" << currentPath << "does not provide interface" << m_dbusFindInterface;
             continue;
         }
 
@@ -215,8 +213,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
 
         if (currentObjectInfo.isEmpty())
         {
-            qWarning() << "Warning: Can't get info of object: " + currentPath + " in interface: " + m_dbusFindInterface;
-
+            qWarning() << "Can't get info of object" << currentPath << "in interface" << m_dbusFindInterface;
             continue;
         }
 
@@ -226,8 +223,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
 
         if (!objectBuilder)
         {
-            qWarning() << "Warning: Bad info format in object: " + currentPath + " in interface: " + m_dbusFindInterface
-                              + " skipping..";
+            qWarning() << "Bad info format in object" << currentPath << "in interface" << m_dbusFindInterface;
             continue;
         }
 
@@ -262,9 +258,7 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
         return {};
     }
 
-    QString result = QString(reply.value());
-
-    return result;
+    return QString{reply.value()};
 }
 
 std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
@@ -272,9 +266,9 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 {
     std::map<QString, std::unique_ptr<ObjectItem>> categories;
 
-    for (size_t i = 0; i < objects.size(); ++i)
+    for (auto &object : objects)
     {
-        Object currentObject = std::get<Object>(*objects.at(i));
+        Object currentObject = std::get<Object>(*object);
 
         auto find = categories.find(currentObject.m_categoryId);
 
@@ -284,7 +278,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 
             auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object   = std::move(objects.at(i));
+            newModuleItem->m_object   = std::move(object);
 
             newCategoryItem->appendRow(newModuleItem.release());
 
@@ -296,7 +290,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 
             auto newModuleItem        = std::make_unique<ObjectItem>();
             newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object   = std::move(objects.at(i));
+            newModuleItem->m_object   = std::move(object);
 
             categoryItem->get()->appendRow(newModuleItem.release());
         }
@@ -312,7 +306,8 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
 
 std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString categoryName)
 {
-    auto newCategoryItem = std::make_unique<ObjectItem>();
+    auto newCategoryItem               = std::make_unique<ObjectItem>();
+    std::unique_ptr<Category> category = nullptr;
 
     if (categoryName.isEmpty())
     {
@@ -325,24 +320,21 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
                                                                              QDBusConnection::systemBus());
     if (!iface->isValid())
     {
-        qWarning() << "Can not connect to " + CATEGORY_INTERFACE_NAME_FOR_ACOBJECT + " interface";
-        return newCategoryItem;
+        qWarning() << "Can not connect to interface" << CATEGORY_INTERFACE_NAME_FOR_ACOBJECT;
     }
     QDBusReply<QByteArray> reply = iface->call(CATEGORY_METHOD_NAME_FOR_ACOBJECT, categoryName);
 
     if (!reply.isValid())
     {
-        qWarning() << "Can't reply with category name for the category:" << categoryName;
-        return newCategoryItem;
+        qWarning() << "Can't reply with category name for the category" << categoryName;
     }
-
-    QString categoryData(reply.value());
-
-    DesktopFileParser categoryParser(categoryData);
-
-    ObjectCategoryBuilder categoryBuilder(&categoryParser);
-
-    std::unique_ptr<Category> category = categoryBuilder.buildObjectCategory();
+    else
+    {
+        QString categoryData(reply.value());
+        DesktopFileParser categoryParser(categoryData);
+        ObjectCategoryBuilder categoryBuilder(&categoryParser);
+        category = categoryBuilder.buildObjectCategory();
+    }
 
     if (!category)
     {
@@ -358,7 +350,7 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
     }
 
     newCategoryItem->m_itemType = ObjectItem::ItemType::category;
-    newCategoryItem->m_object   = std::move(std::make_unique<std::variant<Object, Category>>(*category));
+    newCategoryItem->m_object   = std::make_unique<std::variant<Object, Category>>(*category);
 
     return newCategoryItem;
 }

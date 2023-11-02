@@ -17,7 +17,7 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getBuilder(Desktop
 
     if (alteratorSection != sections.end())
     {
-        //New object, return new object builder
+        // New object, return new object builder
         return std::unique_ptr<ObjectBuilderInterface>(new MultiEntityBuilder());
     }
 
@@ -25,11 +25,11 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getBuilder(Desktop
 
     if (desktopSection == sections.end())
     {
-        //No desktop section in old object. Error? returning null-pointer
+        // No desktop section in old object. Error? returning null-pointer
         return std::unique_ptr<ObjectBuilderInterface>(nullptr);
     }
 
-    //This is old object, return old object builder
+    // This is old object, return old object builder
     return std::unique_ptr<ObjectBuilderInterface>(new ObjectBuilder());
 }
 
