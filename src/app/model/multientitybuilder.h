@@ -18,7 +18,8 @@ namespace model
 class MultiEntityBuilder : public ObjectBuilderInterface
 {
 public:
-    MultiEntityBuilder();
+    MultiEntityBuilder()  = default;
+    ~MultiEntityBuilder() = default;
 
     std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> buildAll(
         DesktopFileParser *infoParser) override;

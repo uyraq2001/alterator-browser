@@ -18,7 +18,7 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getBuilder(Desktop
     if (alteratorSection != sections.end())
     {
         //New object, return new object builder
-        return std::make_unique<MultiEntityBuilder>();
+        return std::unique_ptr<ObjectBuilderInterface>(new MultiEntityBuilder());
     }
 
     auto desktopSection = sections.find(DESKTOP_SECTION_NAME);

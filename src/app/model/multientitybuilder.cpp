@@ -80,7 +80,8 @@ std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBui
 {
     using namespace xalterator_entry;
 
-    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(Object());
+    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(
+        std::variant<Object, Category, LocalApplication>(Object()));
 
     if (!buildNames(section, res.get()))
     {
@@ -107,7 +108,8 @@ std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBui
 {
     using namespace xalterator_entry;
 
-    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(Category());
+    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(
+        std::variant<Object, Category, LocalApplication>(Category()));
     return res;
 }
 std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBuilder::buildApplication(
@@ -115,7 +117,8 @@ std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBui
 {
     using namespace xalterator_entry;
 
-    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(Category());
+    auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(
+        std::variant<Object, Category, LocalApplication>(Category()));
     return res;
 }
 
