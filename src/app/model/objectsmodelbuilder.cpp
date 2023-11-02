@@ -1,6 +1,7 @@
 #include "objectsmodelbuilder.h"
 #include "category.h"
 #include "categorybuilder.h"
+#include "constants.h"
 #include "desktopfileparser.h"
 #include "localapplicationmodel.h"
 #include "model/localapllicationmodelbuilder.h"
@@ -9,7 +10,6 @@
 #include "objectbuilder.h"
 #include "objectbuilderfactory.h"
 #include "objectitem.h"
-#include "constants.h"
 
 #include <QDBusConnection>
 #include <QDBusInterface>
@@ -23,21 +23,6 @@ struct Overload : Ts...
 };
 template<class... Ts>
 Overload(Ts...) -> Overload<Ts...>;
-
-const QString DBUS_SERVICE_NAME                    = "ru.basealt.alterator";
-const QString DBUS_PATH                            = "/ru/basealt/alterator";
-const QString DBUS_FIND_INTERFACE_NAME             = "ru.basealt.alterator.object";
-const QString DBUS_MANAGER_INTERFACE_NAME          = "ru.basealt.alterator.manager";
-const QString GET_OBJECTS_METHOD_NAME              = "get_objects";
-const QString INFO_METHOD_NAME_FOR_ACOBJECT        = "info";
-const QString CATEGORY_INTERFACE_NAME_FOR_ACOBJECT = "ru.basealt.alterator.categories";
-const QString CATEGORY_OBJECT_PATH                 = "/ru/basealt/alterator/categories";
-const QString CATEGORY_METHOD_NAME_FOR_ACOBJECT    = "info";
-
-const QString DBUS_LOCAL_APP_PATH              = "/ru/basealt/alterator/applications";
-const QString DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.applications";
-const QString DBUS_LOCAL_APP_GET_LIST_OF_FILES = "list";
-const QString DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "info";
 
 namespace ab
 {
