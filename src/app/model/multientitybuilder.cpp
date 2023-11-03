@@ -162,8 +162,8 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
                                                              currentIniFileKey.value.toString());
                             }
                         },
-                        [&listOfKeys](auto &e) {
-                            for (IniFileKey &currentIniFileKey : listOfKeys)
+                        [](LocalApplication &) {
+                            for (IniFileKey &currentIniFileKey : QList<IniFileKey>())
                             {}
                             // TODO: needs cleaning up
                         }},

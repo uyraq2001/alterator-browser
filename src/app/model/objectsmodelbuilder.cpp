@@ -220,8 +220,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
                                                  std::variant<Object, Category>(obj)));
                                          },
                                          [&acObjects](LocalApplication &) {
-                                             acObjects.push_back(std::make_unique<std::variant<Object, Category>>(
-                                                 std::variant<Object, Category>(Object())));
+                                             acObjects.push_back({});
                                              // TODO: gotta leave this option empty, but unclear how
                                          }};
 

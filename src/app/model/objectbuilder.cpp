@@ -129,7 +129,6 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> O
     std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> ans;
     ans.push_back(std::make_unique<std::variant<Object, Category, LocalApplication>>(*newObject.release()));
     return ans;
-    // TODO: go inline
 }
 
 bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *object)
