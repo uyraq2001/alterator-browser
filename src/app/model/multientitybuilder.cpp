@@ -165,7 +165,7 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
                         [](LocalApplication &) {
                             for (IniFileKey &currentIniFileKey : QList<IniFileKey>())
                             {}
-                            // TODO: needs cleaning up
+                            // TODO(kozyrevid): needs cleaning up
                         }},
                *entity);
 

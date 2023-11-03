@@ -221,7 +221,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
                                          },
                                          [&acObjects](LocalApplication &) {
                                              acObjects.push_back({});
-                                             // TODO: gotta leave this option empty, but unclear how
+                                             // TODO(kozyrevid): gotta leave this option empty, but unclear how
                                          }};
 
         for (auto &obj : newObjects)
