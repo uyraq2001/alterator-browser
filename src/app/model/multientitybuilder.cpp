@@ -23,7 +23,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> M
 
     std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> result;
 
-    auto sections          = m_infoParser->getSections();
+    auto sections          = infoParser->getSections();
     auto xalteratorSection = sections.find(XALTERATOR_SECTION);
 
     QStringList objectNames      = getValue(*xalteratorSection, OBJECTS_LIST_KEY).split(";");
@@ -144,7 +144,7 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
         return false;
     }
 
-    std::visit(Overload{[&defaultName, &listOfKeys](Object &&e) {
+    std::visit(Overload{[&defaultName, &listOfKeys](Object &e) {
                             e.m_id          = defaultName;
                             e.m_displayName = defaultName;
                             for (IniFileKey &currentIniFileKey : listOfKeys)
@@ -153,7 +153,7 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
                                                              currentIniFileKey.value.toString());
                             }
                         },
-                        [&defaultName, &listOfKeys](Category &&e) {
+                        [&defaultName, &listOfKeys](Category &e) {
                             e.m_id   = defaultName;
                             e.m_name = defaultName;
                             for (IniFileKey &currentIniFileKey : listOfKeys)
@@ -162,7 +162,7 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
                                                              currentIniFileKey.value.toString());
                             }
                         },
-                        [&defaultName, &listOfKeys](auto &&e) {
+                        [&listOfKeys](auto &e) {
                             for (IniFileKey &currentIniFileKey : listOfKeys)
                             {}
                             // TODO: needs cleaning up

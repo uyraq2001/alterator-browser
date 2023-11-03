@@ -39,8 +39,6 @@ private:
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
     QString getValue(DesktopFileParser::Section &section, QString key);
     std::vector<QString> parseValuesFromKey(DesktopFileParser::Section &section, QString key, QString delimiter);
-
-    DesktopFileParser *m_infoParser = nullptr;
 };
 } // namespace model
 } // namespace ab
