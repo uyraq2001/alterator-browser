@@ -118,7 +118,45 @@ std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBui
     using namespace xalterator_entry;
 
     auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(
-        std::variant<Object, Category, LocalApplication>(Category()));
+        std::variant<Object, Category, LocalApplication>(LocalApplication()));
+
+    if (!buildNames(section, res.get())) // TODO: buildFieldWithLocale
+    {
+        return {};
+    }
+
+    QString tryExec = getValue(section, LOCAL_APP_TRY_EXEC_KEY_NAME);
+    if (tryExec.isEmpty())
+    {
+        qWarning() << "Can't find key:" << LOCAL_APP_TRY_EXEC_KEY_NAME;
+    }
+    std::get<LocalApplication>(*res).m_try_Exec = tryExec;
+
+    QString exec = getValue(section, LOCAL_APP_EXEC_KEY_NAME);
+    if (exec.isEmpty())
+    {
+        qWarning() << "Can't find key:" << LOCAL_APP_EXEC_KEY_NAME;
+        return nullptr;
+    }
+    std::get<LocalApplication>(*res).m_desktopExec = exec;
+
+    QString icon = getValue(section, LOCAL_APP_ICON_KEY_NAME);
+    if (icon.isEmpty())
+    {
+        qWarning() << "Can't find key:" << LOCAL_APP_ICON_KEY_NAME;
+    }
+    std::get<LocalApplication>(*res).m_icon = icon;
+
+    QString type = getValue(section, LOCAL_APP_TYPE_KEY_NAME);
+    if (type.isEmpty())
+    {
+        qWarning() << "Can't find key:" << LOCAL_APP_TYPE_KEY_NAME;
+    }
+    std::get<LocalApplication>(*res).m_type = type;
+
+    std::get<LocalApplication>(*res).m_categories = parseValuesFromKey(section, LOCAL_APP_CATEGORIES_KEY_NAME, ";");
+    std::get<LocalApplication>(*res).m_mimeTypes = parseValuesFromKey(section, LOCAL_APP_MIMETYPE_KEY_NAME, ";");
+
     return res;
 }
 
@@ -137,13 +175,11 @@ bool MultiEntityBuilder::buildNames(DesktopFileParser::Section &section,
     QList<IniFileKey> listOfKeys = section.values(NAME_KEY);
 
     QString defaultName = getDefaultValue(listOfKeys);
-
     if (defaultName.isEmpty())
     {
         qWarning() << "Can't default name for the object!";
         return false;
     }
-
     std::visit(Overload{[&defaultName, &listOfKeys](Object &e) {
                             e.m_id          = defaultName;
                             e.m_displayName = defaultName;
@@ -192,14 +228,11 @@ QString MultiEntityBuilder::getValue(DesktopFileParser::Section &section, QStrin
     {
         return {};
     }
-
     QList<IniFileKey> listOfKeys = section.values(key);
-
     if (!listOfKeys.empty())
     {
         return listOfKeys.at(0).value.toString();
     }
-
     return {};
 }
 

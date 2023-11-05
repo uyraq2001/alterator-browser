@@ -18,6 +18,22 @@ const char *const DBUS_LOCAL_APP_INTERFACE_NAME    = "ru.basealt.alterator.appli
 const char *const DBUS_LOCAL_APP_GET_LIST_OF_FILES = "List";
 const char *const DBUS_LOCAL_APP_GET_DESKTOP_FILE  = "Info";
 
+const QString LOCAL_APP_DESKTOP_ENTRY_SECTION_NAME         = "Desktop Entry";
+const QString LOCAL_APP_NAME_KEY_NAME                      = "name";
+const QString LOCAL_APP_GENERIC_NAME_KEY_NAME              = "genericname";
+const QString LOCAL_APP_COMMENT_KEY_NAME                   = "comment";
+const QString LOCAL_APP_TRY_EXEC_KEY_NAME                  = "tryexec";
+const QString LOCAL_APP_ICON_KEY_NAME                      = "icon";
+const QString LOCAL_APP_TYPE_KEY_NAME                      = "type";
+const QString LOCAL_APP_CATEGORIES_KEY_NAME                = "categories";
+const QString LOCAL_APP_KEYWORDS_KEY_NAME                  = "keywords";
+const QString LOCAL_APP_INTERFACE_KEY_NAME                 = "implements";
+const QString LOCAL_APP_EXEC_KEY_NAME                      = "exec";
+const QString LOCAL_APP_MIMETYPE_KEY_NAME                  = "mimetype";
+const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME     = "Alterator Entry";
+const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_PREFIX   = "Alterator Interface";
+const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME = "exec";
+
 namespace ab
 {
 namespace model

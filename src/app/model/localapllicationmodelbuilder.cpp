@@ -2,6 +2,7 @@
 #include "desktopfileparser.h"
 #include "localapplicationbuilder.h"
 #include "localapplicationitem.h"
+#include "objectbuilderfactory.h"
 
 #include <memory>
 #include <utility>
@@ -88,13 +89,39 @@ std::vector<std::unique_ptr<LocalApplication>> LocalApllicationModelBuilder::par
     for (QString currentFile : files)
     {
         QString currentFileData = getDesktopFile(currentFile);
-
         if (currentFile.isEmpty())
         {
             continue;
         }
-
         DesktopFileParser parser(currentFileData);
+
+        auto objectBuilder = ObjectBuilderFactory::getBuilder(&parser);
+
+        if (!objectBuilder)
+        {
+            qWarning() << "Bad info format in object" << currentPath << "in interface" << m_dbusFindInterface;
+            continue;
+        }
+
+        std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> newObjects
+            = objectBuilder->buildAll(&parse);
+
+        auto dropApplications = Overload{[&acObjects](auto &obj) {
+                                             acObjects.push_back(std::make_unique<std::variant<Object, Category>>(
+                                                 std::variant<Object, Category>(obj)));
+                                         },
+                                         [&acObjects](LocalApplication &) {
+                                             acObjects.push_back({});
+                                             // TODO(kozyrevid): gotta leave this option empty, but unclear how
+                                         }};
+
+        for (auto &obj : newObjects)
+        {
+            std::visit(dropApplications, *obj.get());
+        }
+    }
+
+
         LocalApplicationBuilder builder;
         std::unique_ptr<LocalApplication> newLocalApp = builder.buildLocalApplicationObject(parser);
 
