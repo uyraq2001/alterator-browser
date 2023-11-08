@@ -1,7 +1,6 @@
-#include "../core/logger/prelude.h"
+#include <qbase/logger/prelude.h>
 #include "controller.h"
 #include "mainwindow.h"
-#include "model/localapllicationmodelbuilder.h"
 #include "model/model.h"
 #include "model/objectsmodelbuilder.h"
 #include "model/constants.h"
@@ -12,11 +11,11 @@
 
 int main(int argc, char *argv[])
 {
-    auto loggerManager = ab::logger::LoggerManager::globalInstance();
+    auto loggerManager = qbase::logger::LoggerManager::globalInstance();
 
-    loggerManager->addLogger<ab::logger::ConsoleLogger>(QtDebugMsg);
-    loggerManager->addLogger<ab::logger::FileLogger>(QtWarningMsg);
-    loggerManager->addLogger<ab::logger::SyslogLogger>(LOG_LEVEL_DISABLED);
+    loggerManager->addLogger<qbase::logger::ConsoleLogger>(QtDebugMsg);
+    loggerManager->addLogger<qbase::logger::FileLogger>(QtWarningMsg,  "alterator-browser", "alterator-browser.log");
+    loggerManager->addLogger<qbase::logger::SyslogLogger>(LOG_LEVEL_DISABLED, "alterator-browser");
 
     QApplication app(argc, argv);
 
