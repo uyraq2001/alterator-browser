@@ -108,16 +108,13 @@ std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBui
         qCritical() << "Can't access alterator manager interface";
         return {};
     }
-    QDBusReply<QList<QDBusObjectPath>> reply = managerIface.call(MANAGER_IFACES_METHOD, origin);
+    QDBusReply<QStringList> reply = managerIface.call(MANAGER_IFACES_METHOD, origin);
     if (!reply.isValid())
     {
         qCritical() << "Can't get reply from alterator manager interface:" << reply.error().message();
         return {};
     }
-    QList<QDBusObjectPath> ifaceList = reply.value();
-    std::for_each(ifaceList.begin(), ifaceList.end(), [&res](QDBusObjectPath &iface) {
-        std::get<Object>(*res).m_interfaces.append(iface.path());
-    });
+    std::get<Object>(*res).m_interfaces = reply.value();
 
     return res;
 }

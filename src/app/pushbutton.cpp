@@ -29,13 +29,13 @@ void PushButton::setItem(model::ObjectItem *newItem)
         font.setPointSize(11);
         this->setFont(font);
 
-        if (obj.m_applications.size() > 1)
+        if (obj.m_interfaces.size() > 1)
         {
             auto menu = std::make_unique<QMenu>(this);
             for (const auto &iface : obj.m_interfaces)
             {
                 auto interfaceAction = std::make_unique<QAction>("&" + iface, menu.get());
-                connect(interfaceAction.get(), &QAction::triggered, this, [&iface, this]() {
+                connect(interfaceAction.get(), &QAction::triggered, this, [iface, this]() {
                     window->onInterfaceClicked(iface);
                 });
                 menu->addAction(interfaceAction.release());

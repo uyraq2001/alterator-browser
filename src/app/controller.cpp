@@ -89,7 +89,8 @@ void Controller::onInterfaceClicked(QString &iface)
 {
     auto apps = d->model->appModel->getAppsByInterface(iface);
     auto proc = new QProcess(this);
-    proc->start(apps[0]->m_desktopExec, QStringList());
+    proc->start("/bin/bash", QStringList() << "-c" << apps[0]->m_desktopExec);
+    qWarning() << proc->readAllStandardError() << proc->readAllStandardOutput();
 }
 
 void Controller::onDBusStructureUpdate(QString, QString, QString)
