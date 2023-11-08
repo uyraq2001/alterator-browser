@@ -41,6 +41,7 @@ RUN apt-get update \
     xorg-xvfb \
     xvfb-run \
     sudo \
+    libqbase \
     && export CURRENT_PWD=`pwd` \
     && if [ $(getent group $GROUP_ID) ]; then \
       echo "group $GROUP_ID exists."; \
