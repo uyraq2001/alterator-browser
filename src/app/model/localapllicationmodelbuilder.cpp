@@ -11,6 +11,14 @@
 #include <QDBusReply>
 #include <QDebug>
 
+template<typename... Ts>
+struct Overload : Ts...
+{
+    using Ts::operator()...;
+};
+template<class... Ts>
+Overload(Ts...) -> Overload<Ts...>;
+
 namespace ab
 {
 namespace model
@@ -99,35 +107,24 @@ std::vector<std::unique_ptr<LocalApplication>> LocalApllicationModelBuilder::par
 
         if (!objectBuilder)
         {
-            qWarning() << "Bad info format in object" << currentPath << "in interface" << m_dbusFindInterface;
+            qWarning() << "Bad info format in file" << currentFile;
             continue;
         }
 
         std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> newObjects
-            = objectBuilder->buildAll(&parse);
+            = objectBuilder->buildAll(&parser);
 
-        auto dropApplications = Overload{[&acObjects](auto &obj) {
-                                             acObjects.push_back(std::make_unique<std::variant<Object, Category>>(
-                                                 std::variant<Object, Category>(obj)));
-                                         },
-                                         [&acObjects](LocalApplication &) {
-                                             acObjects.push_back({});
-                                             // TODO(kozyrevid): gotta leave this option empty, but unclear how
-                                         }};
+        auto dropObjects = Overload{[&result](auto &) {
+                                        result.push_back({});
+                                        // TODO(kozyrevid): gotta leave this option empty, but unclear how
+                                    },
+                                    [&result](LocalApplication &app) {
+                                        result.push_back(std::make_unique<LocalApplication>(app));
+                                    }};
 
         for (auto &obj : newObjects)
         {
-            std::visit(dropApplications, *obj.get());
-        }
-    }
-
-
-        LocalApplicationBuilder builder;
-        std::unique_ptr<LocalApplication> newLocalApp = builder.buildLocalApplicationObject(parser);
-
-        if (newLocalApp)
-        {
-            result.push_back(std::move(newLocalApp));
+            std::visit(dropObjects, *obj.get());
         }
     }
 

@@ -26,7 +26,7 @@ public:
     QString m_icon{};
     QString m_type{};
     QString m_displayKeywords{};
-    QString m_implementedInterface{};
+    QStringList m_implementedInterfaces{};
 
     std::vector<QString> m_categories{};
     std::vector<QString> m_mimeTypes{};

@@ -125,8 +125,8 @@ void MainWindow::showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu)
     button->showMenu(std::move(menu));
 }
 
-void MainWindow::onInterfaceClicked(model::LocalApplication *app)
+void MainWindow::onInterfaceClicked(QString iface)
 {
-    d->controller->onInterfaceClicked(app);
+    d->controller->onInterfaceClicked(iface);
 }
 } // namespace ab

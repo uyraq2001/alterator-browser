@@ -32,11 +32,11 @@ void PushButton::setItem(model::ObjectItem *newItem)
         if (obj.m_applications.size() > 1)
         {
             auto menu = std::make_unique<QMenu>(this);
-            for (const auto &app : obj.m_applications)
+            for (const auto &iface : obj.m_interfaces)
             {
-                auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
-                connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() {
-                    window->onInterfaceClicked(app);
+                auto interfaceAction = std::make_unique<QAction>("&" + iface, menu.get());
+                connect(interfaceAction.get(), &QAction::triggered, this, [&iface, this]() {
+                    window->onInterfaceClicked(iface);
                 });
                 menu->addAction(interfaceAction.release());
             }

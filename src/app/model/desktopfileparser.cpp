@@ -9,8 +9,8 @@ namespace ab
 {
 namespace model
 {
-DesktopFileParser::DesktopFileParser(QString data)
-    : m_sections()
+DesktopFileParser::DesktopFileParser(QString data, QString origin)
+    : m_origin(origin)
 {
     std::istringstream iStream(data.toStdString());
 

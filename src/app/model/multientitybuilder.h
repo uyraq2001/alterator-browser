@@ -30,7 +30,8 @@ public:
     MultiEntityBuilder &operator=(MultiEntityBuilder &&) = delete;
 
 private:
-    std::unique_ptr<std::variant<Object, Category, LocalApplication>> buildObject(DesktopFileParser::Section section);
+    std::unique_ptr<std::variant<Object, Category, LocalApplication>> buildObject(DesktopFileParser::Section section,
+                                                                                  QString origin);
     std::unique_ptr<std::variant<Object, Category, LocalApplication>> buildCategory(DesktopFileParser::Section section);
     std::unique_ptr<std::variant<Object, Category, LocalApplication>> buildApplication(
         DesktopFileParser::Section section);

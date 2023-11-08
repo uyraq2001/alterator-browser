@@ -84,7 +84,8 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 
     std::unique_ptr<Model> model = buildModelFromObjects(std::move(acObjects));
 
-    mergeApplicationModel(model.get(), appModel.release());
+    model->appModel = std::move(appModel);
+    //mergeApplicationModel(model.get(), appModel.release());
 
     QLocale locale;
     QString language = locale.system().name().split("_").at(0);
@@ -94,6 +95,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
 }
 
 void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel)
+// TODO(kozyrevid): up for removal, cause it's useless
 {
     QStandardItem *rootItem = objectModel->invisibleRootItem();
 
@@ -135,7 +137,7 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
             auto interfaces = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces;
             if (!interfaces.empty())
             {
-                for (std::size_t j = 0; j < interfaces.size(); j++)
+                for (int j = 0; j < interfaces.size(); j++)
                 {
                     QString currentIface                 = interfaces.at(j);
                     std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
@@ -202,7 +204,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder
             continue;
         }
 
-        DesktopFileParser infoParsingResult(currentObjectInfo);
+        DesktopFileParser infoParsingResult(currentObjectInfo, currentPath);
 
         auto objectBuilder = ObjectBuilderFactory::getBuilder(&infoParsingResult);
 

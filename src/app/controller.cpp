@@ -72,10 +72,10 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
         }
         else
         {
-            auto apps = std::get<ab::model::Object>(*moduleItem->m_object).m_applications;
-            if (apps.size() == 1)
+            auto ifaces = std::get<ab::model::Object>(*moduleItem->m_object).m_interfaces;
+            if (ifaces.size() == 1)
             {
-                onInterfaceClicked(apps[0]);
+                onInterfaceClicked(ifaces[0]);
             }
         }
     }
@@ -85,10 +85,11 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
     }
 }
 
-void Controller::onInterfaceClicked(model::LocalApplication *app)
+void Controller::onInterfaceClicked(QString &iface)
 {
+    auto apps = d->model->appModel->getAppsByInterface(iface);
     auto proc = new QProcess(this);
-    proc->start(app->m_desktopExec, QStringList());
+    proc->start(apps[0]->m_desktopExec, QStringList());
 }
 
 void Controller::onDBusStructureUpdate(QString, QString, QString)

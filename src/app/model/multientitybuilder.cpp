@@ -2,6 +2,8 @@
 #include "constants.h"
 #include "objectbuilder.h"
 
+#include <QDBusInterface>
+#include <QDBusReply>
 #include <QDebug>
 
 template<typename... Ts>
@@ -41,7 +43,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> M
             continue;
         }
 
-        result.push_back(buildObject(*currentSection));
+        result.push_back(buildObject(*currentSection, infoParser->m_origin));
     }
 
     for (auto categoryName : categoryNames)
@@ -76,7 +78,7 @@ std::vector<std::unique_ptr<std::variant<Object, Category, LocalApplication>>> M
 }
 
 std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBuilder::buildObject(
-    DesktopFileParser::Section section)
+    DesktopFileParser::Section section, QString origin)
 {
     using namespace xalterator_entry;
 
@@ -100,6 +102,23 @@ std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBui
 
     std::get<Object>(*res).m_isLegacy = false;
 
+    QDBusInterface managerIface(DBUS_SERVICE_NAME, DBUS_PATH, DBUS_MANAGER_INTERFACE_NAME, QDBusConnection::systemBus());
+    if (!managerIface.isValid())
+    {
+        qCritical() << "Can't access alterator manager interface";
+        return {};
+    }
+    QDBusReply<QList<QDBusObjectPath>> reply = managerIface.call(MANAGER_IFACES_METHOD, origin);
+    if (!reply.isValid())
+    {
+        qCritical() << "Can't get reply from alterator manager interface:" << reply.error().message();
+        return {};
+    }
+    QList<QDBusObjectPath> ifaceList = reply.value();
+    std::for_each(ifaceList.begin(), ifaceList.end(), [&res](QDBusObjectPath &iface) {
+        std::get<Object>(*res).m_interfaces.append(iface.path());
+    });
+
     return res;
 }
 
@@ -120,17 +139,10 @@ std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBui
     auto res = std::make_unique<std::variant<Object, Category, LocalApplication>>(
         std::variant<Object, Category, LocalApplication>(LocalApplication()));
 
-    if (!buildNames(section, res.get())) // TODO: buildFieldWithLocale
-    {
-        return {};
-    }
-
-    QString tryExec = getValue(section, LOCAL_APP_TRY_EXEC_KEY_NAME);
-    if (tryExec.isEmpty())
-    {
-        qWarning() << "Can't find key:" << LOCAL_APP_TRY_EXEC_KEY_NAME;
-    }
-    std::get<LocalApplication>(*res).m_try_Exec = tryExec;
+    //    if (!buildNames(section, res.get()))
+    //    {
+    //        return {};
+    //    }
 
     QString exec = getValue(section, LOCAL_APP_EXEC_KEY_NAME);
     if (exec.isEmpty())
@@ -147,15 +159,12 @@ std::unique_ptr<std::variant<Object, Category, LocalApplication>> MultiEntityBui
     }
     std::get<LocalApplication>(*res).m_icon = icon;
 
-    QString type = getValue(section, LOCAL_APP_TYPE_KEY_NAME);
-    if (type.isEmpty())
+    QString ifaces = getValue(section, LOCAL_APP_X_ALTERATOR_ENTRY_INTERFACE_LIST_KEY);
+    if (ifaces.isEmpty())
     {
-        qWarning() << "Can't find key:" << LOCAL_APP_TYPE_KEY_NAME;
+        qWarning() << "Can't find key:" << LOCAL_APP_X_ALTERATOR_ENTRY_INTERFACE_LIST_KEY;
     }
-    std::get<LocalApplication>(*res).m_type = type;
-
-    std::get<LocalApplication>(*res).m_categories = parseValuesFromKey(section, LOCAL_APP_CATEGORIES_KEY_NAME, ";");
-    std::get<LocalApplication>(*res).m_mimeTypes = parseValuesFromKey(section, LOCAL_APP_MIMETYPE_KEY_NAME, ";");
+    std::get<LocalApplication>(*res).m_implementedInterfaces = ifaces.split(";");
 
     return res;
 }

@@ -10,7 +10,7 @@ namespace ab
 {
 namespace model
 {
-class LocalApplicationBuilder
+class LocalApplicationBuilder // TODO(kozyrevid): redisign this model completely to make apps into underlings of interfaces (which could be implemented simply as strings)
 {
 public:
     LocalApplicationBuilder() = default;

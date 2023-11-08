@@ -21,9 +21,13 @@ std::vector<LocalApplication *> LocalApplicationModel::getAppsByInterface(QStrin
             continue;
         }
 
-        if (interface == currentApp->getLocalApplicationObject()->m_implementedInterface)
+        for (auto &iface : currentApp->getLocalApplicationObject()->m_implementedInterfaces)
         {
-            result.push_back(currentApp->getLocalApplicationObject());
+            if (interface == iface)
+            {
+                result.push_back(currentApp->getLocalApplicationObject());
+                continue;
+            }
         }
     }
 

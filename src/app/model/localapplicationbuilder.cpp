@@ -101,14 +101,14 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplication
     bool xAlteratorEntrySectionParsingResult = parseXAlteratorEntrySection(parser, result.get());
 
     result->m_categories = parseValuesFromKey(desktopEntrySection, LOCAL_APP_CATEGORIES_KEY_NAME, ";");
-    result->m_mimeTypes = parseValuesFromKey(desktopEntrySection, LOCAL_APP_MIMETYPE_KEY_NAME, ";");
+    result->m_mimeTypes  = parseValuesFromKey(desktopEntrySection, LOCAL_APP_MIMETYPE_KEY_NAME, ";");
 
     return result;
 }
 
 bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &parser, LocalApplication *localApplication)
 {
-    auto sections = parser.getSections();
+    auto sections                 = parser.getSections();
     auto xAlteratorEntrySectionIt = sections.find(LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME);
 
     if (xAlteratorEntrySectionIt == sections.end())

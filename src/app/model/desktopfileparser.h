@@ -24,15 +24,17 @@ public:
     using Sections = QMap<QString, Section>;
 
 public:
-    DesktopFileParser(QString data);
+    DesktopFileParser(QString data, QString origin = {});
 
 public:
     QString getKeyLocale(QString keyName);
     QString getKeyNameWithoutLocale(QString keyName);
     Sections getSections();
 
+    QString m_origin{};
+
 private:
-    Sections m_sections;
+    Sections m_sections{};
 };
 } // namespace model
 } // namespace ab

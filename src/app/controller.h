@@ -33,7 +33,7 @@ public:
 
 public slots:
     void moduleClicked(model::ObjectItem *moduleItem);
-    void onInterfaceClicked(model::LocalApplication *app);
+    void onInterfaceClicked(QString &iface);
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:
