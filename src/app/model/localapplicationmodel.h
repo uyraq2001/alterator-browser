@@ -13,6 +13,7 @@ class LocalApplicationModel : public QStandardItemModel
 {
 public:
     std::vector<LocalApplication *> getAppsByInterface(QString interface);
+    QStringList getAllInterfaces();
 
     void setLocale();
 };

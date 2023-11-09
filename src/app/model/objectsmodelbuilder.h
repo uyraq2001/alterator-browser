@@ -34,7 +34,7 @@ private:
     void mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel);
     void mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel);
 
-    QStringList getListOfObjects();
+    QStringList getListOfObjects(QStringList ifaces);
     std::vector<std::unique_ptr<std::variant<Object, Category>>> parseObjects(QStringList &pathsList);
     QString getObjectInfo(QDBusInterface &iface);
     std::unique_ptr<Model> buildModelFromObjects(std::vector<std::unique_ptr<std::variant<Object, Category>>> objects);

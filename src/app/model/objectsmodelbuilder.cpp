@@ -67,7 +67,7 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
         qCritical() << "Local applications model is empty";
     }
 
-    QStringList pathsOfObjects = getListOfObjects();
+    QStringList pathsOfObjects = getListOfObjects(QStringList() << m_dbusFindInterface);
 
     if (pathsOfObjects.isEmpty())
     {
@@ -155,8 +155,10 @@ void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationM
     }
 }
 
-QStringList ObjectsModelBuilder::getListOfObjects()
+QStringList ObjectsModelBuilder::getListOfObjects(QStringList ifaces)
 {
+    QStringList res;
+
     QDBusInterface managerIface(m_dbusServiceName, m_dbusPath, m_managerInterface, m_dbusConnection);
 
     if (!managerIface.isValid())
@@ -165,21 +167,18 @@ QStringList ObjectsModelBuilder::getListOfObjects()
         return {};
     }
 
-    QDBusReply<QList<QDBusObjectPath>> reply = managerIface.call(m_getObjectMethodName, m_dbusFindInterface);
-
-    if (!reply.isValid())
+    for (auto &iface : ifaces)
     {
-        qCritical() << "Can't get reply from alterator manager interface:" << reply.error().message();
-        return {};
+        QDBusReply<QList<QDBusObjectPath>> reply = managerIface.call(m_getObjectMethodName, iface);
+        if (!reply.isValid())
+        {
+            qCritical() << "Can't get reply from alterator manager interface:" << reply.error().message();
+            return {};
+        }
+        QList<QDBusObjectPath> pathList = reply.value();
+        std::for_each(pathList.begin(), pathList.end(), [&res](QDBusObjectPath &path) { res.append(path.path()); });
     }
-
-    QList<QDBusObjectPath> pathList = reply.value();
-
-    QStringList paths;
-
-    std::for_each(pathList.begin(), pathList.end(), [&paths](QDBusObjectPath &path) { paths.append(path.path()); });
-
-    return paths;
+    return res;
 }
 
 std::vector<std::unique_ptr<std::variant<Object, Category>>> ObjectsModelBuilder::parseObjects(QStringList &pathsList)
