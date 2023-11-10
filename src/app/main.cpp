@@ -1,10 +1,10 @@
 #include "../core/logger/prelude.h"
+#include "constants.h"
 #include "controller.h"
+#include "localapllicationmodelbuilder.h"
 #include "mainwindow.h"
-#include "model/localapllicationmodelbuilder.h"
-#include "model/model.h"
-#include "model/objectsmodelbuilder.h"
-#include "model/constants.h"
+#include "model.h"
+#include "objectsmodelbuilder.h"
 
 #include <QApplication>
 #include <QStandardItemModel>

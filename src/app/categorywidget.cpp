@@ -1,6 +1,6 @@
 #include "categorywidget.h"
+#include "category.h"
 #include "flowlayout.h"
-#include "model/category.h"
 #include "pushbutton.h"
 #include "ui_categorywidget.h"
 

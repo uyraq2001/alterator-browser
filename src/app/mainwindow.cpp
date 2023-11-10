@@ -2,7 +2,7 @@
 #include "categorywidget.h"
 #include "controller.h"
 #include "mainwindowsettings.h"
-#include "model/objectitem.h"
+#include "objectitem.h"
 #include "ui_mainwindow.h"
 
 #include <QDBusConnection>

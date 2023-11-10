@@ -1,9 +1,9 @@
 #ifndef AB_MAIN_WINDOW_H
 #define AB_MAIN_WINDOW_H
 
-#include "model/model.h"
-#include "pushbutton.h"
 #include "mainwindowsettings.h"
+#include "model.h"
+#include "pushbutton.h"
 
 #include <utility>
 

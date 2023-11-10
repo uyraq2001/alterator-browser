@@ -1,8 +1,8 @@
 #ifndef AB_CONTROLLER_H
 #define AB_CONTROLLER_H
 
-#include "model/model.h"
-#include "model/objectitem.h"
+#include "model.h"
+#include "objectitem.h"
 #include "pushbutton.h"
 
 #include <utility>

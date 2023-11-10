@@ -1,7 +1,7 @@
 #ifndef AB_PUSH_BUTTON_H
 #define AB_PUSH_BUTTON_H
 
-#include "model/objectitem.h"
+#include "objectitem.h"
 
 #include <QPushButton>
 #include <QWidget>
@@ -35,7 +35,7 @@ private:
     void onClicked(bool b);
 
 protected:
-    bool event(QEvent * event) override;
+    bool event(QEvent *event) override;
 
 signals:
     void moduleClicked(PushButton *button);

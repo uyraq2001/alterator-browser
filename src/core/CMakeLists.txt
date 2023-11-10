@@ -10,9 +10,9 @@ set (HEADERS
 set (SOURCES
 )
 
-add_library(alterator-browser-core ${SOURCES} ${HEADERS})
+add_library(ab-core ${SOURCES} ${HEADERS})
 
 add_subdirectory(logger)
-target_link_libraries(alterator-browser-core logger)
+target_link_libraries(ab-core logger)
 
-target_link_libraries(alterator-browser-core Qt5::Core Qt5::DBus Qt5::Widgets)
+target_link_libraries(ab-core Qt5::Core Qt5::DBus Qt5::Widgets)

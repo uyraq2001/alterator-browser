@@ -1,6 +1,6 @@
 #include "model.h"
-#include "model/category.h"
-#include "model/object.h"
+#include "category.h"
+#include "object.h"
 #include "objectitem.h"
 
 #include <QDebug>

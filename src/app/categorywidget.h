@@ -1,7 +1,7 @@
 #ifndef AB_CATEGORY_WIDGET_H
 #define AB_CATEGORY_WIDGET_H
 
-#include "model/objectitem.h"
+#include "objectitem.h"
 
 #include <QStandardItemModel>
 #include <QWidget>

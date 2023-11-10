@@ -24,6 +24,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+include_directories(${CMAKE_SOURCE_DIR}/src/model)
+
 set(HEADERS
     mainwindow.h
     categorywidget.h
@@ -32,24 +34,6 @@ set(HEADERS
     pushbutton.h
     mainwindowsettings.h
 
-    model/object.h
-    model/category.h
-    model/model.h
-    model/categorybuilder.h
-    model/localapplication.h
-    model/objectitem.h
-    model/objectsmodelbuilder.h
-    model/desktopfileparser.h
-    model/objectbuilderfactory.h
-    model/objectbuilderinterface.h
-    model/objectbuilder.h
-
-    model/localapplication.h
-    model/localapplicationbuilder.h
-    model/localapllicationmodelbuilder.h
-    model/localapplicationmodel.h
-    model/localapplicationitem.h
-    model/model.h
 )
 
 set(SOURCES
@@ -60,24 +44,6 @@ set(SOURCES
     controller.cpp
     pushbutton.cpp
     mainwindowsettings.cpp
-
-    model/object.cpp
-    model/category.cpp
-    model/model.cpp
-    model/categorybuilder.cpp
-    model/localapplication.cpp
-    model/objectitem.cpp
-    model/objectsmodelbuilder.cpp
-    model/desktopfileparser.cpp
-    model/objectbuilderfactory.cpp
-    model/objectbuilder.cpp
-
-    model/localapplication.cpp
-    model/localapplicationbuilder.cpp
-    model/localapllicationmodelbuilder.cpp
-    model/localapplicationmodel.cpp
-    model/localapplicationitem.cpp
-    model/model.cpp
 )
 
 set(UI_FORMS
@@ -109,4 +75,4 @@ qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 
 add_alterator_browser_executable(alterator-browser ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
 
-target_link_libraries(alterator-browser alterator-browser-core Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)
+target_link_libraries(alterator-browser ab-core ab-model Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)

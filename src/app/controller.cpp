@@ -1,8 +1,8 @@
 #include "controller.h"
+#include "constants.h"
+#include "localapllicationmodelbuilder.h"
 #include "mainwindow.h"
-#include "model/constants.h"
-#include "model/localapllicationmodelbuilder.h"
-#include "model/objectsmodelbuilder.h"
+#include "objectsmodelbuilder.h"
 
 #include <QAction>
 #include <QDBusConnection>
