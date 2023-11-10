@@ -1,6 +1,7 @@
 #include "localapplicationmodel.h"
 #include "localapplicationitem.h"
 
+#include <set>
 #include <QDebug>
 
 namespace ab
@@ -36,7 +37,7 @@ std::vector<LocalApplication *> LocalApplicationModel::getAppsByInterface(QStrin
 
 QStringList LocalApplicationModel::getAllInterfaces()
 {
-    QStringList res;
+    std::set<QString> res;
     QStandardItem *rootItem = invisibleRootItem();
     for (int i = 0; i < rootItem->rowCount(); ++i)
     {
@@ -46,9 +47,12 @@ QStringList LocalApplicationModel::getAllInterfaces()
             qWarning() << "Can't cast to LocalApplicationItem when try to find apps by interface";
             continue;
         }
-        res.append(currentApp->m_acLocalApplication->m_implementedInterfaces);
+        for (auto iface : currentApp->m_acLocalApplication->m_implementedInterfaces)
+        {
+            res.insert(iface);
+        }
     }
-    return res;
+    return QStringList(res.begin(), res.end());
 }
 
 void LocalApplicationModel::setLocale() {}
