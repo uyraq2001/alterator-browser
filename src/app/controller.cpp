@@ -93,27 +93,27 @@ void Controller::onInterfaceClicked(model::LocalAppObject *app)
 
 void Controller::onDBusStructureUpdate(QString, QString, QString)
 {
-    model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
-                                                  DBUS_PATH,
-                                                  DBUS_MANAGER_INTERFACE_NAME,
-                                                  DBUS_FIND_INTERFACE_NAME,
-                                                  GET_OBJECTS_METHOD_NAME,
-                                                  INFO_METHOD_NAME_FOR_ACOBJECT,
-                                                  CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
-                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT,
-                                                  DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                  DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                  DBUS_LOCAL_APP_GET_DESKTOP_FILE);
+    //    model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
+    //                                                  DBUS_PATH,
+    //                                                  DBUS_MANAGER_INTERFACE_NAME,
+    //                                                  DBUS_FIND_INTERFACE_NAME,
+    //                                                  GET_OBJECTS_METHOD_NAME,
+    //                                                  INFO_METHOD_NAME_FOR_ACOBJECT,
+    //                                                  CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
+    //                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT,
+    //                                                  DBUS_LOCAL_APP_INTERFACE_NAME,
+    //                                                  DBUS_LOCAL_APP_GET_LIST_OF_FILES,
+    //                                                  DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel();
+    //    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel();
 
-    d->model = std::move(objectModel);
+    //    d->model = std::move(objectModel);
 
-    QLocale locale;
-    QString language = locale.system().name().split("_").at(0);
-    d->model->translateModel(language);
+    //    QLocale locale;
+    //    QString language = locale.system().name().split("_").at(0);
+    //    d->model->translateModel(language);
 
-    d->window->clearUi();
-    d->window->setModel(d->model.get());
+    //    d->window->clearUi();
+    //    d->window->setModel(d->model.get());
 }
 } // namespace ab

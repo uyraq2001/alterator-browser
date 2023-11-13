@@ -18,7 +18,7 @@ set(HEADERS
     desktopfileparser.h
     objectbuilderfactory.h
     objectbuilderinterface.h
-    objectbuilder.h
+    legacyobjectbuilder.h
 
     localapplicationbuilder.h
     localapllicationmodelbuilder.h
@@ -40,7 +40,7 @@ set(SOURCES
     objectsmodelbuilder.cpp
     desktopfileparser.cpp
     objectbuilderfactory.cpp
-    objectbuilder.cpp
+    legacyobjectbuilder.cpp
 
     localapplicationbuilder.cpp
     localapllicationmodelbuilder.cpp

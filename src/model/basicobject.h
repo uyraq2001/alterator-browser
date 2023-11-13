@@ -17,6 +17,8 @@ public:
 
 public:
     QString m_categoryId{};
+
+    bool m_isLegacy{false};
 };
 
 } // namespace model

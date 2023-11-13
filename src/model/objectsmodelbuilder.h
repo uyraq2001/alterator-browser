@@ -19,7 +19,7 @@ public:
     ObjectsModelBuilder(QString serviceName,
                         QString dbusPath,
                         QString managerIface,
-                        QString findInterface,
+                        QStringList findInterfaceList,
                         QString getObjectMethodName,
                         QString infoMethodName,
                         QString categoryInterfaceName,
@@ -31,21 +31,21 @@ public:
     std::unique_ptr<Model> buildModel();
 
 private:
-    void mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel);
-    void mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel);
+    //    void mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel);
+    //    void mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel);
 
-    QStringList getListOfObjects();
-    std::vector<std::unique_ptr<std::variant<Object, Category>>> parseObjects(QStringList &pathsList);
+    QStringList getListOfObjects(QString iface);
+    std::vector<std::unique_ptr<Object>> parseObjects(QStringList &pathsList, QString &iface);
     QString getObjectInfo(QDBusInterface &iface);
-    std::unique_ptr<Model> buildModelFromObjects(std::vector<std::unique_ptr<std::variant<Object, Category>>> objects);
-    std::unique_ptr<ObjectItem> createCategoryItem(QString categoryName);
+    //    std::unique_ptr<Model> buildModelFromObjects(std::vector<std::unique_ptr<std::variant<Object, Category>>> objects);
+    //    std::unique_ptr<ObjectItem> createCategoryItem(QString categoryName);
 
 private:
     QDBusConnection m_dbusConnection = QDBusConnection::systemBus();
     QString m_dbusServiceName{};
     QString m_dbusPath{};
     QString m_managerInterface{};
-    QString m_dbusFindInterface{};
+    QStringList m_dbusFindInterfaces{};
     QString m_getObjectMethodName{};
     QString m_infoMethodName{};
     QString m_categoryInterfaceName{};

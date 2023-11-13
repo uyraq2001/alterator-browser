@@ -26,10 +26,12 @@ int main(int argc, char *argv[])
     translator.load(language, ".");
     app.installTranslator(&translator);
 
+    QStringList usedInterfaces = {LEGACY_OBJECT_INTERFACE_NAME, LOCAL_APP_OBJECT_INTERFACE_NAME};
+
     ab::model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
                                                       DBUS_PATH,
                                                       DBUS_MANAGER_INTERFACE_NAME,
-                                                      DBUS_FIND_INTERFACE_NAME,
+                                                      usedInterfaces,
                                                       GET_OBJECTS_METHOD_NAME,
                                                       INFO_METHOD_NAME_FOR_ACOBJECT,
                                                       CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,

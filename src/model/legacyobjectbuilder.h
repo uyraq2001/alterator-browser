@@ -12,7 +12,7 @@ namespace ab
 {
 namespace model
 {
-class ObjectBuilder : public ObjectBuilderInterface
+class LegacyObjectBuilder : public ObjectBuilderInterface
 {
 public:
     static const QString DESKTOP_ENTRY_SECTION_NAME;
@@ -28,7 +28,7 @@ public:
     static const QString X_ALTERATOR_INTERNAL_NAME;
 
 public:
-    ~ObjectBuilder() = default;
+    ~LegacyObjectBuilder() = default;
 
     std::unique_ptr<Object> buildObject(DesktopFileParser *infoParser) override;
 

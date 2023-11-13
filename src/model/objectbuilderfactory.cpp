@@ -1,5 +1,5 @@
 #include "objectbuilderfactory.h"
-#include "objectbuilder.h"
+#include "legacyobjectbuilder.h"
 
 const QString ab::model::ObjectBuilderFactory::ALTERATOR_SECTION_NAME = "X-Alterator Entry";
 const QString ab::model::ObjectBuilderFactory::DESKTOP_SECTION_NAME   = "Desktop Entry";
@@ -29,7 +29,7 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getBuilder(Desktop
     }
 
     // This is old object, return old object builder
-    return std::unique_ptr<ObjectBuilderInterface>(new ObjectBuilder());
+    return std::unique_ptr<ObjectBuilderInterface>(new LegacyObjectBuilder());
 }
 
 } // namespace model
