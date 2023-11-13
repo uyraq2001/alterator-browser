@@ -1,11 +1,10 @@
 #ifndef AB_MAIN_WINDOW_H
 #define AB_MAIN_WINDOW_H
 
+#include "localappobject.h"
 #include "mainwindowsettings.h"
 #include "model.h"
 #include "pushbutton.h"
-
-#include <utility>
 
 #include <QMainWindow>
 #include <QStandardItemModel>
@@ -51,7 +50,7 @@ public:
 
     void showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu);
     void onModuleClicked(PushButton *button);
-    void onInterfaceClicked(model::LocalApplication *app);
+    void onInterfaceClicked(model::LocalAppObject *app);
 
 private:
     MainWindowPrivate *d;

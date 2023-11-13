@@ -1,8 +1,8 @@
 #ifndef AB_LOCAL_APLLICATION_MODEL_BUILDER_H
 #define AB_LOCAL_APLLICATION_MODEL_BUILDER_H
 
-#include "localapplication.h"
 #include "localapplicationmodel.h"
+#include "localappobject.h"
 
 #include <memory>
 
@@ -26,7 +26,7 @@ public:
 
 private:
     QStringList getListOfDesktopFiles();
-    std::vector<std::unique_ptr<LocalApplication>> parseDesktopFiles(QStringList files);
+    std::vector<std::unique_ptr<LocalAppObject>> parseDesktopFiles(QStringList files);
     QString getDesktopFile(QString file);
 
 private:

@@ -71,28 +71,28 @@ std::unique_ptr<Category> ObjectCategoryBuilder::buildObjectCategory()
 
 bool ObjectCategoryBuilder::buildNames(DesktopFileParser::Section &section, Category *categoryObject)
 {
-    auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
-    if (nameIt == section.end())
-    {
-        qWarning() << "Can't find names for the category";
-        return false;
-    }
+    //    auto nameIt = section.find(CATEGORY_NAME_KEY_NAME);
+    //    if (nameIt == section.end())
+    //    {
+    //        qWarning() << "Can't find names for the category";
+    //        return false;
+    //    }
 
-    QList<IniFileKey> listOfKeys = section.values(CATEGORY_NAME_KEY_NAME);
-    QString defaultName          = getDefaultValue(listOfKeys);
-    if (defaultName.isEmpty())
-    {
-        qWarning() << "Can't default name for the category";
-        return false;
-    }
+    //    QList<IniFileKey> listOfKeys = section.values(CATEGORY_NAME_KEY_NAME);
+    //    QString defaultName          = getDefaultValue(listOfKeys);
+    //    if (defaultName.isEmpty())
+    //    {
+    //        qWarning() << "Can't default name for the category";
+    //        return false;
+    //    }
 
-    categoryObject->m_id   = defaultName;
-    categoryObject->m_name = defaultName;
+    //    categoryObject->m_id   = defaultName;
+    //    categoryObject->m_name = defaultName;
 
-    for (IniFileKey &currentIniFileKey : listOfKeys)
-    {
-        categoryObject->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
-    }
+    //    for (IniFileKey &currentIniFileKey : listOfKeys)
+    //    {
+    //        categoryObject->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
+    //    }
 
     return true;
 }

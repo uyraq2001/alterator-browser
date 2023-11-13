@@ -1,6 +1,7 @@
 #ifndef AB_CONTROLLER_H
 #define AB_CONTROLLER_H
 
+#include "localappobject.h"
 #include "model.h"
 #include "objectitem.h"
 #include "pushbutton.h"
@@ -33,7 +34,7 @@ public:
 
 public slots:
     void moduleClicked(model::ObjectItem *moduleItem);
-    void onInterfaceClicked(model::LocalApplication *app);
+    void onInterfaceClicked(model::LocalAppObject *app);
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:

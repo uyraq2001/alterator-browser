@@ -3,24 +3,25 @@
 
 #include <QMap>
 
+#include "object.h"
+
 namespace ab
 {
 namespace model
 {
-class Category
+class Category : public Object
 {
 public:
-    void setLocale(QString locale);
+    Category();
+    virtual ~Category();
 
-    QString m_id{};
-    QString m_name{};
+public:
     QString m_comment{};
-    QString m_icon{};
-    QString m_type{};
     QString m_xAlteratorCategory{};
 
-    QMap<QString, QString> m_nameLocaleStorage{};
     QMap<QString, QString> m_commentLocaleStorage{};
+
+    void setLocale(QString locale);
 };
 } // namespace model
 } // namespace ab

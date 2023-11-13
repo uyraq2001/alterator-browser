@@ -7,10 +7,12 @@ set(CMAKE_AUTORCC ON)
 set(HEADERS
     object.h
     basicobject.h
+    legacyobject.h
+    localappobject.h
     category.h
+
     model.h
     categorybuilder.h
-    localapplication.h
     objectitem.h
     objectsmodelbuilder.h
     desktopfileparser.h
@@ -18,7 +20,6 @@ set(HEADERS
     objectbuilderinterface.h
     objectbuilder.h
 
-    localapplication.h
     localapplicationbuilder.h
     localapllicationmodelbuilder.h
     localapplicationmodel.h
@@ -29,17 +30,18 @@ set(HEADERS
 set(SOURCES
     object.cpp
     basicobject.cpp
+    legacyobject.cpp
+    localappobject.cpp
     category.cpp
+
     model.cpp
     categorybuilder.cpp
-    localapplication.cpp
     objectitem.cpp
     objectsmodelbuilder.cpp
     desktopfileparser.cpp
     objectbuilderfactory.cpp
     objectbuilder.cpp
 
-    localapplication.cpp
     localapplicationbuilder.cpp
     localapllicationmodelbuilder.cpp
     localapplicationmodel.cpp

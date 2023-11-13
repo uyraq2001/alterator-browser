@@ -40,18 +40,18 @@ unsigned int CategoryWidget::setItem(model::ObjectItem *newItem)
 
     try
     {
-        ab::model::Category currentCategory = std::get<ab::model::Category>(*newItem->getObject());
+        //        ab::model::Category currentCategory = std::get<ab::model::Category>(*newItem->getObject());
 
-        QPixmap iconMap("/usr/share/alterator/design/images/" + currentCategory.m_icon + ".png");
-        ui->iconLabel->setPixmap(iconMap);
-        ui->iconLabel->setMinimumSize(iconMap.size());
+        //        QPixmap iconMap("/usr/share/alterator/design/images/" + currentCategory.m_icon + ".png");
+        //        ui->iconLabel->setPixmap(iconMap);
+        //        ui->iconLabel->setMinimumSize(iconMap.size());
 
-        ui->titleLabel->setText(currentCategory.m_name);
-        ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
+        //        ui->titleLabel->setText(currentCategory.m_name);
+        //        ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
 
-        ui->descriptionLabel->setText(currentCategory.m_comment);
+        //        ui->descriptionLabel->setText(currentCategory.m_comment);
 
-        ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
+        //        ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
     }
     catch (const std::bad_variant_access &e)
     {

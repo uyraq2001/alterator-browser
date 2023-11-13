@@ -4,7 +4,7 @@ namespace ab
 {
 namespace model
 {
-LocalApplication *LocalApplicationItem::getLocalApplicationObject()
+LocalAppObject *LocalApplicationItem::getLocalApplicationObject()
 {
     return m_acLocalApplication.get();
 }

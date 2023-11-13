@@ -22,9 +22,9 @@ const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME     = "Alterator Entry";
 const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_PREFIX   = "Alterator Interface";
 const QString LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_KEY_NAME = "exec";
 
-std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplicationObject(DesktopFileParser &parser)
+std::unique_ptr<LocalAppObject> LocalApplicationBuilder::buildLocalApplicationObject(DesktopFileParser &parser)
 {
-    auto result = std::make_unique<LocalApplication>();
+    auto result = std::make_unique<LocalAppObject>();
 
     auto sections = parser.getSections();
 
@@ -100,15 +100,15 @@ std::unique_ptr<LocalApplication> LocalApplicationBuilder::buildLocalApplication
 
     bool xAlteratorEntrySectionParsingResult = parseXAlteratorEntrySection(parser, result.get());
 
-    result->m_categories = parseValuesFromKey(desktopEntrySection, LOCAL_APP_CATEGORIES_KEY_NAME, ";");
+    //result->m_categories = parseValuesFromKey(desktopEntrySection, LOCAL_APP_CATEGORIES_KEY_NAME, ";");
     result->m_mimeTypes = parseValuesFromKey(desktopEntrySection, LOCAL_APP_MIMETYPE_KEY_NAME, ";");
 
     return result;
 }
 
-bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &parser, LocalApplication *localApplication)
+bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &parser, LocalAppObject *localApplication)
 {
-    auto sections = parser.getSections();
+    auto sections                 = parser.getSections();
     auto xAlteratorEntrySectionIt = sections.find(LOCAL_APP_X_ALTERATOR_ENTRY_SECTION_NAME);
 
     if (xAlteratorEntrySectionIt == sections.end())
@@ -164,7 +164,7 @@ bool LocalApplicationBuilder::parseXAlteratorEntrySection(DesktopFileParser &par
     return true;
 }
 
-bool LocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, LocalApplication *localAppObject)
+bool LocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, LocalAppObject *localAppObject)
 {
     auto nameIt = section.find(LOCAL_APP_NAME_KEY_NAME);
 
@@ -186,7 +186,7 @@ bool LocalApplicationBuilder::buildNames(DesktopFileParser::Section &section, Lo
 
     localAppObject->m_id = defaultName;
 
-    localAppObject->m_name = defaultName;
+    //localAppObject->m_name = defaultName;
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
     {

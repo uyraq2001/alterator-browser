@@ -1,16 +1,18 @@
-#include "localapplication.h"
+#include "localappobject.h"
 
 namespace ab
 {
 namespace model
 {
-void LocalApplication::setLocale(QString locale)
+LocalAppObject::LocalAppObject()
+    : BasicObject()
+{}
+
+LocalAppObject::~LocalAppObject() {}
+
+void LocalAppObject::setLocale(QString locale)
 {
-    auto nameIt = m_nameLocaleStorage.find(locale);
-    if (nameIt != m_nameLocaleStorage.end())
-    {
-        m_displayName = *nameIt;
-    }
+    BasicObject::setLocale(locale);
 
     auto genericNameIt = m_genericNameLocaleStorage.find(locale);
     if (genericNameIt != m_genericNameLocaleStorage.end())
@@ -30,5 +32,6 @@ void LocalApplication::setLocale(QString locale)
         m_displayComment = *commentsIt;
     }
 }
+
 } // namespace model
 } // namespace ab

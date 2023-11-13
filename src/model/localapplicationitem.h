@@ -1,7 +1,7 @@
 #ifndef AB_LOCAL_APPLICATION_ITEM_H
 #define AB_LOCAL_APPLICATION_ITEM_H
 
-#include "localapplication.h"
+#include "localappobject.h"
 
 #include <QStandardItemModel>
 
@@ -12,12 +12,12 @@ namespace model
 class LocalApplicationItem : public QStandardItem
 {
 public:
-    LocalApplication *getLocalApplicationObject();
+    LocalAppObject *getLocalApplicationObject();
 
     void setLocale(QString locale);
 
 public:
-    std::unique_ptr<LocalApplication> m_acLocalApplication{nullptr};
+    std::unique_ptr<LocalAppObject> m_acLocalApplication{nullptr};
 };
 } // namespace model
 } // namespace ab

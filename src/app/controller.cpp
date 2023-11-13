@@ -85,7 +85,7 @@ void Controller::moduleClicked(model::ObjectItem *moduleItem)
     //    }
 }
 
-void Controller::onInterfaceClicked(model::LocalApplication *app)
+void Controller::onInterfaceClicked(model::LocalAppObject *app)
 {
     auto proc = new QProcess(this);
     proc->start(app->m_desktopExec, QStringList());

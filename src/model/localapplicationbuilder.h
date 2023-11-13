@@ -2,7 +2,7 @@
 #define AB_LOCAL_APPLICATION_BUILDER_H
 
 #include "desktopfileparser.h"
-#include "localapplication.h"
+#include "localappobject.h"
 
 #include <memory>
 
@@ -15,14 +15,14 @@ class LocalApplicationBuilder
 public:
     LocalApplicationBuilder() = default;
 
-    std::unique_ptr<LocalApplication> buildLocalApplicationObject(DesktopFileParser &parser);
+    std::unique_ptr<LocalAppObject> buildLocalApplicationObject(DesktopFileParser &parser);
 
 private:
-    bool parseXAlteratorEntrySection(DesktopFileParser &parser, LocalApplication *localApplication);
+    bool parseXAlteratorEntrySection(DesktopFileParser &parser, LocalAppObject *localApplication);
 
     QString getDefaultValue(QList<IniFileKey> iniFileKey);
 
-    bool buildNames(DesktopFileParser::Section &section, LocalApplication *localAppObject);
+    bool buildNames(DesktopFileParser::Section &section, LocalAppObject *localAppObject);
 
     bool buildFieldWithLocale(DesktopFileParser::Section &section,
                               QString entryName,

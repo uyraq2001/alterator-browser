@@ -307,15 +307,15 @@ std::unique_ptr<ObjectItem> ObjectsModelBuilder::createCategoryItem(QString cate
 
     if (!category)
     {
-        category                                  = std::make_unique<Category>();
-        category->m_id                            = "Unknown";
-        category->m_name                          = "Unknown";
-        category->m_comment                       = "Unable to get category";
-        category->m_icon                          = "groups/system";
-        category->m_type                          = "Directory";
-        category->m_xAlteratorCategory            = "X-Alterator-Unknown";
-        category->m_nameLocaleStorage["ru_RU"]    = "Без категории";
-        category->m_commentLocaleStorage["ru_RU"] = "Ошибка при получении категории";
+        //        category                                  = std::make_unique<Category>();
+        //        category->m_id                            = "Unknown";
+        //        category->m_name                          = "Unknown";
+        //        category->m_comment                       = "Unable to get category";
+        //        category->m_icon                          = "groups/system";
+        //        category->m_type                          = "Directory";
+        //        category->m_xAlteratorCategory            = "X-Alterator-Unknown";
+        //        category->m_nameLocaleStorage["ru_RU"]    = "Без категории";
+        //        category->m_commentLocaleStorage["ru_RU"] = "Ошибка при получении категории";
     }
 
     newCategoryItem->m_itemType = ObjectItem::ItemType::category;

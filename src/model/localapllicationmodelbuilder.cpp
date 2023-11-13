@@ -37,7 +37,7 @@ std::unique_ptr<LocalApplicationModel> LocalApllicationModelBuilder::buildModel(
         return std::make_unique<LocalApplicationModel>();
     }
 
-    std::vector<std::unique_ptr<LocalApplication>> listOfApps = parseDesktopFiles(listOfDesktopFiles);
+    std::vector<std::unique_ptr<LocalAppObject>> listOfApps = parseDesktopFiles(listOfDesktopFiles);
 
     if (listOfApps.empty())
     {
@@ -81,9 +81,9 @@ QStringList LocalApllicationModelBuilder::getListOfDesktopFiles()
     return reply.value();
 }
 
-std::vector<std::unique_ptr<LocalApplication>> LocalApllicationModelBuilder::parseDesktopFiles(QStringList files)
+std::vector<std::unique_ptr<LocalAppObject>> LocalApllicationModelBuilder::parseDesktopFiles(QStringList files)
 {
-    std::vector<std::unique_ptr<LocalApplication>> result;
+    std::vector<std::unique_ptr<LocalAppObject>> result;
 
     for (QString currentFile : files)
     {
@@ -96,7 +96,7 @@ std::vector<std::unique_ptr<LocalApplication>> LocalApllicationModelBuilder::par
 
         DesktopFileParser parser(currentFileData);
         LocalApplicationBuilder builder;
-        std::unique_ptr<LocalApplication> newLocalApp = builder.buildLocalApplicationObject(parser);
+        std::unique_ptr<LocalAppObject> newLocalApp = builder.buildLocalApplicationObject(parser);
 
         if (newLocalApp)
         {
