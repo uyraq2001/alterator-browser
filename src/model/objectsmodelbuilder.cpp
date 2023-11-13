@@ -52,37 +52,38 @@ std::unique_ptr<Model> ObjectsModelBuilder::buildModel()
                                                         DBUS_LOCAL_APP_GET_LIST_OF_FILES,
                                                         DBUS_LOCAL_APP_GET_DESKTOP_FILE);
 
-    std::unique_ptr<model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
+    //    std::unique_ptr<model::LocalApplicationModel> appModel = appModelBuilder.buildModel();
 
-    if (!appModel)
-    {
-        qCritical() << "Local applications model is empty";
-    }
+    //    if (!appModel)
+    //    {
+    //        qCritical() << "Local applications model is empty";
+    //    }
 
-    QStringList pathsOfObjects = getListOfObjects();
+    //    QStringList pathsOfObjects = getListOfObjects();
 
-    if (pathsOfObjects.isEmpty())
-    {
-        return std::make_unique<Model>();
-    }
+    //    if (pathsOfObjects.isEmpty())
+    //    {
+    //        return std::make_unique<Model>();
+    //    }
 
-    std::vector<std::unique_ptr<std::variant<Object, Category>>> acObjects = parseObjects(pathsOfObjects);
+    //    std::vector<std::unique_ptr<std::variant<Object, Category>>> acObjects = parseObjects(pathsOfObjects);
 
-    if (acObjects.empty())
-    {
-        qCritical() << "Can't access alterator manager interface";
-        return std::make_unique<Model>();
-    }
+    //    if (acObjects.empty())
+    //    {
+    //        qCritical() << "Can't access alterator manager interface";
+    //        return std::make_unique<Model>();
+    //    }
 
-    std::unique_ptr<Model> model = buildModelFromObjects(std::move(acObjects));
+    //    std::unique_ptr<Model> model = buildModelFromObjects(std::move(acObjects));
 
-    mergeApplicationModel(model.get(), appModel.release());
+    //    mergeApplicationModel(model.get(), appModel.release());
 
-    QLocale locale;
-    QString language = locale.system().name().split("_").at(0);
-    model->translateModel(language);
+    //    QLocale locale;
+    //    QString language = locale.system().name().split("_").at(0);
+    //    model->translateModel(language);
 
-    return model;
+    //return model;
+    return nullptr;
 }
 
 void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplicationModel *appModel)

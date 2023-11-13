@@ -22,119 +22,121 @@ namespace model
 {
 std::unique_ptr<Object> ObjectBuilder::buildObject(DesktopFileParser *infoParser)
 {
-    std::unique_ptr<Object> newObject{new Object()};
+    //    std::unique_ptr<Object> newObject{new Object()};
 
-    auto sections = infoParser->getSections();
+    //    auto sections = infoParser->getSections();
 
-    auto desktopSection = sections.find(DESKTOP_ENTRY_SECTION_NAME);
+    //    auto desktopSection = sections.find(DESKTOP_ENTRY_SECTION_NAME);
 
-    if (desktopSection == sections.end())
-    {
-        qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
-        return nullptr;
-    }
+    //    if (desktopSection == sections.end())
+    //    {
+    //        qWarning() << "Can't find " << DESKTOP_ENTRY_SECTION_NAME << " section for the object! Skipping..";
+    //        return nullptr;
+    //    }
 
-    QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
+    //    QString currentObjectCategoryName = getValue(*desktopSection, CATEGORY_KEY_NAME);
 
-    newObject->m_categoryId = currentObjectCategoryName;
+    //    newObject->m_categoryId = currentObjectCategoryName;
 
-    if (!buildNames(*desktopSection, newObject.get()))
-    {
-        return nullptr;
-    }
+    //    if (!buildNames(*desktopSection, newObject.get()))
+    //    {
+    //        return nullptr;
+    //    }
 
-    QString type = getValue(*desktopSection, TYPE_KEY_NAME);
-    if (type.isEmpty())
-    {
-        qWarning() << "Can't find type for the object: " << newObject->m_id;
-    }
-    newObject->m_type = type;
+    //    QString type = getValue(*desktopSection, TYPE_KEY_NAME);
+    //    if (type.isEmpty())
+    //    {
+    //        qWarning() << "Can't find type for the object: " << newObject->m_id;
+    //    }
+    //    newObject->m_type = type;
 
-    QString icon = getValue(*desktopSection, ICON_KEY_NAME);
-    if (icon.isEmpty())
-    {
-        qWarning() << "Can't find icon for the object: " << newObject->m_id;
-    }
-    newObject->m_icon = icon;
+    //    QString icon = getValue(*desktopSection, ICON_KEY_NAME);
+    //    if (icon.isEmpty())
+    //    {
+    //        qWarning() << "Can't find icon for the object: " << newObject->m_id;
+    //    }
+    //    newObject->m_icon = icon;
 
-    QString x_Alterator_URI = getValue(*desktopSection, X_ALTERATOR_URI_NAME);
-    if (x_Alterator_URI.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_URI for the object: " << newObject->m_id;
-    }
-    newObject->m_x_Alterator_URI = x_Alterator_URI;
+    //    QString x_Alterator_URI = getValue(*desktopSection, X_ALTERATOR_URI_NAME);
+    //    if (x_Alterator_URI.isEmpty())
+    //    {
+    //        qWarning() << "Can't find x_Alterator_URI for the object: " << newObject->m_id;
+    //    }
+    //    newObject->m_x_Alterator_URI = x_Alterator_URI;
 
-    QString x_Alterator_Weight = getValue(*desktopSection, X_ALTERATOR_WEIGHT_NAME);
-    if (x_Alterator_Weight.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_Weight for the object: " << newObject->m_id;
-    }
-    newObject->m_x_Alterator_Weight = x_Alterator_Weight;
+    //    QString x_Alterator_Weight = getValue(*desktopSection, X_ALTERATOR_WEIGHT_NAME);
+    //    if (x_Alterator_Weight.isEmpty())
+    //    {
+    //        qWarning() << "Can't find x_Alterator_Weight for the object: " << newObject->m_id;
+    //    }
+    //    newObject->m_x_Alterator_Weight = x_Alterator_Weight;
 
-    QString x_Alterator_Help = getValue(*desktopSection, X_ALTERATOR_HELP_NAME);
-    if (x_Alterator_Help.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_Help for the object: " << newObject->m_id;
-    }
-    newObject->m_x_Alterator_Help = x_Alterator_Help;
+    //    QString x_Alterator_Help = getValue(*desktopSection, X_ALTERATOR_HELP_NAME);
+    //    if (x_Alterator_Help.isEmpty())
+    //    {
+    //        qWarning() << "Can't find x_Alterator_Help for the object: " << newObject->m_id;
+    //    }
+    //    newObject->m_x_Alterator_Help = x_Alterator_Help;
 
-    QString x_Alterator_UI = getValue(*desktopSection, X_ALTERATOR_UI_NAME);
-    if (x_Alterator_UI.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_UI for the object: " << newObject->m_id;
-    }
-    newObject->m_x_Alterator_UI = x_Alterator_UI;
+    //    QString x_Alterator_UI = getValue(*desktopSection, X_ALTERATOR_UI_NAME);
+    //    if (x_Alterator_UI.isEmpty())
+    //    {
+    //        qWarning() << "Can't find x_Alterator_UI for the object: " << newObject->m_id;
+    //    }
+    //    newObject->m_x_Alterator_UI = x_Alterator_UI;
 
-    QString terminal = getValue(*desktopSection, TERMINAL_KEY_NAME);
-    if (terminal.isEmpty())
-    {
-        qWarning() << "Can't find terminal for the object: " << newObject->m_id;
-    }
-    if (terminal.toLower() == QString("true"))
-    {
-        newObject->m_terminal = true;
-    }
+    //    QString terminal = getValue(*desktopSection, TERMINAL_KEY_NAME);
+    //    if (terminal.isEmpty())
+    //    {
+    //        qWarning() << "Can't find terminal for the object: " << newObject->m_id;
+    //    }
+    //    if (terminal.toLower() == QString("true"))
+    //    {
+    //        newObject->m_terminal = true;
+    //    }
 
-    QString x_Alterator_Internal_Name = getValue(*desktopSection, X_ALTERATOR_INTERNAL_NAME);
-    if (x_Alterator_Internal_Name.isEmpty())
-    {
-        qWarning() << "Can't find x_Alterator_Internal_Name for the object";
-    }
-    newObject->m_x_Alterator_Internal_Name = x_Alterator_Internal_Name;
+    //    QString x_Alterator_Internal_Name = getValue(*desktopSection, X_ALTERATOR_INTERNAL_NAME);
+    //    if (x_Alterator_Internal_Name.isEmpty())
+    //    {
+    //        qWarning() << "Can't find x_Alterator_Internal_Name for the object";
+    //    }
+    //    newObject->m_x_Alterator_Internal_Name = x_Alterator_Internal_Name;
 
-    newObject->m_isLegacy = true;
+    //    newObject->m_isLegacy = true;
 
-    return newObject;
+    //return newObject;
+
+    return nullptr;
 }
 
 bool ObjectBuilder::buildNames(DesktopFileParser::Section &section, Object *object)
 {
-    auto nameIt = section.find(NAME_KEY_NAME);
+    //    auto nameIt = section.find(NAME_KEY_NAME);
 
-    if (nameIt == section.end())
-    {
-        qWarning() << "Can't find names for the Object";
-        return false;
-    }
+    //    if (nameIt == section.end())
+    //    {
+    //        qWarning() << "Can't find names for the Object";
+    //        return false;
+    //    }
 
-    QList<IniFileKey> listOfKeys = section.values(NAME_KEY_NAME);
+    //    QList<IniFileKey> listOfKeys = section.values(NAME_KEY_NAME);
 
-    QString defaultName = getDefaultValue(listOfKeys);
+    //    QString defaultName = getDefaultValue(listOfKeys);
 
-    if (defaultName.isEmpty())
-    {
-        qWarning() << "Can't default name for the object";
-        return false;
-    }
+    //    if (defaultName.isEmpty())
+    //    {
+    //        qWarning() << "Can't default name for the object";
+    //        return false;
+    //    }
 
-    object->m_id = defaultName;
+    //    object->m_id = defaultName;
 
-    object->m_displayName = defaultName;
+    //    object->m_displayName = defaultName;
 
-    for (IniFileKey &currentIniFileKey : listOfKeys)
-    {
-        object->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
-    }
+    //    for (IniFileKey &currentIniFileKey : listOfKeys)
+    //    {
+    //        object->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
+    //    }
 
     return true;
 }

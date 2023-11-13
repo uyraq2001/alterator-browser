@@ -17,36 +17,36 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
 
 void PushButton::setItem(model::ObjectItem *newItem)
 {
-    try
-    {
-        this->item        = newItem;
-        model::Object obj = std::get<ab::model::Object>(*newItem->getObject());
+    //    try
+    //    {
+    //        this->item        = newItem;
+    //        model::Object obj = std::get<ab::model::Object>(*newItem->getObject());
 
-        this->setText(obj.m_displayName);
-        this->setMinimumWidth(this->sizeHint().width());
+    //        this->setText(obj.m_displayName);
+    //        this->setMinimumWidth(this->sizeHint().width());
 
-        QFont font = this->font();
-        font.setPointSize(11);
-        this->setFont(font);
+    //        QFont font = this->font();
+    //        font.setPointSize(11);
+    //        this->setFont(font);
 
-        if (obj.m_applications.size() > 1)
-        {
-            auto menu = std::make_unique<QMenu>(this);
-            for (const auto &app : obj.m_applications)
-            {
-                auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
-                connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() {
-                    window->onInterfaceClicked(app);
-                });
-                menu->addAction(interfaceAction.release());
-            }
-            setMenu(menu.release());
-        }
-    }
-    catch (const std::bad_variant_access &e)
-    {
-        qCritical() << "ERROR: the item is not of Object type";
-    }
+    //        if (obj.m_applications.size() > 1)
+    //        {
+    //            auto menu = std::make_unique<QMenu>(this);
+    //            for (const auto &app : obj.m_applications)
+    //            {
+    //                auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
+    //                connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() {
+    //                    window->onInterfaceClicked(app);
+    //                });
+    //                menu->addAction(interfaceAction.release());
+    //            }
+    //            setMenu(menu.release());
+    //        }
+    //    }
+    //    catch (const std::bad_variant_access &e)
+    //    {
+    //        qCritical() << "ERROR: the item is not of Object type";
+    //    }
 }
 
 model::ObjectItem *PushButton::getItem()

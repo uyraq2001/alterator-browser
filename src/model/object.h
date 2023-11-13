@@ -13,7 +13,7 @@ public:
     void setLocale(QString locale);
 
     QString m_id{};
-    QString m_displayName{};
+    //QString m_displayName{};
     QString m_displayCategory{};
     QString m_type{};
     QString m_categoryId{};

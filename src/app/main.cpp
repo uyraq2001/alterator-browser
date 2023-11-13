@@ -2,7 +2,7 @@
 #include "constants.h"
 #include "controller.h"
 #include "localapllicationmodelbuilder.h"
-#include "mainwindow.h"
+//#include "mainwindow.h"
 #include "model.h"
 #include "objectsmodelbuilder.h"
 
@@ -40,13 +40,13 @@ int main(int argc, char *argv[])
 
     std::unique_ptr<ab::model::Model> model = objectModelBuilder.buildModel();
 
-    ab::MainWindow mainWindow;
+    //    ab::MainWindow mainWindow;
 
-    ab::Controller controller(&mainWindow, std::move(model));
+    //    ab::Controller controller(&mainWindow, std::move(model));
 
-    mainWindow.setController(&controller);
+    //    mainWindow.setController(&controller);
 
-    mainWindow.show();
+    //    mainWindow.show();
 
     return app.exec();
 }
