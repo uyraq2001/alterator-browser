@@ -6,6 +6,7 @@ set(CMAKE_AUTORCC ON)
 
 set(HEADERS
     object.h
+    basicobject.h
     category.h
     model.h
     categorybuilder.h
@@ -27,6 +28,7 @@ set(HEADERS
 
 set(SOURCES
     object.cpp
+    basicobject.cpp
     category.cpp
     model.cpp
     categorybuilder.cpp
