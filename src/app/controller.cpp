@@ -50,39 +50,39 @@ Controller::~Controller()
 
 void Controller::moduleClicked(model::ObjectItem *moduleItem)
 {
-    try
-    {
-        if (std::get<ab::model::Object>(*(moduleItem->m_object)).m_isLegacy)
-        {
-            QProcess *proc = new QProcess();
+    //    try
+    //    {
+    //        if (std::get<ab::model::Object>(*(moduleItem->m_object)).m_isLegacy)
+    //        {
+    //            QProcess *proc = new QProcess();
 
-            connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
-                qCritical() << proc->readAllStandardError();
-            });
-            connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() {
-                qInfo() << proc->readAllStandardOutput();
-            });
-            connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) {
-                delete (proc);
-            });
+    //            connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
+    //                qCritical() << proc->readAllStandardError();
+    //            });
+    //            connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() {
+    //                qInfo() << proc->readAllStandardOutput();
+    //            });
+    //            connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) {
+    //                delete (proc);
+    //            });
 
-            proc->start("alterator-standalone",
-                        QStringList() << "-l"
-                                      << std::get<ab::model::Object>(*moduleItem->m_object).m_x_Alterator_Internal_Name);
-        }
-        else
-        {
-            auto apps = std::get<ab::model::Object>(*moduleItem->m_object).m_applications;
-            if (apps.size() == 1)
-            {
-                onInterfaceClicked(apps[0]);
-            }
-        }
-    }
-    catch (const std::bad_variant_access &e)
-    {
-        qCritical() << "ERROR: the item is not of Object type";
-    }
+    //            //            proc->start("alterator-standalone",
+    //            //                        QStringList() << "-l"
+    //            //                                      << std::get<ab::model::Object>(*moduleItem->m_object).m_x_Alterator_Internal_Name);
+    //        }
+    //        else
+    //        {
+    //            //            auto apps = std::get<ab::model::Object>(*moduleItem->m_object).m_applications;
+    //            //            if (apps.size() == 1)
+    //            //            {
+    //            //                onInterfaceClicked(apps[0]);
+    //            //            }
+    //        }
+    //    }
+    //    catch (const std::bad_variant_access &e)
+    //    {
+    //        qCritical() << "ERROR: the item is not of Object type";
+    //    }
 }
 
 void Controller::onInterfaceClicked(model::LocalApplication *app)

@@ -108,42 +108,42 @@ void ObjectsModelBuilder::mergeApplicationModel(Model *objectModel, LocalApplica
 
 void ObjectsModelBuilder::mergeObjectWithApp(ObjectItem *item, LocalApplicationModel *appModel)
 {
-    for (int i = 0; i < item->rowCount(); ++i)
-    {
-        QStandardItem *currentStandardItem = item->child(i);
-        auto currentModuleItem             = dynamic_cast<ObjectItem *>(currentStandardItem);
-        if (!currentModuleItem)
-        {
-            qWarning() << "Can't cast item to ObjectItem to merge application object";
-            continue;
-        }
+    //    for (int i = 0; i < item->rowCount(); ++i)
+    //    {
+    //        QStandardItem *currentStandardItem = item->child(i);
+    //        auto currentModuleItem             = dynamic_cast<ObjectItem *>(currentStandardItem);
+    //        if (!currentModuleItem)
+    //        {
+    //            qWarning() << "Can't cast item to ObjectItem to merge application object";
+    //            continue;
+    //        }
 
-        if (currentModuleItem->rowCount() > 0)
-        {
-            mergeObjectWithApp(currentModuleItem, appModel);
-        }
+    //        if (currentModuleItem->rowCount() > 0)
+    //        {
+    //            mergeObjectWithApp(currentModuleItem, appModel);
+    //        }
 
-        try
-        {
-            auto interfaces = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces;
-            if (!interfaces.empty())
-            {
-                for (std::size_t j = 0; j < interfaces.size(); j++)
-                {
-                    QString currentIface                 = interfaces.at(j);
-                    std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
+    //        try
+    //        {
+    //            auto interfaces = std::get<ab::model::Object>(*currentModuleItem->getObject()).m_interfaces;
+    //            if (!interfaces.empty())
+    //            {
+    //                for (std::size_t j = 0; j < interfaces.size(); j++)
+    //                {
+    //                    QString currentIface                 = interfaces.at(j);
+    //                    std::vector<LocalApplication *> apps = appModel->getAppsByInterface(currentIface);
 
-                    std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
-                        std::get<ab::model::Object>(*currentModuleItem->getObject()).m_applications.push_back(app);
-                    });
-                }
-            }
-        }
-        catch (const std::bad_variant_access &e)
-        {
-            qCritical() << "Item is not of Object type";
-        }
-    }
+    //                    std::for_each(apps.begin(), apps.end(), [currentModuleItem](LocalApplication *app) {
+    //                        std::get<ab::model::Object>(*currentModuleItem->getObject()).m_applications.push_back(app);
+    //                    });
+    //                }
+    //            }
+    //        }
+    //        catch (const std::bad_variant_access &e)
+    //        {
+    //            qCritical() << "Item is not of Object type";
+    //        }
+    //    }
 }
 
 QStringList ObjectsModelBuilder::getListOfObjects()
@@ -232,43 +232,43 @@ QString ObjectsModelBuilder::getObjectInfo(QDBusInterface &iface)
 std::unique_ptr<Model> ObjectsModelBuilder::buildModelFromObjects(
     std::vector<std::unique_ptr<std::variant<Object, Category>>> objects)
 {
-    std::map<QString, std::unique_ptr<ObjectItem>> categories;
+    //    std::map<QString, std::unique_ptr<ObjectItem>> categories;
 
-    for (auto &object : objects)
-    {
-        Object currentObject = std::get<Object>(*object);
+    //    for (auto &object : objects)
+    //    {
+    //        Object currentObject = std::get<Object>(*object);
 
-        auto find = categories.find(currentObject.m_categoryId);
+    //        auto find = categories.find(currentObject.m_categoryId);
 
-        if (find == categories.end())
-        {
-            auto newCategoryItem = createCategoryItem(currentObject.m_categoryId);
+    //        if (find == categories.end())
+    //        {
+    //            auto newCategoryItem = createCategoryItem(currentObject.m_categoryId);
 
-            auto newModuleItem        = std::make_unique<ObjectItem>();
-            newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object   = std::move(object);
+    //            auto newModuleItem        = std::make_unique<ObjectItem>();
+    //            newModuleItem->m_itemType = ObjectItem::ItemType::module;
+    //            newModuleItem->m_object   = std::move(object);
 
-            newCategoryItem->appendRow(newModuleItem.release());
+    //            newCategoryItem->appendRow(newModuleItem.release());
 
-            categories[currentObject.m_categoryId] = std::move(newCategoryItem);
-        }
-        else
-        {
-            auto categoryItem = &find->second;
+    //            categories[currentObject.m_categoryId] = std::move(newCategoryItem);
+    //        }
+    //        else
+    //        {
+    //            auto categoryItem = &find->second;
 
-            auto newModuleItem        = std::make_unique<ObjectItem>();
-            newModuleItem->m_itemType = ObjectItem::ItemType::module;
-            newModuleItem->m_object   = std::move(object);
+    //            auto newModuleItem        = std::make_unique<ObjectItem>();
+    //            newModuleItem->m_itemType = ObjectItem::ItemType::module;
+    //            newModuleItem->m_object   = std::move(object);
 
-            categoryItem->get()->appendRow(newModuleItem.release());
-        }
-    }
+    //            categoryItem->get()->appendRow(newModuleItem.release());
+    //        }
+    //    }
 
     auto model = std::make_unique<Model>();
-    for (auto &category : categories)
-    {
-        model->appendRow(category.second.release());
-    }
+    //    for (auto &category : categories)
+    //    {
+    //        model->appendRow(category.second.release());
+    //    }
     return model;
 }
 

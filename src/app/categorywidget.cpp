@@ -79,18 +79,18 @@ unsigned int CategoryWidget::setItem(model::ObjectItem *newItem)
 
         try
         {
-            ab::model::Object childObject = std::get<ab::model::Object>(*childItem);
-            if (childObject.m_x_Alterator_UI == INGNORE_UI)
-            {
-                qWarning() << "Ignoring object with html UI:" << childObject.m_id;
-                continue;
-            }
+            //            ab::model::Object childObject = std::get<ab::model::Object>(*childItem);
+            //            if (childObject.m_x_Alterator_UI == INGNORE_UI)
+            //            {
+            //                qWarning() << "Ignoring object with html UI:" << childObject.m_id;
+            //                continue;
+            //            }
 
-            if (childObject.m_categoryId == INGNORE_CATEGORY)
-            {
-                qWarning() << "Ignoring object with hidden category:" << childObject.m_id;
-                continue;
-            }
+            //            if (childObject.m_categoryId == INGNORE_CATEGORY)
+            //            {
+            //                qWarning() << "Ignoring object with hidden category:" << childObject.m_id;
+            //                continue;
+            //            }
         }
         catch (std::bad_variant_access const &ex)
         {
