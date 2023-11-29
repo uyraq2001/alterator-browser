@@ -4,12 +4,6 @@
 
 namespace ao_builder
 {
-Category::Category()
-    : Object()
-{}
-
-Category::~Category() {}
-
 void Category::setLocale(QString locale)
 {
     Object::setLocale(locale);
@@ -32,4 +26,4 @@ void Category::setLocale(QString locale)
         }
     }
 }
-} // namespace objectbuilder
+} // namespace ao_builder

@@ -8,8 +8,8 @@ namespace ao_builder
 class ObjectBuilder : public BaseObjectBuilder
 {
 public:
-    ObjectBuilder();
-    ~ObjectBuilder();
+    ObjectBuilder() = default;
+    ~ObjectBuilder() override;
 
     std::unique_ptr<Object> buildObject(ObjectParserInterface *parser) override;
 };

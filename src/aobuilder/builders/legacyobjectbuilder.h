@@ -8,8 +8,8 @@ namespace ao_builder
 class LegacyObjectBuilder : public BaseObjectBuilder
 {
 public:
-    LegacyObjectBuilder();
-    ~LegacyObjectBuilder();
+    LegacyObjectBuilder()           = default;
+    ~LegacyObjectBuilder() override = default;
 
     std::unique_ptr<Object> buildObject(ObjectParserInterface *parser) override;
 };

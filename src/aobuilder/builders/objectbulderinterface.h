@@ -15,7 +15,6 @@ public:
 
     virtual std::unique_ptr<Object> buildObject(ObjectParserInterface *parser) = 0;
 };
-
 } // namespace ao_builder
 
 #endif // AOB_OBJECT_BUILDER_INTERFACE_H

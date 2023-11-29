@@ -10,17 +10,15 @@ namespace ao_builder
 class BasicObject : public Object
 {
 public:
-    BasicObject();
-    virtual ~BasicObject();
+    BasicObject()           = default;
+    ~BasicObject() override = default;
 
-    virtual void setLocale(QString locale) override;
+    void setLocale(QString locale) override;
 
 public:
     QString m_categoryId{};
-
     bool m_isLegacy{false};
 };
-
-} // namespace objectbuilder
+} // namespace ao_builder
 
 #endif // AOB_BASIC_OBJECT_H

@@ -8,12 +8,10 @@ namespace ao_builder
 class BaseObjectBuilder : public ObjectBuilderInterface
 {
 public:
-    BaseObjectBuilder();
-    ~BaseObjectBuilder();
+    BaseObjectBuilder()           = default;
+    ~BaseObjectBuilder() override = default;
 
 public:
-    std::unique_ptr<Object> buildObject(ObjectParserInterface *parser);
-
     bool buildFieldWithLocale(ObjectParserInterface *parser,
                               QString sectionName,
                               QString entryName,
@@ -27,7 +25,6 @@ public:
                                             QString key,
                                             QString delimiter);
 };
-
 } // namespace ao_builder
 
 #endif // AOB_BASE_OBJECT_BUILDER_H

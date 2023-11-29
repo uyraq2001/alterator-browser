@@ -22,6 +22,6 @@ public:
 
     QMap<QString, QString> m_nameLocaleStorage{};
 };
-} // namespace objectbuilder
+} // namespace ao_builder
 
 #endif // AOB_OBJECT_H

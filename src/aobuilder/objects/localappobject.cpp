@@ -2,12 +2,6 @@
 
 namespace ao_builder
 {
-LocalAppObject::LocalAppObject()
-    : BasicObject()
-{}
-
-LocalAppObject::~LocalAppObject() {}
-
 void LocalAppObject::setLocale(QString locale)
 {
     BasicObject::setLocale(locale);
@@ -31,4 +25,4 @@ void LocalAppObject::setLocale(QString locale)
     }
 }
 
-} // namespace objectbuilder
+} // namespace ao_builder

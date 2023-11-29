@@ -10,15 +10,15 @@ namespace ao_builder
 class Category : public Object
 {
 public:
-    Category();
-    virtual ~Category();
+    Category()           = default;
+    ~Category() override = default;
+
+    void setLocale(QString locale) override;
 
 public:
     QString m_comment{};
 
     QMap<QString, QString> m_commentLocaleStorage{};
-
-    void setLocale(QString locale);
 };
 } // namespace ao_builder
 

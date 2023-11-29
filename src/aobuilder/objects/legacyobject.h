@@ -2,13 +2,14 @@
 #define AOB_LEGACY_OBJECT_H
 
 #include "basicobject.h"
+
 namespace ao_builder
 {
 class LegacyObject final : public BasicObject
 {
 public:
-    LegacyObject();
-    ~LegacyObject();
+    LegacyObject()           = default;
+    ~LegacyObject() override = default;
 
     void setLocale(QString locale) override;
 

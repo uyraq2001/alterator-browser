@@ -9,8 +9,8 @@ namespace ao_builder
 class LocalApplicationObjectBuilder : public BaseObjectBuilder
 {
 public:
-    LocalApplicationObjectBuilder();
-    ~LocalApplicationObjectBuilder();
+    LocalApplicationObjectBuilder()           = default;
+    ~LocalApplicationObjectBuilder() override = default;
 
     std::unique_ptr<Object> buildObject(ObjectParserInterface *parser) override;
 

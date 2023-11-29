@@ -4,15 +4,6 @@
 
 namespace ao_builder
 {
-BaseObjectBuilder::BaseObjectBuilder() {}
-
-BaseObjectBuilder::~BaseObjectBuilder() {}
-
-std::unique_ptr<Object> BaseObjectBuilder::buildObject(ObjectParserInterface *parser)
-{
-    return nullptr;
-}
-
 bool BaseObjectBuilder::buildFieldWithLocale(ObjectParserInterface *parser,
                                              QString sectionName,
                                              QString entryName,
@@ -36,7 +27,7 @@ bool BaseObjectBuilder::buildFieldWithLocale(ObjectParserInterface *parser,
         return false;
     }
 
-    QList<ObjectParserInterface::IniFileKey> listOfKeys = section.values(entryName);
+    QList<ObjectParserInterface::IniField> listOfKeys = section.values(entryName);
 
     QString defaultName = parser->getDefaultValue(listOfKeys);
 
@@ -47,7 +38,7 @@ bool BaseObjectBuilder::buildFieldWithLocale(ObjectParserInterface *parser,
 
     field = defaultName;
 
-    for (ObjectParserInterface::IniFileKey &currentIniFileKey : listOfKeys)
+    for (ObjectParserInterface::IniField &currentIniFileKey : listOfKeys)
     {
         localeStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
     }
@@ -57,26 +48,25 @@ bool BaseObjectBuilder::buildFieldWithLocale(ObjectParserInterface *parser,
 
 bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectionName, Object *localAppObject)
 {
-    auto sections = parser->getSections();
+    const auto sections = parser->getSections();
 
-    auto alteratorEntrySectionIt = sections.find(sectionName);
+    const auto alteratorEntrySectionIt = sections.find(sectionName);
     if (alteratorEntrySectionIt == sections.end())
     {
         return false;
     }
 
-    auto section = *alteratorEntrySectionIt;
+    ObjectParserInterface::Section section = *alteratorEntrySectionIt;
 
-    auto nameIt = section.find(ALTERATOR_ENTRY_OBJECT_KEY_NAME);
-
+    const auto nameIt = section.find(ALTERATOR_ENTRY_OBJECT_KEY_NAME);
     if (nameIt == section.end())
     {
         return false;
     }
 
-    QList<ObjectParserInterface::IniFileKey> listOfKeys = section.values(ALTERATOR_ENTRY_OBJECT_KEY_NAME);
+    const auto listOfKeys = section.values(ALTERATOR_ENTRY_OBJECT_KEY_NAME);
 
-    QString defaultName = parser->getDefaultValue(listOfKeys);
+    const QString defaultName = parser->getDefaultValue(listOfKeys);
 
     if (defaultName.isEmpty())
     {
@@ -85,7 +75,7 @@ bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectio
 
     localAppObject->m_id = defaultName;
 
-    for (ObjectParserInterface::IniFileKey &currentIniFileKey : listOfKeys)
+    for (const ObjectParserInterface::IniField &currentIniFileKey : listOfKeys)
     {
         localAppObject->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
     }

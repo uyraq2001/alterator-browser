@@ -6,6 +6,7 @@
 #include <QDBusReply>
 
 #include <iostream>
+#include <utility>
 #include <QDebug>
 
 namespace ao_builder
@@ -14,7 +15,7 @@ class DataSourseDbusImplPrivate
 {
 public:
     DataSourseDbusImplPrivate(QString serviceName)
-        : m_serviceName(serviceName)
+        : m_serviceName(std::move(serviceName))
         , m_dbusConnection(QDBusConnection::systemBus())
     {}
 
@@ -33,82 +34,64 @@ DataSourceDBusImpl::~DataSourceDBusImpl()
 
 QStringList DataSourceDBusImpl::getLocalAppPaths()
 {
-    QStringList mainAppObjectList = getPathsByInterface(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME);
+    const QStringList mainAppObjectList = getPathsByInterface(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME);
 
     if (mainAppObjectList.empty())
     {
         return {};
     }
 
-    QString mainObjectPath = mainAppObjectList.at(0);
+    const QString &mainObjectPath = mainAppObjectList.first();
 
-    QStringList localAppList = getObjectsList(DBUS_OBJECT_METHOD_LIST_DEFAULT_NAME,
-                                              mainObjectPath,
-                                              DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME);
-
-    return localAppList;
+    return getObjectsList(DBUS_OBJECT_METHOD_LIST_DEFAULT_NAME, mainObjectPath, DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME);
 }
 
 QString DataSourceDBusImpl::getLocalAppInfo(QString path)
 {
-    QString info = getObjectInfoByName(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME,
-                                       DBUS_LOCAL_APP_OBJECT_PATH,
-                                       path,
-                                       DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
-
-    return info;
+    return getObjectInfoByName(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME,
+                               DBUS_LOCAL_APP_OBJECT_PATH,
+                               path,
+                               DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
 }
 
 QStringList DataSourceDBusImpl::getCategoriesList()
 {
-    QStringList mainCatObjectList = getPathsByInterface(DBUS_CATEGORY_OBJECT_INTERFACE_NAME);
+    const QStringList mainCatObjectList = getPathsByInterface(DBUS_CATEGORY_OBJECT_INTERFACE_NAME);
 
     if (mainCatObjectList.empty())
     {
         return {};
     }
 
-    QString mainCatObjectPath = mainCatObjectList.at(0);
+    const QString &mainCatObjectPath = mainCatObjectList.first();
 
-    QStringList localCatList = getObjectsList(DBUS_OBJECT_METHOD_LIST_DEFAULT_NAME,
-                                              mainCatObjectPath,
-                                              DBUS_CATEGORY_OBJECT_INTERFACE_NAME);
-
-    return localCatList;
+    return getObjectsList(DBUS_OBJECT_METHOD_LIST_DEFAULT_NAME, mainCatObjectPath, DBUS_CATEGORY_OBJECT_INTERFACE_NAME);
 }
 
 QString DataSourceDBusImpl::getCategoryInfo(QString path)
 {
-    QString catInfo = getObjectInfoByName(DBUS_CATEGORY_OBJECT_INTERFACE_NAME,
-                                          DBUS_CATEGORY_OBJECT_PATH,
-                                          path,
-                                          DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
-
-    return catInfo;
+    return getObjectInfoByName(DBUS_CATEGORY_OBJECT_INTERFACE_NAME,
+                               DBUS_CATEGORY_OBJECT_PATH,
+                               path,
+                               DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
 }
 
 QStringList DataSourceDBusImpl::getLegacyObjectsPaths()
 {
-    QStringList legacyObjectList = getPathsByInterface(DBUS_LEGACY_OBJECT_INTERFACE_NAME);
-
-    return legacyObjectList;
+    return getPathsByInterface(DBUS_LEGACY_OBJECT_INTERFACE_NAME);
 }
 
 QString DataSourceDBusImpl::getLegacyObjectInfo(QString path)
 {
-    QString legacyInfo = getObjectInfo(DBUS_LEGACY_OBJECT_INTERFACE_NAME, path, DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
-
-    return legacyInfo;
+    return getObjectInfo(DBUS_LEGACY_OBJECT_INTERFACE_NAME, path, DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
 }
 
 QStringList DataSourceDBusImpl::getObjectsPath()
 {
-    QStringList objectList = getPathsByInterface(DBUS_OBJECT_INTERFACE_NAME);
-
-    return objectList;
+    return getPathsByInterface(DBUS_OBJECT_INTERFACE_NAME);
 }
 
-QString DataSourceDBusImpl::getObjectInfo(QString path)
+QString DataSourceDBusImpl::getObjectInfo([[maybe_unused]] QString path)
 {
     return {};
 }
@@ -122,26 +105,21 @@ QStringList DataSourceDBusImpl::getPathsByInterface(QString ifaceName)
 
     if (!iface.isValid())
     {
-        return QStringList{};
+        return {};
     }
 
-    QDBusReply<QList<QDBusObjectPath>> reply = iface.call(DBUS_GET_OBJECTS_METHOD_NAME, ifaceName);
+    const QDBusReply<QList<QDBusObjectPath>> reply = iface.call(DBUS_GET_OBJECTS_METHOD_NAME, ifaceName);
 
     if (!reply.isValid())
     {
-        return QStringList{};
+        return {};
     }
 
     QStringList result{};
 
-    for (QDBusObjectPath &path : reply.value())
+    for (const QDBusObjectPath &path : reply.value())
     {
         result.append(path.path());
-    }
-
-    if (result.isEmpty())
-    {
-        return {};
     }
 
     return result;
@@ -156,11 +134,11 @@ QStringList DataSourceDBusImpl::getObjectsList(QString listMethodName, QString p
         return {};
     }
 
-    QDBusReply<QStringList> reply = iface.call(listMethodName);
+    const QDBusReply<QStringList> reply = iface.call(listMethodName);
 
     if (!reply.isValid())
     {
-        return QStringList{};
+        return {};
     }
 
     return reply.value();
@@ -172,14 +150,14 @@ QByteArray DataSourceDBusImpl::getObjectInfo(QString ifaceName, QString path, QS
 
     if (!iface.isValid())
     {
-        return QByteArray{};
+        return {};
     }
 
     QDBusReply<QByteArray> reply = iface.call(methodName);
 
     if (!reply.isValid())
     {
-        return QByteArray{};
+        return {};
     }
 
     return reply.value();
@@ -190,20 +168,20 @@ QByteArray DataSourceDBusImpl::getObjectInfoByName(QString ifaceName,
                                                    QString objectName,
                                                    QString methodName)
 {
-    QString param = QString("%1%2%3").arg("\"").arg(objectName).arg("\"");
+    const QString param = QString("%1%2%3").arg("\"").arg(objectName).arg("\"");
 
     QDBusInterface iface(d->m_serviceName, path, ifaceName, d->m_dbusConnection);
 
     if (!iface.isValid())
     {
-        return QByteArray{};
+        return {};
     }
 
-    QDBusReply<QByteArray> reply = iface.call(methodName, param);
+    const QDBusReply<QByteArray> reply = iface.call(methodName, param);
 
     if (!reply.isValid())
     {
-        return QByteArray{};
+        return {};
     }
 
     return reply.value();
