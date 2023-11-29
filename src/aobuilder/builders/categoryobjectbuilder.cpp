@@ -5,10 +5,6 @@
 
 namespace ao_builder
 {
-CategoryObjectBuilder::CategoryObjectBuilder() {}
-
-CategoryObjectBuilder::~CategoryObjectBuilder() {}
-
 std::unique_ptr<Object> CategoryObjectBuilder::buildObject(ObjectParserInterface *parser)
 {
     auto result = std::make_unique<Category>();

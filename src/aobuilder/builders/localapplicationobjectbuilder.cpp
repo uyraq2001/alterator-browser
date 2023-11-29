@@ -5,19 +5,15 @@
 
 namespace ao_builder
 {
-LocalApplicationObjectBuilder::LocalApplicationObjectBuilder() {}
-
-LocalApplicationObjectBuilder::~LocalApplicationObjectBuilder() {}
-
 std::unique_ptr<ao_builder::Object> LocalApplicationObjectBuilder::buildObject(ObjectParserInterface *parser)
 {
     auto result = std::make_unique<LocalAppObject>();
 
     LocalAppObject *object = result.get();
 
-    if (!parseDesktopEntrySection(parser, result.get()) || !parseAlteratorEntrySection(parser, result.get()))
+    if (!parseDesktopEntrySection(parser, object) || !parseAlteratorEntrySection(parser, object))
     {
-        return nullptr;
+        return {};
     }
 
     return result;
@@ -33,25 +29,21 @@ bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterfa
         return false;
     }
 
-    if (!buildFieldWithLocale(parser,
-                              buildingFromSection,
-                              LOCAL_APP_GENERIC_NAME_KEY_NAME,
-                              localApplication->m_genericName,
-                              localApplication->m_genericNameLocaleStorage))
-    {}
+    buildFieldWithLocale(parser,
+                         buildingFromSection,
+                         LOCAL_APP_GENERIC_NAME_KEY_NAME,
+                         localApplication->m_genericName,
+                         localApplication->m_genericNameLocaleStorage);
 
     localApplication->m_displayName = localApplication->m_id;
 
-    if (!buildFieldWithLocale(parser,
-                              buildingFromSection,
-                              LOCAL_APP_COMMENT_KEY_NAME,
-                              localApplication->m_displayComment,
-                              localApplication->m_commentLocaleStorage))
-    {}
+    buildFieldWithLocale(parser,
+                         buildingFromSection,
+                         LOCAL_APP_COMMENT_KEY_NAME,
+                         localApplication->m_displayComment,
+                         localApplication->m_commentLocaleStorage);
 
-    QString tryExec = parser->getValue(buildingFromSection, LOCAL_APP_TRY_EXEC_KEY_NAME);
-    if (tryExec.isEmpty())
-    {}
+    QString tryExec              = parser->getValue(buildingFromSection, LOCAL_APP_TRY_EXEC_KEY_NAME);
     localApplication->m_try_Exec = tryExec;
 
     QString exec = parser->getValue(buildingFromSection, LOCAL_APP_EXEC_KEY_NAME);
@@ -61,22 +53,21 @@ bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterfa
     }
     localApplication->m_desktopExec = exec;
 
-    QString icon = parser->getValue(buildingFromSection, LOCAL_APP_ICON_KEY_NAME);
-    if (icon.isEmpty())
-    {}
+    QString icon             = parser->getValue(buildingFromSection, LOCAL_APP_ICON_KEY_NAME);
     localApplication->m_icon = icon;
 
     QString type = parser->getValue(buildingFromSection, ALTERATOR_ENTRY_TYPE_KEY_NAME);
     if (type.isEmpty())
-    {}
+    {
+        return false;
+    }
     localApplication->m_type = type;
 
-    if (!buildFieldWithLocale(parser,
-                              buildingFromSection,
-                              LOCAL_APP_KEYWORDS_KEY_NAME,
-                              localApplication->m_displayKeywords,
-                              localApplication->m_keywordsLocaleStorage))
-    {}
+    buildFieldWithLocale(parser,
+                         buildingFromSection,
+                         LOCAL_APP_KEYWORDS_KEY_NAME,
+                         localApplication->m_displayKeywords,
+                         localApplication->m_keywordsLocaleStorage);
 
     localApplication->m_mimeTypes = parseValuesFromKey(parser, buildingFromSection, LOCAL_APP_MIMETYPE_KEY_NAME, ";");
 
@@ -86,35 +77,34 @@ bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterfa
 bool LocalApplicationObjectBuilder::parseAlteratorEntrySection(ObjectParserInterface *parser,
                                                                LocalAppObject *localApplication)
 {
-    //Parsing Alterator Entry Sections
     QString type = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, ALTERATOR_ENTRY_TYPE_KEY_NAME);
     if (type.isEmpty() || type != LOCAL_APP_ALTERATOR_ENTRY_SECTION_TYPE_VALUE)
     {
         return false;
     }
 
-    localApplication->m_type = type;
-
-    QString appName = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_NAME_KEY_NAME);
-
-    if (appName.isEmpty())
+    QString name = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_NAME_KEY_NAME);
+    if (name.isEmpty())
     {
         return false;
     }
 
-    localApplication->m_id = appName;
-
-    QString appInterfaces = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME);
-    if (!appInterfaces.isEmpty())
+    QString exec = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_ALTERATOR_ENTRYEXEC_KEY_NAME);
+    if (exec.isEmpty())
     {
-        localApplication->m_interfaces.push_back(appInterfaces);
+        return false;
     }
 
-    QString appExec = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_ALTERATOR_ENTRYEXEC_KEY_NAME);
+    QString appInterfaces = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME);
+    if (appInterfaces.isEmpty())
+    {
+        return false;
+    }
 
-    localApplication->m_exec = appExec;
-
-    //Parsing Desktop Entry of application
+    localApplication->m_type = type;
+    localApplication->m_id   = name;
+    localApplication->m_exec = exec;
+    localApplication->m_interfaces.push_back(appInterfaces);
 
     return true;
 }

@@ -13,14 +13,14 @@ namespace ao_builder
 class ObjectParserInterface
 {
 public:
-    struct IniFileKey
+    struct IniField
     {
-        QString keyName{};
+        QString key{};
         QString keyLocale{};
         QVariant value{};
     };
 
-    using Section  = QMultiMap<QString, IniFileKey>;
+    using Section  = QMultiMap<QString, IniField>;
     using Sections = QMap<QString, Section>;
 
 public:
@@ -30,10 +30,10 @@ public:
 
     virtual Sections getSections() = 0;
 
-    virtual QString getKeyLocale(QString keyName)                 = 0;
-    virtual QString getKeyNameWithoutLocale(QString keyName)      = 0;
-    virtual QString getDefaultValue(QList<IniFileKey> iniFileKey) = 0;
-    virtual QString getValue(QString section, QString key)        = 0;
+    virtual QString getKeyLocale(QString keyName)               = 0;
+    virtual QString getKeyNameWithoutLocale(QString keyName)    = 0;
+    virtual QString getDefaultValue(QList<IniField> iniFileKey) = 0;
+    virtual QString getValue(QString section, QString key)      = 0;
 };
 
 } // namespace ao_builder

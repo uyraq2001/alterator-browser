@@ -4,8 +4,6 @@
 #include <QByteArray>
 #include <QString>
 
-#include "constants.h"
-
 namespace ao_builder
 {
 class DataSourceInterface

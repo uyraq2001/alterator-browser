@@ -19,17 +19,16 @@ public:
     std::vector<std::unique_ptr<Object>> buildCategories() override;
     std::vector<std::unique_ptr<Object>> buildLegacyObject() override;
     std::vector<std::unique_ptr<Object>> buildObjects() override;
-
     std::unique_ptr<Object> buildObject(QString info) override;
 
 private:
     AOBuilderImplPrivate *d;
 
 private:
-    AOBuilderImpl(const AOBuilderImpl &) = delete;
-    AOBuilderImpl(AOBuilderImpl &&)      = delete;
+    AOBuilderImpl(const AOBuilderImpl &)            = delete;
+    AOBuilderImpl(AOBuilderImpl &&)                 = delete;
     AOBuilderImpl &operator=(const AOBuilderImpl &) = delete;
-    AOBuilderImpl &operator=(AOBuilderImpl &&) = delete;
+    AOBuilderImpl &operator=(AOBuilderImpl &&)      = delete;
 };
 
 } // namespace ao_builder

@@ -1,18 +1,15 @@
 #include "legacyobjectbuilder.h"
 #include "../objects/legacyobject.h"
 #include "constants.h"
+#include <memory>
 
 namespace ao_builder
 {
-LegacyObjectBuilder::LegacyObjectBuilder() {}
-
-LegacyObjectBuilder::~LegacyObjectBuilder() {}
-
 std::unique_ptr<Object> LegacyObjectBuilder::buildObject(ObjectParserInterface *parser)
 {
-    std::unique_ptr<Object> newObject{new LegacyObject()};
+    auto newObject = std::make_unique<LegacyObject>();
 
-    LegacyObject *buildingObject = dynamic_cast<LegacyObject *>(newObject.get());
+    const auto buildingObject = dynamic_cast<LegacyObject *>(newObject.get());
 
     if (!buildNames(parser, DESKTOP_ENTRY_SECTION_NAME, buildingObject))
     {

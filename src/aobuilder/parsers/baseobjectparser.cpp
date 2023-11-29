@@ -2,6 +2,7 @@
 
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <qdebug.h>
 
 #include "baseobjectparser.h"
 
@@ -27,20 +28,22 @@ bool BaseObjectParser::parse(QString data)
         {
             for (auto &key : section.second)
             {
-                Section &currentSections = m_sections[QString(section.first.c_str())];
+                Section &currentSections = m_sections[QString::fromStdString(section.first)];
 
-                currentSections.insert(getKeyNameWithoutLocale(QString(key.first.c_str())),
-                                       IniFileKey{getKeyNameWithoutLocale(QString(key.first.c_str())),
-                                                  getKeyLocale(QString(key.first.c_str())),
-                                                  QVariant(key.second.get_value("").c_str())});
+                currentSections.insert(getKeyNameWithoutLocale(QString::fromStdString(key.first)),
+                                       IniField{getKeyNameWithoutLocale(QString::fromStdString(key.first)),
+                                                getKeyLocale(QString::fromStdString(key.first)),
+                                                QVariant(key.second.get_value("").c_str())});
             }
         }
-        return true;
     }
     catch (std::exception &e)
     {
+        qWarning() << "Got exception while parsing object:" << e.what();
         return false;
     }
+
+    return true;
 }
 
 QString BaseObjectParser::getKeyLocale(QString keyName)
@@ -69,9 +72,9 @@ QString BaseObjectParser::getKeyNameWithoutLocale(QString keyName)
     return keyName.mid(0, indexOfOpeningBracket);
 }
 
-QString BaseObjectParser::getDefaultValue(QList<IniFileKey> iniFileKey)
+QString BaseObjectParser::getDefaultValue(QList<IniField> iniFileKey)
 {
-    for (IniFileKey &currentIniFileKey : iniFileKey)
+    for (IniField &currentIniFileKey : iniFileKey)
     {
         if (currentIniFileKey.keyLocale.isEmpty())
         {
@@ -98,7 +101,7 @@ QString BaseObjectParser::getValue(QString section, QString key)
         return {};
     }
 
-    QList<IniFileKey> listOfKeys = (*sectionIt).values(key);
+    QList<IniField> listOfKeys = (*sectionIt).values(key);
 
     if (!listOfKeys.empty())
     {

@@ -10,8 +10,8 @@ namespace ao_builder
 class BaseObjectParser : public ObjectParserInterface
 {
 public:
-    BaseObjectParser()  = default;
-    ~BaseObjectParser() = default;
+    BaseObjectParser()           = default;
+    ~BaseObjectParser() override = default;
 
 public:
     Sections getSections() override;
@@ -19,7 +19,7 @@ public:
 
     QString getKeyLocale(QString keyName) override;
     QString getKeyNameWithoutLocale(QString keyName) override;
-    QString getDefaultValue(QList<IniFileKey> iniFileKey) override;
+    QString getDefaultValue(QList<IniField> iniFileKey) override;
     QString getValue(QString section, QString key) override;
 
 private:

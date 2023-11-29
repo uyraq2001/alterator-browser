@@ -23,6 +23,8 @@ set(HEADERS
     builders/legacyobjectbuilder.h
     builders/categoryobjectbuilder.h
     builders/objectbuilder.h
+    builders/aobuilderinterface.h
+    builders/aobuilderimpl.h
 
     datasource/datasourceinterface.h
     datasource/datasourcedbusimpl.h
@@ -35,9 +37,6 @@ set(HEADERS
 
     parsers/objectparserinterface.h
     parsers/baseobjectparser.h
-
-    aobuilderinterface.h
-    aobuilderimpl.h
 )
 
 set(SOURCES
@@ -46,20 +45,17 @@ set(SOURCES
     builders/localapplicationobjectbuilder.cpp
     builders/legacyobjectbuilder.cpp
     builders/categoryobjectbuilder.cpp
-    builders/objectbuilder.cpp
+    builders/aobuilderimpl.cpp
 
     datasource/datasourcedbusimpl.cpp
 
     objects/object.cpp
-    objects/basicobject.cpp
     objects/category.cpp
     objects/localappobject.cpp
     objects/legacyobject.cpp
 
     parsers/baseobjectparser.cpp
-
-    aobuilderimpl.cpp
 )
 
 add_library(aobuilder ${HEADERS}  ${SOURCES})
-target_link_libraries(aobuilder Qt5::DBus Qt5::Widgets Qt5::Core )
+target_link_libraries(aobuilder Qt5::DBus Qt5::Widgets Qt5::Core)

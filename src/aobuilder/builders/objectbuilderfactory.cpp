@@ -4,6 +4,7 @@
 #include "constants.h"
 #include "legacyobjectbuilder.h"
 #include "localapplicationobjectbuilder.h"
+#include <memory>
 
 namespace ao_builder
 {
@@ -21,41 +22,36 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getBuilder(ObjectP
 
     auto desktopSection = sections.find(DESKTOP_ENTRY_SECTION_NAME);
 
-    if (desktopSection == sections.end())
+    if (desktopSection != sections.end())
     {
-        // No desktop section in old object. Error? returning null-pointer
-        return std::unique_ptr<ObjectBuilderInterface>();
+        // Old object, return old object builder
+        return std::make_unique<LegacyObjectBuilder>();
     }
 
-    // This is old object, return old object builder
-    return std::unique_ptr<ObjectBuilderInterface>(new LegacyObjectBuilder());
-
-    return nullptr;
+    // No Desktop Section and no Alterator Entry. Error
+    return {};
 }
 
 std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getObjectBuilder(ObjectParserInterface *parser)
 {
     QString type = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, ALTERATOR_ENTRY_TYPE_KEY_NAME);
 
-    if (type.isEmpty())
-    {
-        return nullptr;
-    }
-
     if (type == KEY_TYPE_VALUE_FOR_APPLICATION_OBJECT)
     {
-        return std::unique_ptr<ObjectBuilderInterface>(new LocalApplicationObjectBuilder());
+        return std::make_unique<LocalApplicationObjectBuilder>();
     }
     else if (type == KEY_TYPE_VALUE_FOR_CATEGORY_OBJECT)
     {
-        return std::unique_ptr<ObjectBuilderInterface>(new CategoryObjectBuilder());
+        return std::make_unique<CategoryObjectBuilder>();
     }
     else if (type == KEY_TYPE_VALUE_FOR_OBJECT)
     {
-        return nullptr;
+        // TODO: builder for new object is not implemented
+        return {};
     }
 
-    return nullptr;
+    // Unknown type
+    return {};
 }
 
 } // namespace ao_builder

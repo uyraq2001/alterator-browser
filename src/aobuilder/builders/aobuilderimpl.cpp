@@ -1,15 +1,14 @@
-#include "constants.h"
+#include "../constants.h"
 
 #include "aobuilderimpl.h"
+#include "localapplicationobjectbuilder.h"
+#include "objectbuilderfactory.h"
+#include "objectbulderinterface.h"
 
-#include "builders/localapplicationobjectbuilder.h"
-#include "builders/objectbulderinterface.h"
-#include <builders/objectbuilderfactory.h>
+#include "../datasource/datasourcedbusimpl.h"
+#include "../datasource/datasourceinterface.h"
 
-#include "datasource/datasourcedbusimpl.h"
-#include "datasource/datasourceinterface.h"
-
-#include <parsers/baseobjectparser.h>
+#include "../parsers/baseobjectparser.h"
 
 namespace ao_builder
 {
@@ -45,8 +44,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLocalApps()
 
     for (QString currentApp : appsList)
     {
-        QString currentAppInfo = d->m_dataSource->getLocalAppInfo(currentApp);
-
+        QString currentAppInfo                = d->m_dataSource->getLocalAppInfo(currentApp);
         std::unique_ptr<Object> currentObject = buildObject(currentAppInfo);
 
         if (currentObject)
@@ -54,7 +52,6 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLocalApps()
             result.push_back(std::move(currentObject));
         }
     }
-
     return result;
 }
 
@@ -66,8 +63,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildCategories()
 
     for (QString currentCategory : catList)
     {
-        QString currentCatInfo = d->m_dataSource->getCategoryInfo(currentCategory);
-
+        QString currentCatInfo                = d->m_dataSource->getCategoryInfo(currentCategory);
         std::unique_ptr<Object> currentObject = buildObject(currentCatInfo);
 
         if (currentObject)
@@ -87,8 +83,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObject()
 
     for (QString currentLegacy : legacyObjectsList)
     {
-        QString currentLegacyInfo = d->m_dataSource->getLegacyObjectInfo(currentLegacy);
-
+        QString currentLegacyInfo             = d->m_dataSource->getLegacyObjectInfo(currentLegacy);
         std::unique_ptr<Object> currentObject = buildObject(currentLegacyInfo);
 
         if (currentObject)
@@ -108,8 +103,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildObjects()
 
     for (QString currentObjectPath : objectsList)
     {
-        QString currentObjectInfo = d->m_dataSource->getObjectInfo(currentObjectPath);
-
+        QString currentObjectInfo             = d->m_dataSource->getObjectInfo(currentObjectPath);
         std::unique_ptr<Object> currentObject = buildObject(currentObjectInfo);
 
         if (currentObject)
@@ -128,8 +122,7 @@ std::unique_ptr<Object> AOBuilderImpl::buildObject(QString info)
         return nullptr;
     }
 
-    ObjectBuilderFactory factory;
-
+    ObjectBuilderFactory factory{};
     std::unique_ptr<ObjectBuilderInterface> objectBuilder = factory.getBuilder(d->m_parser.get());
 
     if (!objectBuilder)
@@ -139,5 +132,4 @@ std::unique_ptr<Object> AOBuilderImpl::buildObject(QString info)
 
     return objectBuilder->buildObject(d->m_parser.get());
 }
-
 } // namespace ao_builder

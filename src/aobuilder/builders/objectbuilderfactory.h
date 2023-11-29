@@ -11,6 +11,7 @@ public:
     ObjectBuilderFactory()  = default;
     ~ObjectBuilderFactory() = default;
 
+public:
     std::unique_ptr<ObjectBuilderInterface> getBuilder(ObjectParserInterface *parser);
 
 private:

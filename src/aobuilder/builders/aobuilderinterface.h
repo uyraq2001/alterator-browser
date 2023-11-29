@@ -4,7 +4,7 @@
 #include <memory>
 #include <QString>
 
-#include "objects/object.h"
+#include "../objects/object.h"
 
 namespace ao_builder
 {
@@ -14,15 +14,11 @@ public:
     virtual ~AOBuilderInterface() = default;
 
 public:
-    virtual std::vector<std::unique_ptr<Object>> buildLocalApps() = 0;
-
-    virtual std::vector<std::unique_ptr<Object>> buildCategories() = 0;
-
+    virtual std::vector<std::unique_ptr<Object>> buildLocalApps()    = 0;
+    virtual std::vector<std::unique_ptr<Object>> buildCategories()   = 0;
     virtual std::vector<std::unique_ptr<Object>> buildLegacyObject() = 0;
-
-    virtual std::vector<std::unique_ptr<Object>> buildObjects() = 0;
-
-    virtual std::unique_ptr<Object> buildObject(QString info) = 0;
+    virtual std::vector<std::unique_ptr<Object>> buildObjects()      = 0;
+    virtual std::unique_ptr<Object> buildObject(QString info)        = 0;
 };
 } // namespace ao_builder
 

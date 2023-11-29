@@ -13,20 +13,26 @@ class DataSourceDBusImpl : public DataSourceInterface
 {
 public:
     DataSourceDBusImpl(QString serviceName);
-    ~DataSourceDBusImpl();
+    ~DataSourceDBusImpl() override;
 
 public:
     QStringList getLocalAppPaths() override;
-    virtual QString getLocalAppInfo(QString path) override;
+    QString getLocalAppInfo(QString path) override;
 
     QStringList getCategoriesList() override;
-    virtual QString getCategoryInfo(QString path) override;
+    QString getCategoryInfo(QString path) override;
 
     QStringList getLegacyObjectsPaths() override;
-    virtual QString getLegacyObjectInfo(QString path) override;
+    QString getLegacyObjectInfo(QString path) override;
 
     QStringList getObjectsPath() override;
-    virtual QString getObjectInfo(QString path) override;
+    QString getObjectInfo(QString path) override;
+
+public:
+    DataSourceDBusImpl(const DataSourceDBusImpl &)            = delete;
+    DataSourceDBusImpl(DataSourceDBusImpl &&)                 = delete;
+    DataSourceDBusImpl &operator=(const DataSourceDBusImpl &) = delete;
+    DataSourceDBusImpl &operator=(DataSourceDBusImpl &&)      = delete;
 
 private:
     QByteArray getObjectInfo(QString ifaceName, QString path, QString methodName);
@@ -37,14 +43,7 @@ private:
 
 private:
     DataSourseDbusImplPrivate *d;
-
-private:
-    DataSourceDBusImpl(const DataSourceDBusImpl &) = delete;
-    DataSourceDBusImpl(DataSourceDBusImpl &&)      = delete;
-    DataSourceDBusImpl &operator=(const DataSourceDBusImpl &) = delete;
-    DataSourceDBusImpl &operator=(DataSourceDBusImpl &&) = delete;
 };
-
 } // namespace ao_builder
 
 #endif // AOB_DATA_SOURCE_DBUS_IMPL_H
