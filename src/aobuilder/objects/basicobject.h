@@ -13,8 +13,6 @@ public:
     BasicObject()           = default;
     ~BasicObject() override = default;
 
-    void setLocale(QString locale) override;
-
 public:
     QString m_categoryId{};
     bool m_isLegacy{false};
