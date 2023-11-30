@@ -11,7 +11,7 @@ class AOBuilderImpl final : public AOBuilderInterface
 {
 public:
     AOBuilderImpl();
-    ~AOBuilderImpl();
+    ~AOBuilderImpl() override;
 
     // AOBuilderInterface interface
 public:
@@ -21,14 +21,14 @@ public:
     std::vector<std::unique_ptr<Object>> buildObjects() override;
     std::unique_ptr<Object> buildObject(QString info) override;
 
-private:
-    AOBuilderImplPrivate *d;
-
-private:
+public:
     AOBuilderImpl(const AOBuilderImpl &)            = delete;
     AOBuilderImpl(AOBuilderImpl &&)                 = delete;
     AOBuilderImpl &operator=(const AOBuilderImpl &) = delete;
     AOBuilderImpl &operator=(AOBuilderImpl &&)      = delete;
+
+private:
+    AOBuilderImplPrivate *d{};
 };
 
 } // namespace ao_builder

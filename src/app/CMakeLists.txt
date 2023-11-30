@@ -107,6 +107,8 @@ add_translation_resource(RESOURCES_SRC "alterator-browser" ${QM_FILES})
 
 qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 
-add_alterator_browser_executable(alterator-browser ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
+add_alterator_browser_executable(
+    alterator-browser ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES}
+)
 
-target_link_libraries(alterator-browser alterator-browser-core Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)
+target_link_libraries(alterator-browser alterator-browser-core aobuilder Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)
