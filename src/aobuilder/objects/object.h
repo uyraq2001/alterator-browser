@@ -2,6 +2,7 @@
 #define AOB_OBJECT_H
 
 #include <QMap>
+#include <QMetaType>
 #include <QString>
 
 namespace ao_builder
@@ -22,6 +23,9 @@ public:
 
     QMap<QString, QString> m_nameLocaleStorage{};
 };
+
 } // namespace ao_builder
+
+Q_DECLARE_METATYPE(ao_builder::Object *)
 
 #endif // AOB_OBJECT_H

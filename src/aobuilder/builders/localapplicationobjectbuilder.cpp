@@ -2,6 +2,7 @@
 #include "constants.h"
 
 #include <memory>
+#include <qdebug.h>
 
 namespace ao_builder
 {
@@ -22,10 +23,11 @@ std::unique_ptr<ao_builder::Object> LocalApplicationObjectBuilder::buildObject(O
 bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterface *parser,
                                                              LocalAppObject *localApplication)
 {
-    QString buildingFromSection = ALTERATOR_ENTRY_SECTION_NAME;
+    QString buildingFromSection = DESKTOP_ENTRY_SECTION_NAME;
 
-    if (!buildNames(parser, ALTERATOR_ENTRY_SECTION_NAME, localApplication))
+    if (!buildNames(parser, DESKTOP_ENTRY_SECTION_NAME, localApplication))
     {
+        qWarning() << "Error parsing" << localApplication << "Info: cannot build names";
         return false;
     }
 
@@ -49,6 +51,7 @@ bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterfa
     QString exec = parser->getValue(buildingFromSection, LOCAL_APP_EXEC_KEY_NAME);
     if (exec.isEmpty())
     {
+        qWarning() << "Error parsing" << localApplication << "Info: no Exec";
         return false;
     }
     localApplication->m_desktopExec = exec;
@@ -56,9 +59,10 @@ bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterfa
     QString icon             = parser->getValue(buildingFromSection, LOCAL_APP_ICON_KEY_NAME);
     localApplication->m_icon = icon;
 
-    QString type = parser->getValue(buildingFromSection, ALTERATOR_ENTRY_TYPE_KEY_NAME);
+    QString type = parser->getValue(buildingFromSection, DESKTOP_ENTRY_TYPE_KEY_NAME);
     if (type.isEmpty())
     {
+        qWarning() << "Error parsing" << localApplication << "Info: no Type";
         return false;
     }
     localApplication->m_type = type;
@@ -80,24 +84,28 @@ bool LocalApplicationObjectBuilder::parseAlteratorEntrySection(ObjectParserInter
     QString type = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, ALTERATOR_ENTRY_TYPE_KEY_NAME);
     if (type.isEmpty() || type != LOCAL_APP_ALTERATOR_ENTRY_SECTION_TYPE_VALUE)
     {
+        qWarning() << "Error parsing" << localApplication << "Info: no Type";
         return false;
     }
 
     QString name = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_NAME_KEY_NAME);
     if (name.isEmpty())
     {
+        qWarning() << "Error parsing" << localApplication << "Info: no Name";
         return false;
     }
 
     QString exec = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_ALTERATOR_ENTRYEXEC_KEY_NAME);
     if (exec.isEmpty())
     {
+        qWarning() << "Error parsing" << localApplication << "Info: no Exec";
         return false;
     }
 
     QString appInterfaces = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME);
     if (appInterfaces.isEmpty())
     {
+        qWarning() << "Error parsing" << localApplication << "Info: no Interface";
         return false;
     }
 

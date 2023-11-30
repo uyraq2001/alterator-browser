@@ -1,6 +1,7 @@
 #include "objectsmodelbuilder.h"
 #include "category.h"
 #include "categorybuilder.h"
+#include "constants.h"
 #include "desktopfileparser.h"
 #include "localapplicationmodel.h"
 #include "model/localapllicationmodelbuilder.h"
@@ -9,7 +10,8 @@
 #include "objectbuilder.h"
 #include "objectbuilderfactory.h"
 #include "objectitem.h"
-#include "constants.h"
+
+#include <memory>
 
 #include <QDBusConnection>
 #include <QDBusInterface>
