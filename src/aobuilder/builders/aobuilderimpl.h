@@ -17,7 +17,7 @@ public:
 public:
     std::vector<std::unique_ptr<Object>> buildLocalApps() override;
     std::vector<std::unique_ptr<Object>> buildCategories() override;
-    std::vector<std::unique_ptr<Object>> buildLegacyObject() override;
+    std::vector<std::unique_ptr<Object>> buildLegacyObjects() override;
     std::vector<std::unique_ptr<Object>> buildObjects() override;
     std::unique_ptr<Object> buildObject(QString info) override;
 

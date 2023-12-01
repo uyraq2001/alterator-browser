@@ -18,24 +18,24 @@ public:
     explicit PushButton(MainWindow *w, QWidget *parent = nullptr);
     ~PushButton() override = default;
 
-    void setItem(model::ObjectItem *item);
-    model::ObjectItem *getItem();
+    void setItem(model::ModelItem *item);
+    model::ModelItem *getItem();
 
     void showMenu(std::unique_ptr<QMenu> menu);
 
-    PushButton(const PushButton &) = delete;
-    PushButton(PushButton &&)      = delete;
+    PushButton(const PushButton &)            = delete;
+    PushButton(PushButton &&)                 = delete;
     PushButton &operator=(const PushButton &) = delete;
-    PushButton &operator=(PushButton &&) = delete;
+    PushButton &operator=(PushButton &&)      = delete;
 
 private:
-    model::ObjectItem *item = nullptr;
-    MainWindow *window      = nullptr;
+    model::ModelItem *item = nullptr;
+    MainWindow *window     = nullptr;
 
     void onClicked(bool b);
 
 protected:
-    bool event(QEvent * event) override;
+    bool event(QEvent *event) override;
 
 signals:
     void moduleClicked(PushButton *button);

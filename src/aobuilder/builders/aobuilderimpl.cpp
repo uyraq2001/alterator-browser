@@ -9,6 +9,8 @@
 #include "../datasource/datasourceinterface.h"
 
 #include "../parsers/baseobjectparser.h"
+#include <ostream>
+#include <qdebug.h>
 
 namespace ao_builder
 {
@@ -47,10 +49,14 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLocalApps()
         QString currentAppInfo                = d->m_dataSource->getLocalAppInfo(currentApp);
         std::unique_ptr<Object> currentObject = buildObject(currentAppInfo);
 
-        if (currentObject)
+        if (!currentObject)
         {
-            result.push_back(std::move(currentObject));
+            qWarning() << "Cannot build app" << currentApp;
+            continue;
         }
+
+        qInfo() << "Successfully built app" << currentApp;
+        result.push_back(std::move(currentObject));
     }
     return result;
 }
@@ -68,6 +74,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildCategories()
 
         if (currentObject)
         {
+            qInfo() << "Successfully built category" << currentCategory;
             result.push_back(std::move(currentObject));
         }
     }
@@ -75,7 +82,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildCategories()
     return result;
 }
 
-std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObject()
+std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObjects()
 {
     QStringList legacyObjectsList = d->m_dataSource->getLegacyObjectsPaths();
 
@@ -88,6 +95,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObject()
 
         if (currentObject)
         {
+            qInfo() << "Successfully built object" << currentLegacy;
             result.push_back(std::move(currentObject));
         }
     }
@@ -117,9 +125,16 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildObjects()
 
 std::unique_ptr<Object> AOBuilderImpl::buildObject(QString info)
 {
-    if (info.isEmpty() || !d->m_parser->parse(info))
+    if (info.isEmpty())
     {
-        return nullptr;
+        qWarning() << "Cannot parse object: Info returned empty string";
+        return {};
+    }
+
+    if (!d->m_parser->parse(info))
+    {
+        qWarning() << "Cannot parse object";
+        return {};
     }
 
     ObjectBuilderFactory factory{};
@@ -127,7 +142,8 @@ std::unique_ptr<Object> AOBuilderImpl::buildObject(QString info)
 
     if (!objectBuilder)
     {
-        return nullptr;
+        qWarning() << "Cannot get builder for an object";
+        return {};
     }
 
     return objectBuilder->buildObject(d->m_parser.get());

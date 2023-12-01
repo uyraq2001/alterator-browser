@@ -85,7 +85,7 @@ void MainWindow::setModel(model::Model *newModel)
     {
         auto categoryWidget = new CategoryWidget(this);
 
-        model::ObjectItem *categoryObject = dynamic_cast<model::ObjectItem *>(d->model->item(i));
+        model::ModelItem *categoryObject = dynamic_cast<model::ModelItem *>(d->model->item(i));
         if (!categoryObject)
         {
             qWarning() << "Can't convert item to category object!";

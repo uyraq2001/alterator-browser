@@ -26,13 +26,13 @@ public:
     ~Controller();
 
 public:
-    Controller(const Controller &) = delete;
-    Controller(Controller &&)      = delete;
+    Controller(const Controller &)            = delete;
+    Controller(Controller &&)                 = delete;
     Controller &operator=(const Controller &) = delete;
-    Controller &operator=(Controller &&) = delete;
+    Controller &operator=(Controller &&)      = delete;
 
 public slots:
-    void moduleClicked(model::ObjectItem *moduleItem);
+    void moduleClicked(model::ModelItem *moduleItem);
     void onInterfaceClicked(model::LocalApplication *app);
     void onDBusStructureUpdate(QString service, QString prev, QString next);
 

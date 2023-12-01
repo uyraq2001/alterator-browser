@@ -42,6 +42,8 @@ const char *const ALTERATOR_ENTRY_SECTION_NAME    = "Alterator Entry";
 const char *const DESKTOP_ENTRY_SECTION_NAME      = "Desktop Entry";
 const char *const ALTERATOR_ENTRY_TYPE_KEY_NAME   = "Type";
 const char *const ALTERATOR_ENTRY_OBJECT_KEY_NAME = "Name";
+const char *const DESKTOP_ENTRY_TYPE_KEY_NAME     = "Type";
+const char *const DESKTOP_ENTRY_OBJECT_KEY_NAME   = "Name";
 
 // Object types
 const char *const KEY_TYPE_VALUE_FOR_APPLICATION_OBJECT = "Application";
@@ -62,7 +64,7 @@ const char *const LOCAL_APP_EXEC_KEY_NAME                      = "Exec";
 const char *const LOCAL_APP_MIMETYPE_KEY_NAME                  = "Mimetype";
 const char *const LOCAL_APP_ALTERATOR_ENTRY_SECTION_KEY_NAME   = "Exec";
 const char *const LOCAL_APP_ALTERATOR_ENTRY_SECTION_TYPE_VALUE = "Application";
-const char *const LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME       = "Interfaces";
+const char *const LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME       = "Interface";
 const char *const LOCAL_APP_ALTERATOR_ENTRYEXEC_KEY_NAME       = "Exec";
 
 // Category keys and values
