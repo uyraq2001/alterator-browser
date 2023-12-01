@@ -5,19 +5,32 @@
 #include <QStandardItemModel>
 
 #include "../../aobuilder/objects/category.h"
+#include "modelinterface.h"
 #include "objectitem.h"
 
 namespace ab::model
 {
-class Model : public QStandardItemModel
+class Model : public QStandardItemModel, public ModelInterface
 {
 public:
     Model();
     ~Model() override;
 
     // Categories
-    std::vector<ao_builder::Id> getCategories();
-    std::optional<ao_builder::Category> getCategory(ao_builder::Id category_id);
+    std::vector<ao_builder::Id> getCategories() override;
+    std::optional<ao_builder::Category> getCategory(ao_builder::Id id) override;
+
+    // Applications
+    std::vector<ao_builder::Id> getLocalApplications() override;
+    std::optional<ao_builder::LocalAppObject> getLocalApplication(QString id) override;
+    std::set<QString> getInterfaces() override;
+    std::vector<ao_builder::Id> getLocalApplicationsByInterface(QString iface) override;
+
+    // Legacy Objects
+    std::vector<ao_builder::Id> getLegacyObjects() override;
+    std::optional<ao_builder::LegacyObject> getLegacyObject(ao_builder::Id id) override;
+    std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface) override;
+    std::vector<ao_builder::Id> getLegacyObjectsByCategory(ao_builder::Id category_id) override;
 
     void translateModel(QString locale);
 

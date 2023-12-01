@@ -2,6 +2,7 @@
 #define MODELINTERFACE_H
 
 #include <optional>
+#include <set>
 #include <vector>
 
 #include "../../aobuilder/objects/category.h"
@@ -10,17 +11,22 @@
 
 class ModelInterface
 {
-    virtual std::vector<QString> getCategories();
-    virtual std::optional<ao_builder::Category> getCategory(QString id);
+public:
+    virtual ~ModelInterface() = default;
 
-    virtual std::vector<QString> getLocalApplications();
-    virtual std::vector<QString> getLocalApplicationsByInterface(QString iface);
-    virtual std::optional<ao_builder::LocalAppObject> getLocalApplication(QString id);
+public:
+    virtual std::vector<ao_builder::Id> getCategories()                        = 0;
+    virtual std::optional<ao_builder::Category> getCategory(ao_builder::Id id) = 0;
 
-    virtual std::vector<QString> getObjects();
-    virtual std::vector<QString> getObjectsByInterface(QString iface);
-    virtual std::vector<QString> getObjectsByCategory(QString cat);
-    virtual std::optional<ao_builder::LegacyObject> getObject(QString id);
+    virtual std::vector<ao_builder::Id> getLocalApplications()                               = 0;
+    virtual std::optional<ao_builder::LocalAppObject> getLocalApplication(ao_builder::Id id) = 0;
+    virtual std::set<QString> getInterfaces()                                                = 0;
+    virtual std::vector<QString> getLocalApplicationsByInterface(QString iface)              = 0;
+
+    virtual std::vector<ao_builder::Id> getLegacyObjects()                              = 0;
+    virtual std::optional<ao_builder::LegacyObject> getLegacyObject(ao_builder::Id id)  = 0;
+    virtual std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface)      = 0;
+    virtual std::vector<QString> getLegacyObjectsByCategory(ao_builder::Id category_id) = 0;
 };
 
 #endif // MODELINTERFACE_H

@@ -55,7 +55,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLocalApps()
             continue;
         }
 
-        qInfo() << "Successfully build app" << currentApp;
+        qInfo() << "Successfully built app" << currentApp;
         result.push_back(std::move(currentObject));
     }
     return result;
@@ -74,7 +74,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildCategories()
 
         if (currentObject)
         {
-            qInfo() << "Successfully build category" << currentCategory;
+            qInfo() << "Successfully built category" << currentCategory;
             result.push_back(std::move(currentObject));
         }
     }
@@ -82,7 +82,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildCategories()
     return result;
 }
 
-std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObject()
+std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObjects()
 {
     QStringList legacyObjectsList = d->m_dataSource->getLegacyObjectsPaths();
 
@@ -95,7 +95,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObject()
 
         if (currentObject)
         {
-            qInfo() << "Successfully build object" << currentLegacy;
+            qInfo() << "Successfully built object" << currentLegacy;
             result.push_back(std::move(currentObject));
         }
     }
