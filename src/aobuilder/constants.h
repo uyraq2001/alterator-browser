@@ -64,7 +64,7 @@ const char *const LOCAL_APP_EXEC_KEY_NAME                      = "Exec";
 const char *const LOCAL_APP_MIMETYPE_KEY_NAME                  = "Mimetype";
 const char *const LOCAL_APP_ALTERATOR_ENTRY_SECTION_KEY_NAME   = "Exec";
 const char *const LOCAL_APP_ALTERATOR_ENTRY_SECTION_TYPE_VALUE = "Application";
-const char *const LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME       = "Interfaces"; // TODO: Rename it to "Interface"
+const char *const LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME       = "Interface";
 const char *const LOCAL_APP_ALTERATOR_ENTRYEXEC_KEY_NAME       = "Exec";
 
 // Category keys and values
