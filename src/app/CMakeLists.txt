@@ -50,6 +50,7 @@ set(HEADERS
     model/localapplicationmodel.h
     model/localapplicationitem.h
     model/model.h
+    model/modelinterface.h
 )
 
 set(SOURCES
