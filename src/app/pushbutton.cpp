@@ -15,7 +15,7 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
     connect(this, &PushButton::clicked, this->window, [this]() { this->window->onModuleClicked(this); });
 }
 
-void PushButton::setItem(model::ObjectItem *newItem)
+void PushButton::setItem(model::ModelItem *newItem)
 {
     try
     {
@@ -49,7 +49,7 @@ void PushButton::setItem(model::ObjectItem *newItem)
     }
 }
 
-model::ObjectItem *PushButton::getItem()
+model::ModelItem *PushButton::getItem()
 {
     return item;
 }

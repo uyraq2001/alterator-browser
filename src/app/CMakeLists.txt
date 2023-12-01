@@ -20,70 +20,69 @@ find_package(Qt5 COMPONENTS Widgets Core Gui DBus Xml LinguistTools REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
+# set(CMAKE_AUTOMOC ON)
+# set(CMAKE_AUTOUIC ON)
+# set(CMAKE_AUTORCC ON)
 
 set(HEADERS
-    mainwindow.h
-    categorywidget.h
-    flowlayout.h
-    controller.h
-    pushbutton.h
-    mainwindowsettings.h
+    # mainwindow.h
+    # categorywidget.h
+    # flowlayout.h
+    # controller.h
+    # pushbutton.h
+    # mainwindowsettings.h
 
-    model/object.h
-    model/category.h
+    # model/object.h
+    # model/category.h
     model/model.h
-    model/categorybuilder.h
-    model/localapplication.h
+    # model/categorybuilder.h
+    # model/localapplication.h
     model/objectitem.h
-    model/objectsmodelbuilder.h
-    model/desktopfileparser.h
-    model/objectbuilderfactory.h
-    model/objectbuilderinterface.h
-    model/objectbuilder.h
+    # model/objectsmodelbuilder.h
+    # model/desktopfileparser.h
+    # model/objectbuilderfactory.h
+    # model/objectbuilderinterface.h
+    # model/objectbuilder.h
 
-    model/localapplication.h
-    model/localapplicationbuilder.h
-    model/localapllicationmodelbuilder.h
-    model/localapplicationmodel.h
-    model/localapplicationitem.h
-    model/model.h
-    model/modelinterface.h
+    # model/localapplication.h
+    # model/localapplicationbuilder.h
+    # model/localapllicationmodelbuilder.h
+    # model/localapplicationmodel.h
+    # model/localapplicationitem.h
+    # model/model.h
 )
 
 set(SOURCES
     main.cpp
-    mainwindow.cpp
-    categorywidget.cpp
+    # mainwindow.cpp
+    # categorywidget.cpp
     flowlayout.cpp
-    controller.cpp
-    pushbutton.cpp
-    mainwindowsettings.cpp
+    # controller.cpp
+    # pushbutton.cpp
+    # mainwindowsettings.cpp
 
-    model/object.cpp
-    model/category.cpp
+    # model/object.cpp
+    # model/category.cpp
     model/model.cpp
-    model/categorybuilder.cpp
-    model/localapplication.cpp
+    # model/categorybuilder.cpp
+    # model/localapplication.cpp
     model/objectitem.cpp
-    model/objectsmodelbuilder.cpp
-    model/desktopfileparser.cpp
-    model/objectbuilderfactory.cpp
-    model/objectbuilder.cpp
+    # model/objectsmodelbuilder.cpp
+    # model/desktopfileparser.cpp
+    # model/objectbuilderfactory.cpp
+    # model/objectbuilder.cpp
 
-    model/localapplication.cpp
-    model/localapplicationbuilder.cpp
-    model/localapllicationmodelbuilder.cpp
-    model/localapplicationmodel.cpp
-    model/localapplicationitem.cpp
-    model/model.cpp
+    # model/localapplication.cpp
+    # model/localapplicationbuilder.cpp
+    # model/localapllicationmodelbuilder.cpp
+    # model/localapplicationmodel.cpp
+    # model/localapplicationitem.cpp
+    # model/model.cpp
 )
 
 set(UI_FORMS
-    mainwindow.ui
-    categorywidget.ui
+    # mainwindow.ui
+    # categorywidget.ui
 )
 set(RESOURCES
     resources.qrc

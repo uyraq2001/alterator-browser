@@ -25,21 +25,21 @@ public:
     ~CategoryWidget() override;
 
     void setGeometry(const QRect &rect);
-    unsigned int setItem(model::ObjectItem *item);
+    unsigned int setItem(model::ModelItem *item);
 
 public:
-    CategoryWidget(const CategoryWidget &) = delete;
-    CategoryWidget(CategoryWidget &&)      = delete;
+    CategoryWidget(const CategoryWidget &)            = delete;
+    CategoryWidget(CategoryWidget &&)                 = delete;
     CategoryWidget &operator=(const CategoryWidget &) = delete;
-    CategoryWidget &operator=(CategoryWidget &&) = delete;
+    CategoryWidget &operator=(CategoryWidget &&)      = delete;
 
 private:
     Ui::CategoryWidget *ui;
-    model::ObjectItem *item;
+    model::ModelItem *item;
     MainWindow *window;
 
 signals:
-    void showMenu(model::ObjectItem *item);
+    void showMenu(model::ModelItem *item);
 };
 } // namespace ab
 

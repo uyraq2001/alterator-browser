@@ -32,7 +32,7 @@ CategoryWidget::~CategoryWidget()
     delete ui;
 }
 
-unsigned int CategoryWidget::setItem(model::ObjectItem *newItem)
+unsigned int CategoryWidget::setItem(model::ModelItem *newItem)
 {
     this->item = newItem;
 
@@ -68,7 +68,7 @@ unsigned int CategoryWidget::setItem(model::ObjectItem *newItem)
 
     for (int i = 0; i < newItem->model()->rowCount(newItem->index()); ++i)
     {
-        auto child = dynamic_cast<model::ObjectItem *>(newItem->child(i));
+        auto child = dynamic_cast<model::ModelItem *>(newItem->child(i));
         if (!child)
         {
             qWarning() << "Can't cast item to ObjectItem to make widget!";

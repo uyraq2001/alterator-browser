@@ -1,21 +1,25 @@
 #include "objectitem.h"
+#include <memory>
 
-namespace ab
+namespace ab::model
 {
-namespace model
-{
-ObjectItem::ObjectItem()
-    : m_itemType(ItemType::category)
+ModelItem::ModelItem()
+    : m_itemType(ItemType::None)
 {}
 
-int ObjectItem::type() const
+ModelItem::ModelItem(ItemType type, std::unique_ptr<ao_builder::Object> object)
+    : m_itemType(type)
+    , m_object(std::move(object))
+{}
+
+int ModelItem::type() const
 {
     return static_cast<int>(m_itemType);
 }
 
-std::variant<Object, Category> *ObjectItem::getObject()
+ao_builder::Object *ModelItem::getObject()
 {
     return m_object.get();
 }
-} // namespace model
-} // namespace ab
+
+} // namespace ab::model

@@ -1,44 +1,44 @@
 #ifndef AB_MODEL_OBJECT_ITEM_H
 #define AB_MODEL_OBJECT_ITEM_H
 
-#include "category.h"
-#include "object.h"
-
-#include <variant>
-
 #include <QStandardItem>
 
-namespace ab
+#include "../../aobuilder/objects/object.h"
+
+namespace ab::model
 {
-namespace model
-{
-class ObjectItem : public QStandardItem
+class ModelItem : public QStandardItem
 {
 public:
     enum class ItemType
     {
-        category = QStandardItem::UserType + 1,
-        module
+        None = QStandardItem::UserType + 1,
+        Category,
+        LocalApplication,
+        Object,
+        LegacyObject
     };
 
 public:
-    ObjectItem();
-    ObjectItem(ObjectItem &)  = delete;
-    ObjectItem(ObjectItem &&) = delete;
-    ObjectItem &operator=(const ObjectItem &) = delete;
-    ObjectItem &operator=(ObjectItem &&) = delete;
-    ~ObjectItem() override               = default;
+    ModelItem();
+    ModelItem(ItemType, std::unique_ptr<ao_builder::Object>);
 
-    int type() const override;
+public:
+    ModelItem(ModelItem &)                  = delete;
+    ModelItem(ModelItem &&)                 = delete;
+    ModelItem &operator=(const ModelItem &) = delete;
+    ModelItem &operator=(ModelItem &&)      = delete;
+    ~ModelItem() override                   = default;
 
-    std::variant<Object, Category> *getObject();
+    [[nodiscard]] int type() const override;
+
+    ao_builder::Object *getObject();
 
 public:
     ItemType m_itemType;
 
-    std::unique_ptr<std::variant<Object, Category>> m_object{nullptr};
+    std::unique_ptr<ao_builder::Object> m_object{nullptr};
 };
-} // namespace model
-} // namespace ab
+} // namespace ab::model
 
 #endif // AB_MODEL_OBJECT_ITEM_H

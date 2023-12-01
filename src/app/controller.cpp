@@ -48,7 +48,7 @@ Controller::~Controller()
     delete d;
 }
 
-void Controller::moduleClicked(model::ObjectItem *moduleItem)
+void Controller::moduleClicked(model::ModelItem *moduleItem)
 {
     try
     {

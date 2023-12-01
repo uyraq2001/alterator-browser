@@ -1,11 +1,11 @@
-#include "../aobuilder/builders/aobuilderimpl.h"
 #include "../core/logger/prelude.h"
-#include "controller.h"
-#include "mainwindow.h"
+/* #include "controller.h" */
+/* #include "mainwindow.h" */
 #include "model/constants.h"
 #include "model/localapllicationmodelbuilder.h"
 #include "model/model.h"
-#include "model/objectsmodelbuilder.h"
+/* #include "model/objectsmodelbuilder.h" */
+#include <iostream>
 #include <memory>
 
 #include <QApplication>
@@ -42,12 +42,13 @@ int main(int argc, char *argv[])
     /*                                                   DBUS_LOCAL_APP_GET_LIST_OF_FILES, */
     /*                                                   DBUS_LOCAL_APP_GET_DESKTOP_FILE); */
 
-    const auto modelBuilder = std::make_unique<ao_builder::AOBuilderImpl>();
-    const auto apps         = modelBuilder->buildLocalApps();
-    const auto categories   = modelBuilder->buildCategories();
-    const auto objects      = modelBuilder->buildObjects();
+    auto model      = std::make_unique<ab::model::Model>();
+    auto categories = model->getCategories();
 
-    auto model = std::make_unique<ab::model::Model>();
+    for (const auto &category : categories)
+    {
+        std::cout << category.toStdString() << std::endl;
+    }
 
     /* auto root           = model->invisibleRootItem(); */
     /* auto categoriesRoot = std::make_unique<QStandardItem>(); */
@@ -62,13 +63,13 @@ int main(int argc, char *argv[])
 
     /* std::unique_ptr<ab::model::Model> model = objectModelBuilder.buildModel(); */
 
-    ab::MainWindow mainWindow;
+    /* ab::MainWindow mainWindow; */
 
     /* ab::Controller controller(&mainWindow, std::move(model)); */
 
     /* mainWindow.setController(&controller); */
 
-    mainWindow.show();
+    /* mainWindow.show(); */
 
     return app.exec();
 }
