@@ -2,7 +2,6 @@
 
 #include "../../aobuilder/builders/aobuilderimpl.h"
 #include "../../aobuilder/constants.h"
-#include "objectitem.h"
 
 #include <QDebug>
 #include <QStandardItemModel>

@@ -5,8 +5,8 @@
 #include <QStandardItemModel>
 
 #include "../../aobuilder/objects/category.h"
+#include "item.h"
 #include "modelinterface.h"
-#include "objectitem.h"
 
 namespace ab::model
 {
