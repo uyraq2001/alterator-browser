@@ -95,7 +95,9 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObjects()
 
         if (currentObject)
         {
-            qInfo() << "Successfully built object" << currentLegacy;
+            qInfo() << "Successfully built legacy object" << currentLegacy;
+            currentObject->m_interface = DBUS_LEGACY_OBJECT_INTERFACE_NAME;
+            currentObject->m_dbus_path = currentLegacy;
             result.push_back(std::move(currentObject));
         }
     }
@@ -116,6 +118,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildObjects()
 
         if (currentObject)
         {
+            currentObject->m_dbus_path = currentObjectPath;
             result.push_back(std::move(currentObject));
         }
     }
