@@ -1,6 +1,5 @@
 #include "categorywidget.h"
 #include "flowlayout.h"
-#include "model/category.h"
 #include "pushbutton.h"
 #include "ui_categorywidget.h"
 
@@ -18,11 +17,12 @@ namespace ab
 const QString IGNORE_UI       = "html";
 const QString IGNORE_CATEGORY = "X-Alterator-Hidden";
 
-CategoryWidget::CategoryWidget(MainWindow *w, QWidget *parent)
+CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, QWidget *parent)
     : QWidget{parent}
     , ui(new Ui::CategoryWidget)
-    , item(nullptr)
+    , category(nullptr)
     , window(w)
+    , model(m)
 {
     ui->setupUi(this);
 }
@@ -32,32 +32,20 @@ CategoryWidget::~CategoryWidget()
     delete ui;
 }
 
-unsigned int CategoryWidget::setItem(model::ModelItem *newItem)
+unsigned int CategoryWidget::setCategory(ao_builder::Category cat)
 {
-    this->item = newItem;
-
     unsigned int addedWidgets = 0;
 
-    try
-    {
-        ab::model::Category currentCategory = std::get<ab::model::Category>(*newItem->getObject());
+    QPixmap iconMap("/usr/share/alterator/design/images/" + cat.m_icon + ".png");
+    ui->iconLabel->setPixmap(iconMap);
+    ui->iconLabel->setMinimumSize(iconMap.size());
 
-        QPixmap iconMap("/usr/share/alterator/design/images/" + currentCategory.m_icon + ".png");
-        ui->iconLabel->setPixmap(iconMap);
-        ui->iconLabel->setMinimumSize(iconMap.size());
+    ui->titleLabel->setText(cat.m_displayName);
+    ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
 
-        ui->titleLabel->setText(currentCategory.m_name);
-        ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
+    ui->descriptionLabel->setText(cat.m_comment);
 
-        ui->descriptionLabel->setText(currentCategory.m_comment);
-
-        ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
-    }
-    catch (const std::bad_variant_access &e)
-    {
-        qCritical() << "ERROR: the item is not of Category type";
-        return 0;
-    }
+    ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
 
     const int margin            = 0;
     const int horizontalSpacing = 0;
@@ -66,40 +54,29 @@ unsigned int CategoryWidget::setItem(model::ModelItem *newItem)
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    for (int i = 0; i < newItem->model()->rowCount(newItem->index()); ++i)
+    for (auto moduleName : model->getLegacyObjectsByCategory(cat.m_id))
     {
-        auto child = dynamic_cast<model::ModelItem *>(newItem->child(i));
-        if (!child)
+        auto module = model->getLegacyObject(moduleName);
+        if (!module.has_value())
         {
-            qWarning() << "Can't cast item to ObjectItem to make widget!";
+            qWarning() << moduleName << ": no such module!";
             continue;
         }
 
-        std::variant<ab::model::Object, ab::model::Category> *childItem = child->getObject();
-
-        try
+        if (module.value().m_x_Alterator_UI == IGNORE_UI)
         {
-            ab::model::Object childObject = std::get<ab::model::Object>(*childItem);
-            if (childObject.m_x_Alterator_UI == IGNORE_UI)
-            {
-                qWarning() << "Ignoring object with html UI:" << childObject.m_id;
-                continue;
-            }
-
-            if (childObject.m_categoryId == IGNORE_CATEGORY)
-            {
-                qWarning() << "Ignoring object with hidden category:" << childObject.m_id;
-                continue;
-            }
+            qWarning() << "Ignoring object with html UI:" << module.value().m_id;
+            continue;
         }
-        catch (std::bad_variant_access const &ex)
+
+        if (module.value().m_categoryId == IGNORE_CATEGORY)
         {
-            qWarning() << "Exception: Can't cast item to ObjectItem to make widget!";
+            qWarning() << "Ignoring object with hidden category:" << module.value().m_id;
             continue;
         }
 
         auto moduleButton = std::make_unique<PushButton>(window);
-        moduleButton->setItem(child);
+        moduleButton->setObject(module.value());
         moduleButton->setFlat(true);
         modulesLayout->addWidget(moduleButton.release());
         addedWidgets++;

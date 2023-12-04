@@ -20,38 +20,39 @@ find_package(Qt5 COMPONENTS Widgets Core Gui DBus Xml LinguistTools REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# set(CMAKE_AUTOMOC ON)
-# set(CMAKE_AUTOUIC ON)
-# set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
 set(HEADERS
-    # mainwindow.h
-    # categorywidget.h
-    # flowlayout.h
-    # controller.h
-    # pushbutton.h
-    # mainwindowsettings.h
+    mainwindow.h
+    categorywidget.h
+    flowlayout.h
+    controller.h
+    pushbutton.h
+    mainwindowsettings.h
 
     model/model.h
     model/item.h
+    model/modelinterface.h
 )
 
 set(SOURCES
     main.cpp
-    # mainwindow.cpp
-    # categorywidget.cpp
-    # flowlayout.cpp
-    # controller.cpp
-    # pushbutton.cpp
-    # mainwindowsettings.cpp
+    mainwindow.cpp
+    categorywidget.cpp
+    flowlayout.cpp
+    controller.cpp
+    pushbutton.cpp
+    mainwindowsettings.cpp
 
     model/model.cpp
     model/item.cpp
 )
 
 set(UI_FORMS
-    # mainwindow.ui
-    # categorywidget.ui
+    mainwindow.ui
+    categorywidget.ui
 )
 set(RESOURCES
     resources.qrc

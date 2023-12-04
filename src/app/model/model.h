@@ -10,7 +10,7 @@
 
 namespace ab::model
 {
-class Model : public QStandardItemModel, public ModelInterface
+class Model : public QStandardItemModel, public ab::model::ModelInterface
 {
 public:
     Model();
@@ -35,10 +35,10 @@ public:
     void translateModel(QString locale);
 
 public:
-    Model(const Model &)            = delete;
-    Model(Model &&)                 = delete;
+    Model(const Model &) = delete;
+    Model(Model &&)      = delete;
     Model &operator=(const Model &) = delete;
-    Model &operator=(Model &&)      = delete;
+    Model &operator=(Model &&) = delete;
 
 private:
     void translateItem(QStandardItem *item, QString locale);
