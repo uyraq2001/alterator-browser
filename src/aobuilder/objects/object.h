@@ -23,6 +23,9 @@ public:
     QString m_type{};
     QString m_icon{};
 
+    QString m_dbus_path{};
+    QString m_interface{};
+
     QMap<QString, QString> m_nameLocaleStorage{};
 };
 } // namespace ao_builder
