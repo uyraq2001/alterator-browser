@@ -30,11 +30,11 @@ ao_builder::LegacyObject PushButton::getObject()
     return object;
 }
 
-void PushButton::showMenu(std::unique_ptr<QMenu> menu)
-{
-    this->setMenu(menu.release());
-    QPushButton::showMenu();
-}
+//void PushButton::showMenu(std::unique_ptr<QMenu> menu)
+//{
+//    this->setMenu(menu.release());
+//    QPushButton::showMenu();
+//}
 
 bool PushButton::event(QEvent *event)
 {

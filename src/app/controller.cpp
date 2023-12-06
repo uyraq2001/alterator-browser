@@ -50,9 +50,15 @@ Controller::~Controller()
 void Controller::moduleClicked(ao_builder::LegacyObject obj)
 {
     auto apps = d->model->getLocalApplicationsByInterface(ao_builder::DBUS_LEGACY_OBJECT_INTERFACE_NAME);
+    if (apps.empty())
+    {
+        qWarning() << obj.m_id << ": no applications are available for this module";
+    }
     auto app  = d->model->getLocalApplication(apps[0]);
     auto proc = new QProcess(this);
-    proc->start(app->m_desktopExec, QStringList() << obj.m_dbus_path);
+    proc->start("/bin/bash", QStringList() << "-c" << app->m_exec << obj.m_dbus_path);
+    qWarning() << proc->readAllStandardError();
+    qWarning() << proc->readAllStandardOutput();
 }
 
 //void Controller::onDBusStructureUpdate(QString, QString, QString)

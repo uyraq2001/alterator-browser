@@ -16,6 +16,8 @@ std::unique_ptr<Object> LegacyObjectBuilder::buildObject(ObjectParserInterface *
         return nullptr;
     }
 
+    buildingObject->m_displayName = buildingObject->m_id;
+
     QString currentObjectCategoryName = parser->getValue(DESKTOP_ENTRY_SECTION_NAME, LEGACY_OBJECT_CATEGORY_KEY_NAME);
     buildingObject->m_categoryId      = currentObjectCategoryName;
 

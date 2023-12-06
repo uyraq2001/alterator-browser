@@ -49,7 +49,7 @@ public:
     void setModel(model::ModelInterface *m);
     void clearUi();
 
-    void showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu);
+    //    void showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu);
     void onModuleClicked(PushButton *button);
     //    void onInterfaceClicked(ao_builder::LocalAppObject *app);
 

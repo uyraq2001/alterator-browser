@@ -21,7 +21,7 @@ public:
     void setObject(ao_builder::LegacyObject obj);
     ao_builder::LegacyObject getObject();
 
-    void showMenu(std::unique_ptr<QMenu> menu);
+    //    void showMenu(std::unique_ptr<QMenu> menu);
 
     PushButton(const PushButton &) = delete;
     PushButton(PushButton &&)      = delete;

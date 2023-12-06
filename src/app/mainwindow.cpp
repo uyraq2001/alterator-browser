@@ -118,10 +118,10 @@ void MainWindow::onModuleClicked(PushButton *button)
     d->controller->moduleClicked(button->getObject());
 }
 
-void MainWindow::showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu)
-{
-    button->showMenu(std::move(menu));
-}
+//void MainWindow::showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu)
+//{
+//    button->showMenu(std::move(menu));
+//}
 
 //void MainWindow::onInterfaceClicked(ao_builder::LocalAppObject *app)
 //{
