@@ -17,6 +17,7 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
 
 void PushButton::setObject(ao_builder::LegacyObject obj)
 {
+    object = obj;
     this->setText(obj.m_displayName);
     this->setMinimumWidth(this->sizeHint().width());
 
@@ -29,12 +30,6 @@ ao_builder::LegacyObject PushButton::getObject()
 {
     return object;
 }
-
-//void PushButton::showMenu(std::unique_ptr<QMenu> menu)
-//{
-//    this->setMenu(menu.release());
-//    QPushButton::showMenu();
-//}
 
 bool PushButton::event(QEvent *event)
 {

@@ -39,7 +39,6 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
                                                     QDBusConnection::systemBus(),
                                                     QDBusServiceWatcher::WatchForOwnerChange,
                                                     this);
-    //    connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
 }
 
 Controller::~Controller()
@@ -54,36 +53,10 @@ void Controller::moduleClicked(ao_builder::LegacyObject obj)
     {
         qWarning() << obj.m_id << ": no applications are available for this module";
     }
-    auto app  = d->model->getLocalApplication(apps[0]);
-    auto proc = new QProcess(this);
-    proc->start("/bin/bash", QStringList() << "-c" << app->m_exec << obj.m_dbus_path);
-    qWarning() << proc->readAllStandardError();
-    qWarning() << proc->readAllStandardOutput();
+    auto app     = d->model->getLocalApplication(apps[0]);
+    auto proc    = new QProcess(this);
+    QString exec = app->m_exec;
+    exec.replace("%o", obj.m_dbus_path);
+    proc->start("/bin/bash", QStringList() << "-c" << exec);
 }
-
-//void Controller::onDBusStructureUpdate(QString, QString, QString)
-//{
-//    model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
-//                                                  DBUS_PATH,
-//                                                  DBUS_MANAGER_INTERFACE_NAME,
-//                                                  DBUS_FIND_INTERFACE_NAME,
-//                                                  GET_OBJECTS_METHOD_NAME,
-//                                                  INFO_METHOD_NAME_FOR_ACOBJECT,
-//                                                  CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
-//                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT,
-//                                                  DBUS_LOCAL_APP_INTERFACE_NAME,
-//                                                  DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-//                                                  DBUS_LOCAL_APP_GET_DESKTOP_FILE);
-
-//    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel();
-
-//    d->model = std::move(objectModel);
-
-//    QLocale locale;
-//    QString language = locale.system().name().split("_").at(0);
-//    d->model->translateModel(language);
-
-//    d->window->clearUi();
-//    d->window->setModel(d->model.get());
-//}
 } // namespace ab
