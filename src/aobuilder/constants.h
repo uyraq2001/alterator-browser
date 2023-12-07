@@ -50,6 +50,7 @@ const char *const DESKTOP_ENTRY_CATEGORY_KEY_ID   = "X-Alterator-Category";
 const char *const KEY_TYPE_VALUE_FOR_APPLICATION_OBJECT = "Application";
 const char *const KEY_TYPE_VALUE_FOR_CATEGORY_OBJECT    = "Category";
 const char *const KEY_TYPE_VALUE_FOR_OBJECT             = "Object";
+const char *const LEGACY_KEY_TYPE_VALUE_FOR_OBJECT      = "Application";
 
 // Objects fields names
 
@@ -73,6 +74,7 @@ const char *const CATEGORY_COMMENT_KEY_NAME              = "Comment";
 const char *const CATEGORY_ICON_KEY_NAME                 = "Icon";
 const char *const CATEGORY_TYPE_KEY_VALUE                = "Category";
 const char *const CATEGORY_X_ALTERATOR_CATEGORY_KEY_NAME = "X-alterator-category";
+const char *const LEGACY_CATEGORY_TYPE_VALUE             = "Directory";
 
 // Legacy objects keys and values
 const char *const LEGACY_OBJECT_CATEGORY_KEY_NAME             = "Categories";

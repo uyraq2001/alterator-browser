@@ -16,6 +16,7 @@ public:
 
 private:
     std::unique_ptr<ObjectBuilderInterface> getObjectBuilder(ObjectParserInterface *parser);
+    std::unique_ptr<ObjectBuilderInterface> getLegacyObjectBuilder(ObjectParserInterface *parser);
 };
 
 } // namespace ao_builder
