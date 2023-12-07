@@ -76,24 +76,14 @@ QString DataSourceDBusImpl::getCategoryInfo(QString path)
                                DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
 }
 
-QStringList DataSourceDBusImpl::getLegacyObjectsPaths()
+QStringList DataSourceDBusImpl::getObjectsPath(QString interface)
 {
-    return getPathsByInterface(DBUS_LEGACY_OBJECT_INTERFACE_NAME);
+    return getPathsByInterface(interface);
 }
 
-QString DataSourceDBusImpl::getLegacyObjectInfo(QString path)
+QString DataSourceDBusImpl::getObjectInfo(QString path, QString interface)
 {
-    return getObjectInfo(DBUS_LEGACY_OBJECT_INTERFACE_NAME, path, DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
-}
-
-QStringList DataSourceDBusImpl::getObjectsPath()
-{
-    return getPathsByInterface(DBUS_OBJECT_INTERFACE_NAME);
-}
-
-QString DataSourceDBusImpl::getObjectInfo([[maybe_unused]] QString path)
-{
-    return {};
+    return getObjectInfo(interface, path, DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
 }
 
 QStringList DataSourceDBusImpl::getPathsByInterface(QString ifaceName)

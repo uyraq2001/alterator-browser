@@ -48,10 +48,11 @@ Controller::~Controller()
 
 void Controller::moduleClicked(ao_builder::LegacyObject obj)
 {
-    auto apps = d->model->getLocalApplicationsByInterface(ao_builder::DBUS_LEGACY_OBJECT_INTERFACE_NAME);
+    auto apps = d->model->getLocalApplicationsByInterface(obj.m_interface);
     if (apps.empty())
     {
         qWarning() << obj.m_id << ": no applications are available for this module";
+        return;
     }
     auto app     = d->model->getLocalApplication(apps[0]);
     auto proc    = new QProcess(this);

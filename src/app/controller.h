@@ -33,8 +33,6 @@ public:
 
 public slots:
     void moduleClicked(ao_builder::LegacyObject obj);
-    //    void onInterfaceClicked(ao_builder::LocalAppObject *app);
-    //    void onDBusStructureUpdate(QString service, QString prev, QString next);
 
 private:
     ControllerPrivate *d;

@@ -28,8 +28,6 @@ const char *const DBUS_LOCAL_APP_OBJECT_PATH  = "/ru/basealt/alterator/global";
 const char *const DBUS_MANAGER_INTERFACE_NAME          = "ru.basealt.alterator.manager";
 const char *const DBUS_CATEGORY_OBJECT_INTERFACE_NAME  = "ru.basealt.alterator.categories";
 const char *const DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME = "ru.basealt.alterator.applications";
-const char *const DBUS_LEGACY_OBJECT_INTERFACE_NAME    = "ru.basealt.alterator.legacy";
-const char *const DBUS_OBJECT_INTERFACE_NAME           = "ru.basealt.alterator.object";
 
 // Names of DBus interfaces
 const char *const DBUS_CATEGORIES_OBJECTS_INTERFACE_NAME = "category";

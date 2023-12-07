@@ -39,6 +39,16 @@ Model::Model()
 
     this->appsRoot = std::make_unique<ModelItem>();
     auto apps      = modelBuilder->buildLocalApps();
+    std::vector<QString> interfaces;
+    for (auto &a : apps)
+    {
+        auto app = dynamic_cast<ao_builder::LocalAppObject *>(a.get());
+        if (app == nullptr)
+        {
+            continue;
+        }
+        interfaces.push_back(app->m_interface);
+    }
     for (auto &app : apps)
     {
         auto appItem = std::make_unique<ModelItem>(ModelItem::ItemType::LocalApplication, std::move(app));
@@ -47,7 +57,7 @@ Model::Model()
     root->appendRow(this->appsRoot.get());
 
     this->legacyObjectsRoot = std::make_unique<ModelItem>();
-    auto legacyObjects      = modelBuilder->buildLegacyObjects();
+    auto legacyObjects      = modelBuilder->buildObjects(interfaces);
     for (auto &legacyObject : legacyObjects)
     {
         auto objectItem = std::make_unique<ModelItem>(ModelItem::ItemType::LegacyObject, std::move(legacyObject));
@@ -188,8 +198,7 @@ std::vector<ao_builder::Id> Model::getLocalApplicationsByInterface(QString iface
             continue;
         }
 
-        const auto find = std::find(app->m_interfaces.begin(), app->m_interfaces.end(), iface);
-        if (find != app->m_interfaces.end())
+        if (app->m_interface == iface)
         {
             appsIds.push_back(item->getObject()->m_id);
         }

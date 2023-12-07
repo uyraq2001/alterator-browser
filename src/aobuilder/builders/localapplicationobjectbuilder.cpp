@@ -108,17 +108,17 @@ bool LocalApplicationObjectBuilder::parseAlteratorEntrySection(ObjectParserInter
         return false;
     }
 
-    QString appInterfaces = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME);
-    if (appInterfaces.isEmpty())
+    QString appInterface = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, LOCAL_APP_ALTERATOR_INTERFACE_KEY_NAME);
+    if (appInterface.isEmpty())
     {
         qWarning() << "Error parsing" << localApplication << "Info: no Interface";
         return false;
     }
 
-    localApplication->m_type = type;
-    localApplication->m_id   = name;
-    localApplication->m_exec = exec;
-    localApplication->m_interfaces.push_back(appInterfaces);
+    localApplication->m_type      = type;
+    localApplication->m_id        = name;
+    localApplication->m_exec      = exec;
+    localApplication->m_interface = appInterface;
 
     return true;
 }
