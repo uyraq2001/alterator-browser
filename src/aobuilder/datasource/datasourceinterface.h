@@ -2,12 +2,15 @@
 #define AOB_DATA_SOURCE_INTERFACE_H
 
 #include <QByteArray>
+#include <QObject>
 #include <QString>
 
 namespace ao_builder
 {
-class DataSourceInterface
+class DataSourceInterface : public QObject
 {
+    Q_OBJECT
+
 public:
     virtual ~DataSourceInterface() = default;
 
@@ -19,6 +22,9 @@ public:
 
     virtual QStringList getObjectsPath(QString interface)          = 0;
     virtual QString getObjectInfo(QString path, QString interface) = 0;
+
+signals:
+    void dataUpdated();
 };
 
 } // namespace ao_builder

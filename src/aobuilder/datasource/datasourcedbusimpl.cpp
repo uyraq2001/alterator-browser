@@ -4,6 +4,7 @@
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QDBusServiceWatcher>
 
 #include <iostream>
 #include <utility>
@@ -25,7 +26,13 @@ public:
 
 DataSourceDBusImpl::DataSourceDBusImpl(QString serviceName)
     : d(new DataSourseDbusImplPrivate(serviceName))
-{}
+{
+    auto alteratorWatcher = new QDBusServiceWatcher(ao_builder::DBUS_SERVICE_NAME,
+                                                    QDBusConnection::systemBus(),
+                                                    QDBusServiceWatcher::WatchForOwnerChange,
+                                                    this);
+    connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &DataSourceDBusImpl::dbusUpdated);
+}
 
 DataSourceDBusImpl::~DataSourceDBusImpl()
 {
@@ -177,4 +184,8 @@ QByteArray DataSourceDBusImpl::getObjectInfoByName(QString ifaceName,
     return reply.value();
 }
 
+void DataSourceDBusImpl::dbusUpdated(QString, QString, QString)
+{
+    emit dataUpdated();
+}
 } // namespace ao_builder

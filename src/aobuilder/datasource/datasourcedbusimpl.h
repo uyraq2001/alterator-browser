@@ -38,6 +38,9 @@ private:
     QStringList getPathsByInterface(QString ifaceName);
     QStringList getObjectsList(QString listMethodName, QString path, QString interfaceName);
 
+private slots:
+    void dbusUpdated(QString, QString, QString);
+
 private:
     DataSourseDbusImplPrivate *d;
 };

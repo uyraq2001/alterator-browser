@@ -29,16 +29,12 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
 {
     d->window = w;
     d->model  = std::move(m);
+    connect(d->model.get(), &model::Model::modelUpdated, this, &Controller::onModelUpdated);
 
     if (d->model != nullptr)
     {
         w->setModel(d->model.get());
     }
-
-    auto alteratorWatcher = new QDBusServiceWatcher(ao_builder::DBUS_SERVICE_NAME,
-                                                    QDBusConnection::systemBus(),
-                                                    QDBusServiceWatcher::WatchForOwnerChange,
-                                                    this);
 }
 
 Controller::~Controller()
@@ -59,5 +55,18 @@ void Controller::moduleClicked(ao_builder::LegacyObject obj)
     QString exec = app->m_exec;
     exec.replace("%o", obj.m_dbus_path);
     proc->start("/bin/bash", QStringList() << "-c" << exec);
+}
+
+void Controller::onModelUpdated()
+{
+    QLocale locale;
+    QString language = locale.system().name().split("_").at(0);
+    //    d->model->translateModel(language);
+
+    d->window->clearUi();
+    if (d->model != nullptr)
+    {
+        d->window->setModel(d->model.get());
+    }
 }
 } // namespace ab

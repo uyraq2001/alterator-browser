@@ -33,6 +33,7 @@ public:
 
 public slots:
     void moduleClicked(ao_builder::LegacyObject obj);
+    void onModelUpdated();
 
 private:
     ControllerPrivate *d;

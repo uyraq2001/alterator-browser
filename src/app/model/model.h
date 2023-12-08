@@ -4,6 +4,7 @@
 #include <memory>
 #include <QStandardItemModel>
 
+#include "../../aobuilder/datasource/datasourceinterface.h"
 #include "../../aobuilder/objects/category.h"
 #include "item.h"
 #include "modelinterface.h"
@@ -42,11 +43,17 @@ public:
 
 private:
     void translateItem(QStandardItem *item, QString locale);
+    void build();
 
 private:
     std::unique_ptr<ModelItem> categoriesRoot{};
     std::unique_ptr<ModelItem> appsRoot{};
     std::unique_ptr<ModelItem> legacyObjectsRoot{};
+
+    std::unique_ptr<ao_builder::DataSourceInterface> updateSource{};
+
+private slots:
+    void updateModel();
 };
 } // namespace ab::model
 

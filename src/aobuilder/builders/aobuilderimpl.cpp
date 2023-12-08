@@ -133,4 +133,9 @@ std::unique_ptr<Object> AOBuilderImpl::buildObject(QString info)
 
     return objectBuilder->buildObject(d->m_parser.get());
 }
+
+std::unique_ptr<DataSourceInterface> AOBuilderImpl::getSource()
+{
+    return std::move(d->m_dataSource);
+}
 } // namespace ao_builder
