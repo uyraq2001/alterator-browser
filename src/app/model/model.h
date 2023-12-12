@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <QStandardItemModel>
+#include <QtPlugin>
 
 #include "../../aobuilder/datasource/datasourceinterface.h"
 #include "../../aobuilder/objects/category.h"
@@ -13,6 +14,8 @@ namespace ab::model
 {
 class Model : public QStandardItemModel, public ab::model::ModelInterface
 {
+    Q_OBJECT
+    Q_INTERFACES(ab::model::ModelInterface)
 public:
     Model();
     ~Model() override;
@@ -33,7 +36,7 @@ public:
     std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface) override;
     std::vector<ao_builder::Id> getLegacyObjectsByCategory(ao_builder::Id category_id) override;
 
-    void translateModel(QString locale);
+    void translateModel(QString locale) override;
 
 public:
     Model(const Model &) = delete;
@@ -51,6 +54,9 @@ private:
     std::unique_ptr<ModelItem> legacyObjectsRoot{};
 
     std::unique_ptr<ao_builder::DataSourceInterface> updateSource{};
+
+signals:
+    void modelUpdated();
 
 private slots:
     void updateModel();

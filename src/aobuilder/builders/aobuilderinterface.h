@@ -20,7 +20,7 @@ public:
     virtual std::vector<std::unique_ptr<Object>> buildObjects(std::vector<QString> interfaces) = 0;
     virtual std::unique_ptr<Object> buildObject(QString info)                                  = 0;
 
-    virtual std::unique_ptr<DataSourceInterface> getSource() = 0;
+    virtual std::unique_ptr<DataSourceInterface> extractSource() = 0;
 };
 } // namespace ao_builder
 

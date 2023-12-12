@@ -15,6 +15,11 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
     connect(this, &PushButton::clicked, this->window, [this]() { this->window->onModuleClicked(this); });
 }
 
+PushButton::~PushButton()
+{
+    disconnect();
+}
+
 void PushButton::setObject(ao_builder::LegacyObject obj)
 {
     object = obj;

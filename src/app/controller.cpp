@@ -29,16 +29,18 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
 {
     d->window = w;
     d->model  = std::move(m);
-    connect(d->model.get(), &model::Model::modelUpdated, this, &Controller::onModelUpdated);
+    connect(dynamic_cast<QObject *>(d->model.get()), SIGNAL(modelUpdated()), this, SLOT(onModelUpdated()));
 
     if (d->model != nullptr)
     {
         w->setModel(d->model.get());
+        translateModel();
     }
 }
 
 Controller::~Controller()
 {
+    dynamic_cast<QObject *>(d->model.get())->disconnect();
     delete d;
 }
 
@@ -59,9 +61,14 @@ void Controller::moduleClicked(ao_builder::LegacyObject obj)
 
 void Controller::onModelUpdated()
 {
+    translateModel();
+}
+
+void Controller::translateModel()
+{
     QLocale locale;
     QString language = locale.system().name().split("_").at(0);
-    //    d->model->translateModel(language);
+    d->model->translateModel(language);
 
     d->window->clearUi();
     if (d->model != nullptr)

@@ -260,7 +260,10 @@ void Model::translateItem(QStandardItem *item, QString locale)
             translateItem(currentItem, locale);
         }
 
-        currentItem->getObject()->setLocale(locale);
+        if (currentItem->m_itemType != ab::model::ModelItem::ItemType::None)
+        {
+            currentItem->getObject()->setLocale(locale);
+        }
     }
 }
 
@@ -268,7 +271,6 @@ void Model::build()
 {
     QStandardItem *root     = this->invisibleRootItem();
     const auto modelBuilder = std::make_unique<ao_builder::AOBuilderImpl>();
-    updateSource            = modelBuilder->getSource();
 
     this->categoriesRoot = std::make_unique<ModelItem>();
     auto categories      = modelBuilder->buildCategories();
@@ -307,11 +309,14 @@ void Model::build()
     }
     root->appendRow(this->legacyObjectsRoot.get());
 
+    updateSource = modelBuilder->extractSource();
     connect(updateSource.get(), &ao_builder::DataSourceInterface::dataUpdated, this, &Model::updateModel);
 }
 
 void Model::updateModel()
 {
+    updateSource.get()->disconnect();
+    updateSource.release()->deleteLater();
     build();
     emit modelUpdated();
 }

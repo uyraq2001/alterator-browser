@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <QObject>
+#include <QtPlugin>
 
 #include "../../aobuilder/objects/category.h"
 #include "../../aobuilder/objects/legacyobject.h"
@@ -15,10 +16,8 @@ namespace ab
 {
 namespace model
 {
-class ModelInterface : public QObject
+class ModelInterface
 {
-    Q_OBJECT
-
 public:
     virtual ~ModelInterface() = default;
 
@@ -36,10 +35,14 @@ public:
     virtual std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface)      = 0;
     virtual std::vector<QString> getLegacyObjectsByCategory(ao_builder::Id category_id) = 0;
 
+    virtual void translateModel(QString locale) = 0;
+
 signals:
-    void modelUpdated();
+    virtual void modelUpdated() = 0;
 };
 } // namespace model
 } // namespace ab
+
+Q_DECLARE_INTERFACE(ab::model::ModelInterface, "ModelInterface")
 
 #endif // MODELINTERFACE_H

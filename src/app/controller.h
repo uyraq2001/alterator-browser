@@ -31,6 +31,9 @@ public:
     Controller &operator=(const Controller &) = delete;
     Controller &operator=(Controller &&) = delete;
 
+private:
+    void translateModel();
+
 public slots:
     void moduleClicked(ao_builder::LegacyObject obj);
     void onModelUpdated();

@@ -16,7 +16,7 @@ class PushButton : public QPushButton
 
 public:
     explicit PushButton(MainWindow *w, QWidget *parent = nullptr);
-    ~PushButton() override = default;
+    ~PushButton() override;
 
     void setObject(ao_builder::LegacyObject obj);
     ao_builder::LegacyObject getObject();

@@ -20,7 +20,7 @@ public:
     std::vector<std::unique_ptr<Object>> buildObjects(std::vector<QString> interfaces) override;
     std::unique_ptr<Object> buildObject(QString info) override;
 
-    std::unique_ptr<DataSourceInterface> getSource() override;
+    std::unique_ptr<DataSourceInterface> extractSource() override;
 
 public:
     AOBuilderImpl(const AOBuilderImpl &) = delete;
