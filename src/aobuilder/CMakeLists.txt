@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+    cmake_minimum_required(VERSION 3.5)
 
 project(model-prototype VERSION 0.1 LANGUAGES CXX)
 
@@ -25,7 +25,6 @@ set(HEADERS
     builders/objectbuilder.h
     builders/aobuilderinterface.h
     builders/aobuilderimpl.h
-    builders/legacycategoryobjectbuilder.h
 
     datasource/datasourceinterface.h
     datasource/datasourcedbusimpl.h
@@ -47,7 +46,6 @@ set(SOURCES
     builders/legacyobjectbuilder.cpp
     builders/categoryobjectbuilder.cpp
     builders/aobuilderimpl.cpp
-    builders/legacycategoryobjectbuilder.cpp
 
     datasource/datasourcedbusimpl.cpp
 

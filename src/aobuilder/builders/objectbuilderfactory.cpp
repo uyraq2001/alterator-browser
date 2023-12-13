@@ -1,8 +1,6 @@
-
 #include "objectbuilderfactory.h"
 #include "categoryobjectbuilder.h"
 #include "constants.h"
-#include "legacycategoryobjectbuilder.h"
 #include "legacyobjectbuilder.h"
 #include "localapplicationobjectbuilder.h"
 #include <memory>
@@ -59,11 +57,7 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getLegacyObjectBui
 {
     QString type = parser->getValue(DESKTOP_ENTRY_SECTION_NAME, DESKTOP_ENTRY_TYPE_KEY_NAME);
 
-    if (type == LEGACY_CATEGORY_TYPE_VALUE)
-    {
-        return std::make_unique<LegacyCategoryObjectBuilder>();
-    }
-    else if (type == LEGACY_KEY_TYPE_VALUE_FOR_OBJECT)
+    if (type == LEGACY_KEY_TYPE_VALUE_FOR_OBJECT)
     {
         return std::make_unique<LegacyObjectBuilder>();
     }
