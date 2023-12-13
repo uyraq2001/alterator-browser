@@ -44,6 +44,7 @@ const char *const ALTERATOR_ENTRY_TYPE_KEY_NAME   = "Type";
 const char *const ALTERATOR_ENTRY_OBJECT_KEY_NAME = "Name";
 const char *const DESKTOP_ENTRY_TYPE_KEY_NAME     = "Type";
 const char *const DESKTOP_ENTRY_OBJECT_KEY_NAME   = "Name";
+const char *const DESKTOP_ENTRY_CATEGORY_KEY_ID   = "X-Alterator-Category";
 
 // Object types
 const char *const KEY_TYPE_VALUE_FOR_APPLICATION_OBJECT = "Application";

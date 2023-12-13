@@ -16,15 +16,17 @@ std::unique_ptr<Object> CategoryObjectBuilder::buildObject(ObjectParserInterface
         return nullptr;
     }
 
-    result.get()->m_displayName = result.get()->m_id;
+    QString id = parser->getValue(buildingFromSection, DESKTOP_ENTRY_CATEGORY_KEY_ID);
+    if (!id.isEmpty())
+    {
+        result->m_id = id;
+    }
 
     QString type = parser->getValue(buildingFromSection, ALTERATOR_ENTRY_TYPE_KEY_NAME);
-
     if (type.isEmpty() || type != CATEGORY_TYPE_KEY_VALUE)
     {
         return nullptr;
     }
-
     result->m_type = type;
 
     if (!buildFieldWithLocale(parser,
