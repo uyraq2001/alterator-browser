@@ -12,7 +12,7 @@ std::unique_ptr<ao_builder::Object> LocalApplicationObjectBuilder::buildObject(O
 
     LocalAppObject *object = result.get();
 
-    if (!parseDesktopEntrySection(parser, object) || !parseAlteratorEntrySection(parser, object))
+    if (!parseDesktopEntrySection(parser, object) && !parseAlteratorEntrySection(parser, object))
     {
         return {};
     }
