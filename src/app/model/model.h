@@ -32,7 +32,7 @@ public:
     std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface) override;
     std::vector<ao_builder::Id> getLegacyObjectsByCategory(ao_builder::Id category_id) override;
 
-    void translateModel(QString locale);
+    void translateModel(QString locale) override;
 
 public:
     Model(const Model &) = delete;

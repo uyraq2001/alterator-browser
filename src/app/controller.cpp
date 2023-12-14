@@ -33,6 +33,7 @@ Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *
     if (d->model != nullptr)
     {
         w->setModel(d->model.get());
+        translateModel();
     }
 
     auto alteratorWatcher = new QDBusServiceWatcher(ao_builder::DBUS_SERVICE_NAME,
@@ -52,11 +53,25 @@ void Controller::moduleClicked(ao_builder::LegacyObject obj)
     if (apps.empty())
     {
         qWarning() << obj.m_id << ": no applications are available for this module";
+        return;
     }
     auto app     = d->model->getLocalApplication(apps[0]);
     auto proc    = new QProcess(this);
     QString exec = app->m_exec;
     exec.replace("%o", obj.m_dbus_path);
     proc->start("/bin/bash", QStringList() << "-c" << exec);
+}
+
+void Controller::translateModel()
+{
+    QLocale locale;
+    QString language = locale.system().name().split("_").at(0);
+    d->model->translateModel(language);
+
+    d->window->clearUi();
+    if (d->model != nullptr)
+    {
+        d->window->setModel(d->model.get());
+    }
 }
 } // namespace ab

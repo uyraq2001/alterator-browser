@@ -290,7 +290,10 @@ void Model::translateItem(QStandardItem *item, QString locale)
             translateItem(currentItem, locale);
         }
 
-        currentItem->getObject()->setLocale(locale);
+        if (currentItem->m_itemType != ab::model::ModelItem::ItemType::None)
+        {
+            currentItem->getObject()->setLocale(locale);
+        }
     }
 }
 } // namespace ab::model

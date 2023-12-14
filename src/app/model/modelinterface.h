@@ -31,6 +31,8 @@ public:
     virtual std::optional<ao_builder::LegacyObject> getLegacyObject(ao_builder::Id id)  = 0;
     virtual std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface)      = 0;
     virtual std::vector<QString> getLegacyObjectsByCategory(ao_builder::Id category_id) = 0;
+
+    virtual void translateModel(QString locale) = 0;
 };
 } // namespace model
 } // namespace ab

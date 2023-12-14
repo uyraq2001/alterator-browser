@@ -25,6 +25,9 @@ public:
     explicit Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent = nullptr);
     ~Controller();
 
+private:
+    void translateModel();
+
 public:
     Controller(const Controller &) = delete;
     Controller(Controller &&)      = delete;
