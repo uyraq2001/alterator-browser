@@ -83,6 +83,13 @@ const char *const LEGACY_OBJECT_X_ALTERATOR_WEIGHT_KEY_NAME   = "X-Alterator-Wei
 const char *const LEGACY_OBJECT_X_ALTERATOR_HELP_KEY_NAME     = "X-Alterator-Help";
 const char *const LEGACY_OBJECT_X_ALTERATOR_UI_KEY_NAME       = "X-Alterator-UI";
 const char *const LEGACY_OBJECT_X_ALTERATOR_INTERNAL_KEY_NAME = "X-Alterator-Internal-Name";
+
+// New objects keys and values
+const char *const OBJECT_CATEGORY_KEY_NAME     = "Category";
+const char *const OBJECT_ICON_KEY_NAME         = "Icon";
+const char *const OBJECT_TYPE_KEY_NAME         = "Type";
+const char *const OBJECT_NAME_KEY_NAME         = "Name";
+const char *const OBJECT_DISPLAY_NAME_KEY_NAME = "DisplayName";
 } // namespace ao_builder
 
 #endif // AB_CONSTANTS_H

@@ -20,8 +20,8 @@ public:
     virtual QStringList getLegacyObjectsPaths()       = 0;
     virtual QString getLegacyObjectInfo(QString path) = 0;
 
-    virtual QStringList getObjectsPath()        = 0;
-    virtual QString getObjectInfo(QString path) = 0;
+    virtual QStringList getObjectsPath(QString interface)          = 0;
+    virtual QString getObjectInfo(QString path, QString interface) = 0;
 };
 
 } // namespace ao_builder

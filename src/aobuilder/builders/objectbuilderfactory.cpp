@@ -4,6 +4,8 @@
 #include "constants.h"
 #include "legacyobjectbuilder.h"
 #include "localapplicationobjectbuilder.h"
+#include "newobjectbuilder.h"
+
 #include <memory>
 
 namespace ao_builder
@@ -46,8 +48,7 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getObjectBuilder(O
     }
     else if (type == KEY_TYPE_VALUE_FOR_OBJECT)
     {
-        // TODO: builder for new object is not implemented
-        return {};
+        return std::make_unique<NewObjectBuilder>();
     }
 
     // Unknown type

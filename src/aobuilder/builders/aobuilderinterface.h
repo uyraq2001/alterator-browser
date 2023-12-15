@@ -14,11 +14,10 @@ public:
     virtual ~AOBuilderInterface() = default;
 
 public:
-    virtual std::vector<std::unique_ptr<Object>> buildLocalApps()     = 0;
-    virtual std::vector<std::unique_ptr<Object>> buildCategories()    = 0;
-    virtual std::vector<std::unique_ptr<Object>> buildLegacyObjects() = 0;
-    virtual std::vector<std::unique_ptr<Object>> buildObjects()       = 0;
-    virtual std::unique_ptr<Object> buildObject(QString info)         = 0;
+    virtual std::vector<std::unique_ptr<Object>> buildLocalApps()                              = 0;
+    virtual std::vector<std::unique_ptr<Object>> buildCategories()                             = 0;
+    virtual std::vector<std::unique_ptr<Object>> buildObjects(std::vector<QString> interfaces) = 0;
+    virtual std::unique_ptr<Object> buildObject(QString info)                                  = 0;
 };
 } // namespace ao_builder
 
