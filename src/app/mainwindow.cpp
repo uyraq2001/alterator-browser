@@ -2,7 +2,6 @@
 #include "categorywidget.h"
 #include "controller.h"
 #include "mainwindowsettings.h"
-#include "model/objectitem.h"
 #include "ui_mainwindow.h"
 
 #include <QDBusConnection>
@@ -28,7 +27,7 @@ class MainWindowPrivate
 public:
     Ui::MainWindow *ui                           = nullptr;
     QShortcut *quitShortcut                      = nullptr;
-    model::Model *model                          = nullptr;
+    model::ModelInterface *model                 = nullptr;
     Controller *controller                       = nullptr;
     std::unique_ptr<MainWindowSettings> settings = nullptr;
 };
@@ -77,23 +76,22 @@ void MainWindow::setController(Controller *newContoller)
     d->controller = newContoller;
 }
 
-void MainWindow::setModel(model::Model *newModel)
+void MainWindow::setModel(model::ModelInterface *newModel)
 {
-    d->model                = newModel;
-    QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
-    for (int i = 0; i < d->model->rowCount(); ++i)
+    d->model                        = newModel;
+    QLayout *categoryLayout         = d->ui->scrollArea->widget()->layout();
+    std::vector<QString> categories = d->model->getCategories();
+    for (auto name : categories)
     {
-        auto categoryWidget = new CategoryWidget(this);
-
-        model::ModelItem *categoryObject = dynamic_cast<model::ModelItem *>(d->model->item(i));
-        if (!categoryObject)
+        auto cat = d->model->getCategory(name);
+        if (!cat.has_value())
         {
-            qWarning() << "Can't convert item to category object!";
-
+            qWarning() << name << ": no such category";
             continue;
         }
+        auto categoryWidget = new CategoryWidget(this, d->model);
 
-        if (categoryWidget->setItem(categoryObject) > 0)
+        if (categoryWidget->setCategory(cat.value()) > 0)
         {
             categoryLayout->addWidget(categoryWidget);
         }
@@ -117,16 +115,6 @@ void MainWindow::clearUi()
 
 void MainWindow::onModuleClicked(PushButton *button)
 {
-    d->controller->moduleClicked(button->getItem());
-}
-
-void MainWindow::showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu)
-{
-    button->showMenu(std::move(menu));
-}
-
-void MainWindow::onInterfaceClicked(model::LocalApplication *app)
-{
-    d->controller->onInterfaceClicked(app);
+    d->controller->moduleClicked(button->getObject());
 }
 } // namespace ab

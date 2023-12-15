@@ -1,7 +1,7 @@
 #ifndef AB_PUSH_BUTTON_H
 #define AB_PUSH_BUTTON_H
 
-#include "model/objectitem.h"
+#include "../aobuilder/objects/legacyobject.h"
 
 #include <QPushButton>
 #include <QWidget>
@@ -18,19 +18,17 @@ public:
     explicit PushButton(MainWindow *w, QWidget *parent = nullptr);
     ~PushButton() override = default;
 
-    void setItem(model::ModelItem *item);
-    model::ModelItem *getItem();
+    void setObject(ao_builder::LegacyObject obj);
+    ao_builder::LegacyObject getObject();
 
-    void showMenu(std::unique_ptr<QMenu> menu);
-
-    PushButton(const PushButton &)            = delete;
-    PushButton(PushButton &&)                 = delete;
+    PushButton(const PushButton &) = delete;
+    PushButton(PushButton &&)      = delete;
     PushButton &operator=(const PushButton &) = delete;
-    PushButton &operator=(PushButton &&)      = delete;
+    PushButton &operator=(PushButton &&) = delete;
 
 private:
-    model::ModelItem *item = nullptr;
-    MainWindow *window     = nullptr;
+    ao_builder::LegacyObject object = {};
+    MainWindow *window              = nullptr;
 
     void onClicked(bool b);
 

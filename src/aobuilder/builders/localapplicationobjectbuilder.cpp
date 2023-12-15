@@ -81,6 +81,12 @@ bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterfa
 bool LocalApplicationObjectBuilder::parseAlteratorEntrySection(ObjectParserInterface *parser,
                                                                LocalAppObject *localApplication)
 {
+    if (!buildNames(parser, ALTERATOR_ENTRY_SECTION_NAME, localApplication))
+    {
+        qWarning() << "Error parsing" << localApplication << "Info: cannot build names";
+        return false;
+    }
+
     QString type = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, ALTERATOR_ENTRY_TYPE_KEY_NAME);
     if (type.isEmpty() || type != LOCAL_APP_ALTERATOR_ENTRY_SECTION_TYPE_VALUE)
     {

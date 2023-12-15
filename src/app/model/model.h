@@ -10,7 +10,7 @@
 
 namespace ab::model
 {
-class Model : public QStandardItemModel, public ModelInterface
+class Model : public QStandardItemModel, public ab::model::ModelInterface
 {
 public:
     Model();
@@ -32,13 +32,13 @@ public:
     std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface) override;
     std::vector<ao_builder::Id> getLegacyObjectsByCategory(ao_builder::Id category_id) override;
 
-    void translateModel(QString locale);
+    void translateModel(QString locale) override;
 
 public:
-    Model(const Model &)            = delete;
-    Model(Model &&)                 = delete;
+    Model(const Model &) = delete;
+    Model(Model &&)      = delete;
     Model &operator=(const Model &) = delete;
-    Model &operator=(Model &&)      = delete;
+    Model &operator=(Model &&) = delete;
 
 private:
     void translateItem(QStandardItem *item, QString locale);

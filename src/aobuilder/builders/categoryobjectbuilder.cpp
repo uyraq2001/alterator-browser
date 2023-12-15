@@ -29,6 +29,12 @@ std::unique_ptr<Object> CategoryObjectBuilder::buildObject(ObjectParserInterface
     }
     result->m_type = type;
 
+    QString id = parser->getValue(ALTERATOR_ENTRY_SECTION_NAME, DESKTOP_ENTRY_CATEGORY_KEY_ID);
+    if (!id.isEmpty())
+    {
+        result.get()->m_id = id;
+    }
+
     if (!buildFieldWithLocale(parser,
                               buildingFromSection,
                               CATEGORY_COMMENT_KEY_NAME,
