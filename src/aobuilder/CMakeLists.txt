@@ -25,13 +25,11 @@ set(HEADERS
     builders/objectbuilder.h
     builders/aobuilderinterface.h
     builders/aobuilderimpl.h
-    builders/newobjectbuilder.h
 
     datasource/datasourceinterface.h
     datasource/datasourcedbusimpl.h
 
     objects/object.h
-    objects/basicobject.h
     objects/category.h
     objects/localappobject.h
     objects/legacyobject.h
@@ -47,7 +45,7 @@ set(SOURCES
     builders/legacyobjectbuilder.cpp
     builders/categoryobjectbuilder.cpp
     builders/aobuilderimpl.cpp
-    builders/newobjectbuilder.cpp
+    builders/objectbuilder.cpp
 
     datasource/datasourcedbusimpl.cpp
 
