@@ -42,6 +42,7 @@ public:
 
 private:
     void translateItem(QStandardItem *item, QString locale);
+    void build();
 
 private:
     std::unique_ptr<ModelItem> categoriesRoot{};

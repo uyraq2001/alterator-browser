@@ -25,14 +25,14 @@ public:
     QStringList getLegacyObjectsPaths() override;
     QString getLegacyObjectInfo(QString path) override;
 
-    QStringList getObjectsPath() override;
-    QString getObjectInfo(QString path) override;
+    QStringList getObjectsPath(QString interface) override;
+    QString getObjectInfo(QString path, QString interface) override;
 
 public:
-    DataSourceDBusImpl(const DataSourceDBusImpl &)            = delete;
-    DataSourceDBusImpl(DataSourceDBusImpl &&)                 = delete;
+    DataSourceDBusImpl(const DataSourceDBusImpl &) = delete;
+    DataSourceDBusImpl(DataSourceDBusImpl &&)      = delete;
     DataSourceDBusImpl &operator=(const DataSourceDBusImpl &) = delete;
-    DataSourceDBusImpl &operator=(DataSourceDBusImpl &&)      = delete;
+    DataSourceDBusImpl &operator=(DataSourceDBusImpl &&) = delete;
 
 private:
     QByteArray getObjectInfo(QString ifaceName, QString path, QString methodName);

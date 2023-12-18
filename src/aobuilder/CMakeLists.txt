@@ -25,6 +25,7 @@ set(HEADERS
     builders/objectbuilder.h
     builders/aobuilderinterface.h
     builders/aobuilderimpl.h
+    builders/newobjectbuilder.h
 
     datasource/datasourceinterface.h
     datasource/datasourcedbusimpl.h
@@ -46,6 +47,7 @@ set(SOURCES
     builders/legacyobjectbuilder.cpp
     builders/categoryobjectbuilder.cpp
     builders/aobuilderimpl.cpp
+    builders/newobjectbuilder.cpp
 
     datasource/datasourcedbusimpl.cpp
 

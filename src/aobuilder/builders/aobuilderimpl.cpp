@@ -82,44 +82,26 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildCategories()
     return result;
 }
 
-std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildLegacyObjects()
+std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildObjects(std::vector<QString> interfaces)
 {
-    QStringList legacyObjectsList = d->m_dataSource->getLegacyObjectsPaths();
-
     std::vector<std::unique_ptr<Object>> result;
 
-    for (QString currentLegacy : legacyObjectsList)
+    for (auto interface : interfaces)
     {
-        QString currentLegacyInfo             = d->m_dataSource->getLegacyObjectInfo(currentLegacy);
-        std::unique_ptr<Object> currentObject = buildObject(currentLegacyInfo);
+        QStringList objectsList = d->m_dataSource->getObjectsPath(interface);
 
-        if (currentObject)
+        for (QString currentObjectPath : objectsList)
         {
-            qInfo() << "Successfully built legacy object" << currentLegacy;
-            currentObject->m_interface = DBUS_LEGACY_OBJECT_INTERFACE_NAME;
-            currentObject->m_dbus_path = currentLegacy;
-            result.push_back(std::move(currentObject));
-        }
-    }
+            QString currentObjectInfo             = d->m_dataSource->getObjectInfo(currentObjectPath, interface);
+            std::unique_ptr<Object> currentObject = buildObject(currentObjectInfo);
 
-    return result;
-}
-
-std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildObjects()
-{
-    QStringList objectsList = d->m_dataSource->getObjectsPath();
-
-    std::vector<std::unique_ptr<Object>> result;
-
-    for (QString currentObjectPath : objectsList)
-    {
-        QString currentObjectInfo             = d->m_dataSource->getObjectInfo(currentObjectPath);
-        std::unique_ptr<Object> currentObject = buildObject(currentObjectInfo);
-
-        if (currentObject)
-        {
-            currentObject->m_dbus_path = currentObjectPath;
-            result.push_back(std::move(currentObject));
+            if (currentObject)
+            {
+                qInfo() << "Successfully built object" << currentObjectPath;
+                currentObject->m_interface = interface;
+                currentObject->m_dbus_path = currentObjectPath;
+                result.push_back(std::move(currentObject));
+            }
         }
     }
 
