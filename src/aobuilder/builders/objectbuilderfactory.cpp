@@ -4,7 +4,7 @@
 #include "constants.h"
 #include "legacyobjectbuilder.h"
 #include "localapplicationobjectbuilder.h"
-#include "newobjectbuilder.h"
+#include "objectbuilder.h"
 
 #include <memory>
 
@@ -48,7 +48,7 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getObjectBuilder(O
     }
     else if (type == KEY_TYPE_VALUE_FOR_OBJECT)
     {
-        return std::make_unique<NewObjectBuilder>();
+        return std::make_unique<ObjectBuilder>();
     }
 
     // Unknown type

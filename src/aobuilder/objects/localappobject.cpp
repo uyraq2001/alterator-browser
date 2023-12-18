@@ -4,7 +4,7 @@ namespace ao_builder
 {
 void LocalAppObject::setLocale(QString locale)
 {
-    BasicObject::setLocale(locale);
+    Object::setLocale(locale);
 
     auto genericNameIt = m_genericNameLocaleStorage.find(locale);
     if (genericNameIt != m_genericNameLocaleStorage.end())

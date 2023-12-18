@@ -5,11 +5,11 @@
 #include <QMap>
 #include <QString>
 
-#include "basicobject.h"
+#include "object.h"
 
 namespace ao_builder
 {
-class LocalAppObject : public BasicObject
+class LocalAppObject : public Object
 {
 public:
     LocalAppObject()           = default;

@@ -26,6 +26,9 @@ public:
     QString m_dbus_path{};
     QString m_interface{};
 
+    QString m_categoryId{};
+    bool m_isLegacy{false};
+
     QMap<QString, QString> m_nameLocaleStorage{};
 };
 } // namespace ao_builder

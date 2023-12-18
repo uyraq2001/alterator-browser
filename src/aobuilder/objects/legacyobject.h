@@ -1,11 +1,11 @@
 #ifndef AOB_LEGACY_OBJECT_H
 #define AOB_LEGACY_OBJECT_H
 
-#include "basicobject.h"
+#include "object.h"
 
 namespace ao_builder
 {
-class LegacyObject final : public BasicObject
+class LegacyObject final : public Object
 {
 public:
     LegacyObject()           = default;

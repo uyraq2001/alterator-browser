@@ -3,6 +3,6 @@ namespace ao_builder
 {
 void LegacyObject::setLocale(QString locale)
 {
-    BasicObject::setLocale(locale);
+    Object::setLocale(locale);
 }
 } // namespace ao_builder
