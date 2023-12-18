@@ -1,6 +1,7 @@
 #ifndef MODELINTERFACE_H
 #define MODELINTERFACE_H
 
+#include <memory>
 #include <optional>
 #include <set>
 #include <vector>
@@ -9,9 +10,7 @@
 #include "../../aobuilder/objects/legacyobject.h"
 #include "../../aobuilder/objects/localappobject.h"
 
-namespace ab
-{
-namespace model
+namespace ab::model
 {
 class ModelInterface
 {
@@ -33,8 +32,11 @@ public:
     virtual std::vector<QString> getLegacyObjectsByCategory(ao_builder::Id category_id) = 0;
 
     virtual void translateModel(QString locale) = 0;
+    virtual void build(std::vector<std::unique_ptr<ao_builder::Object>> categories,
+                       std::vector<std::unique_ptr<ao_builder::Object>> apps,
+                       std::vector<std::unique_ptr<ao_builder::Object>> objects)
+        = 0;
 };
-} // namespace model
-} // namespace ab
+} // namespace ab::model
 
 #endif // MODELINTERFACE_H

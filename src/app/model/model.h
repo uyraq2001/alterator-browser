@@ -13,8 +13,8 @@ namespace ab::model
 class Model : public QStandardItemModel, public ab::model::ModelInterface
 {
 public:
-    Model();
-    ~Model() override;
+    Model()           = default;
+    ~Model() override = default;
 
     // Categories
     std::vector<ao_builder::Id> getCategories() override;
@@ -33,21 +33,23 @@ public:
     std::vector<ao_builder::Id> getLegacyObjectsByCategory(ao_builder::Id category_id) override;
 
     void translateModel(QString locale) override;
+    void build(std::vector<std::unique_ptr<ao_builder::Object>> categories,
+               std::vector<std::unique_ptr<ao_builder::Object>> apps,
+               std::vector<std::unique_ptr<ao_builder::Object>> objects) override;
 
 public:
-    Model(const Model &) = delete;
-    Model(Model &&)      = delete;
+    Model(const Model &)            = delete;
+    Model(Model &&)                 = delete;
     Model &operator=(const Model &) = delete;
-    Model &operator=(Model &&) = delete;
+    Model &operator=(Model &&)      = delete;
 
 private:
     void translateItem(QStandardItem *item, QString locale);
-    void build();
 
 private:
-    std::unique_ptr<ModelItem> categoriesRoot{};
-    std::unique_ptr<ModelItem> appsRoot{};
-    std::unique_ptr<ModelItem> legacyObjectsRoot{};
+    std::unique_ptr<ModelItem> categoriesRoot{std::make_unique<ModelItem>()};
+    std::unique_ptr<ModelItem> appsRoot{std::make_unique<ModelItem>()};
+    std::unique_ptr<ModelItem> legacyObjectsRoot{std::make_unique<ModelItem>()};
 };
 } // namespace ab::model
 

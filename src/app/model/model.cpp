@@ -2,6 +2,7 @@
 
 #include "../../aobuilder/builders/aobuilderimpl.h"
 #include "../../aobuilder/constants.h"
+#include "model/item.h"
 
 #include <QDebug>
 #include <QStandardItemModel>
@@ -13,23 +14,8 @@
 #include <variant>
 #include <vector>
 
-template<typename... Ts>
-struct Overload : Ts...
-{
-    using Ts::operator()...;
-};
-template<class... Ts>
-Overload(Ts...) -> Overload<Ts...>;
-
 namespace ab::model
 {
-Model::Model()
-{
-    build();
-}
-
-Model::~Model() = default;
-
 std::vector<ao_builder::Id> Model::getCategories()
 {
     std::vector<ao_builder::Id> categoriesIds{};
@@ -269,48 +255,31 @@ void Model::translateItem(QStandardItem *item, QString locale)
     }
 }
 
-void Model::build()
+void Model::build(std::vector<std::unique_ptr<ao_builder::Object>> categories,
+                  std::vector<std::unique_ptr<ao_builder::Object>> apps,
+                  std::vector<std::unique_ptr<ao_builder::Object>> legacyObjects)
 {
+    QStandardItem *root = this->invisibleRootItem();
+
+    for (auto &category : categories)
     {
-        QStandardItem *root     = this->invisibleRootItem();
-        const auto modelBuilder = std::make_unique<ao_builder::AOBuilderImpl>();
-
-        this->categoriesRoot = std::make_unique<ModelItem>();
-        auto categories      = modelBuilder->buildCategories();
-        for (auto &category : categories)
-        {
-            auto categoryItem = std::make_unique<ModelItem>(ModelItem::ItemType::Category, std::move(category));
-            this->categoriesRoot->appendRow(categoryItem.release());
-        }
-        root->appendRow(this->categoriesRoot.get());
-
-        this->appsRoot = std::make_unique<ModelItem>();
-        auto apps      = modelBuilder->buildLocalApps();
-        std::vector<QString> interfaces;
-        for (auto &a : apps)
-        {
-            auto app = dynamic_cast<ao_builder::LocalAppObject *>(a.get());
-            if (app == nullptr)
-            {
-                continue;
-            }
-            interfaces.push_back(app->m_interfaces[0]);
-        }
-        for (auto &app : apps)
-        {
-            auto appItem = std::make_unique<ModelItem>(ModelItem::ItemType::LocalApplication, std::move(app));
-            this->appsRoot->appendRow(appItem.release());
-        }
-        root->appendRow(this->appsRoot.get());
-
-        this->legacyObjectsRoot = std::make_unique<ModelItem>();
-        auto legacyObjects      = modelBuilder->buildObjects(interfaces);
-        for (auto &legacyObject : legacyObjects)
-        {
-            auto objectItem = std::make_unique<ModelItem>(ModelItem::ItemType::LegacyObject, std::move(legacyObject));
-            this->legacyObjectsRoot->appendRow(objectItem.release());
-        }
-        root->appendRow(this->legacyObjectsRoot.get());
+        auto categoryItem = std::make_unique<ModelItem>(ModelItem::ItemType::Category, std::move(category));
+        this->categoriesRoot->appendRow(categoryItem.release());
     }
+    root->appendRow(this->categoriesRoot.get());
+
+    for (auto &app : apps)
+    {
+        auto appItem = std::make_unique<ModelItem>(ModelItem::ItemType::LocalApplication, std::move(app));
+        this->appsRoot->appendRow(appItem.release());
+    }
+    root->appendRow(this->appsRoot.get());
+
+    for (auto &legacyObject : legacyObjects)
+    {
+        auto objectItem = std::make_unique<ModelItem>(ModelItem::ItemType::LegacyObject, std::move(legacyObject));
+        this->legacyObjectsRoot->appendRow(objectItem.release());
+    }
+    root->appendRow(this->legacyObjectsRoot.get());
 }
 } // namespace ab::model
