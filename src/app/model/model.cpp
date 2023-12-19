@@ -18,11 +18,7 @@ namespace ab::model
 {
 Model::Model()
 {
-    QStandardItem *root = this->invisibleRootItem();
-
-    root->appendRow(this->categoriesRoot.get());
-    root->appendRow(this->appsRoot.get());
-    root->appendRow(this->objectsRoot.get());
+    this->clear();
 }
 
 std::vector<ao_builder::Id> Model::getCategories()
@@ -264,10 +260,26 @@ void Model::translateItem(QStandardItem *item, QString locale)
     }
 }
 
+void Model::clear()
+{
+    this->categoriesRoot = std::make_unique<ModelItem>();
+    this->appsRoot       = std::make_unique<ModelItem>();
+    this->objectsRoot    = std::make_unique<ModelItem>();
+
+    QStandardItemModel::clear();
+
+    QStandardItem *root = this->invisibleRootItem();
+    root->appendRow(this->categoriesRoot.get());
+    root->appendRow(this->appsRoot.get());
+    root->appendRow(this->objectsRoot.get());
+}
+
 void Model::build(std::vector<std::unique_ptr<ao_builder::Object>> categories,
                   std::vector<std::unique_ptr<ao_builder::Object>> apps,
                   std::vector<std::unique_ptr<ao_builder::Object>> objects)
 {
+    this->clear();
+
     for (auto &category : categories)
     {
         auto categoryItem = std::make_unique<ModelItem>(ModelItem::ItemType::Category, std::move(category));

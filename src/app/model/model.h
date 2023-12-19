@@ -33,6 +33,7 @@ public:
     std::vector<ao_builder::Id> getLegacyObjectsByCategory(ao_builder::Id category_id) override;
 
     void translateModel(QString locale) override;
+    void clear();
     void build(std::vector<std::unique_ptr<ao_builder::Object>> categories,
                std::vector<std::unique_ptr<ao_builder::Object>> apps,
                std::vector<std::unique_ptr<ao_builder::Object>> objects) override;
@@ -47,9 +48,9 @@ private:
     void translateItem(QStandardItem *item, QString locale);
 
 private:
-    std::unique_ptr<ModelItem> categoriesRoot{std::make_unique<ModelItem>()};
-    std::unique_ptr<ModelItem> appsRoot{std::make_unique<ModelItem>()};
-    std::unique_ptr<ModelItem> objectsRoot{std::make_unique<ModelItem>()};
+    std::unique_ptr<ModelItem> categoriesRoot{nullptr};
+    std::unique_ptr<ModelItem> appsRoot{nullptr};
+    std::unique_ptr<ModelItem> objectsRoot{nullptr};
 };
 } // namespace ab::model
 
