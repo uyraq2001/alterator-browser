@@ -1,8 +1,11 @@
 #include "controller.h"
-#include "../aobuilder/constants.h"
+#include "../core/logger/prelude.h"
 #include "mainwindow.h"
 #include "model/modelinterface.h"
+#include <memory>
 
+#include <utility>
+#include <vector>
 #include <QAction>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -19,27 +22,40 @@ namespace ab
 class ControllerPrivate
 {
 public:
-    MainWindow *window{nullptr};
+    std::shared_ptr<MainWindow> window{nullptr};
     std::unique_ptr<model::ModelInterface> model{nullptr};
+    std::unique_ptr<ao_builder::DataSourceInterface> dataSource{nullptr};
+    std::unique_ptr<ao_builder::AOBuilderInterface> modelBuilder{nullptr};
+
+    ControllerPrivate(std::shared_ptr<MainWindow> w,
+                      std::unique_ptr<model::ModelInterface> m,
+                      std::unique_ptr<ao_builder::DataSourceInterface> ds,
+                      std::unique_ptr<ao_builder::AOBuilderInterface> mb)
+        : window(std::move(w))
+        , model(std::move(m))
+        , dataSource(std::move(ds))
+        , modelBuilder(std::move(mb))
+    {}
 };
 
-Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent)
+Controller::Controller(std::shared_ptr<MainWindow> w,
+                       std::unique_ptr<model::ModelInterface> m,
+                       std::unique_ptr<ao_builder::DataSourceInterface> ds,
+                       std::unique_ptr<ao_builder::AOBuilderInterface> mb,
+                       QObject *parent)
     : QObject{parent}
-    , d(new ControllerPrivate)
+    , d{new ControllerPrivate(std::move(w), std::move(m), std::move(ds), std::move(mb))}
 {
-    d->window = w;
-    d->model  = std::move(m);
+    buildModel();
 
-    if (d->model != nullptr)
+    if (d->model == nullptr)
     {
-        w->setModel(d->model.get());
-        translateModel();
+        qCritical() << "Can not build model";
+        return;
     }
 
-    auto alteratorWatcher = new QDBusServiceWatcher(ao_builder::DBUS_SERVICE_NAME,
-                                                    QDBusConnection::systemBus(),
-                                                    QDBusServiceWatcher::WatchForOwnerChange,
-                                                    this);
+    d->window->setModel(d->model.get());
+    translateModel();
 }
 
 Controller::~Controller()
@@ -74,4 +90,22 @@ void Controller::translateModel()
         d->window->setModel(d->model.get());
     }
 }
+
+void Controller::buildModel()
+{
+    auto categories = d->modelBuilder->buildCategories();
+    auto apps       = d->modelBuilder->buildLocalApps();
+    std::vector<QString> interfaces{};
+    for (const auto &a : apps)
+    {
+        auto app = dynamic_cast<ao_builder::LocalAppObject *>(a.get());
+        if (app != nullptr)
+        {
+            interfaces.push_back(app->m_interfaces[0]);
+        }
+    }
+    auto objects = d->modelBuilder->buildObjects(interfaces);
+    d->model->build(std::move(categories), std::move(apps), std::move(objects));
+}
+
 } // namespace ab

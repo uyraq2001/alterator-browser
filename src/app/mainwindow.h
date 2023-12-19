@@ -32,13 +32,13 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
 public:
-    MainWindow(const MainWindow &) = delete;
-    MainWindow(MainWindow &&)      = delete;
+    MainWindow(const MainWindow &)            = delete;
+    MainWindow(MainWindow &&)                 = delete;
     MainWindow &operator=(const MainWindow &) = delete;
-    MainWindow &operator=(MainWindow &&) = delete;
+    MainWindow &operator=(MainWindow &&)      = delete;
 
 public:
     void closeEvent(QCloseEvent *event) override;
