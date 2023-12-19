@@ -1,4 +1,5 @@
 #include "controller.h"
+#include "../core/logger/prelude.h"
 #include "mainwindow.h"
 #include "model/modelinterface.h"
 #include <memory>
@@ -47,18 +48,14 @@ Controller::Controller(std::shared_ptr<MainWindow> w,
 {
     buildModel();
 
-    // TODO: maybe we better exit with non zero exit code if model can't be built
-    if (d->model != nullptr)
+    if (d->model == nullptr)
     {
-        d->window->setModel(*d->model);
-        translateModel();
+        qCritical() << "Can not build model";
+        return;
     }
 
-    // TODO: is it needed or can be removed from here?
-    auto alteratorWatcher = new QDBusServiceWatcher(ao_builder::DBUS_SERVICE_NAME,
-                                                    QDBusConnection::systemBus(),
-                                                    QDBusServiceWatcher::WatchForOwnerChange,
-                                                    this);
+    d->window->setModel(d->model.get());
+    translateModel();
 }
 
 Controller::~Controller()
@@ -90,7 +87,7 @@ void Controller::translateModel()
     d->window->clearUi();
     if (d->model != nullptr)
     {
-        d->window->setModel(*d->model);
+        d->window->setModel(d->model.get());
     }
 }
 

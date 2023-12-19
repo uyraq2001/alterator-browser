@@ -46,7 +46,7 @@ public:
 
     void setController(Controller *c);
 
-    void setModel(model::ModelInterface &m);
+    void setModel(model::ModelInterface *m);
     void clearUi();
 
     //    void showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu);

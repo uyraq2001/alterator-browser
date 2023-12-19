@@ -76,9 +76,9 @@ void MainWindow::setController(Controller *newContoller)
     d->controller = newContoller;
 }
 
-void MainWindow::setModel(model::ModelInterface &newModel)
+void MainWindow::setModel(model::ModelInterface *newModel)
 {
-    d->model                        = &newModel;
+    d->model                        = newModel;
     QLayout *categoryLayout         = d->ui->scrollArea->widget()->layout();
     std::vector<QString> categories = d->model->getCategories();
     for (auto name : categories)

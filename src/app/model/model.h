@@ -13,7 +13,7 @@ namespace ab::model
 class Model : public QStandardItemModel, public ab::model::ModelInterface
 {
 public:
-    Model()           = default;
+    Model();
     ~Model() override = default;
 
     // Categories
@@ -49,7 +49,7 @@ private:
 private:
     std::unique_ptr<ModelItem> categoriesRoot{std::make_unique<ModelItem>()};
     std::unique_ptr<ModelItem> appsRoot{std::make_unique<ModelItem>()};
-    std::unique_ptr<ModelItem> legacyObjectsRoot{std::make_unique<ModelItem>()};
+    std::unique_ptr<ModelItem> objectsRoot{std::make_unique<ModelItem>()};
 };
 } // namespace ab::model
 

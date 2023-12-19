@@ -16,6 +16,15 @@
 
 namespace ab::model
 {
+Model::Model()
+{
+    QStandardItem *root = this->invisibleRootItem();
+
+    root->appendRow(this->categoriesRoot.get());
+    root->appendRow(this->appsRoot.get());
+    root->appendRow(this->objectsRoot.get());
+}
+
 std::vector<ao_builder::Id> Model::getCategories()
 {
     std::vector<ao_builder::Id> categoriesIds{};
@@ -159,9 +168,9 @@ std::vector<ao_builder::Id> Model::getLegacyObjects()
 {
     std::vector<ao_builder::Id> legacyObjectsIds{};
 
-    for (int i = 0; i < this->legacyObjectsRoot->rowCount(); ++i)
+    for (int i = 0; i < this->objectsRoot->rowCount(); ++i)
     {
-        QStandardItem *child = this->legacyObjectsRoot->child(i);
+        QStandardItem *child = this->objectsRoot->child(i);
         auto item            = dynamic_cast<ModelItem *>(child);
 
         if (item != nullptr)
@@ -174,9 +183,9 @@ std::vector<ao_builder::Id> Model::getLegacyObjects()
 
 std::optional<ao_builder::LegacyObject> Model::getLegacyObject(ao_builder::Id legacyObjectId)
 {
-    for (int i = 0; i < this->legacyObjectsRoot->rowCount(); ++i)
+    for (int i = 0; i < this->objectsRoot->rowCount(); ++i)
     {
-        QStandardItem *child = this->legacyObjectsRoot->child(i);
+        QStandardItem *child = this->objectsRoot->child(i);
         auto item            = dynamic_cast<ModelItem *>(child);
 
         if (item == nullptr)
@@ -205,9 +214,9 @@ std::vector<ao_builder::Id> Model::getLegacyObjectsByCategory(ao_builder::Id cat
 {
     std::vector<ao_builder::Id> legacyObjectIds{};
 
-    for (int i = 0; i < this->legacyObjectsRoot->rowCount(); ++i)
+    for (int i = 0; i < this->objectsRoot->rowCount(); ++i)
     {
-        QStandardItem *child = this->legacyObjectsRoot->child(i);
+        QStandardItem *child = this->objectsRoot->child(i);
         auto item            = dynamic_cast<ModelItem *>(child);
 
         if (item == nullptr)
@@ -257,29 +266,25 @@ void Model::translateItem(QStandardItem *item, QString locale)
 
 void Model::build(std::vector<std::unique_ptr<ao_builder::Object>> categories,
                   std::vector<std::unique_ptr<ao_builder::Object>> apps,
-                  std::vector<std::unique_ptr<ao_builder::Object>> legacyObjects)
+                  std::vector<std::unique_ptr<ao_builder::Object>> objects)
 {
-    QStandardItem *root = this->invisibleRootItem();
-
     for (auto &category : categories)
     {
         auto categoryItem = std::make_unique<ModelItem>(ModelItem::ItemType::Category, std::move(category));
         this->categoriesRoot->appendRow(categoryItem.release());
     }
-    root->appendRow(this->categoriesRoot.get());
 
     for (auto &app : apps)
     {
         auto appItem = std::make_unique<ModelItem>(ModelItem::ItemType::LocalApplication, std::move(app));
         this->appsRoot->appendRow(appItem.release());
     }
-    root->appendRow(this->appsRoot.get());
 
-    for (auto &legacyObject : legacyObjects)
+    for (auto &object : objects)
     {
-        auto objectItem = std::make_unique<ModelItem>(ModelItem::ItemType::LegacyObject, std::move(legacyObject));
-        this->legacyObjectsRoot->appendRow(objectItem.release());
+        const auto type = object->m_isLegacy ? ModelItem::ItemType::LegacyObject : ModelItem::ItemType::Object;
+        auto objectItem = std::make_unique<ModelItem>(type, std::move(object));
+        this->objectsRoot->appendRow(objectItem.release());
     }
-    root->appendRow(this->legacyObjectsRoot.get());
 }
 } // namespace ab::model
