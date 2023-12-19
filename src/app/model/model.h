@@ -48,9 +48,9 @@ private:
     void translateItem(QStandardItem *item, QString locale);
 
 private:
-    std::unique_ptr<ModelItem> categoriesRoot{nullptr};
-    std::unique_ptr<ModelItem> appsRoot{nullptr};
-    std::unique_ptr<ModelItem> objectsRoot{nullptr};
+    ModelItem *categoriesRoot{nullptr};
+    ModelItem *appsRoot{nullptr};
+    ModelItem *objectsRoot{nullptr};
 };
 } // namespace ab::model
 

@@ -262,16 +262,16 @@ void Model::translateItem(QStandardItem *item, QString locale)
 
 void Model::clear()
 {
-    this->categoriesRoot = std::make_unique<ModelItem>();
-    this->appsRoot       = std::make_unique<ModelItem>();
-    this->objectsRoot    = std::make_unique<ModelItem>();
-
     QStandardItemModel::clear();
 
+    this->categoriesRoot = new ModelItem();
+    this->appsRoot       = new ModelItem();
+    this->objectsRoot    = new ModelItem();
+
     QStandardItem *root = this->invisibleRootItem();
-    root->appendRow(this->categoriesRoot.get());
-    root->appendRow(this->appsRoot.get());
-    root->appendRow(this->objectsRoot.get());
+    root->appendRow(this->categoriesRoot);
+    root->appendRow(this->appsRoot);
+    root->appendRow(this->objectsRoot);
 }
 
 void Model::build(std::vector<std::unique_ptr<ao_builder::Object>> categories,
