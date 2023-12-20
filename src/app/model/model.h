@@ -28,7 +28,7 @@ public:
 
     // Legacy Objects
     std::vector<ao_builder::Id> getLegacyObjects() override;
-    std::optional<ao_builder::LegacyObject> getLegacyObject(ao_builder::Id id) override;
+    std::optional<ao_builder::Object> getLegacyObject(ao_builder::Id id) override;
     std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface) override;
     std::vector<ao_builder::Id> getLegacyObjectsByCategory(ao_builder::Id category_id) override;
 

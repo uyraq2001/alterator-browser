@@ -65,16 +65,21 @@ unsigned int CategoryWidget::setCategory(ao_builder::Category cat)
             continue;
         }
 
-        if (module.value().m_x_Alterator_UI == IGNORE_UI)
+        if (module.value().m_isLegacy)
         {
-            qWarning() << "Ignoring object with html UI:" << module.value().m_id;
-            continue;
-        }
+            auto legacyObject = dynamic_cast<ao_builder::LegacyObject *>(&module.value());
 
-        if (module.value().m_categoryId == IGNORE_CATEGORY)
-        {
-            qWarning() << "Ignoring object with hidden category:" << module.value().m_id;
-            continue;
+            if (legacyObject != nullptr && legacyObject->m_x_Alterator_UI == IGNORE_UI)
+            {
+                qWarning() << "Ignoring object with html UI:" << module.value().m_id;
+                continue;
+            }
+
+            if (legacyObject != nullptr && legacyObject->m_categoryId == IGNORE_CATEGORY)
+            {
+                qWarning() << "Ignoring object with hidden category:" << module.value().m_id;
+                continue;
+            }
         }
 
         auto moduleButton = std::make_unique<PushButton>(window);
