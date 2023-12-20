@@ -20,7 +20,10 @@ void Object::setLocale(QString locale)
         if (match.hasMatch())
         {
             m_displayName = m_nameLocaleStorage[fullLocale];
+            return;
         }
     }
+
+    m_displayName = m_nameLocaleStorage[""];
 }
 } // namespace ao_builder

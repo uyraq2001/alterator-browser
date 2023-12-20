@@ -77,7 +77,8 @@ bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectio
 
     for (const ObjectParserInterface::IniField &currentIniFileKey : listOfKeys)
     {
-        localAppObject->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
+        localAppObject->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale.split('_').first(),
+                                                   currentIniFileKey.value.toString());
     }
 
     return true;
