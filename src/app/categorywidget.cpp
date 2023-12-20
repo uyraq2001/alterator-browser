@@ -54,11 +54,11 @@ unsigned int CategoryWidget::setCategory(ao_builder::Category cat)
     modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    auto t = model->getLegacyObjectsByCategory(cat.m_id);
+    auto t = model->getObjectsByCategory(cat.m_id);
 
-    for (auto moduleName : model->getLegacyObjectsByCategory(cat.m_id))
+    for (auto moduleName : model->getObjectsByCategory(cat.m_id))
     {
-        auto module = model->getLegacyObject(moduleName);
+        auto module = model->getObject(moduleName);
         if (!module.has_value())
         {
             qWarning() << moduleName << ": no such module!";

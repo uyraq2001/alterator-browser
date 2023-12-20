@@ -26,11 +26,11 @@ public:
     std::set<QString> getInterfaces() override;
     std::vector<ao_builder::Id> getLocalApplicationsByInterface(QString iface) override;
 
-    // Legacy Objects
-    std::vector<ao_builder::Id> getLegacyObjects() override;
-    std::optional<ao_builder::Object> getLegacyObject(ao_builder::Id id) override;
-    std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface) override;
-    std::vector<ao_builder::Id> getLegacyObjectsByCategory(ao_builder::Id category_id) override;
+    // Objects
+    std::vector<ao_builder::Id> getObjects() override;
+    std::optional<ao_builder::Object> getObject(ao_builder::Id id) override;
+    std::vector<ao_builder::Id> getObjectsByInterface(QString iface) override;
+    std::vector<ao_builder::Id> getObjectsByCategory(ao_builder::Id category_id) override;
 
     void translateModel(QString locale) override;
     void clear();

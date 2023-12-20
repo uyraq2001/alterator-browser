@@ -159,7 +159,7 @@ std::vector<ao_builder::Id> Model::getLocalApplicationsByInterface(QString iface
     return appsIds;
 }
 
-std::vector<ao_builder::Id> Model::getLegacyObjects()
+std::vector<ao_builder::Id> Model::getObjects()
 {
     std::vector<ao_builder::Id> legacyObjectsIds{};
 
@@ -176,7 +176,7 @@ std::vector<ao_builder::Id> Model::getLegacyObjects()
     return legacyObjectsIds;
 }
 
-std::optional<ao_builder::Object> Model::getLegacyObject(ao_builder::Id objectId)
+std::optional<ao_builder::Object> Model::getObject(ao_builder::Id objectId)
 {
     for (int i = 0; i < this->objectsRoot->rowCount(); ++i)
     {
@@ -198,13 +198,12 @@ std::optional<ao_builder::Object> Model::getLegacyObject(ao_builder::Id objectId
     return {};
 }
 
-std::vector<ao_builder::Id> Model::getLegacyObjectsByInterface(QString iface)
+std::vector<ao_builder::Id> Model::getObjectsByInterface(QString iface)
 {
-    return iface == ao_builder::DBUS_LEGACY_OBJECTS_INTERFACE_NAME ? this->getLegacyObjects()
-                                                                   : std::vector<ao_builder::Id>();
+    return iface == ao_builder::DBUS_LEGACY_OBJECTS_INTERFACE_NAME ? this->getObjects() : std::vector<ao_builder::Id>();
 }
 
-std::vector<ao_builder::Id> Model::getLegacyObjectsByCategory(ao_builder::Id category_id)
+std::vector<ao_builder::Id> Model::getObjectsByCategory(ao_builder::Id category_id)
 {
     std::vector<ao_builder::Id> objectIds{};
 
