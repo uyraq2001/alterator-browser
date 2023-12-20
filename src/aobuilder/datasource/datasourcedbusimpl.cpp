@@ -150,6 +150,7 @@ QByteArray DataSourceDBusImpl::getObjectInfo(QString ifaceName, QString path, QS
 
     if (!iface.isValid())
     {
+        qWarning() << "Invalid interface" << ifaceName << "for object" << path;
         return {};
     }
 
@@ -157,6 +158,8 @@ QByteArray DataSourceDBusImpl::getObjectInfo(QString ifaceName, QString path, QS
 
     if (!reply.isValid())
     {
+        qWarning() << "Invalid reply from object" << path << "with interface" << ifaceName << "and method name"
+                   << methodName << ":" << reply.error().message();
         return {};
     }
 

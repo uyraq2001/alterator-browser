@@ -15,9 +15,9 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
     connect(this, &PushButton::clicked, this->window, [this]() { this->window->onModuleClicked(this); });
 }
 
-void PushButton::setObject(ao_builder::LegacyObject obj)
+void PushButton::setObject(ao_builder::Object obj)
 {
-    object = obj;
+    this->object = obj;
     this->setText(obj.m_displayName);
     this->setMinimumWidth(this->sizeHint().width());
 
@@ -26,7 +26,7 @@ void PushButton::setObject(ao_builder::LegacyObject obj)
     this->setFont(font);
 }
 
-ao_builder::LegacyObject PushButton::getObject()
+ao_builder::Object PushButton::getObject()
 {
     return object;
 }

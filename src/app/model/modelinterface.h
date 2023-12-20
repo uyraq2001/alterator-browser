@@ -7,8 +7,8 @@
 #include <vector>
 
 #include "../../aobuilder/objects/category.h"
-#include "../../aobuilder/objects/legacyobject.h"
 #include "../../aobuilder/objects/localappobject.h"
+#include "../../aobuilder/objects/object.h"
 
 namespace ab::model
 {
@@ -26,10 +26,10 @@ public:
     virtual std::set<QString> getInterfaces()                                                = 0;
     virtual std::vector<QString> getLocalApplicationsByInterface(QString iface)              = 0;
 
-    virtual std::vector<ao_builder::Id> getLegacyObjects()                              = 0;
-    virtual std::optional<ao_builder::LegacyObject> getLegacyObject(ao_builder::Id id)  = 0;
-    virtual std::vector<ao_builder::Id> getLegacyObjectsByInterface(QString iface)      = 0;
-    virtual std::vector<QString> getLegacyObjectsByCategory(ao_builder::Id category_id) = 0;
+    virtual std::vector<ao_builder::Id> getObjects()                              = 0;
+    virtual std::optional<ao_builder::Object> getObject(ao_builder::Id id)        = 0;
+    virtual std::vector<ao_builder::Id> getObjectsByInterface(QString iface)      = 0;
+    virtual std::vector<QString> getObjectsByCategory(ao_builder::Id category_id) = 0;
 
     virtual void translateModel(QString locale) = 0;
     virtual void build(std::vector<std::unique_ptr<ao_builder::Object>> categories,
