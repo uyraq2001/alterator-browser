@@ -78,27 +78,40 @@ void MainWindow::setController(Controller *newContoller)
 
 void MainWindow::setModel(model::ModelInterface *newModel)
 {
-    d->model                        = newModel;
-    QLayout *categoryLayout         = d->ui->scrollArea->widget()->layout();
-    std::vector<QString> categories = d->model->getCategories();
-    for (auto name : categories)
-    {
-        auto cat = d->model->getCategory(name);
-        if (!cat.has_value())
-        {
-            qWarning() << name << ": no such category";
-            continue;
-        }
-        auto categoryWidget = new CategoryWidget(this, d->model);
+    d->model = newModel;
 
-        if (categoryWidget->setCategory(cat.value()) > 0)
+    QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
+
+    std::vector<QString> categories     = d->model->getCategories();
+    std::vector<ao_builder::Id> objects = d->model->getObjects();
+    QMap<QString, CategoryWidget *> categoryMap{};
+
+    for (auto currentObjectId : objects)
+    {
+        auto currentObject = d->model->getObject(currentObjectId);
+        auto catIt         = categoryMap.find(currentObject.value().m_categoryId);
+
+        if (catIt != categoryMap.end())
         {
-            categoryLayout->addWidget(categoryWidget);
+            catIt.value()->addObject(currentObject.value());
         }
         else
         {
-            qWarning() << "Ignoring empty category!";
+            auto newCat = d->model->getCategory(currentObject.value().m_categoryId);
+            if (newCat.has_value())
+            {
+                CategoryWidget *newWidget = new CategoryWidget(this, d->model, newCat.value());
+
+                newWidget->addObject(currentObject.value());
+
+                categoryMap.insert(currentObject.value().m_categoryId, newWidget);
+            }
         }
+    }
+
+    for (auto i = categoryMap.cbegin(), end = categoryMap.cend(); i != end; ++i)
+    {
+        categoryLayout->addWidget(i.value());
     }
 }
 
