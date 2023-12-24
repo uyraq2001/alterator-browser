@@ -30,6 +30,7 @@ public:
     model::ModelInterface *model                 = nullptr;
     Controller *controller                       = nullptr;
     std::unique_ptr<MainWindowSettings> settings = nullptr;
+    CategoryWidget *defaultCategory              = nullptr;
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -78,13 +79,14 @@ void MainWindow::setController(Controller *newContoller)
 
 void MainWindow::setModel(model::ModelInterface *newModel)
 {
-    d->model = newModel;
+    d->model           = newModel;
+    d->defaultCategory = nullptr;
 
     QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
 
-    std::vector<QString> categories     = d->model->getCategories();
-    std::vector<ao_builder::Id> objects = d->model->getObjects();
-    QMap<QString, CategoryWidget *> categoryMap{};
+    std::vector<ao_builder::Id> categories = d->model->getCategories();
+    std::vector<ao_builder::Id> objects    = d->model->getObjects();
+    QMap<ao_builder::Id, CategoryWidget *> categoryMap{};
 
     for (auto currentObjectId : objects)
     {
@@ -97,6 +99,34 @@ void MainWindow::setModel(model::ModelInterface *newModel)
         }
         else
         {
+            //
+            if (auto f = std::find_if(categories.begin(),
+                                      categories.end(),
+                                      [&currentObject](const QString &catName) -> bool {
+                                          return !(QString::compare(catName,
+                                                                    currentObject.value().m_categoryId,
+                                                                    Qt::CaseSensitive));
+                                      });
+                f == categories.end())
+            {
+                auto defaultCatIt = categoryMap.find(ao_builder::DEFAULT_CATEGORY_NAME);
+                if (defaultCatIt == categoryMap.end())
+                {
+                    CategoryWidget *defaultCatWidget = new CategoryWidget(this,
+                                                                          d->model,
+                                                                          d->model->getDefaultCategory().value());
+
+                    categoryMap.insert(ao_builder::DEFAULT_CATEGORY_NAME, defaultCatWidget);
+
+                    defaultCatWidget->addObject(currentObject.value());
+                }
+                else
+                {
+                    defaultCatIt.value()->addObject(currentObject.value());
+                }
+                continue;
+            }
+
             auto newCat = d->model->getCategory(currentObject.value().m_categoryId);
             if (newCat.has_value())
             {

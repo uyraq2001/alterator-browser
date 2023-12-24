@@ -73,6 +73,7 @@ const char *const CATEGORY_COMMENT_KEY_NAME              = "Comment";
 const char *const CATEGORY_ICON_KEY_NAME                 = "Icon";
 const char *const CATEGORY_TYPE_KEY_VALUE                = "Category";
 const char *const CATEGORY_X_ALTERATOR_CATEGORY_KEY_NAME = "X-alterator-category";
+const char *const DEFAULT_CATEGORY_NAME                  = "__default";
 
 // Legacy objects keys and values
 const char *const LEGACY_OBJECT_CATEGORY_KEY_NAME             = "Categories";

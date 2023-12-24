@@ -61,6 +61,11 @@ std::optional<ao_builder::Category> Model::getCategory(ao_builder::Id category_i
     return {};
 }
 
+std::optional<ao_builder::Category> Model::getDefaultCategory()
+{
+    return getCategory(ao_builder::DEFAULT_CATEGORY_NAME);
+}
+
 std::vector<ao_builder::Id> Model::getLocalApplications()
 {
     std::vector<ao_builder::Id> appsIds;

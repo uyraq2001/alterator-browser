@@ -1,5 +1,6 @@
 #include "../constants.h"
 
+#include "../objects/category.h"
 #include "aobuilderimpl.h"
 #include "localapplicationobjectbuilder.h"
 #include "objectbuilderfactory.h"
@@ -32,6 +33,24 @@ public:
 AOBuilderImpl::AOBuilderImpl()
     : d(new AOBuilderImplPrivate())
 {}
+
+std::unique_ptr<Object> AOBuilderImpl::buildDefaultCategory()
+{
+    auto result           = std::make_unique<Category>();
+    result->m_id          = DEFAULT_CATEGORY_NAME;
+    result->m_displayName = DEFAULT_CATEGORY_NAME;
+
+    result->m_nameLocaleStorage.insert("ru", "Без категории");
+    result->m_nameLocaleStorage.insert("en", "Without category");
+
+    result->m_comment = DEFAULT_CATEGORY_NAME;
+    result->m_commentLocaleStorage.insert("ru", "Объекты не имеющие категории");
+    result->m_commentLocaleStorage.insert("en", "Objects without category");
+
+    result->m_icon = "groups/system";
+
+    return result;
+}
 
 AOBuilderImpl::~AOBuilderImpl()
 {
@@ -78,6 +97,8 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildCategories()
             result.push_back(std::move(currentObject));
         }
     }
+
+    result.push_back(std::move(buildDefaultCategory()));
 
     return result;
 }
