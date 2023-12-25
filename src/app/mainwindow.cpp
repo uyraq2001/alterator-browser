@@ -96,25 +96,20 @@ void MainWindow::setModel(model::ModelInterface *newModel)
         if (catIt != categoryMap.end())
         {
             catIt.value()->addObject(currentObject.value());
+            continue;
         }
         else
         {
-            //
-            if (auto f = std::find_if(categories.begin(),
-                                      categories.end(),
-                                      [&currentObject](const QString &catName) -> bool {
-                                          return !(QString::compare(catName,
-                                                                    currentObject.value().m_categoryId,
-                                                                    Qt::CaseSensitive));
-                                      });
-                f == categories.end())
+            const auto find
+                = std::find_if(categories.begin(), categories.end(), [&currentObject](const ao_builder::Id &catName) {
+                      return !(QString::compare(catName, currentObject.value().m_categoryId, Qt::CaseSensitive));
+                  });
+            if (find == categories.end())
             {
                 auto defaultCatIt = categoryMap.find(ao_builder::DEFAULT_CATEGORY_NAME);
                 if (defaultCatIt == categoryMap.end())
                 {
-                    CategoryWidget *defaultCatWidget = new CategoryWidget(this,
-                                                                          d->model,
-                                                                          d->model->getDefaultCategory().value());
+                    auto *defaultCatWidget = new CategoryWidget(this, d->model, d->model->getDefaultCategory().value());
 
                     categoryMap.insert(ao_builder::DEFAULT_CATEGORY_NAME, defaultCatWidget);
 
@@ -130,7 +125,7 @@ void MainWindow::setModel(model::ModelInterface *newModel)
             auto newCat = d->model->getCategory(currentObject.value().m_categoryId);
             if (newCat.has_value())
             {
-                CategoryWidget *newWidget = new CategoryWidget(this, d->model, newCat.value());
+                auto *newWidget = new CategoryWidget(this, d->model, newCat.value());
 
                 newWidget->addObject(currentObject.value());
 
@@ -139,9 +134,9 @@ void MainWindow::setModel(model::ModelInterface *newModel)
         }
     }
 
-    for (auto i = categoryMap.cbegin(), end = categoryMap.cend(); i != end; ++i)
+    for (const auto &category : categoryMap.values())
     {
-        categoryLayout->addWidget(i.value());
+        categoryLayout->addWidget(category);
     }
 }
 

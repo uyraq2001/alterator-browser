@@ -98,7 +98,7 @@ std::vector<std::unique_ptr<Object>> AOBuilderImpl::buildCategories()
         }
     }
 
-    result.push_back(std::move(buildDefaultCategory()));
+    result.push_back(buildDefaultCategory());
 
     return result;
 }

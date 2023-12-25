@@ -31,7 +31,6 @@ public:
     ~CategoryWidget() override;
 
     void setGeometry(const QRect &rect);
-    //unsigned int setCategory(ao_builder::Category cat);
     void addObject(ao_builder::Object object);
 
 public:

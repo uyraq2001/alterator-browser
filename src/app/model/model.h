@@ -43,7 +43,7 @@ public:
     Model(const Model &) = delete;
     Model(Model &&)      = delete;
     Model &operator=(const Model &) = delete;
-    Model &operator=(Model &&) = delete;
+    Model &operator=(Model &&)      = delete;
 
 private:
     void translateItem(QStandardItem *item, QString locale);
