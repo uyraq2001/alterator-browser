@@ -6,9 +6,7 @@ Alterator-Browser is a graphical user interface that for system configuration us
 
 Refer to the included INSTALL.md file for directions of how to compile, install utility.
 
-To work correctly it requires the following packages:
-- `alterator-module-executor`
-- `alterator-module-categories`
-- `alterator-module-application`
-- `alterator-module-legacy-object`
-- `alterator-interface-legacy`
+```shell
+sudo apt-get install alterator-manager alterator-module-executor alterator-browser alterator-module-legacy alterator-module-applications alterator-module-categories alterator-interface-legacy
+```
+
