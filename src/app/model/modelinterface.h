@@ -20,6 +20,7 @@ public:
 public:
     virtual std::vector<ao_builder::Id> getCategories()                        = 0;
     virtual std::optional<ao_builder::Category> getCategory(ao_builder::Id id) = 0;
+    virtual std::optional<ao_builder::Category> getDefaultCategory()           = 0;
 
     virtual std::vector<ao_builder::Id> getLocalApplications()                               = 0;
     virtual std::optional<ao_builder::LocalAppObject> getLocalApplication(ao_builder::Id id) = 0;

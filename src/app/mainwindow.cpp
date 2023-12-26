@@ -30,6 +30,7 @@ public:
     model::ModelInterface *model                 = nullptr;
     Controller *controller                       = nullptr;
     std::unique_ptr<MainWindowSettings> settings = nullptr;
+    CategoryWidget *defaultCategory              = nullptr;
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -78,27 +79,64 @@ void MainWindow::setController(Controller *newContoller)
 
 void MainWindow::setModel(model::ModelInterface *newModel)
 {
-    d->model                        = newModel;
-    QLayout *categoryLayout         = d->ui->scrollArea->widget()->layout();
-    std::vector<QString> categories = d->model->getCategories();
-    for (auto name : categories)
-    {
-        auto cat = d->model->getCategory(name);
-        if (!cat.has_value())
-        {
-            qWarning() << name << ": no such category";
-            continue;
-        }
-        auto categoryWidget = new CategoryWidget(this, d->model);
+    d->model           = newModel;
+    d->defaultCategory = nullptr;
 
-        if (categoryWidget->setCategory(cat.value()) > 0)
+    QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
+
+    std::vector<ao_builder::Id> categories = d->model->getCategories();
+    std::vector<ao_builder::Id> objects    = d->model->getObjects();
+    QMap<ao_builder::Id, CategoryWidget *> categoryMap{};
+
+    for (auto currentObjectId : objects)
+    {
+        auto currentObject = d->model->getObject(currentObjectId);
+        auto catIt         = categoryMap.find(currentObject.value().m_categoryId);
+
+        if (catIt != categoryMap.end())
         {
-            categoryLayout->addWidget(categoryWidget);
+            catIt.value()->addObject(currentObject.value());
+            continue;
         }
         else
         {
-            qWarning() << "Ignoring empty category!";
+            const auto find
+                = std::find_if(categories.begin(), categories.end(), [&currentObject](const ao_builder::Id &catName) {
+                      return !(QString::compare(catName, currentObject.value().m_categoryId, Qt::CaseSensitive));
+                  });
+            if (find == categories.end())
+            {
+                auto defaultCatIt = categoryMap.find(ao_builder::DEFAULT_CATEGORY_NAME);
+                if (defaultCatIt == categoryMap.end())
+                {
+                    auto *defaultCatWidget = new CategoryWidget(this, d->model, d->model->getDefaultCategory().value());
+
+                    categoryMap.insert(ao_builder::DEFAULT_CATEGORY_NAME, defaultCatWidget);
+
+                    defaultCatWidget->addObject(currentObject.value());
+                }
+                else
+                {
+                    defaultCatIt.value()->addObject(currentObject.value());
+                }
+                continue;
+            }
+
+            auto newCat = d->model->getCategory(currentObject.value().m_categoryId);
+            if (newCat.has_value())
+            {
+                auto *newWidget = new CategoryWidget(this, d->model, newCat.value());
+
+                newWidget->addObject(currentObject.value());
+
+                categoryMap.insert(currentObject.value().m_categoryId, newWidget);
+            }
         }
+    }
+
+    for (const auto &category : categoryMap.values())
+    {
+        categoryLayout->addWidget(category);
     }
 }
 

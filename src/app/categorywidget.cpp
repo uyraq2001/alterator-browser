@@ -17,24 +17,15 @@ namespace ab
 const QString IGNORE_UI       = "html";
 const QString IGNORE_CATEGORY = "X-Alterator-Hidden";
 
-CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, QWidget *parent)
+CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, ao_builder::Category cat, QWidget *parent)
     : QWidget{parent}
     , ui(new Ui::CategoryWidget)
     , category(nullptr)
     , window(w)
     , model(m)
+    , layout(nullptr)
 {
     ui->setupUi(this);
-}
-
-CategoryWidget::~CategoryWidget()
-{
-    delete ui;
-}
-
-unsigned int CategoryWidget::setCategory(ao_builder::Category cat)
-{
-    unsigned int addedWidgets = 0;
 
     QPixmap iconMap("/usr/share/alterator/design/images/" + cat.m_icon + ".png");
     ui->iconLabel->setPixmap(iconMap);
@@ -50,47 +41,42 @@ unsigned int CategoryWidget::setCategory(ao_builder::Category cat)
     const int margin            = 0;
     const int horizontalSpacing = 0;
     const int verticalSpacing   = 0;
-    auto modulesLayout          = std::make_unique<FlowLayout>(margin, horizontalSpacing, verticalSpacing);
-    modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
-    modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    layout                      = new FlowLayout(margin, horizontalSpacing, verticalSpacing);
 
-    auto t = model->getObjectsByCategory(cat.m_id);
+    layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    for (auto moduleName : model->getObjectsByCategory(cat.m_id))
+    ui->modulesWidget->setLayout(layout);
+}
+
+CategoryWidget::~CategoryWidget()
+{
+    delete ui;
+}
+
+void CategoryWidget::addObject(ao_builder::Object object)
+{
+    if (object.m_isLegacy)
     {
-        auto module = model->getObject(moduleName);
-        if (!module.has_value())
+        auto legacyObject = dynamic_cast<ao_builder::LegacyObject *>(&object);
+
+        if (legacyObject != nullptr && legacyObject->m_x_Alterator_UI == IGNORE_UI)
         {
-            qWarning() << moduleName << ": no such module!";
-            continue;
+            qWarning() << "Ignoring object with html UI:" << object.m_id;
         }
 
-        if (module.value().m_isLegacy)
+        if (legacyObject != nullptr && legacyObject->m_categoryId == IGNORE_CATEGORY)
         {
-            auto legacyObject = dynamic_cast<ao_builder::LegacyObject *>(&module.value());
-
-            if (legacyObject != nullptr && legacyObject->m_x_Alterator_UI == IGNORE_UI)
-            {
-                qWarning() << "Ignoring object with html UI:" << module.value().m_id;
-                continue;
-            }
-
-            if (legacyObject != nullptr && legacyObject->m_categoryId == IGNORE_CATEGORY)
-            {
-                qWarning() << "Ignoring object with hidden category:" << module.value().m_id;
-                continue;
-            }
+            qWarning() << "Ignoring object with hidden category:" << object.m_id;
         }
-
-        auto moduleButton = std::make_unique<PushButton>(window);
-        moduleButton->setObject(module.value());
-        moduleButton->setFlat(true);
-        modulesLayout->addWidget(moduleButton.release());
-        addedWidgets++;
     }
 
-    ui->modulesWidget->setLayout(modulesLayout.release());
+    auto moduleButton = std::make_unique<PushButton>(window);
 
-    return addedWidgets;
+    moduleButton->setObject(object);
+
+    moduleButton->setFlat(true);
+
+    layout->addWidget(moduleButton.release());
 }
 } // namespace ab
