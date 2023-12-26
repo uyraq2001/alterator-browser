@@ -19,7 +19,7 @@ void PushButton::setObject(ao_builder::Object obj)
 {
     this->object = obj;
     this->setText(obj.m_displayName);
-    this->setMinimumWidth(this->sizeHint().width());
+    this->setStyleSheet("padding: 3px 7px;");
 
     QFont font = this->font();
     font.setPointSize(11);
