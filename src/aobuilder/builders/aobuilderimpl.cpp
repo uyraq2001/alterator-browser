@@ -40,12 +40,12 @@ std::unique_ptr<Object> AOBuilderImpl::buildDefaultCategory()
     result->m_id          = DEFAULT_CATEGORY_NAME;
     result->m_displayName = DEFAULT_CATEGORY_NAME;
 
-    result->m_nameLocaleStorage.insert("ru", "Без категории");
-    result->m_nameLocaleStorage.insert("en", "Without category");
+    result->m_nameLocaleStorage.insert("ru", DEFAULT_CATEGORY_DISPLAY_NAME_RU);
+    result->m_nameLocaleStorage.insert("en", DEFAULT_CATEGORY_DISPLAY_NAME_EN);
 
-    result->m_comment = DEFAULT_CATEGORY_NAME;
-    result->m_commentLocaleStorage.insert("ru", "Объекты не имеющие категории");
-    result->m_commentLocaleStorage.insert("en", "Objects without category");
+    result->m_comment = DEFAULT_CATEGORY_COMMENT;
+    result->m_commentLocaleStorage.insert("ru", DEFAULT_CATEGORY_COMMENT_RU);
+    result->m_commentLocaleStorage.insert("en", DEFAULT_CATEGORY_COMMENT_EN);
 
     result->m_icon = "groups/system";
 
