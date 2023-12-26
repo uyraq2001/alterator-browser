@@ -40,8 +40,8 @@ public:
                std::vector<std::unique_ptr<ao_builder::Object>> objects) override;
 
 public:
-    Model(const Model &) = delete;
-    Model(Model &&)      = delete;
+    Model(const Model &)            = delete;
+    Model(Model &&)                 = delete;
     Model &operator=(const Model &) = delete;
     Model &operator=(Model &&)      = delete;
 

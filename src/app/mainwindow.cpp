@@ -20,16 +20,18 @@
 #include <QString>
 #include <QTreeView>
 
+#include <map>
+#include <memory>
+
 namespace ab
 {
 class MainWindowPrivate
 {
 public:
-    Ui::MainWindow *ui                           = nullptr;
-    QShortcut *quitShortcut                      = nullptr;
+    std::unique_ptr<Ui::MainWindow> ui           = nullptr;
+    std::unique_ptr<MainWindowSettings> settings = nullptr;
     model::ModelInterface *model                 = nullptr;
     Controller *controller                       = nullptr;
-    std::unique_ptr<MainWindowSettings> settings = nullptr;
     CategoryWidget *defaultCategory              = nullptr;
 };
 
@@ -37,15 +39,15 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , d(new MainWindowPrivate())
 {
-    d->ui           = new Ui::MainWindow;
-    d->quitShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this, SLOT(close()));
-    d->settings     = std::make_unique<MainWindowSettings>(this, d->ui);
+    d->ui = std::make_unique<Ui::MainWindow>();
     d->ui->setupUi(this);
+
+    d->settings = std::make_unique<MainWindowSettings>(this, d->ui.get());
     d->settings->restoreSettings();
 
-    auto categoryLayout = new QVBoxLayout();
+    auto categoryLayout = std::make_unique<QVBoxLayout>();
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    d->ui->scrollArea->widget()->setLayout(categoryLayout);
+    d->ui->scrollArea->widget()->setLayout(categoryLayout.release());
 
     setWindowTitle(tr("Alterator Browser"));
     setWindowIcon(QIcon(":/logo.png"));
@@ -53,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete d->ui;
     delete d;
 }
 
@@ -84,59 +85,48 @@ void MainWindow::setModel(model::ModelInterface *newModel)
 
     QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
 
-    std::vector<ao_builder::Id> categories = d->model->getCategories();
-    std::vector<ao_builder::Id> objects    = d->model->getObjects();
-    QMap<ao_builder::Id, CategoryWidget *> categoryMap{};
+    const std::vector<ao_builder::Id> categories = d->model->getCategories();
+    const std::vector<ao_builder::Id> objects    = d->model->getObjects();
+    std::map<ao_builder::Id, std::unique_ptr<CategoryWidget>> categoryMap{};
 
-    for (auto currentObjectId : objects)
+    for (const auto &objectId : objects)
     {
-        auto currentObject = d->model->getObject(currentObjectId);
-        auto catIt         = categoryMap.find(currentObject.value().m_categoryId);
+        const auto object = d->model->getObject(objectId).value();
 
-        if (catIt != categoryMap.end())
+        // Case 1: category already in the map
+        const auto findCategory = categoryMap.find(object.m_categoryId);
+        if (findCategory != categoryMap.end())
         {
-            catIt.value()->addObject(currentObject.value());
+            findCategory->second->addObject(object);
             continue;
         }
-        else
+
+        // Case 2: category not in map but exists in model
+        const auto find = std::find_if(categories.begin(), categories.end(), [&object](const ao_builder::Id &category) {
+            return category == object.m_categoryId;
+        });
+        if (find != categories.end())
         {
-            const auto find
-                = std::find_if(categories.begin(), categories.end(), [&currentObject](const ao_builder::Id &catName) {
-                      return !(QString::compare(catName, currentObject.value().m_categoryId, Qt::CaseSensitive));
-                  });
-            if (find == categories.end())
-            {
-                auto defaultCatIt = categoryMap.find(ao_builder::DEFAULT_CATEGORY_NAME);
-                if (defaultCatIt == categoryMap.end())
-                {
-                    auto *defaultCatWidget = new CategoryWidget(this, d->model, d->model->getDefaultCategory().value());
-
-                    categoryMap.insert(ao_builder::DEFAULT_CATEGORY_NAME, defaultCatWidget);
-
-                    defaultCatWidget->addObject(currentObject.value());
-                }
-                else
-                {
-                    defaultCatIt.value()->addObject(currentObject.value());
-                }
-                continue;
-            }
-
-            auto newCat = d->model->getCategory(currentObject.value().m_categoryId);
-            if (newCat.has_value())
-            {
-                auto *newWidget = new CategoryWidget(this, d->model, newCat.value());
-
-                newWidget->addObject(currentObject.value());
-
-                categoryMap.insert(currentObject.value().m_categoryId, newWidget);
-            }
+            const auto newCategory = d->model->getCategory(object.m_categoryId).value();
+            auto newWidget         = std::make_unique<CategoryWidget>(this, d->model, newCategory);
+            newWidget->addObject(object);
+            categoryMap[object.m_categoryId] = std::move(newWidget);
+            continue;
         }
+
+        // Case 3: default category
+        if (!categoryMap.count(ao_builder::DEFAULT_CATEGORY_NAME))
+        {
+            const auto defaultCategory = d->model->getDefaultCategory().value();
+            auto defaultCategoryWidget = std::make_unique<CategoryWidget>(this, d->model, defaultCategory);
+            categoryMap[ao_builder::DEFAULT_CATEGORY_NAME] = std::move(defaultCategoryWidget);
+        }
+        categoryMap[ao_builder::DEFAULT_CATEGORY_NAME]->addObject(object);
     }
 
-    for (const auto &category : categoryMap.values())
+    for (auto &[_, category] : categoryMap)
     {
-        categoryLayout->addWidget(category);
+        categoryLayout->addWidget(category.release());
     }
 }
 

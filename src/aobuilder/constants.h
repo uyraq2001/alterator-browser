@@ -74,7 +74,7 @@ const char *const CATEGORY_ICON_KEY_NAME                 = "Icon";
 const char *const CATEGORY_TYPE_KEY_VALUE                = "Category";
 const char *const CATEGORY_X_ALTERATOR_CATEGORY_KEY_NAME = "X-alterator-category";
 
-//Default category
+// Default category
 const char *const DEFAULT_CATEGORY_NAME            = "__default";
 const char *const DEFAULT_CATEGORY_DISPLAY_NAME    = "Others";
 const char *const DEFAULT_CATEGORY_DISPLAY_NAME_EN = "Others";
