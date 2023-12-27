@@ -91,10 +91,10 @@ void MainWindow::setModel(model::ModelInterface *newModel)
 
     for (const auto &objectId : objects)
     {
-        const auto object = d->model->getObject(objectId).value();
+        const auto object = d->model->getObject(objectId);
 
         // Case 1: category already in the map
-        const auto findCategory = categoryMap.find(object.m_categoryId);
+        const auto findCategory = categoryMap.find(object->m_categoryId);
         if (findCategory != categoryMap.end())
         {
             findCategory->second->addObject(object);
@@ -103,21 +103,21 @@ void MainWindow::setModel(model::ModelInterface *newModel)
 
         // Case 2: category not in map but exists in model
         const auto find = std::find_if(categories.begin(), categories.end(), [&object](const ao_builder::Id &category) {
-            return category == object.m_categoryId;
+            return category == object->m_categoryId;
         });
         if (find != categories.end())
         {
-            const auto newCategory = d->model->getCategory(object.m_categoryId).value();
+            const auto newCategory = d->model->getCategory(object->m_categoryId);
             auto newWidget         = std::make_unique<CategoryWidget>(this, d->model, newCategory);
             newWidget->addObject(object);
-            categoryMap[object.m_categoryId] = std::move(newWidget);
+            categoryMap[object->m_categoryId] = std::move(newWidget);
             continue;
         }
 
         // Case 3: default category
         if (!categoryMap.count(ao_builder::DEFAULT_CATEGORY_NAME))
         {
-            const auto defaultCategory = d->model->getDefaultCategory().value();
+            const auto defaultCategory = d->model->getDefaultCategory();
             auto defaultCategoryWidget = std::make_unique<CategoryWidget>(this, d->model, defaultCategory);
             categoryMap[ao_builder::DEFAULT_CATEGORY_NAME] = std::move(defaultCategoryWidget);
         }

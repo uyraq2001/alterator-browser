@@ -17,7 +17,7 @@ namespace ab
 const QString IGNORE_UI       = "html";
 const QString IGNORE_CATEGORY = "X-Alterator-Hidden";
 
-CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, ao_builder::Category cat, QWidget *parent)
+CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, ao_builder::Category *cat, QWidget *parent)
     : QWidget{parent}
     , ui(new Ui::CategoryWidget)
     , category(nullptr)
@@ -27,14 +27,14 @@ CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, ao_build
 {
     ui->setupUi(this);
 
-    QPixmap iconMap("/usr/share/alterator/design/images/" + cat.m_icon + ".png");
+    QPixmap iconMap("/usr/share/alterator/design/images/" + cat->m_icon + ".png");
     ui->iconLabel->setPixmap(iconMap);
     ui->iconLabel->setMinimumSize(iconMap.size());
 
-    ui->titleLabel->setText(cat.m_displayName);
+    ui->titleLabel->setText(cat->m_displayName);
     ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
 
-    ui->descriptionLabel->setText(cat.m_comment);
+    ui->descriptionLabel->setText(cat->m_comment);
 
     ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
 
@@ -54,20 +54,22 @@ CategoryWidget::~CategoryWidget()
     delete ui;
 }
 
-void CategoryWidget::addObject(ao_builder::Object object)
+void CategoryWidget::addObject(ao_builder::Object *object)
 {
-    if (object.m_isLegacy)
-    {
-        auto legacyObject = dynamic_cast<ao_builder::LegacyObject *>(&object);
+    const auto legacyObject = dynamic_cast<ao_builder::LegacyObject *>(object);
 
-        if (legacyObject != nullptr && legacyObject->m_x_Alterator_UI == IGNORE_UI)
+    if (object->m_isLegacy && legacyObject != nullptr)
+    {
+        if (legacyObject->m_x_Alterator_UI == IGNORE_UI)
         {
-            qWarning() << "Ignoring object with html UI:" << object.m_id;
+            qInfo() << "Ignoring object with html UI:" << object->m_id;
+            return;
         }
 
-        if (legacyObject != nullptr && legacyObject->m_categoryId == IGNORE_CATEGORY)
+        if (legacyObject->m_categoryId == IGNORE_CATEGORY)
         {
-            qWarning() << "Ignoring object with hidden category:" << object.m_id;
+            qInfo() << "Ignoring object with hidden category:" << object->m_id;
+            return;
         }
     }
 

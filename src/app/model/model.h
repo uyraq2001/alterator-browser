@@ -18,18 +18,18 @@ public:
 
     // Categories
     std::vector<ao_builder::Id> getCategories() override;
-    std::optional<ao_builder::Category> getCategory(ao_builder::Id id) override;
-    std::optional<ao_builder::Category> getDefaultCategory() override;
+    ao_builder::Category *getCategory(ao_builder::Id id) override;
+    ao_builder::Category *getDefaultCategory() override;
 
     // Applications
     std::vector<ao_builder::Id> getLocalApplications() override;
-    std::optional<ao_builder::LocalAppObject> getLocalApplication(QString id) override;
+    ao_builder::LocalAppObject *getLocalApplication(QString id) override;
     std::set<QString> getInterfaces() override;
     std::vector<ao_builder::Id> getLocalApplicationsByInterface(QString iface) override;
 
     // Objects
     std::vector<ao_builder::Id> getObjects() override;
-    std::optional<ao_builder::Object> getObject(ao_builder::Id id) override;
+    ao_builder::Object *getObject(ao_builder::Id id) override;
     std::vector<ao_builder::Id> getObjectsByInterface(QString iface) override;
     std::vector<ao_builder::Id> getObjectsByCategory(ao_builder::Id category_id) override;
 
