@@ -37,7 +37,7 @@ std::vector<ao_builder::Id> Model::getCategories()
     return categoriesIds;
 }
 
-std::optional<ao_builder::Category> Model::getCategory(ao_builder::Id category_id)
+ao_builder::Category *Model::getCategory(ao_builder::Id category_id)
 {
     for (int i = 0; i < this->categoriesRoot->rowCount(); ++i)
     {
@@ -54,14 +54,14 @@ std::optional<ao_builder::Category> Model::getCategory(ao_builder::Id category_i
 
         if (category != nullptr && category->m_id == category_id)
         {
-            return {*category};
+            return category;
         }
     }
 
     return {};
 }
 
-std::optional<ao_builder::Category> Model::getDefaultCategory()
+ao_builder::Category *Model::getDefaultCategory()
 {
     return getCategory(ao_builder::DEFAULT_CATEGORY_NAME);
 }
@@ -83,7 +83,7 @@ std::vector<ao_builder::Id> Model::getLocalApplications()
     return appsIds;
 }
 
-std::optional<ao_builder::LocalAppObject> Model::getLocalApplication(ao_builder::Id appId)
+ao_builder::LocalAppObject *Model::getLocalApplication(ao_builder::Id appId)
 {
     for (int i = 0; i < this->appsRoot->rowCount(); ++i)
     {
@@ -100,7 +100,7 @@ std::optional<ao_builder::LocalAppObject> Model::getLocalApplication(ao_builder:
 
         if (app != nullptr && app->m_id == appId)
         {
-            return {*app};
+            return app;
         }
     }
 
@@ -181,7 +181,7 @@ std::vector<ao_builder::Id> Model::getObjects()
     return legacyObjectsIds;
 }
 
-std::optional<ao_builder::Object> Model::getObject(ao_builder::Id objectId)
+ao_builder::Object *Model::getObject(ao_builder::Id objectId)
 {
     for (int i = 0; i < this->objectsRoot->rowCount(); ++i)
     {
@@ -197,7 +197,7 @@ std::optional<ao_builder::Object> Model::getObject(ao_builder::Id objectId)
 
         if (object != nullptr && object->m_id == objectId)
         {
-            return {*object};
+            return object;
         }
     }
     return {};

@@ -26,25 +26,26 @@ class CategoryWidget : public QWidget
 public:
     explicit CategoryWidget(MainWindow *w,
                             model::ModelInterface *m,
-                            ao_builder::Category cat,
+                            ao_builder::Category *cat,
                             QWidget *parent = nullptr);
     ~CategoryWidget() override;
 
     void setGeometry(const QRect &rect);
-    void addObject(ao_builder::Object object);
+    void addObject(ao_builder::Object *object);
+    bool isEmpty();
 
 public:
-    CategoryWidget(const CategoryWidget &) = delete;
-    CategoryWidget(CategoryWidget &&)      = delete;
+    CategoryWidget(const CategoryWidget &)            = delete;
+    CategoryWidget(CategoryWidget &&)                 = delete;
     CategoryWidget &operator=(const CategoryWidget &) = delete;
-    CategoryWidget &operator=(CategoryWidget &&) = delete;
+    CategoryWidget &operator=(CategoryWidget &&)      = delete;
 
 private:
-    Ui::CategoryWidget *ui;
-    ao_builder::Category *category;
-    MainWindow *window;
-    model::ModelInterface *model;
-    FlowLayout *layout;
+    Ui::CategoryWidget *ui{};
+    ao_builder::Category *category{};
+    MainWindow *window{};
+    model::ModelInterface *model{};
+    FlowLayout *layout{};
 
 signals:
     void showMenu(ao_builder::LegacyObject *obj);

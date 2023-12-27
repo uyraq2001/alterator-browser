@@ -18,8 +18,8 @@ public:
     explicit PushButton(MainWindow *w, QWidget *parent = nullptr);
     ~PushButton() override = default;
 
-    void setObject(ao_builder::Object obj);
-    ao_builder::Object getObject();
+    void setObject(ao_builder::Object *obj);
+    ao_builder::Object *getObject();
 
     PushButton(const PushButton &)            = delete;
     PushButton(PushButton &&)                 = delete;
@@ -27,8 +27,8 @@ public:
     PushButton &operator=(PushButton &&)      = delete;
 
 private:
-    ao_builder::Object object = {};
-    MainWindow *window        = nullptr;
+    ao_builder::Object *object = nullptr;
+    MainWindow *window         = nullptr;
 
     void onClicked(bool b);
 

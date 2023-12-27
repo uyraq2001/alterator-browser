@@ -68,18 +68,18 @@ Controller::~Controller()
     delete d;
 }
 
-void Controller::moduleClicked(ao_builder::Object object)
+void Controller::moduleClicked(ao_builder::Object *object)
 {
-    auto apps = d->model->getLocalApplicationsByInterface(object.m_interface);
+    auto apps = d->model->getLocalApplicationsByInterface(object->m_interface);
     if (apps.empty())
     {
-        qWarning() << object.m_id << ": no applications are available for this module";
+        qWarning() << object->m_id << ": no applications are available for this module";
         return;
     }
     auto app     = d->model->getLocalApplication(apps[0]);
     auto proc    = new QProcess(this);
     QString exec = app->m_exec;
-    exec.replace("%o", object.m_dbus_path);
+    exec.replace("%o", object->m_dbus_path);
     proc->start("/bin/bash", QStringList() << "-c" << exec);
 }
 

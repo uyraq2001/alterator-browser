@@ -15,10 +15,10 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
     connect(this, &PushButton::clicked, this->window, [this]() { this->window->onModuleClicked(this); });
 }
 
-void PushButton::setObject(ao_builder::Object obj)
+void PushButton::setObject(ao_builder::Object *obj)
 {
     this->object = obj;
-    this->setText(obj.m_displayName);
+    this->setText(obj->m_displayName);
     this->setStyleSheet("padding: 3px 7px;");
 
     QFont font = this->font();
@@ -26,7 +26,7 @@ void PushButton::setObject(ao_builder::Object obj)
     this->setFont(font);
 }
 
-ao_builder::Object PushButton::getObject()
+ao_builder::Object *PushButton::getObject()
 {
     return object;
 }

@@ -40,9 +40,7 @@ public:
     Controller &operator=(Controller &&)      = delete;
 
 public slots:
-    void moduleClicked(ao_builder::Object obj);
-    //    void onInterfaceClicked(ao_builder::LocalAppObject *app);
-    //    void onDBusStructureUpdate(QString service, QString prev, QString next);
+    void moduleClicked(ao_builder::Object *obj);
 
 private:
     void translateModel();
