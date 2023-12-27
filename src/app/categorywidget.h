@@ -32,6 +32,7 @@ public:
 
     void setGeometry(const QRect &rect);
     void addObject(ao_builder::Object *object);
+    bool isEmpty();
 
 public:
     CategoryWidget(const CategoryWidget &)            = delete;
@@ -40,11 +41,11 @@ public:
     CategoryWidget &operator=(CategoryWidget &&)      = delete;
 
 private:
-    Ui::CategoryWidget *ui;
-    ao_builder::Category *category;
-    MainWindow *window;
-    model::ModelInterface *model;
-    FlowLayout *layout;
+    Ui::CategoryWidget *ui{};
+    ao_builder::Category *category{};
+    MainWindow *window{};
+    model::ModelInterface *model{};
+    FlowLayout *layout{};
 
 signals:
     void showMenu(ao_builder::LegacyObject *obj);

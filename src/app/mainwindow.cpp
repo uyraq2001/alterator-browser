@@ -126,7 +126,10 @@ void MainWindow::setModel(model::ModelInterface *newModel)
 
     for (auto &[_, category] : categoryMap)
     {
-        categoryLayout->addWidget(category.release());
+        if (!category->isEmpty())
+        {
+            categoryLayout->addWidget(category.release());
+        }
     }
 }
 

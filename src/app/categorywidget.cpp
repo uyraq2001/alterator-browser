@@ -74,11 +74,13 @@ void CategoryWidget::addObject(ao_builder::Object *object)
     }
 
     auto moduleButton = std::make_unique<PushButton>(window);
-
     moduleButton->setObject(object);
-
     moduleButton->setFlat(true);
-
     layout->addWidget(moduleButton.release());
+}
+
+bool CategoryWidget::isEmpty()
+{
+    return layout->isEmpty();
 }
 } // namespace ab
