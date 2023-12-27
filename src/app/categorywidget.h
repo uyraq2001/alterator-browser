@@ -5,6 +5,7 @@
 #include "../aobuilder/objects/legacyobject.h"
 #include "model/modelinterface.h"
 
+#include <flowlayout.h>
 #include <QStandardItemModel>
 #include <QWidget>
 
@@ -23,11 +24,14 @@ class CategoryWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CategoryWidget(MainWindow *w, model::ModelInterface *m, QWidget *parent = nullptr);
+    explicit CategoryWidget(MainWindow *w,
+                            model::ModelInterface *m,
+                            ao_builder::Category cat,
+                            QWidget *parent = nullptr);
     ~CategoryWidget() override;
 
     void setGeometry(const QRect &rect);
-    unsigned int setCategory(ao_builder::Category cat);
+    void addObject(ao_builder::Object object);
 
 public:
     CategoryWidget(const CategoryWidget &) = delete;
@@ -40,6 +44,7 @@ private:
     ao_builder::Category *category;
     MainWindow *window;
     model::ModelInterface *model;
+    FlowLayout *layout;
 
 signals:
     void showMenu(ao_builder::LegacyObject *obj);

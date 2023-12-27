@@ -19,6 +19,7 @@ public:
     // Categories
     std::vector<ao_builder::Id> getCategories() override;
     std::optional<ao_builder::Category> getCategory(ao_builder::Id id) override;
+    std::optional<ao_builder::Category> getDefaultCategory() override;
 
     // Applications
     std::vector<ao_builder::Id> getLocalApplications() override;

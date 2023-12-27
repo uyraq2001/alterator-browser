@@ -26,6 +26,8 @@ public:
     AOBuilderImpl &operator=(const AOBuilderImpl &) = delete;
     AOBuilderImpl &operator=(AOBuilderImpl &&) = delete;
 
+    std::unique_ptr<Object> buildDefaultCategory();
+
 private:
     AOBuilderImplPrivate *d{};
 };

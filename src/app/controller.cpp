@@ -26,6 +26,11 @@ public:
     std::unique_ptr<model::ModelInterface> model{nullptr};
     std::unique_ptr<ao_builder::DataSourceInterface> dataSource{nullptr};
     std::unique_ptr<ao_builder::AOBuilderInterface> modelBuilder{nullptr};
+    std::vector<QString> interfaces{"ru.basealt.alterator.legacy",
+                                    "ru.basealt.alterator.object",
+                                    "ru.basealt.alterator.diag1",
+                                    "ru.basealt.alterator.test_interface1",
+                                    "ru.basealt.alterator.test_interface2"};
 
     ControllerPrivate(std::shared_ptr<MainWindow> w,
                       std::unique_ptr<model::ModelInterface> m,
@@ -94,17 +99,11 @@ void Controller::translateModel()
 void Controller::buildModel()
 {
     auto categories = d->modelBuilder->buildCategories();
-    auto apps       = d->modelBuilder->buildLocalApps();
-    std::vector<QString> interfaces{};
-    for (const auto &a : apps)
-    {
-        auto app = dynamic_cast<ao_builder::LocalAppObject *>(a.get());
-        if (app != nullptr)
-        {
-            interfaces.push_back(app->m_interfaces[0]);
-        }
-    }
-    auto objects = d->modelBuilder->buildObjects(interfaces);
+
+    auto apps = d->modelBuilder->buildLocalApps();
+
+    auto objects = d->modelBuilder->buildObjects(d->interfaces);
+
     d->model->build(std::move(categories), std::move(apps), std::move(objects));
 }
 

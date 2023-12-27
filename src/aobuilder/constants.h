@@ -74,6 +74,15 @@ const char *const CATEGORY_ICON_KEY_NAME                 = "Icon";
 const char *const CATEGORY_TYPE_KEY_VALUE                = "Category";
 const char *const CATEGORY_X_ALTERATOR_CATEGORY_KEY_NAME = "X-alterator-category";
 
+// Default category
+const char *const DEFAULT_CATEGORY_NAME            = "__default";
+const char *const DEFAULT_CATEGORY_DISPLAY_NAME    = "Others";
+const char *const DEFAULT_CATEGORY_DISPLAY_NAME_EN = "Others";
+const char *const DEFAULT_CATEGORY_DISPLAY_NAME_RU = "Другое";
+const char *const DEFAULT_CATEGORY_COMMENT         = "Objects without category";
+const char *const DEFAULT_CATEGORY_COMMENT_EN      = "Objects without category";
+const char *const DEFAULT_CATEGORY_COMMENT_RU      = "Объекты без категории";
+
 // Legacy objects keys and values
 const char *const LEGACY_OBJECT_CATEGORY_KEY_NAME             = "Categories";
 const char *const LEGACY_OBJECT_TERMINAL_KEY_NAME             = "Terminal";
