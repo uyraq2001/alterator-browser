@@ -22,6 +22,7 @@
 
 #include <map>
 #include <memory>
+#include <vector>
 
 namespace ab
 {
@@ -86,13 +87,21 @@ void MainWindow::setModel(model::ModelInterface *newModel)
     QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
 
     const std::vector<ao_builder::Id> categories = d->model->getCategories();
-    const std::vector<ao_builder::Id> objects    = d->model->getObjects();
+    const std::vector<ao_builder::Id> objectsIds = d->model->getObjects();
+
+    std::vector<ao_builder::Object *> objects{};
+    for (const auto &objectId : objectsIds)
+    {
+        objects.push_back(d->model->getObject(objectId));
+    }
+    std::sort(objects.begin(), objects.end(), [](ao_builder::Object *a, ao_builder::Object *b) {
+        return a->m_displayName < b->m_displayName;
+    });
+
     std::map<ao_builder::Id, std::unique_ptr<CategoryWidget>> categoryMap{};
 
-    for (const auto &objectId : objects)
+    for (const auto &object : objects)
     {
-        const auto object = d->model->getObject(objectId);
-
         // Case 1: category already in the map
         const auto findCategory = categoryMap.find(object->m_categoryId);
         if (findCategory != categoryMap.end())
