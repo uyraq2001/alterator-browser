@@ -11,7 +11,7 @@ std::unique_ptr<Object> CategoryObjectBuilder::buildObject(ObjectParserInterface
 
     QString buildingFromSection = ALTERATOR_ENTRY_SECTION_NAME;
 
-    if (!buildNames(parser, buildingFromSection, result.get()))
+    if (!buildBase(parser, buildingFromSection, result.get()))
     {
         return nullptr;
     }

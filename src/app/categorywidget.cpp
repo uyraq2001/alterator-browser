@@ -17,17 +17,13 @@ namespace ab
 const QString IGNORE_UI       = "html";
 const QString IGNORE_CATEGORY = "X-Alterator-Hidden";
 
-const int MARGIN             = 0;
-const int HORIZONTAL_SPACING = 0;
-const int VERTICAL_SPACING   = 0;
-
 CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, ao_builder::Category *cat, QWidget *parent)
     : QWidget{parent}
     , ui(new Ui::CategoryWidget)
     , category(cat)
     , window(w)
     , model(m)
-    , layout(new FlowLayout(MARGIN, HORIZONTAL_SPACING, VERTICAL_SPACING))
+    , layout(new FlowLayout(0, 0, 0))
 {
     ui->setupUi(this);
 

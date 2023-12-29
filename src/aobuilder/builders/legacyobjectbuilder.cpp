@@ -9,7 +9,7 @@ std::unique_ptr<Object> LegacyObjectBuilder::buildObject(ObjectParserInterface *
 {
     auto newObject = std::make_unique<LegacyObject>();
 
-    if (!buildNames(parser, DESKTOP_ENTRY_SECTION_NAME, newObject.get()))
+    if (!buildBase(parser, DESKTOP_ENTRY_SECTION_NAME, newObject.get()))
     {
         return nullptr;
     }

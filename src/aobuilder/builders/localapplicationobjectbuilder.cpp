@@ -25,7 +25,7 @@ bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterfa
 {
     QString buildingFromSection = DESKTOP_ENTRY_SECTION_NAME;
 
-    if (!buildNames(parser, DESKTOP_ENTRY_SECTION_NAME, localApplication))
+    if (!buildBase(parser, DESKTOP_ENTRY_SECTION_NAME, localApplication))
     {
         qWarning() << "Error parsing" << localApplication << "Info: cannot build names";
         return false;
@@ -81,7 +81,7 @@ bool LocalApplicationObjectBuilder::parseDesktopEntrySection(ObjectParserInterfa
 bool LocalApplicationObjectBuilder::parseAlteratorEntrySection(ObjectParserInterface *parser,
                                                                LocalAppObject *localApplication)
 {
-    if (!buildNames(parser, ALTERATOR_ENTRY_SECTION_NAME, localApplication))
+    if (!buildBase(parser, ALTERATOR_ENTRY_SECTION_NAME, localApplication))
     {
         qWarning() << "Error parsing" << localApplication << "Info: cannot build names";
         return false;

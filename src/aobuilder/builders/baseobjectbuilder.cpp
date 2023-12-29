@@ -2,6 +2,7 @@
 #include "constants.h"
 #include "objects/object.h"
 #include "parsers/objectparserinterface.h"
+
 #include <qdebug.h>
 
 namespace ao_builder
@@ -48,7 +49,7 @@ bool BaseObjectBuilder::buildFieldWithLocale(ObjectParserInterface *parser,
     return true;
 }
 
-bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectionName, Object *object)
+bool BaseObjectBuilder::buildBase(ObjectParserInterface *parser, QString sectionName, Object *object)
 {
     const auto sections = parser->getSections();
 
@@ -84,13 +85,17 @@ bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectio
     }
 
     const auto weightIt = section.find(OBJECT_WEIGHT_KEY_NAME);
-    bool ok             = true;
     if (weightIt != section.end())
     {
+        bool ok          = true;
         object->m_weight = weightIt.value().value.toInt(&ok);
+        if (!ok)
+        {
+            qWarning() << "Cannot parse" << OBJECT_WEIGHT_KEY_NAME << "of object" << object->m_id << "using default";
+            object->m_weight = DEFAULT_WEIGHT;
+        }
     }
-
-    if (weightIt == section.end() || !ok)
+    else
     {
         object->m_weight = DEFAULT_WEIGHT;
     }

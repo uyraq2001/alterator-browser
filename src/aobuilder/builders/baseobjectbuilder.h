@@ -18,7 +18,7 @@ public:
                               QString &field,
                               QMap<QString, QString> &localeStorage);
 
-    bool buildNames(ObjectParserInterface *parser, QString sectionName, Object *localAppObject);
+    bool buildBase(ObjectParserInterface *parser, QString sectionName, Object *localAppObject);
 
     std::vector<QString> parseValuesFromKey(ObjectParserInterface *parser,
                                             QString section,
