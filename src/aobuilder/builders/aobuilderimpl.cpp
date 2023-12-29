@@ -47,7 +47,8 @@ std::unique_ptr<Object> AOBuilderImpl::buildDefaultCategory()
     result->m_commentLocaleStorage.insert("ru", DEFAULT_CATEGORY_COMMENT_RU);
     result->m_commentLocaleStorage.insert("en", DEFAULT_CATEGORY_COMMENT_EN);
 
-    result->m_icon = "groups/system";
+    result->m_icon   = "groups/system";
+    result->m_weight = 0;
 
     return result;
 }

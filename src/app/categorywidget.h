@@ -32,6 +32,7 @@ public:
 
     void setGeometry(const QRect &rect);
     void addObject(ao_builder::Object *object);
+    int getWeight();
     bool isEmpty();
 
 public:

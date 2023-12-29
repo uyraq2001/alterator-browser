@@ -9,7 +9,7 @@ std::unique_ptr<Object> ObjectBuilder::buildObject(ObjectParserInterface *parser
 {
     auto newObject = std::make_unique<Object>();
 
-    if (!buildNames(parser, ALTERATOR_ENTRY_SECTION_NAME, newObject.get()))
+    if (!buildBase(parser, ALTERATOR_ENTRY_SECTION_NAME, newObject.get()))
     {
         return nullptr;
     }

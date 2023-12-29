@@ -20,10 +20,10 @@ const QString IGNORE_CATEGORY = "X-Alterator-Hidden";
 CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, ao_builder::Category *cat, QWidget *parent)
     : QWidget{parent}
     , ui(new Ui::CategoryWidget)
-    , category(nullptr)
+    , category(cat)
     , window(w)
     , model(m)
-    , layout(nullptr)
+    , layout(new FlowLayout(0, 0, 0))
 {
     ui->setupUi(this);
 
@@ -37,11 +37,6 @@ CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, ao_build
     ui->descriptionLabel->setText(cat->m_comment);
 
     ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
-
-    const int margin            = 0;
-    const int horizontalSpacing = 0;
-    const int verticalSpacing   = 0;
-    layout                      = new FlowLayout(margin, horizontalSpacing, verticalSpacing);
 
     layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -77,6 +72,11 @@ void CategoryWidget::addObject(ao_builder::Object *object)
     moduleButton->setObject(object);
     moduleButton->setFlat(true);
     layout->addWidget(moduleButton.release());
+}
+
+int CategoryWidget::getWeight()
+{
+    return category->m_weight;
 }
 
 bool CategoryWidget::isEmpty()

@@ -1,6 +1,9 @@
 #include "baseobjectbuilder.h"
 #include "constants.h"
+#include "objects/object.h"
 #include "parsers/objectparserinterface.h"
+
+#include <qdebug.h>
 
 namespace ao_builder
 {
@@ -46,7 +49,7 @@ bool BaseObjectBuilder::buildFieldWithLocale(ObjectParserInterface *parser,
     return true;
 }
 
-bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectionName, Object *localAppObject)
+bool BaseObjectBuilder::buildBase(ObjectParserInterface *parser, QString sectionName, Object *object)
 {
     const auto sections = parser->getSections();
 
@@ -73,12 +76,28 @@ bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectio
         return false;
     }
 
-    localAppObject->m_id = defaultName;
+    object->m_id = defaultName;
 
     for (const ObjectParserInterface::IniField &currentIniFileKey : listOfKeys)
     {
-        localAppObject->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale.split('_').first(),
-                                                   currentIniFileKey.value.toString());
+        object->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale.split('_').first(),
+                                           currentIniFileKey.value.toString());
+    }
+
+    const auto weightIt = section.find(OBJECT_WEIGHT_KEY_NAME);
+    if (weightIt != section.end())
+    {
+        bool ok          = true;
+        object->m_weight = weightIt.value().value.toInt(&ok);
+        if (!ok)
+        {
+            qWarning() << "Cannot parse" << OBJECT_WEIGHT_KEY_NAME << "of object" << object->m_id << "using default";
+            object->m_weight = DEFAULT_WEIGHT;
+        }
+    }
+    else
+    {
+        object->m_weight = DEFAULT_WEIGHT;
     }
 
     return true;
