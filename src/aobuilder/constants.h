@@ -98,6 +98,7 @@ const char *const OBJECT_CATEGORY_KEY_NAME     = "Category";
 const char *const OBJECT_ICON_KEY_NAME         = "Icon";
 const char *const OBJECT_TYPE_KEY_NAME         = "Type";
 const char *const OBJECT_NAME_KEY_NAME         = "Name";
+const char *const OBJECT_WEIGHT_KEY_NAME       = "Weight";
 const char *const OBJECT_DISPLAY_NAME_KEY_NAME = "DisplayName";
 } // namespace ao_builder
 

@@ -86,8 +86,8 @@ void MainWindow::setModel(model::ModelInterface *newModel)
 
     QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
 
-    const std::vector<ao_builder::Id> categories = d->model->getCategories();
-    const std::vector<ao_builder::Id> objectsIds = d->model->getObjects();
+    const std::vector<ao_builder::Id> categoriesIds = d->model->getCategories();
+    const std::vector<ao_builder::Id> objectsIds    = d->model->getObjects();
 
     std::vector<ao_builder::Object *> objects{};
     for (const auto &objectId : objectsIds)
@@ -98,47 +98,60 @@ void MainWindow::setModel(model::ModelInterface *newModel)
         return a->m_displayName < b->m_displayName;
     });
 
-    std::map<ao_builder::Id, std::unique_ptr<CategoryWidget>> categoryMap{};
+    std::map<ao_builder::Id, std::unique_ptr<CategoryWidget>> categoryWidgetMap{};
 
     for (const auto &object : objects)
     {
         // Case 1: category already in the map
-        const auto findCategory = categoryMap.find(object->m_categoryId);
-        if (findCategory != categoryMap.end())
+        const auto findCategory = categoryWidgetMap.find(object->m_categoryId);
+        if (findCategory != categoryWidgetMap.end())
         {
             findCategory->second->addObject(object);
             continue;
         }
 
         // Case 2: category not in map but exists in model
-        const auto find = std::find_if(categories.begin(), categories.end(), [&object](const ao_builder::Id &category) {
-            return category == object->m_categoryId;
-        });
-        if (find != categories.end())
+        const auto find = std::find_if(categoriesIds.begin(),
+                                       categoriesIds.end(),
+                                       [&object](const ao_builder::Id &category) {
+                                           return category == object->m_categoryId;
+                                       });
+        if (find != categoriesIds.end())
         {
             const auto newCategory = d->model->getCategory(object->m_categoryId);
             auto newWidget         = std::make_unique<CategoryWidget>(this, d->model, newCategory);
             newWidget->addObject(object);
-            categoryMap[object->m_categoryId] = std::move(newWidget);
+            categoryWidgetMap[object->m_categoryId] = std::move(newWidget);
             continue;
         }
 
         // Case 3: default category
-        if (!categoryMap.count(ao_builder::DEFAULT_CATEGORY_NAME))
+        if (!categoryWidgetMap.count(ao_builder::DEFAULT_CATEGORY_NAME))
         {
             const auto defaultCategory = d->model->getDefaultCategory();
             auto defaultCategoryWidget = std::make_unique<CategoryWidget>(this, d->model, defaultCategory);
-            categoryMap[ao_builder::DEFAULT_CATEGORY_NAME] = std::move(defaultCategoryWidget);
+            categoryWidgetMap[ao_builder::DEFAULT_CATEGORY_NAME] = std::move(defaultCategoryWidget);
         }
-        categoryMap[ao_builder::DEFAULT_CATEGORY_NAME]->addObject(object);
+        categoryWidgetMap[ao_builder::DEFAULT_CATEGORY_NAME]->addObject(object);
     }
 
-    for (auto &[_, category] : categoryMap)
+    std::vector<std::unique_ptr<CategoryWidget>> categoryWidgets{};
+    for (auto &[_, categoryWidget] : categoryWidgetMap)
     {
-        if (!category->isEmpty())
+        if (!categoryWidget->isEmpty())
         {
-            categoryLayout->addWidget(category.release());
+            categoryWidgets.push_back(std::move(categoryWidget));
         }
+    }
+    std::sort(categoryWidgets.begin(),
+              categoryWidgets.end(),
+              [](const std::unique_ptr<CategoryWidget> &a, const std::unique_ptr<CategoryWidget> &b) {
+                  return a->getWeight() > b->getWeight();
+              });
+
+    for (auto &categoryWidget : categoryWidgets)
+    {
+        categoryLayout->addWidget(categoryWidget.release());
     }
 }
 

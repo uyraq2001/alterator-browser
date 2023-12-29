@@ -5,6 +5,8 @@
 #include <QMetaType>
 #include <QString>
 
+const int DEFAULT_WEIGHT = 500;
+
 namespace ao_builder
 {
 using Id = QString;
@@ -22,6 +24,7 @@ public:
     QString m_displayName{};
     QString m_type{};
     QString m_icon{};
+    int m_weight{DEFAULT_WEIGHT}; // NOTE(mchernigin): supposed to be [0, 1000]
 
     QString m_dbus_path{};
     QString m_interface{};

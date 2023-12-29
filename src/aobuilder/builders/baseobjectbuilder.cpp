@@ -1,6 +1,8 @@
 #include "baseobjectbuilder.h"
 #include "constants.h"
+#include "objects/object.h"
 #include "parsers/objectparserinterface.h"
+#include <qdebug.h>
 
 namespace ao_builder
 {
@@ -46,7 +48,7 @@ bool BaseObjectBuilder::buildFieldWithLocale(ObjectParserInterface *parser,
     return true;
 }
 
-bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectionName, Object *localAppObject)
+bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectionName, Object *object)
 {
     const auto sections = parser->getSections();
 
@@ -73,12 +75,24 @@ bool BaseObjectBuilder::buildNames(ObjectParserInterface *parser, QString sectio
         return false;
     }
 
-    localAppObject->m_id = defaultName;
+    object->m_id = defaultName;
 
     for (const ObjectParserInterface::IniField &currentIniFileKey : listOfKeys)
     {
-        localAppObject->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale.split('_').first(),
-                                                   currentIniFileKey.value.toString());
+        object->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale.split('_').first(),
+                                           currentIniFileKey.value.toString());
+    }
+
+    const auto weightIt = section.find(OBJECT_WEIGHT_KEY_NAME);
+    bool ok             = true;
+    if (weightIt != section.end())
+    {
+        object->m_weight = weightIt.value().value.toInt(&ok);
+    }
+
+    if (weightIt == section.end() || !ok)
+    {
+        object->m_weight = DEFAULT_WEIGHT;
     }
 
     return true;
