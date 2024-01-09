@@ -25,6 +25,7 @@ set(HEADERS
     builders/objectbuilder.h
     builders/aobuilderinterface.h
     builders/aobuilderimpl.h
+    builders/diag1objectbuilder.h
 
     datasource/datasourceinterface.h
     datasource/datasourcedbusimpl.h
@@ -33,6 +34,7 @@ set(HEADERS
     objects/category.h
     objects/localappobject.h
     objects/legacyobject.h
+    objects/diag1object.h
 
     parsers/objectparserinterface.h
     parsers/baseobjectparser.h
@@ -46,6 +48,7 @@ set(SOURCES
     builders/categoryobjectbuilder.cpp
     builders/aobuilderimpl.cpp
     builders/objectbuilder.cpp
+    builders/diag1objectbuilder.cpp
 
     datasource/datasourcedbusimpl.cpp
 
@@ -53,6 +56,7 @@ set(SOURCES
     objects/category.cpp
     objects/localappobject.cpp
     objects/legacyobject.cpp
+    objects/diag1object.cpp
 
     parsers/baseobjectparser.cpp
 )
