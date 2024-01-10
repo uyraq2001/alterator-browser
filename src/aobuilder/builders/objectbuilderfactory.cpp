@@ -2,6 +2,7 @@
 #include "objectbuilderfactory.h"
 #include "categoryobjectbuilder.h"
 #include "constants.h"
+#include "diag1objectbuilder.h"
 #include "legacyobjectbuilder.h"
 #include "localapplicationobjectbuilder.h"
 #include "objectbuilder.h"
@@ -49,6 +50,10 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getObjectBuilder(O
     else if (type == KEY_TYPE_VALUE_FOR_OBJECT)
     {
         return std::make_unique<ObjectBuilder>();
+    }
+    else if (type == KEY_TYPE_VALUE_FOR_DIAG1_OBJECT)
+    {
+        return std::make_unique<Diag1ObjectBuilder>();
     }
 
     // Unknown type

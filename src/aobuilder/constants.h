@@ -50,6 +50,7 @@ const char *const DESKTOP_ENTRY_CATEGORY_KEY_ID   = "X-Alterator-Category";
 const char *const KEY_TYPE_VALUE_FOR_APPLICATION_OBJECT = "Application";
 const char *const KEY_TYPE_VALUE_FOR_CATEGORY_OBJECT    = "Category";
 const char *const KEY_TYPE_VALUE_FOR_OBJECT             = "Object";
+const char *const KEY_TYPE_VALUE_FOR_DIAG1_OBJECT       = "diag1";
 
 // Objects fields names
 
@@ -100,6 +101,15 @@ const char *const OBJECT_TYPE_KEY_NAME         = "Type";
 const char *const OBJECT_NAME_KEY_NAME         = "Name";
 const char *const OBJECT_WEIGHT_KEY_NAME       = "Weight";
 const char *const OBJECT_DISPLAY_NAME_KEY_NAME = "DisplayName";
+
+// Diag1 object keys and values
+const char *const DIAG1_OBJECT_ICON_KEY_NAME    = "Icon";
+const char *const DIAG1_OBJECT_TYPE_KEY_NAME    = "Type";
+const char *const DIAG1_OBJECT_NAME_KEY_NAME    = "Name";
+const char *const DIAG1_OBJECT_WEIGHT_KEY_NAME  = "Weight";
+const char *const DIAG1_OBJECT_COMMENT_KEY_NAME = "Comment";
+const char *const DIAG1_OBJECT_TYPE_KEY_VALUE   = "diag1";
+
 } // namespace ao_builder
 
 #endif // AB_CONSTANTS_H
