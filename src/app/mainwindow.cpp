@@ -34,6 +34,7 @@ public:
     model::ModelInterface *model                 = nullptr;
     Controller *controller                       = nullptr;
     CategoryWidget *defaultCategory              = nullptr;
+    QShortcut *quitShortcut                      = nullptr;
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -42,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     d->ui = std::make_unique<Ui::MainWindow>();
     d->ui->setupUi(this);
+    d->quitShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this, SLOT(close()));
 
     d->settings = std::make_unique<MainWindowSettings>(this, d->ui.get());
     d->settings->restoreSettings();
