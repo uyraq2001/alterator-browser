@@ -14,15 +14,7 @@ void Diag1Object::setLocale(QString locale)
     }
     else
     {
-        QRegularExpression regex(locale + "_[A-Z]{2}");
-        for (auto &fullLoc : m_commentLocaleStorage.keys())
-        {
-            QRegularExpressionMatch match = regex.match(fullLoc);
-            if (match.hasMatch())
-            {
-                m_comment = m_commentLocaleStorage[fullLoc];
-            }
-        }
+        m_comment = findLocale(locale, m_commentLocaleStorage).value_or(m_comment);
     }
 }
 } // namespace ao_builder

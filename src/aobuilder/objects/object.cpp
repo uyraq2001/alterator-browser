@@ -13,17 +13,21 @@ void Object::setLocale(QString locale)
         return;
     }
 
+    m_displayName = findLocale(locale, m_nameLocaleStorage).value_or(m_displayName);
+}
+
+std::optional<QString> Object::findLocale(QString locale, QMap<QString, QString> localeStorage)
+{
     QRegularExpression regex(locale + "_[A-Z]{2}");
-    for (auto &fullLocale : m_nameLocaleStorage.keys())
+    for (auto &fullLocale : localeStorage.keys())
     {
         QRegularExpressionMatch match = regex.match(fullLocale);
         if (match.hasMatch())
         {
-            m_displayName = m_nameLocaleStorage[fullLocale];
-            return;
+            return localeStorage[fullLocale];
         }
     }
-
-    m_displayName = m_nameLocaleStorage[""];
+    return {};
 }
+
 } // namespace ao_builder
