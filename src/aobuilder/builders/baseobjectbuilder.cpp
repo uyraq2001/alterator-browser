@@ -51,52 +51,22 @@ bool BaseObjectBuilder::buildFieldWithLocale(ObjectParserInterface *parser,
 
 bool BaseObjectBuilder::buildBase(ObjectParserInterface *parser, QString sectionName, Object *object)
 {
-    const auto sections = parser->getSections();
-
-    const auto alteratorEntrySectionIt = sections.find(sectionName);
-    if (alteratorEntrySectionIt == sections.end())
+    if (!buildFieldWithLocale(parser,
+                              sectionName,
+                              ALTERATOR_ENTRY_OBJECT_KEY_NAME,
+                              object->m_id,
+                              object->m_nameLocaleStorage))
     {
         return false;
     }
 
-    ObjectParserInterface::Section section = *alteratorEntrySectionIt;
-
-    const auto nameIt = section.find(ALTERATOR_ENTRY_OBJECT_KEY_NAME);
-    if (nameIt == section.end())
+    if (!parseValuesFromKey(parser, sectionName, OBJECT_WEIGHT_KEY_NAME, ";").empty())
     {
-        return false;
-    }
-
-    const auto listOfKeys = section.values(ALTERATOR_ENTRY_OBJECT_KEY_NAME);
-
-    const QString defaultName = parser->getDefaultValue(listOfKeys);
-
-    if (defaultName.isEmpty())
-    {
-        return false;
-    }
-
-    object->m_id = defaultName;
-
-    for (const ObjectParserInterface::IniField &currentIniFileKey : listOfKeys)
-    {
-        object->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale.split('_').first(),
-                                           currentIniFileKey.value.toString());
-    }
-
-    const auto weightIt = section.find(OBJECT_WEIGHT_KEY_NAME);
-    if (weightIt != section.end())
-    {
-        bool ok          = true;
-        object->m_weight = weightIt.value().value.toInt(&ok);
-        if (!ok)
-        {
-            qWarning() << "Cannot parse" << OBJECT_WEIGHT_KEY_NAME << "of object" << object->m_id << "using default";
-            object->m_weight = DEFAULT_WEIGHT;
-        }
+        object->m_weight = parseValuesFromKey(parser, sectionName, OBJECT_WEIGHT_KEY_NAME, ";")[0].toInt();
     }
     else
     {
+        qWarning() << "Cannot parse" << OBJECT_WEIGHT_KEY_NAME << "of object" << object->m_id << "using default";
         object->m_weight = DEFAULT_WEIGHT;
     }
 
