@@ -14,7 +14,7 @@ void Diag1Object::setLocale(QString locale)
     }
     else
     {
-        m_comment = findLocale(locale, m_commentLocaleStorage).value_or(m_comment);
+        m_comment = findLocale(locale, m_commentLocaleStorage);
     }
 }
 } // namespace ao_builder

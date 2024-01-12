@@ -22,7 +22,7 @@ public:
     virtual void setLocale(QString locale);
 
 protected:
-    std::optional<QString> findLocale(QString locale, QMap<QString, QString> localeStorage);
+    QString findLocale(QString locale, QMap<QString, QString> localeStorage);
 
 public:
     Id m_id{};
