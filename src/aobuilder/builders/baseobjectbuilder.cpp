@@ -60,13 +60,24 @@ bool BaseObjectBuilder::buildBase(ObjectParserInterface *parser, QString section
         return false;
     }
 
-    if (!parseValuesFromKey(parser, sectionName, OBJECT_WEIGHT_KEY_NAME, ";").empty())
+    auto weights = parseValuesFromKey(parser, sectionName, OBJECT_WEIGHT_KEY_NAME, ";");
+    if (!weights.empty())
     {
-        object->m_weight = parseValuesFromKey(parser, sectionName, OBJECT_WEIGHT_KEY_NAME, ";")[0].toInt();
+        bool ok     = true;
+        auto weight = weights[0].toInt(&ok);
+        if (ok)
+        {
+            object->m_weight = weight;
+        }
+        else
+        {
+            qWarning() << "Cannot parse" << OBJECT_WEIGHT_KEY_NAME << "of object" << object->m_id << "using default";
+            object->m_weight = DEFAULT_WEIGHT;
+        }
     }
     else
     {
-        qWarning() << "Cannot parse" << OBJECT_WEIGHT_KEY_NAME << "of object" << object->m_id << "using default";
+        qWarning() << "Cannot find" << OBJECT_WEIGHT_KEY_NAME << "of object" << object->m_id << "using default";
         object->m_weight = DEFAULT_WEIGHT;
     }
 
