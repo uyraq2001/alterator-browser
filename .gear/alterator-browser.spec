@@ -44,7 +44,7 @@ Alterator operating via D-Bus.
 %doc README.md INSTALL.md
 
 %changelog
-* Wed Oct 25 2023 Aleksey Saprunov <sav@altlinux.org> 0.1.0-alt1
-- added support for acc files
+* Mon Jan 15 2024 Aleksey Saprunov <sav@altlinux.org> 0.1.0-alt1
+- added new objects support
 * Wed Jul 5 2023 Kozyrev Yuri <kozyrevid@altlinux.org> 0.0.1-alt1
 - initial build
