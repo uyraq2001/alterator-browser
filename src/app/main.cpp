@@ -1,12 +1,16 @@
 #include "../core/logger/prelude.h"
 #include "controller.h"
 #include "mainwindow.h"
-#include "model/localapllicationmodelbuilder.h"
 #include "model/model.h"
-#include "model/objectsmodelbuilder.h"
-#include "model/constants.h"
 
+#include "../aobuilder/builders/aobuilderimpl.h"
+#include "../aobuilder/constants.h"
+#include "../aobuilder/datasource/datasourcedbusimpl.h"
+
+#include <iostream>
+#include <memory>
 #include <QApplication>
+#include <QDebug>
 #include <QStandardItemModel>
 #include <QTranslator>
 
@@ -26,27 +30,13 @@ int main(int argc, char *argv[])
     translator.load(language, ".");
     app.installTranslator(&translator);
 
-    ab::model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
-                                                      DBUS_PATH,
-                                                      DBUS_MANAGER_INTERFACE_NAME,
-                                                      DBUS_FIND_INTERFACE_NAME,
-                                                      GET_OBJECTS_METHOD_NAME,
-                                                      INFO_METHOD_NAME_FOR_ACOBJECT,
-                                                      CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
-                                                      CATEGORY_METHOD_NAME_FOR_ACOBJECT,
-                                                      DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                      DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                      DBUS_LOCAL_APP_GET_DESKTOP_FILE);
-
-    std::unique_ptr<ab::model::Model> model = objectModelBuilder.buildModel();
-
-    ab::MainWindow mainWindow;
-
-    ab::Controller controller(&mainWindow, std::move(model));
-
-    mainWindow.setController(&controller);
-
-    mainWindow.show();
+    auto mainWindow   = std::make_shared<ab::MainWindow>();
+    auto model        = std::make_unique<ab::model::Model>();
+    auto dataSource   = std::make_unique<ao_builder::DataSourceDBusImpl>(ao_builder::DBUS_SERVICE_NAME);
+    auto modelBuilder = std::make_unique<ao_builder::AOBuilderImpl>();
+    ab::Controller controller(mainWindow, std::move(model), std::move(dataSource), std::move(modelBuilder));
+    mainWindow->setController(&controller);
+    mainWindow->show();
 
     return app.exec();
 }

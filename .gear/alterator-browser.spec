@@ -20,6 +20,9 @@ BuildRequires: boost-devel-headers
 Requires: alterator
 Requires: alterator-manager
 Requires: alterator-module-executor
+Requires: alterator-module-legacy
+Requires: alterator-module-categories
+Requires: alterator-module-applications
 
 Source0: %name-%version.tar
 

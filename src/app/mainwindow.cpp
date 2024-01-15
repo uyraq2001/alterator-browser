@@ -2,7 +2,6 @@
 #include "categorywidget.h"
 #include "controller.h"
 #include "mainwindowsettings.h"
-#include "model/objectitem.h"
 #include "ui_mainwindow.h"
 
 #include <QDBusConnection>
@@ -21,31 +20,35 @@
 #include <QString>
 #include <QTreeView>
 
+#include <map>
+#include <memory>
+#include <vector>
+
 namespace ab
 {
 class MainWindowPrivate
 {
 public:
-    Ui::MainWindow *ui                           = nullptr;
-    QShortcut *quitShortcut                      = nullptr;
-    model::Model *model                          = nullptr;
-    Controller *controller                       = nullptr;
+    std::unique_ptr<Ui::MainWindow> ui           = nullptr;
     std::unique_ptr<MainWindowSettings> settings = nullptr;
+    model::ModelInterface *model                 = nullptr;
+    Controller *controller                       = nullptr;
+    CategoryWidget *defaultCategory              = nullptr;
 };
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , d(new MainWindowPrivate())
 {
-    d->ui           = new Ui::MainWindow;
-    d->quitShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this, SLOT(close()));
-    d->settings     = std::make_unique<MainWindowSettings>(this, d->ui);
+    d->ui = std::make_unique<Ui::MainWindow>();
     d->ui->setupUi(this);
+
+    d->settings = std::make_unique<MainWindowSettings>(this, d->ui.get());
     d->settings->restoreSettings();
 
-    auto categoryLayout = new QVBoxLayout();
+    auto categoryLayout = std::make_unique<QVBoxLayout>();
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    d->ui->scrollArea->widget()->setLayout(categoryLayout);
+    d->ui->scrollArea->widget()->setLayout(categoryLayout.release());
 
     setWindowTitle(tr("Alterator Browser"));
     setWindowIcon(QIcon(":/logo.png"));
@@ -53,7 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete d->ui;
     delete d;
 }
 
@@ -77,30 +79,79 @@ void MainWindow::setController(Controller *newContoller)
     d->controller = newContoller;
 }
 
-void MainWindow::setModel(model::Model *newModel)
+void MainWindow::setModel(model::ModelInterface *newModel)
 {
-    d->model                = newModel;
+    d->model           = newModel;
+    d->defaultCategory = nullptr;
+
     QLayout *categoryLayout = d->ui->scrollArea->widget()->layout();
-    for (int i = 0; i < d->model->rowCount(); ++i)
+
+    const std::vector<ao_builder::Id> categoriesIds = d->model->getCategories();
+    const std::vector<ao_builder::Id> objectsIds    = d->model->getObjects();
+
+    std::vector<ao_builder::Object *> objects{};
+    for (const auto &objectId : objectsIds)
     {
-        auto categoryWidget = new CategoryWidget(this);
+        objects.push_back(d->model->getObject(objectId));
+    }
+    std::sort(objects.begin(), objects.end(), [](ao_builder::Object *a, ao_builder::Object *b) {
+        return a->m_displayName < b->m_displayName;
+    });
 
-        model::ObjectItem *categoryObject = dynamic_cast<model::ObjectItem *>(d->model->item(i));
-        if (!categoryObject)
+    std::map<ao_builder::Id, std::unique_ptr<CategoryWidget>> categoryWidgetMap{};
+
+    for (const auto &object : objects)
+    {
+        // Case 1: category already in the map
+        const auto findCategory = categoryWidgetMap.find(object->m_categoryId);
+        if (findCategory != categoryWidgetMap.end())
         {
-            qWarning() << "Can't convert item to category object!";
-
+            findCategory->second->addObject(object);
             continue;
         }
 
-        if (categoryWidget->setItem(categoryObject) > 0)
+        // Case 2: category not in map but exists in model
+        const auto find = std::find_if(categoriesIds.begin(),
+                                       categoriesIds.end(),
+                                       [&object](const ao_builder::Id &category) {
+                                           return category == object->m_categoryId;
+                                       });
+        if (find != categoriesIds.end())
         {
-            categoryLayout->addWidget(categoryWidget);
+            const auto newCategory = d->model->getCategory(object->m_categoryId);
+            auto newWidget         = std::make_unique<CategoryWidget>(this, d->model, newCategory);
+            newWidget->addObject(object);
+            categoryWidgetMap[object->m_categoryId] = std::move(newWidget);
+            continue;
         }
-        else
+
+        // Case 3: default category
+        if (!categoryWidgetMap.count(ao_builder::DEFAULT_CATEGORY_NAME))
         {
-            qWarning() << "Ignoring empty category!";
+            const auto defaultCategory = d->model->getDefaultCategory();
+            auto defaultCategoryWidget = std::make_unique<CategoryWidget>(this, d->model, defaultCategory);
+            categoryWidgetMap[ao_builder::DEFAULT_CATEGORY_NAME] = std::move(defaultCategoryWidget);
         }
+        categoryWidgetMap[ao_builder::DEFAULT_CATEGORY_NAME]->addObject(object);
+    }
+
+    std::vector<std::unique_ptr<CategoryWidget>> categoryWidgets{};
+    for (auto &[_, categoryWidget] : categoryWidgetMap)
+    {
+        if (!categoryWidget->isEmpty())
+        {
+            categoryWidgets.push_back(std::move(categoryWidget));
+        }
+    }
+    std::sort(categoryWidgets.begin(),
+              categoryWidgets.end(),
+              [](const std::unique_ptr<CategoryWidget> &a, const std::unique_ptr<CategoryWidget> &b) {
+                  return a->getWeight() > b->getWeight();
+              });
+
+    for (auto &categoryWidget : categoryWidgets)
+    {
+        categoryLayout->addWidget(categoryWidget.release());
     }
 }
 
@@ -117,16 +168,6 @@ void MainWindow::clearUi()
 
 void MainWindow::onModuleClicked(PushButton *button)
 {
-    d->controller->moduleClicked(button->getItem());
-}
-
-void MainWindow::showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu)
-{
-    button->showMenu(std::move(menu));
-}
-
-void MainWindow::onInterfaceClicked(model::LocalApplication *app)
-{
-    d->controller->onInterfaceClicked(app);
+    d->controller->moduleClicked(button->getObject());
 }
 } // namespace ab

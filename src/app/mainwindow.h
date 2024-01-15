@@ -1,9 +1,9 @@
 #ifndef AB_MAIN_WINDOW_H
 #define AB_MAIN_WINDOW_H
 
-#include "model/model.h"
-#include "pushbutton.h"
 #include "mainwindowsettings.h"
+#include "model/modelinterface.h"
+#include "pushbutton.h"
 
 #include <utility>
 
@@ -32,13 +32,13 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
 public:
-    MainWindow(const MainWindow &) = delete;
-    MainWindow(MainWindow &&)      = delete;
+    MainWindow(const MainWindow &)            = delete;
+    MainWindow(MainWindow &&)                 = delete;
     MainWindow &operator=(const MainWindow &) = delete;
-    MainWindow &operator=(MainWindow &&) = delete;
+    MainWindow &operator=(MainWindow &&)      = delete;
 
 public:
     void closeEvent(QCloseEvent *event) override;
@@ -46,12 +46,10 @@ public:
 
     void setController(Controller *c);
 
-    void setModel(model::Model *m);
+    void setModel(model::ModelInterface *m);
     void clearUi();
 
-    void showModuleMenu(PushButton *button, std::unique_ptr<QMenu> menu);
     void onModuleClicked(PushButton *button);
-    void onInterfaceClicked(model::LocalApplication *app);
 
 private:
     MainWindowPrivate *d;

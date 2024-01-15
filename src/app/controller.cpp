@@ -1,9 +1,11 @@
 #include "controller.h"
+#include "../core/logger/prelude.h"
 #include "mainwindow.h"
-#include "model/constants.h"
-#include "model/localapllicationmodelbuilder.h"
-#include "model/objectsmodelbuilder.h"
+#include "model/modelinterface.h"
+#include <memory>
 
+#include <utility>
+#include <vector>
 #include <QAction>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -20,27 +22,45 @@ namespace ab
 class ControllerPrivate
 {
 public:
-    MainWindow *window{nullptr};
-    std::unique_ptr<model::Model> model{nullptr};
+    std::shared_ptr<MainWindow> window{nullptr};
+    std::unique_ptr<model::ModelInterface> model{nullptr};
+    std::unique_ptr<ao_builder::DataSourceInterface> dataSource{nullptr};
+    std::unique_ptr<ao_builder::AOBuilderInterface> modelBuilder{nullptr};
+    std::vector<QString> interfaces{"ru.basealt.alterator.legacy",
+                                    "ru.basealt.alterator.object",
+                                    "ru.basealt.alterator.diag1",
+                                    "ru.basealt.alterator.test_interface1",
+                                    "ru.basealt.alterator.test_interface2"};
+
+    ControllerPrivate(std::shared_ptr<MainWindow> w,
+                      std::unique_ptr<model::ModelInterface> m,
+                      std::unique_ptr<ao_builder::DataSourceInterface> ds,
+                      std::unique_ptr<ao_builder::AOBuilderInterface> mb)
+        : window(std::move(w))
+        , model(std::move(m))
+        , dataSource(std::move(ds))
+        , modelBuilder(std::move(mb))
+    {}
 };
 
-Controller::Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent)
+Controller::Controller(std::shared_ptr<MainWindow> w,
+                       std::unique_ptr<model::ModelInterface> m,
+                       std::unique_ptr<ao_builder::DataSourceInterface> ds,
+                       std::unique_ptr<ao_builder::AOBuilderInterface> mb,
+                       QObject *parent)
     : QObject{parent}
-    , d(new ControllerPrivate)
+    , d{new ControllerPrivate(std::move(w), std::move(m), std::move(ds), std::move(mb))}
 {
-    d->window = w;
-    d->model  = std::move(m);
+    buildModel();
 
-    if (d->model != nullptr)
+    if (d->model == nullptr)
     {
-        w->setModel(d->model.get());
+        qCritical() << "Can not build model";
+        return;
     }
 
-    auto alteratorWatcher = new QDBusServiceWatcher(DBUS_SERVICE_NAME,
-                                                    QDBusConnection::systemBus(),
-                                                    QDBusServiceWatcher::WatchForOwnerChange,
-                                                    this);
-    connect(alteratorWatcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &Controller::onDBusStructureUpdate);
+    d->window->setModel(d->model.get());
+    translateModel();
 }
 
 Controller::~Controller()
@@ -48,72 +68,43 @@ Controller::~Controller()
     delete d;
 }
 
-void Controller::moduleClicked(model::ObjectItem *moduleItem)
+void Controller::moduleClicked(ao_builder::Object *object)
 {
-    try
+    auto apps = d->model->getLocalApplicationsByInterface(object->m_interface);
+    if (apps.empty())
     {
-        if (std::get<ab::model::Object>(*(moduleItem->m_object)).m_isLegacy)
-        {
-            QProcess *proc = new QProcess();
-
-            connect(proc, &QProcess::readyReadStandardError, this, [proc]() {
-                qCritical() << proc->readAllStandardError();
-            });
-            connect(proc, &QProcess::readyReadStandardOutput, this, [proc]() {
-                qInfo() << proc->readAllStandardOutput();
-            });
-            connect(proc, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this, [proc](int) {
-                delete (proc);
-            });
-
-            proc->start("alterator-standalone",
-                        QStringList() << "-l"
-                                      << std::get<ab::model::Object>(*moduleItem->m_object).m_x_Alterator_Internal_Name);
-        }
-        else
-        {
-            auto apps = std::get<ab::model::Object>(*moduleItem->m_object).m_applications;
-            if (apps.size() == 1)
-            {
-                onInterfaceClicked(apps[0]);
-            }
-        }
+        qWarning() << object->m_id << ": no applications are available for this module";
+        return;
     }
-    catch (const std::bad_variant_access &e)
-    {
-        qCritical() << "ERROR: the item is not of Object type";
-    }
+    auto app     = d->model->getLocalApplication(apps[0]);
+    auto proc    = new QProcess(this);
+    QString exec = app->m_exec;
+    exec.replace("%o", object->m_dbus_path);
+    proc->start("/bin/bash", QStringList() << "-c" << exec);
 }
 
-void Controller::onInterfaceClicked(model::LocalApplication *app)
+void Controller::translateModel()
 {
-    auto proc = new QProcess(this);
-    proc->start(app->m_desktopExec, QStringList());
-}
-
-void Controller::onDBusStructureUpdate(QString, QString, QString)
-{
-    model::ObjectsModelBuilder objectModelBuilder(DBUS_SERVICE_NAME,
-                                                  DBUS_PATH,
-                                                  DBUS_MANAGER_INTERFACE_NAME,
-                                                  DBUS_FIND_INTERFACE_NAME,
-                                                  GET_OBJECTS_METHOD_NAME,
-                                                  INFO_METHOD_NAME_FOR_ACOBJECT,
-                                                  CATEGORY_INTERFACE_NAME_FOR_ACOBJECT,
-                                                  CATEGORY_METHOD_NAME_FOR_ACOBJECT,
-                                                  DBUS_LOCAL_APP_INTERFACE_NAME,
-                                                  DBUS_LOCAL_APP_GET_LIST_OF_FILES,
-                                                  DBUS_LOCAL_APP_GET_DESKTOP_FILE);
-
-    std::unique_ptr<model::Model> objectModel = objectModelBuilder.buildModel();
-
-    d->model = std::move(objectModel);
-
     QLocale locale;
     QString language = locale.system().name().split("_").at(0);
     d->model->translateModel(language);
 
     d->window->clearUi();
-    d->window->setModel(d->model.get());
+    if (d->model != nullptr)
+    {
+        d->window->setModel(d->model.get());
+    }
 }
+
+void Controller::buildModel()
+{
+    auto categories = d->modelBuilder->buildCategories();
+
+    auto apps = d->modelBuilder->buildLocalApps();
+
+    auto objects = d->modelBuilder->buildObjects(d->interfaces);
+
+    d->model->build(std::move(categories), std::move(apps), std::move(objects));
+}
+
 } // namespace ab

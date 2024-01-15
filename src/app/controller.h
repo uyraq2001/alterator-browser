@@ -1,10 +1,14 @@
 #ifndef AB_CONTROLLER_H
 #define AB_CONTROLLER_H
 
+#include "../aobuilder/builders/aobuilderinterface.h"
+#include "../aobuilder/constants.h"
+#include "../aobuilder/datasource/datasourceinterface.h"
+#include "../aobuilder/objects/localappobject.h"
 #include "model/model.h"
-#include "model/objectitem.h"
-#include "pushbutton.h"
+#include "model/modelinterface.h"
 
+#include <memory>
 #include <utility>
 
 #include <QObject>
@@ -22,19 +26,25 @@ class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Controller(MainWindow *w, std::unique_ptr<model::Model> m, QObject *parent = nullptr);
-    ~Controller();
+    explicit Controller(std::shared_ptr<MainWindow>,
+                        std::unique_ptr<model::ModelInterface>,
+                        std::unique_ptr<ao_builder::DataSourceInterface>,
+                        std::unique_ptr<ao_builder::AOBuilderInterface>,
+                        QObject *parent = nullptr);
+    ~Controller() override;
 
 public:
-    Controller(const Controller &) = delete;
-    Controller(Controller &&)      = delete;
+    Controller(const Controller &)            = delete;
+    Controller(Controller &&)                 = delete;
     Controller &operator=(const Controller &) = delete;
-    Controller &operator=(Controller &&) = delete;
+    Controller &operator=(Controller &&)      = delete;
 
 public slots:
-    void moduleClicked(model::ObjectItem *moduleItem);
-    void onInterfaceClicked(model::LocalApplication *app);
-    void onDBusStructureUpdate(QString service, QString prev, QString next);
+    void moduleClicked(ao_builder::Object *obj);
+
+private:
+    void translateModel();
+    void buildModel();
 
 private:
     ControllerPrivate *d;

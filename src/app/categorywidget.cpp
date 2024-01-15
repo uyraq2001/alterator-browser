@@ -1,6 +1,5 @@
 #include "categorywidget.h"
 #include "flowlayout.h"
-#include "model/category.h"
 #include "pushbutton.h"
 #include "ui_categorywidget.h"
 
@@ -18,13 +17,31 @@ namespace ab
 const QString IGNORE_UI       = "html";
 const QString IGNORE_CATEGORY = "X-Alterator-Hidden";
 
-CategoryWidget::CategoryWidget(MainWindow *w, QWidget *parent)
+CategoryWidget::CategoryWidget(MainWindow *w, model::ModelInterface *m, ao_builder::Category *cat, QWidget *parent)
     : QWidget{parent}
     , ui(new Ui::CategoryWidget)
-    , item(nullptr)
+    , category(cat)
     , window(w)
+    , model(m)
+    , layout(new FlowLayout(0, 0, 0))
 {
     ui->setupUi(this);
+
+    QPixmap iconMap("/usr/share/alterator/design/images/" + cat->m_icon + ".png");
+    ui->iconLabel->setPixmap(iconMap);
+    ui->iconLabel->setMinimumSize(iconMap.size());
+
+    ui->titleLabel->setText(cat->m_displayName);
+    ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
+
+    ui->descriptionLabel->setText(cat->m_comment);
+
+    ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
+
+    layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+    ui->modulesWidget->setLayout(layout);
 }
 
 CategoryWidget::~CategoryWidget()
@@ -32,81 +49,38 @@ CategoryWidget::~CategoryWidget()
     delete ui;
 }
 
-unsigned int CategoryWidget::setItem(model::ObjectItem *newItem)
+void CategoryWidget::addObject(ao_builder::Object *object)
 {
-    this->item = newItem;
+    const auto legacyObject = dynamic_cast<ao_builder::LegacyObject *>(object);
 
-    unsigned int addedWidgets = 0;
-
-    try
+    if (object->m_isLegacy && legacyObject != nullptr)
     {
-        ab::model::Category currentCategory = std::get<ab::model::Category>(*newItem->getObject());
-
-        QPixmap iconMap("/usr/share/alterator/design/images/" + currentCategory.m_icon + ".png");
-        ui->iconLabel->setPixmap(iconMap);
-        ui->iconLabel->setMinimumSize(iconMap.size());
-
-        ui->titleLabel->setText(currentCategory.m_name);
-        ui->titleLabel->setMinimumSize(ui->titleLabel->sizeHint());
-
-        ui->descriptionLabel->setText(currentCategory.m_comment);
-
-        ui->headerWidget->setMinimumWidth(ui->headerWidget->sizeHint().width());
-    }
-    catch (const std::bad_variant_access &e)
-    {
-        qCritical() << "ERROR: the item is not of Category type";
-        return 0;
-    }
-
-    const int margin            = 0;
-    const int horizontalSpacing = 0;
-    const int verticalSpacing   = 0;
-    auto modulesLayout          = std::make_unique<FlowLayout>(margin, horizontalSpacing, verticalSpacing);
-    modulesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
-    modulesLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-
-    for (int i = 0; i < newItem->model()->rowCount(newItem->index()); ++i)
-    {
-        auto child = dynamic_cast<model::ObjectItem *>(newItem->child(i));
-        if (!child)
+        if (legacyObject->m_x_Alterator_UI == IGNORE_UI)
         {
-            qWarning() << "Can't cast item to ObjectItem to make widget!";
-            continue;
+            qInfo() << "Ignoring object with html UI:" << object->m_id;
+            return;
         }
 
-        std::variant<ab::model::Object, ab::model::Category> *childItem = child->getObject();
-
-        try
+        if (legacyObject->m_categoryId == IGNORE_CATEGORY)
         {
-            ab::model::Object childObject = std::get<ab::model::Object>(*childItem);
-            if (childObject.m_x_Alterator_UI == IGNORE_UI)
-            {
-                qWarning() << "Ignoring object with html UI:" << childObject.m_id;
-                continue;
-            }
-
-            if (childObject.m_categoryId == IGNORE_CATEGORY)
-            {
-                qWarning() << "Ignoring object with hidden category:" << childObject.m_id;
-                continue;
-            }
+            qInfo() << "Ignoring object with hidden category:" << object->m_id;
+            return;
         }
-        catch (std::bad_variant_access const &ex)
-        {
-            qWarning() << "Exception: Can't cast item to ObjectItem to make widget!";
-            continue;
-        }
-
-        auto moduleButton = std::make_unique<PushButton>(window);
-        moduleButton->setItem(child);
-        moduleButton->setFlat(true);
-        modulesLayout->addWidget(moduleButton.release());
-        addedWidgets++;
     }
 
-    ui->modulesWidget->setLayout(modulesLayout.release());
+    auto moduleButton = std::make_unique<PushButton>(window);
+    moduleButton->setObject(object);
+    moduleButton->setFlat(true);
+    layout->addWidget(moduleButton.release());
+}
 
-    return addedWidgets;
+int CategoryWidget::getWeight()
+{
+    return category->m_weight;
+}
+
+bool CategoryWidget::isEmpty()
+{
+    return layout->isEmpty();
 }
 } // namespace ab

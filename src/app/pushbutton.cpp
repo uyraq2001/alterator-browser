@@ -15,49 +15,20 @@ PushButton::PushButton(MainWindow *w, QWidget *parent)
     connect(this, &PushButton::clicked, this->window, [this]() { this->window->onModuleClicked(this); });
 }
 
-void PushButton::setItem(model::ObjectItem *newItem)
+void PushButton::setObject(ao_builder::Object *obj)
 {
-    try
-    {
-        this->item        = newItem;
-        model::Object obj = std::get<ab::model::Object>(*newItem->getObject());
+    this->object = obj;
+    this->setText(obj->m_displayName);
+    this->setStyleSheet("padding: 3px 7px;");
 
-        this->setText(obj.m_displayName);
-        this->setMinimumWidth(this->sizeHint().width());
-
-        QFont font = this->font();
-        font.setPointSize(11);
-        this->setFont(font);
-
-        if (obj.m_applications.size() > 1)
-        {
-            auto menu = std::make_unique<QMenu>(this);
-            for (const auto &app : obj.m_applications)
-            {
-                auto interfaceAction = std::make_unique<QAction>("&" + app->m_implementedInterface, menu.get());
-                connect(interfaceAction.get(), &QAction::triggered, this, [app, this]() {
-                    window->onInterfaceClicked(app);
-                });
-                menu->addAction(interfaceAction.release());
-            }
-            setMenu(menu.release());
-        }
-    }
-    catch (const std::bad_variant_access &e)
-    {
-        qCritical() << "ERROR: the item is not of Object type";
-    }
+    QFont font = this->font();
+    font.setPointSize(11);
+    this->setFont(font);
 }
 
-model::ObjectItem *PushButton::getItem()
+ao_builder::Object *PushButton::getObject()
 {
-    return item;
-}
-
-void PushButton::showMenu(std::unique_ptr<QMenu> menu)
-{
-    this->setMenu(menu.release());
-    QPushButton::showMenu();
+    return object;
 }
 
 bool PushButton::event(QEvent *event)

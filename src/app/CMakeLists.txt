@@ -1,14 +1,14 @@
 macro(add_alterator_browser_executable name)
-  # add executable
-  add_executable(${name} ${ARGN})
+    # add executable
+    add_executable(${name} ${ARGN})
 
-  # add install target
-  set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name})
-  install(TARGETS ${name} DESTINATION bin
+    # add install target
+    set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name})
+    install(TARGETS ${name} DESTINATION bin
       PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-  # copy binary
-  add_custom_command(TARGET ${name} POST_BUILD COMMAND
+    # copy binary
+    add_custom_command(TARGET ${name} POST_BUILD COMMAND
       ${CMAKE_COMMAND} ARGS -E copy
         $<TARGET_FILE:${name}>
         ${CMAKE_BINARY_DIR}/bin/$<TARGET_FILE_NAME:${name}>
@@ -32,24 +32,9 @@ set(HEADERS
     pushbutton.h
     mainwindowsettings.h
 
-    model/object.h
-    model/category.h
     model/model.h
-    model/categorybuilder.h
-    model/localapplication.h
-    model/objectitem.h
-    model/objectsmodelbuilder.h
-    model/desktopfileparser.h
-    model/objectbuilderfactory.h
-    model/objectbuilderinterface.h
-    model/objectbuilder.h
-
-    model/localapplication.h
-    model/localapplicationbuilder.h
-    model/localapllicationmodelbuilder.h
-    model/localapplicationmodel.h
-    model/localapplicationitem.h
-    model/model.h
+    model/item.h
+    model/modelinterface.h
 )
 
 set(SOURCES
@@ -61,23 +46,8 @@ set(SOURCES
     pushbutton.cpp
     mainwindowsettings.cpp
 
-    model/object.cpp
-    model/category.cpp
     model/model.cpp
-    model/categorybuilder.cpp
-    model/localapplication.cpp
-    model/objectitem.cpp
-    model/objectsmodelbuilder.cpp
-    model/desktopfileparser.cpp
-    model/objectbuilderfactory.cpp
-    model/objectbuilder.cpp
-
-    model/localapplication.cpp
-    model/localapplicationbuilder.cpp
-    model/localapllicationmodelbuilder.cpp
-    model/localapplicationmodel.cpp
-    model/localapplicationitem.cpp
-    model/model.cpp
+    model/item.cpp
 )
 
 set(UI_FORMS
@@ -107,6 +77,8 @@ add_translation_resource(RESOURCES_SRC "alterator-browser" ${QM_FILES})
 
 qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 
-add_alterator_browser_executable(alterator-browser ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
+add_alterator_browser_executable(
+    alterator-browser ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES}
+)
 
-target_link_libraries(alterator-browser alterator-browser-core Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)
+target_link_libraries(alterator-browser alterator-browser-core aobuilder Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui)
