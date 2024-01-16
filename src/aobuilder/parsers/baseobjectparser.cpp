@@ -53,6 +53,7 @@ QString BaseObjectParser::getKeyLocale(QString keyName)
 
     if (indexOfOpeningBracket >= indexOfClosingBracket || indexOfOpeningBracket == -1 || indexOfClosingBracket == -1)
     {
+        qWarning() << QString("No locale for '%1' key").arg(keyName);
         return {};
     }
 
@@ -82,7 +83,7 @@ QString BaseObjectParser::getDefaultValue(QList<IniField> iniFileKey)
         }
     }
 
-    return {};
+    return {}; // TODO(kozyrevid): what's this?
 }
 
 QString BaseObjectParser::getValue(QString section, QString key)
@@ -91,6 +92,7 @@ QString BaseObjectParser::getValue(QString section, QString key)
 
     if (sectionIt == m_sections.end())
     {
+        qWarning() << QString("There is no section '%1' in the file").arg(section);
         return {};
     }
 
@@ -98,6 +100,7 @@ QString BaseObjectParser::getValue(QString section, QString key)
 
     if (it == (*sectionIt).end())
     {
+        qWarning() << QString("Section '%1' doesn't contain key '%2'").arg(section, key);
         return {};
     }
 
@@ -108,6 +111,7 @@ QString BaseObjectParser::getValue(QString section, QString key)
         return listOfKeys.at(0).value.toString();
     }
 
+    qWarning() << QString("Key '%1' is empty in section '%1'").arg(key, section);
     return {};
 }
 } // namespace ao_builder

@@ -9,6 +9,8 @@
 
 #include <memory>
 
+#include <QDebug>
+
 namespace ao_builder
 {
 std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getBuilder(ObjectParserInterface *parser)
@@ -32,6 +34,8 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getBuilder(ObjectP
     }
 
     // No Desktop Section and no Alterator Entry. Error
+    qWarning() << QString("Couldn't find neither '%1' nor '%2' sections")
+                      .arg(DESKTOP_ENTRY_SECTION_NAME, ALTERATOR_ENTRY_SECTION_NAME);
     return {};
 }
 
@@ -57,6 +61,7 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getObjectBuilder(O
     }
 
     // Unknown type
+    qWarning() << QString("Couldn't determine type of object");
     return {};
 }
 

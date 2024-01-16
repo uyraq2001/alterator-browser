@@ -92,6 +92,7 @@ std::vector<QString> BaseObjectBuilder::parseValuesFromKey(ObjectParserInterface
     QString values = parser->getValue(section, key);
     if (values.isEmpty())
     {
+        qWarning() << QString("No value in section '%1' by key '%2'").arg(section, key);
         return {};
     }
 

@@ -58,6 +58,7 @@ ao_builder::Category *Model::getCategory(ao_builder::Id category_id)
         }
     }
 
+    qWarning() << QString("There is no '%1' category in the model").arg(category_id);
     return {};
 }
 
@@ -104,6 +105,7 @@ ao_builder::LocalAppObject *Model::getLocalApplication(ao_builder::Id appId)
         }
     }
 
+    qWarning() << QString("There is no '%1' application in the model").arg(appId);
     return {};
 }
 
@@ -200,6 +202,8 @@ ao_builder::Object *Model::getObject(ao_builder::Id objectId)
             return object;
         }
     }
+
+    qWarning() << QString("There is no '%1' object in the model").arg(objectId);
     return {};
 }
 
