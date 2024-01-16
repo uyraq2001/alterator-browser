@@ -5,6 +5,8 @@
 #include <QMetaType>
 #include <QString>
 
+#include <optional>
+
 const int DEFAULT_WEIGHT = 500;
 
 namespace ao_builder
@@ -18,6 +20,9 @@ public:
     virtual ~Object() = default;
 
     virtual void setLocale(QString locale);
+
+protected:
+    QString findLocale(QString locale, QMap<QString, QString> localeStorage);
 
 public:
     Id m_id{};
