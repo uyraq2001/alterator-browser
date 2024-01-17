@@ -14,7 +14,7 @@ std::unique_ptr<ao_builder::Object> LocalApplicationObjectBuilder::buildObject(O
 
     if (!parseDesktopEntrySection(parser, object) && !parseAlteratorEntrySection(parser, object))
     {
-        qWarning() << QString("Couldn't find neither desktop nor alterator entry");
+        qWarning() << "Couldn't find neither desktop nor alterator entry";
         return {};
     }
 

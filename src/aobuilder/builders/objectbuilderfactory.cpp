@@ -61,7 +61,7 @@ std::unique_ptr<ObjectBuilderInterface> ObjectBuilderFactory::getObjectBuilder(O
     }
 
     // Unknown type
-    qWarning() << QString("Couldn't determine type of object");
+    qWarning() << "Couldn't determine type of object";
     return {};
 }
 

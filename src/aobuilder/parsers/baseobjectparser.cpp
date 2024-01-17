@@ -83,7 +83,15 @@ QString BaseObjectParser::getDefaultValue(QList<IniField> iniFileKey)
         }
     }
 
-    return {}; // TODO(kozyrevid): what's this?
+    if (!iniFileKey.isEmpty())
+    {
+        qWarning() << QString("No default value for key '%1'").arg(iniFileKey[0].key);
+    }
+    else
+    {
+        qWarning() << "Empty key doesn't containt default value";
+    }
+    return {};
 }
 
 QString BaseObjectParser::getValue(QString section, QString key)
