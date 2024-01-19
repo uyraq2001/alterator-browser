@@ -35,10 +35,10 @@ public:
     ~MainWindow() override;
 
 public:
-    MainWindow(const MainWindow &)            = delete;
-    MainWindow(MainWindow &&)                 = delete;
+    MainWindow(const MainWindow &) = delete;
+    MainWindow(MainWindow &&)      = delete;
     MainWindow &operator=(const MainWindow &) = delete;
-    MainWindow &operator=(MainWindow &&)      = delete;
+    MainWindow &operator=(MainWindow &&) = delete;
 
 public:
     void closeEvent(QCloseEvent *event) override;
@@ -50,6 +50,8 @@ public:
     void clearUi();
 
     void onModuleClicked(PushButton *button);
+
+    void showInfo();
 
 private:
     MainWindowPrivate *d;
