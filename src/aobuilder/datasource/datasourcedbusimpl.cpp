@@ -38,6 +38,8 @@ QStringList DataSourceDBusImpl::getLocalAppPaths()
 
     if (mainAppObjectList.empty())
     {
+        qWarning() << QString("The list of applications from '%1' interface is empty")
+                          .arg(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME);
         return {};
     }
 
@@ -60,6 +62,8 @@ QStringList DataSourceDBusImpl::getCategoriesList()
 
     if (mainCatObjectList.empty())
     {
+        qWarning() << QString("The list of categries from '%1' interface is empty")
+                          .arg(DBUS_CATEGORY_OBJECT_INTERFACE_NAME);
         return {};
     }
 
@@ -105,6 +109,7 @@ QStringList DataSourceDBusImpl::getPathsByInterface(QString ifaceName)
 
     if (!iface.isValid())
     {
+        qWarning() << QString("Interface '%1' is invalid").arg(DBUS_MANAGER_INTERFACE_NAME);
         return {};
     }
 
@@ -112,6 +117,8 @@ QStringList DataSourceDBusImpl::getPathsByInterface(QString ifaceName)
 
     if (!reply.isValid())
     {
+        qWarning() << QString("Reply from interface'%1', method '%2' is invalid")
+                          .arg(ifaceName, DBUS_GET_OBJECTS_METHOD_NAME);
         return {};
     }
 
@@ -131,6 +138,7 @@ QStringList DataSourceDBusImpl::getObjectsList(QString listMethodName, QString p
 
     if (!iface.isValid())
     {
+        qWarning() << QString("Invalid interface '%1' for object '%2'").arg(interfaceName, path);
         return {};
     }
 
@@ -138,6 +146,7 @@ QStringList DataSourceDBusImpl::getObjectsList(QString listMethodName, QString p
 
     if (!reply.isValid())
     {
+        qWarning() << QString("Invalid reply from method '%1' of '%2' interface ").arg(interfaceName, path);
         return {};
     }
 
@@ -177,6 +186,7 @@ QByteArray DataSourceDBusImpl::getObjectInfoByName(QString ifaceName,
 
     if (!iface.isValid())
     {
+        qWarning() << QString("Invalid interface '%1' for object '%2'").arg(ifaceName, path);
         return {};
     }
 
@@ -184,6 +194,8 @@ QByteArray DataSourceDBusImpl::getObjectInfoByName(QString ifaceName,
 
     if (!reply.isValid())
     {
+        qWarning() << QString("Invalid reply from method '%1' with parameter '%2' of '%3' interface ")
+                          .arg(ifaceName, param, path);
         return {};
     }
 
