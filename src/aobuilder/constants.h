@@ -80,6 +80,7 @@ const char *const DEFAULT_CATEGORY_NAME            = "__default";
 const char *const DEFAULT_CATEGORY_DISPLAY_NAME    = "Others";
 const char *const DEFAULT_CATEGORY_DISPLAY_NAME_EN = "Others";
 const char *const DEFAULT_CATEGORY_DISPLAY_NAME_RU = "Другое";
+const char *const DEFAULT_CATEGORY_ICON            = "groups/other";
 const char *const DEFAULT_CATEGORY_COMMENT         = "Objects without category";
 const char *const DEFAULT_CATEGORY_COMMENT_EN      = "Objects without category";
 const char *const DEFAULT_CATEGORY_COMMENT_RU      = "Объекты без категории";
