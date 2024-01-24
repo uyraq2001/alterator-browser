@@ -34,24 +34,12 @@ DataSourceDBusImpl::~DataSourceDBusImpl()
 
 QStringList DataSourceDBusImpl::getLocalAppPaths()
 {
-    const QStringList mainAppObjectList = getPathsByInterface(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME);
-
-    if (mainAppObjectList.empty())
-    {
-        return {};
-    }
-
-    const QString &mainObjectPath = mainAppObjectList.first();
-
-    return getObjectsList(DBUS_OBJECT_METHOD_LIST_DEFAULT_NAME, mainObjectPath, DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME);
+    return getPathsByInterface(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME);
 }
 
 QString DataSourceDBusImpl::getLocalAppInfo(QString path)
 {
-    return getObjectInfoByName(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME,
-                               DBUS_LOCAL_APP_OBJECT_PATH,
-                               path,
-                               DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
+    return getObjectInfo(DBUS_LOCAL_APP_OBJECT_INTERFACE_NAME, path, DBUS_OBJECT_METHOD_INFO_DEFAULT_NAME);
 }
 
 QStringList DataSourceDBusImpl::getCategoriesList()
