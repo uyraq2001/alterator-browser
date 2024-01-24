@@ -56,8 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     d->ui->scrollArea->widget()->setLayout(categoryLayout.release());
 
-    auto toolBar    = new QToolBar(this);
-    auto infoButton = new QToolButton(toolBar);
+    auto toolBar      = new QToolBar(this);
+    auto infoButton   = new QToolButton(toolBar);
+    auto switchButton = new QToolButton(toolBar);
 
     infoButton->setText(tr("Info"));
     infoButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -70,9 +71,16 @@ MainWindow::MainWindow(QWidget *parent)
     infoWindow->layout()->addWidget(new QLabel(tr("Info"), infoWindow));
     connect(infoButton, &QToolButton::clicked, this, [infoWindow](bool) { infoWindow->show(); });
 
+    switchButton->setText(tr("Switch to older version"));
+    switchButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    auto switchIcon = QIcon::fromTheme("reload");
+    switchButton->setIcon(switchIcon);
+    connect(switchButton, &QToolButton::clicked, this, [this](bool) { d->controller->switchBack(); });
+
     QWidget *spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     toolBar->addWidget(spacer);
+    toolBar->addWidget(switchButton);
     toolBar->addWidget(infoButton);
     toolBar->setMaximumHeight(34);
     d->ui->centralLayout->addWidget(toolBar);

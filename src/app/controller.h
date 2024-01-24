@@ -34,13 +34,14 @@ public:
     ~Controller() override;
 
 public:
-    Controller(const Controller &)            = delete;
-    Controller(Controller &&)                 = delete;
+    Controller(const Controller &) = delete;
+    Controller(Controller &&)      = delete;
     Controller &operator=(const Controller &) = delete;
-    Controller &operator=(Controller &&)      = delete;
+    Controller &operator=(Controller &&) = delete;
 
 public slots:
     void moduleClicked(ao_builder::Object *obj);
+    void switchBack();
 
 private:
     void translateModel();
