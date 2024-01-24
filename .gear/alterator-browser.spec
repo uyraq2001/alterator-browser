@@ -22,7 +22,7 @@ Requires: alterator-manager
 Requires: alterator-module-executor
 Requires: alterator-module-legacy
 Requires: alterator-module-categories
-Requires: alterator-module-applications
+Requires: alterator-interface-application
 
 Source0: %name-%version.tar
 
