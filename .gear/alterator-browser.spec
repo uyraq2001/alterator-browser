@@ -7,7 +7,7 @@ Release: alt1
 Summary: Revised alterator
 License: GPLv2+
 Group: Other
-URL: https://github.com/uyraq2001/alterator-module-browser
+Vcs: https://gitlab.basealt.space/alt/alterator-browser
 
 BuildRequires(pre): rpm-macros-cmake
 BuildRequires: cmake
@@ -37,14 +37,15 @@ Alterator operating via D-Bus.
 %cmake_build
 
 %install
-%cmakeinstall_std
+%cmake_install
+
+install -Dpm 644 setup/%name.desktop %buildroot/%_desktopdir/%name.desktop
 
 %files
-%_bindir/alterator-browser
 %doc README.md INSTALL.md
+%_bindir/%name
+%_desktopdir/%name.desktop
 
 %changelog
 * Mon Jan 15 2024 Aleksey Saprunov <sav@altlinux.org> 0.1.0-alt1
-- added new objects support
-* Wed Jul 5 2023 Kozyrev Yuri <kozyrevid@altlinux.org> 0.0.1-alt1
-- initial build
+- Initial release
