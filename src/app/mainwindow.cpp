@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     d->ui->scrollArea->widget()->setLayout(categoryLayout.release());
 
     setWindowTitle(tr("Alterator Browser"));
-    setWindowIcon(QIcon(":/logo.png"));
+    setWindowIcon(QIcon(":logo.png"));
 }
 
 MainWindow::~MainWindow()

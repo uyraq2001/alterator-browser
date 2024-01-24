@@ -55,7 +55,7 @@ set(UI_FORMS
     categorywidget.ui
 )
 set(RESOURCES
-    resources.qrc
+    icon.qrc
 )
 set(TS_FILES
 ${CMAKE_CURRENT_SOURCE_DIR}/ru.ts
