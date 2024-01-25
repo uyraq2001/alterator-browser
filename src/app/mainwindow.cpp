@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
     auto infoWindow = new QDialog(this);
     infoWindow->setSizeGripEnabled(true);
     infoWindow->setLayout(new QVBoxLayout(infoWindow));
-    infoWindow->layout()->addWidget(new QLabel(tr("Info"), infoWindow));
+    infoWindow->layout()->addWidget(new QLabel(tr("Info text"), infoWindow));
     connect(infoButton, &QToolButton::clicked, this, [infoWindow](bool) { infoWindow->show(); });
 
     switchButton->setText(tr("Switch to older version"));
