@@ -39,12 +39,9 @@ Alterator operating via D-Bus.
 %install
 %cmake_install
 
-install -Dpm 644 setup/%name.desktop %buildroot/%_desktopdir/%name.desktop
-
 %files
 %doc README.md INSTALL.md
 %_bindir/%name
-%_desktopdir/%name.desktop
 
 %changelog
 * Mon Jan 15 2024 Aleksey Saprunov <sav@altlinux.org> 0.1.0-alt1
