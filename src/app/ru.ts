@@ -5,33 +5,51 @@
     <name>CategoryWidget</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <source>description</source>
-        <translation type="unfinished"></translation>
+        <source>Icon</source>
+        <translation></translation>
     </message>
     <message>
-        <source>HEADER</source>
-        <translation type="unfinished"></translation>
+        <source>TITLE</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>MainWindow</source>
-        <translation></translation>
+        <translation>ывангшлдюбьтимсвкенгшщзжюбьтимсвкенгшщзжюбьтимсвуке67гшщдбьтимсвкен7гшщзжюбьтимсвкен7г8шщзжюбь мсакенгшщдюбьтимаке678шщдбьтимакенгшщдбьтипаенгшльтимаенгшлбьтимсаенгшщдю</translation>
     </message>
     <message>
         <source>alterator-browser</source>
-        <translation>alterator-browser_ru</translation>
+        <translation>Центр управления системой</translation>
     </message>
 </context>
 <context>
-    <name>ModulePushButton</name>
+    <name>ab::MainWindow</name>
     <message>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
+        <source>Info</source>
+        <translation>Справка</translation>
+    </message>
+    <message>
+        <source>Switch to older version</source>
+        <translation>Переключиться на старую версию</translation>
+    </message>
+    <message>
+        <source>Alterator Browser</source>
+        <translation>Центр управления системой</translation>
+    </message>
+    <message>
+        <source>Info text</source>
+        <translation>Центр управления системой 
+Центр управления системой позволяет управлять операционной системой ALT. Модули настройки сгруппированы по задачам. Выберите необходимый модуль настройки на главной странице и укажите необходимые параметры. 
+Вы можете всегда вернуться на главную панель, нажав кнопку Главная в левом верхнем углу программы. </translation>
     </message>
 </context>
 </TS>

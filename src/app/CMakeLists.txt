@@ -64,7 +64,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/en.ts
 
 add_custom_target(app_ts
 DEPENDS ${TS_FILES}
-COMMAND ${Qt5_LUPDATE_EXECUTABLE} -recursive ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES} -noobsolete
+COMMAND ${Qt5_LUPDATE_EXECUTABLE} * -recursive ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES} -no-obsolete
 )
 
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_SOURCE_DIR})

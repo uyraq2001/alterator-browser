@@ -8,11 +8,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>description</source>
+        <source>Icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>HEADER</source>
+        <source>TITLE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -20,17 +24,29 @@
     <name>MainWindow</name>
     <message>
         <source>MainWindow</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>alterator-browser</source>
-        <translation>alterator-browser</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>ModulePushButton</name>
+    <name>ab::MainWindow</name>
     <message>
-        <source>Form</source>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to older version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alterator Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Info text</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
