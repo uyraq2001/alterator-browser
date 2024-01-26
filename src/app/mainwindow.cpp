@@ -2,6 +2,7 @@
 #include "categorywidget.h"
 #include "controller.h"
 #include "mainwindowsettings.h"
+#include "ui_infodialog.h"
 #include "ui_mainwindow.h"
 
 #include <QDBusConnection>
@@ -66,9 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
     infoButton->setIcon(infoIcon);
 
     auto infoWindow = new QDialog(this);
-    infoWindow->setSizeGripEnabled(true);
-    infoWindow->setLayout(new QVBoxLayout(infoWindow));
-    infoWindow->layout()->addWidget(new QLabel(tr("Info text"), infoWindow));
+    Ui::InfoDialog dialogUi;
+    dialogUi.setupUi(infoWindow);
     connect(infoButton, &QToolButton::clicked, this, [infoWindow](bool) { infoWindow->show(); });
 
     switchButton->setText(tr("Switch to older version"));
