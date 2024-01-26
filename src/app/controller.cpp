@@ -107,4 +107,10 @@ void Controller::buildModel()
     d->model->build(std::move(categories), std::move(apps), std::move(objects));
 }
 
+void Controller::switchBack()
+{
+    auto proc = new QProcess(this);
+    proc->start("acc", QStringList());
+}
+
 } // namespace ab

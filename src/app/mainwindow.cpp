@@ -2,22 +2,27 @@
 #include "categorywidget.h"
 #include "controller.h"
 #include "mainwindowsettings.h"
+#include "ui_infodialog.h"
 #include "ui_mainwindow.h"
 
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDebug>
+#include <QDialog>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
 #include <QDomNodeList>
 #include <QDomText>
+#include <QLabel>
 #include <QLayout>
 #include <QMouseEvent>
 #include <QShortcut>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QString>
+#include <QToolBar>
+#include <QToolButton>
 #include <QTreeView>
 
 #include <map>
@@ -51,6 +56,35 @@ MainWindow::MainWindow(QWidget *parent)
     auto categoryLayout = std::make_unique<QVBoxLayout>();
     categoryLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     d->ui->scrollArea->widget()->setLayout(categoryLayout.release());
+
+    auto toolBar      = new QToolBar(this);
+    auto infoButton   = new QToolButton(toolBar);
+    auto switchButton = new QToolButton(toolBar);
+
+    infoButton->setText(tr("Info"));
+    infoButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    auto infoIcon = QIcon::fromTheme("help");
+    infoButton->setIcon(infoIcon);
+
+    auto infoWindow = new QDialog(this);
+    Ui::InfoDialog dialogUi;
+    dialogUi.setupUi(infoWindow);
+    connect(infoButton, &QToolButton::clicked, this, [infoWindow](bool) { infoWindow->show(); });
+
+    switchButton->setText(tr("Switch to older version"));
+    switchButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    auto switchIcon = QIcon::fromTheme("reload");
+    switchButton->setIcon(switchIcon);
+    connect(switchButton, &QToolButton::clicked, this, [this](bool) { d->controller->switchBack(); });
+
+    QWidget *spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    toolBar->addWidget(spacer);
+    toolBar->addWidget(switchButton);
+    toolBar->addWidget(infoButton);
+    toolBar->setMaximumHeight(34);
+    d->ui->centralLayout->addWidget(toolBar);
+    d->ui->centralLayout->addWidget(d->ui->scrollArea);
 
     setWindowTitle(tr("Alterator Browser"));
     setWindowIcon(QIcon(":/logo.png"));
@@ -172,4 +206,6 @@ void MainWindow::onModuleClicked(PushButton *button)
 {
     d->controller->moduleClicked(button->getObject());
 }
+
+void MainWindow::showInfo() {}
 } // namespace ab
