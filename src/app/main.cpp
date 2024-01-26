@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     QLocale locale;
     QTranslator translator;
     QString language = locale.system().name().split("_").at(0);
-    translator.load(language, ".");
+    translator.load(language, ":/");
     app.installTranslator(&translator);
 
     auto mainWindow   = std::make_shared<ab::MainWindow>();

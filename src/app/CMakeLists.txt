@@ -53,6 +53,7 @@ set(SOURCES
 set(UI_FORMS
     mainwindow.ui
     categorywidget.ui
+    infodialog.ui
 )
 set(RESOURCES
     resources.qrc
